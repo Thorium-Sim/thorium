@@ -1,0 +1,3 @@
+mutation HackingSetFrequency($id: ID!, $frequency: Float!) {
+  computerCoreSetHackingFrequency(id: $id, frequency: $frequency)
+}

@@ -1,8 +1,9 @@
 import gql from 'graphql-tag.macro';
 import * as ApolloReactHooks from '@apollo/client';
 export type Maybe<T> = T | null;
-export type Exact<T extends { [key: string]: any }> = { [K in keyof T]: T[K] };
-
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -10,735 +11,2050 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
-  JSON: {[key: string]: any};
   /** The `BigInt` scalar type represents non-fractional signed whole numeric values. BigInt can represent values between -(2^53) + 1 and 2^53 - 1.  */
   BigInt: any;
+  /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
+  JSON: {[key: string]: any};
 };
 
-export type Query = {
-  __typename?: 'Query';
-  _empty?: Maybe<Scalars['String']>;
-  actions?: Maybe<Action>;
-  asset?: Maybe<Asset>;
-  assets?: Maybe<Array<Maybe<Asset>>>;
-  assetFolders?: Maybe<Array<Maybe<AssetFolder>>>;
-  clients?: Maybe<Array<Maybe<Client>>>;
-  keypad?: Maybe<Keypad>;
-  keypads?: Maybe<Array<Maybe<Keypad>>>;
-  scanner?: Maybe<Scanner>;
-  scanners?: Maybe<Array<Maybe<Scanner>>>;
-  commandLine?: Maybe<Array<Maybe<CommandLine>>>;
-  commandLineCommands?: Maybe<Array<Maybe<CommandLineCommand>>>;
-  computerCore?: Maybe<Array<Maybe<ComputerCore>>>;
-  oneComputerCore?: Maybe<ComputerCore>;
-  hackingPresets: Array<HackingPreset>;
-  coolant?: Maybe<Array<Maybe<CoolantTank>>>;
-  systemCoolant?: Maybe<Array<Maybe<SystemCoolant>>>;
-  coreFeed?: Maybe<Array<Maybe<CoreFeed>>>;
-  coreLayouts?: Maybe<Array<Maybe<CoreLayout>>>;
-  crew?: Maybe<Array<Maybe<Crew>>>;
-  crewCount?: Maybe<Scalars['Int']>;
-  crm?: Maybe<Crm>;
-  crmFighter?: Maybe<CrmFighter>;
-  decks?: Maybe<Array<Maybe<Deck>>>;
-  docking?: Maybe<Array<Maybe<DockingPort>>>;
-  engines?: Maybe<Array<Maybe<Engine>>>;
-  engine?: Maybe<Engine>;
-  exocomps?: Maybe<Array<Maybe<Exocomp>>>;
-  externals?: Maybe<Externals>;
-  hasFirebaseConnection: Scalars['Boolean'];
-  getFirebaseSimulators?: Maybe<Array<FbFullSimulator>>;
-  getFirebaseUser?: Maybe<Scalars['Boolean']>;
-  getFirebaseAwards?: Maybe<Array<FbAwards>>;
-  getFirebaseLogoSrc?: Maybe<Scalars['String']>;
-  getFirebaseEventId?: Maybe<Scalars['ID']>;
-  getFirebasePageText?: Maybe<FbPageText>;
-  getCurrentFirebaseSelections?: Maybe<FbCurrentSelections>;
-  flights: Array<Flight>;
-  events?: Maybe<Array<Maybe<Scalars['String']>>>;
-  advancedNavAndAstrometric?: Maybe<AdvancedNavigationAndAstrometrics>;
-  advancedNavAndAstrometrics?: Maybe<Array<Maybe<AdvancedNavigationAndAstrometrics>>>;
-  getFlightSet?: Maybe<FlightSet>;
-  getAllFlightSets: Array<Maybe<FlightSet>>;
-  advancedNavStars?: Maybe<AdvancedNavStarsData>;
-  googleSheets?: Maybe<Scalars['String']>;
-  googleSheetsGetSpreadsheet?: Maybe<GoogleSpreadsheet>;
-  hullPlating?: Maybe<HullPlating>;
-  hullPlatings?: Maybe<Array<Maybe<HullPlating>>>;
-  interfaces?: Maybe<Array<Maybe<Interface>>>;
-  interfaceDevices?: Maybe<Array<Maybe<InterfaceDevice>>>;
-  internalComm?: Maybe<Array<Maybe<InternalComm>>>;
-  inventory?: Maybe<Array<Maybe<InventoryItem>>>;
-  isochips?: Maybe<Array<Maybe<Isochip>>>;
-  jumpDrive?: Maybe<Array<Maybe<JumpDrive>>>;
-  keyboard?: Maybe<Array<Maybe<Keyboard>>>;
-  libraryEntries?: Maybe<Array<Maybe<LibraryEntry>>>;
-  longRangeCommunications?: Maybe<Array<Maybe<LrCommunications>>>;
-  macros?: Maybe<Array<Maybe<Macro>>>;
-  macroButtons?: Maybe<Array<Maybe<MacroButtonConfig>>>;
-  messages?: Maybe<Array<Maybe<Message>>>;
-  midiSets?: Maybe<Array<Maybe<MidiSet>>>;
-  missions: Array<Mission>;
-  auxTimelines?: Maybe<Array<Maybe<TimelineInstance>>>;
-  motus?: Maybe<Array<Maybe<Motu>>>;
-  motu?: Maybe<Motu>;
-  motuChannel?: Maybe<MotuChannel>;
-  motuSend?: Maybe<MotuPatch>;
-  navigation?: Maybe<Array<Maybe<Navigation>>>;
-  navigate?: Maybe<Navigation>;
-  objective?: Maybe<Array<Maybe<Objective>>>;
-  officerLogs?: Maybe<Array<Maybe<Log>>>;
-  shipLogs?: Maybe<Array<Maybe<Log>>>;
-  phasers?: Maybe<Array<Maybe<Phaser>>>;
-  phaser?: Maybe<Phaser>;
-  probes: Array<Probes>;
-  probe?: Maybe<Probes>;
-  probeEquipment: Array<ProbeEquipment>;
-  railgun?: Maybe<Array<Maybe<Railgun>>>;
-  reactors?: Maybe<Array<Maybe<Reactor>>>;
-  reactor?: Maybe<Reactor>;
-  recordSnippets?: Maybe<Array<Maybe<RecordSnippet>>>;
-  recordTemplates?: Maybe<Array<Maybe<RecordSnippet>>>;
-  rooms?: Maybe<Array<Maybe<Room>>>;
-  sensors: Array<Sensors>;
-  sensor?: Maybe<Sensors>;
-  sensorContacts?: Maybe<Array<Maybe<SensorContact>>>;
-  sets?: Maybe<Array<Maybe<Set>>>;
-  shields?: Maybe<Array<Maybe<Shield>>>;
-  shortRangeComm?: Maybe<Array<Maybe<ShortRangeComm>>>;
-  sickbay?: Maybe<Array<Maybe<Sickbay>>>;
-  sickbaySingle?: Maybe<Sickbay>;
-  symptoms?: Maybe<Array<Maybe<Scalars['String']>>>;
-  signalJammers?: Maybe<Array<Maybe<SignalJammer>>>;
-  simulators: Array<Simulator>;
-  softwarePanels?: Maybe<Array<Maybe<SoftwarePanel>>>;
-  stations?: Maybe<Array<Maybe<StationSet>>>;
-  station?: Maybe<Station>;
-  stealthField?: Maybe<Array<Maybe<StealthField>>>;
-  stealth?: Maybe<StealthField>;
-  subspaceField?: Maybe<Array<Maybe<SubspaceField>>>;
-  surveyform?: Maybe<Array<Maybe<SurveyForm>>>;
-  systems?: Maybe<Array<Maybe<System>>>;
-  system?: Maybe<System>;
-  allSystems: Array<Scalars['String']>;
-  tacticalMaps?: Maybe<Array<Maybe<TacticalMap>>>;
-  tacticalMap?: Maybe<TacticalMap>;
-  targeting?: Maybe<Array<Maybe<Targeting>>>;
-  taskReport?: Maybe<Array<Maybe<TaskReport>>>;
-  tasks?: Maybe<Array<Maybe<Task>>>;
-  taskTemplates: Array<TaskTemplate>;
-  taskDefinitions: Array<TaskDefinition>;
-  taskInstructions?: Maybe<Scalars['String']>;
-  teams?: Maybe<Array<Maybe<Team>>>;
-  damagePositions?: Maybe<Array<Maybe<Scalars['String']>>>;
-  exocompParts?: Maybe<Array<Maybe<Scalars['String']>>>;
-  _template?: Maybe<Template>;
-  thorium?: Maybe<Thorium>;
-  thrusters?: Maybe<Array<Maybe<Thruster>>>;
-  thruster?: Maybe<Thruster>;
-  thx?: Maybe<Array<Maybe<Thx>>>;
-  torpedos?: Maybe<Array<Maybe<Torpedo>>>;
-  torpedo?: Maybe<Torpedo>;
-  tractorBeam?: Maybe<Array<Maybe<TractorBeam>>>;
-  transporters?: Maybe<Array<Maybe<Transporter>>>;
-  transwarp?: Maybe<Array<Maybe<Transwarp>>>;
-  triggers?: Maybe<Array<Maybe<Trigger>>>;
-  viewscreens?: Maybe<Array<Maybe<Viewscreen>>>;
-  countermeasures?: Maybe<Countermeasures>;
-  countermeasureModuleType: Array<CountermeasureModule>;
-  entity?: Maybe<Entity>;
-  entities: Array<Maybe<Entity>>;
-  dmxDevices: Array<DmxDevice>;
-  dmxSets: Array<DmxSet>;
-  dmxFixtures: Array<DmxFixture>;
-  dmxConfig?: Maybe<DmxConfig>;
-  dmxConfigs: Array<DmxConfig>;
-  taskFlows: Array<TaskFlow>;
+export type Action = {
+  __typename?: 'Action';
+  action?: Maybe<Scalars['String']>;
+  message?: Maybe<Scalars['String']>;
+  voice?: Maybe<Scalars['String']>;
+  duration?: Maybe<Scalars['Float']>;
 };
 
-
-export type QueryActionsArgs = {
-  stationId?: Maybe<Scalars['ID']>;
-  clientId?: Maybe<Scalars['ID']>;
-};
-
-
-export type QueryAssetArgs = {
-  assetKey: Scalars['String'];
-};
-
-
-export type QueryAssetsArgs = {
-  assetKeys: Array<Scalars['String']>;
-};
-
-
-export type QueryAssetFoldersArgs = {
-  name?: Maybe<Scalars['String']>;
-  names?: Maybe<Array<Maybe<Scalars['String']>>>;
-};
-
-
-export type QueryClientsArgs = {
-  all?: Maybe<Scalars['Boolean']>;
-  clientId?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  stationName?: Maybe<Scalars['String']>;
-  flightId?: Maybe<Scalars['ID']>;
-};
-
-
-export type QueryKeypadArgs = {
-  client: Scalars['ID'];
-};
-
-
-export type QueryKeypadsArgs = {
-  simulatorId: Scalars['ID'];
-};
-
-
-export type QueryScannerArgs = {
-  client: Scalars['ID'];
-};
-
-
-export type QueryScannersArgs = {
-  simulatorId: Scalars['ID'];
-};
-
-
-export type QueryCommandLineArgs = {
-  simulatorId?: Maybe<Scalars['ID']>;
-};
-
-
-export type QueryCommandLineCommandsArgs = {
-  simulatorId: Scalars['ID'];
-};
-
-
-export type QueryComputerCoreArgs = {
-  simulatorId?: Maybe<Scalars['ID']>;
-};
-
-
-export type QueryOneComputerCoreArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type QueryCoolantArgs = {
-  simulatorId: Scalars['ID'];
-};
-
-
-export type QuerySystemCoolantArgs = {
-  simulatorId: Scalars['ID'];
-  systemId?: Maybe<Scalars['ID']>;
-};
-
-
-export type QueryCoreFeedArgs = {
-  simulatorId?: Maybe<Scalars['ID']>;
-};
-
-
-export type QueryCoreLayoutsArgs = {
-  name?: Maybe<Scalars['String']>;
-};
-
-
-export type QueryCrewArgs = {
-  simulatorId?: Maybe<Scalars['ID']>;
-  position?: Maybe<Scalars['String']>;
-  killed?: Maybe<Scalars['Boolean']>;
-};
-
-
-export type QueryCrewCountArgs = {
-  simulatorId: Scalars['ID'];
-  position?: Maybe<Scalars['String']>;
-  killed?: Maybe<Scalars['Boolean']>;
-};
-
-
-export type QueryCrmArgs = {
+export type ActionInput = {
   id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
+  event?: Maybe<Scalars['String']>;
+  args?: Maybe<Scalars['String']>;
+  delay?: Maybe<Scalars['Int']>;
+  noCancelOnReset?: Maybe<Scalars['Boolean']>;
+  needsConfig?: Maybe<Scalars['Boolean']>;
 };
 
-
-export type QueryCrmFighterArgs = {
-  simulatorId: Scalars['ID'];
-  clientId: Scalars['ID'];
+export type AdvancedNavStarsData = {
+  __typename?: 'AdvancedNavStarsData';
+  velocity: Scalars['Float'];
+  activating: Scalars['Boolean'];
 };
 
-
-export type QueryDecksArgs = {
-  simulatorId: Scalars['ID'];
-  number?: Maybe<Scalars['Int']>;
-};
-
-
-export type QueryDockingArgs = {
+export type AdvancedNavigationAndAstrometrics = SystemInterface & {
+  __typename?: 'AdvancedNavigationAndAstrometrics';
   id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  type?: Maybe<Docking_Types>;
-};
-
-
-export type QueryEnginesArgs = {
-  simulatorId?: Maybe<Scalars['ID']>;
-};
-
-
-export type QueryEngineArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type QueryExocompsArgs = {
-  simulatorId?: Maybe<Scalars['ID']>;
-};
-
-
-export type QueryGetFirebaseUserArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type QueryFlightsArgs = {
-  running?: Maybe<Scalars['Boolean']>;
-  id?: Maybe<Scalars['ID']>;
-};
-
-
-export type QueryAdvancedNavAndAstrometricArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type QueryAdvancedNavAndAstrometricsArgs = {
-  simulatorId: Scalars['ID'];
-};
-
-
-export type QueryGetFlightSetArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type QueryAdvancedNavStarsArgs = {
-  simulatorId: Scalars['ID'];
-};
-
-
-export type QueryGoogleSheetsGetSpreadsheetArgs = {
-  spreadsheetId: Scalars['ID'];
-};
-
-
-export type QueryHullPlatingArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type QueryHullPlatingsArgs = {
-  simulatorId: Scalars['ID'];
-};
-
-
-export type QueryInterfacesArgs = {
-  simulatorId?: Maybe<Scalars['ID']>;
-};
-
-
-export type QueryInternalCommArgs = {
-  simulatorId: Scalars['ID'];
-};
-
-
-export type QueryInventoryArgs = {
-  simulatorId?: Maybe<Scalars['ID']>;
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  deck?: Maybe<Scalars['ID']>;
-  room?: Maybe<Scalars['ID']>;
-};
-
-
-export type QueryIsochipsArgs = {
-  simulatorId?: Maybe<Scalars['ID']>;
-};
-
-
-export type QueryJumpDriveArgs = {
-  simulatorId?: Maybe<Scalars['ID']>;
-};
-
-
-export type QueryLibraryEntriesArgs = {
   simulatorId?: Maybe<Scalars['ID']>;
   type?: Maybe<Scalars['String']>;
-  all?: Maybe<Scalars['Boolean']>;
-};
-
-
-export type QueryLongRangeCommunicationsArgs = {
-  simulatorId?: Maybe<Scalars['ID']>;
-};
-
-
-export type QueryMessagesArgs = {
-  simulatorId: Scalars['ID'];
-  station?: Maybe<Scalars['String']>;
-  group?: Maybe<Scalars['ID']>;
-};
-
-
-export type QueryMidiSetsArgs = {
-  simulatorId?: Maybe<Scalars['ID']>;
-};
-
-
-export type QueryMissionsArgs = {
-  id?: Maybe<Scalars['ID']>;
-  aux?: Maybe<Scalars['Boolean']>;
-};
-
-
-export type QueryAuxTimelinesArgs = {
-  simulatorId: Scalars['ID'];
-};
-
-
-export type QueryMotuArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type QueryMotuChannelArgs = {
-  id: Scalars['ID'];
-  channelId: Scalars['ID'];
-};
-
-
-export type QueryMotuSendArgs = {
-  id: Scalars['ID'];
-  inputId: Scalars['ID'];
-  outputId: Scalars['ID'];
-};
-
-
-export type QueryNavigationArgs = {
-  simulatorId?: Maybe<Scalars['ID']>;
-};
-
-
-export type QueryNavigateArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type QueryObjectiveArgs = {
-  simulatorId?: Maybe<Scalars['ID']>;
-};
-
-
-export type QueryOfficerLogsArgs = {
-  clientId?: Maybe<Scalars['ID']>;
-  flightId: Scalars['ID'];
-};
-
-
-export type QueryShipLogsArgs = {
-  simulatorId: Scalars['ID'];
-};
-
-
-export type QueryPhasersArgs = {
-  simulatorId?: Maybe<Scalars['ID']>;
-};
-
-
-export type QueryPhaserArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type QueryProbesArgs = {
-  simulatorId: Scalars['ID'];
-};
-
-
-export type QueryProbeArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type QueryRailgunArgs = {
-  simulatorId?: Maybe<Scalars['ID']>;
-};
-
-
-export type QueryReactorsArgs = {
-  simulatorId?: Maybe<Scalars['ID']>;
-  model?: Maybe<Scalars['String']>;
-};
-
-
-export type QueryReactorArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type QueryRecordSnippetsArgs = {
-  simulatorId: Scalars['ID'];
-  visible?: Maybe<Scalars['Boolean']>;
-};
-
-
-export type QueryRoomsArgs = {
-  simulatorId?: Maybe<Scalars['ID']>;
-  deck?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
-  role?: Maybe<RoomRoles>;
-};
-
-
-export type QuerySensorsArgs = {
-  simulatorId?: Maybe<Scalars['ID']>;
-  domain?: Maybe<Scalars['String']>;
-};
-
-
-export type QuerySensorArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type QuerySensorContactsArgs = {
-  simulatorId?: Maybe<Scalars['ID']>;
-  sensorsId?: Maybe<Scalars['ID']>;
-  hostile?: Maybe<Scalars['Boolean']>;
-  type?: Maybe<Scalars['String']>;
-};
-
-
-export type QueryShieldsArgs = {
-  simulatorId?: Maybe<Scalars['ID']>;
-};
-
-
-export type QueryShortRangeCommArgs = {
-  simulatorId: Scalars['ID'];
-};
-
-
-export type QuerySickbayArgs = {
-  simulatorId?: Maybe<Scalars['ID']>;
-};
-
-
-export type QuerySickbaySingleArgs = {
-  id?: Maybe<Scalars['ID']>;
-};
-
-
-export type QuerySignalJammersArgs = {
-  simulatorId: Scalars['ID'];
-};
-
-
-export type QuerySimulatorsArgs = {
-  template?: Maybe<Scalars['Boolean']>;
-  id?: Maybe<Scalars['ID']>;
-};
-
-
-export type QuerySoftwarePanelsArgs = {
-  simulatorId?: Maybe<Scalars['ID']>;
-};
-
-
-export type QueryStationArgs = {
-  simulatorId: Scalars['ID'];
-  station: Scalars['String'];
-};
-
-
-export type QueryStealthFieldArgs = {
-  simulatorId?: Maybe<Scalars['ID']>;
-};
-
-
-export type QueryStealthArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type QuerySubspaceFieldArgs = {
-  simulatorId?: Maybe<Scalars['ID']>;
-};
-
-
-export type QuerySurveyformArgs = {
-  simulatorId?: Maybe<Scalars['ID']>;
-  active?: Maybe<Scalars['Boolean']>;
-};
-
-
-export type QuerySystemsArgs = {
-  simulatorId?: Maybe<Scalars['ID']>;
-  type?: Maybe<Scalars['String']>;
-  power?: Maybe<Scalars['Boolean']>;
-  heat?: Maybe<Scalars['Boolean']>;
+  displayName?: Maybe<Scalars['String']>;
+  upgradeName?: Maybe<Scalars['String']>;
+  upgraded?: Maybe<Scalars['Boolean']>;
   extra?: Maybe<Scalars['Boolean']>;
-  damageWhich?: Maybe<Scalars['String']>;
+  damage?: Maybe<Damage>;
+  locations?: Maybe<Array<Maybe<Room>>>;
+  stealthFactor?: Maybe<Scalars['Float']>;
+  power?: Maybe<Power>;
+  flightSets: Array<FlightSet>;
+  currentLocation: BasicCoordinate;
+  coolantLevel: Scalars['Float'];
+  heatLevel: Scalars['Float'];
+  flightPaths: Array<NamedNavigationRoute>;
+  engineStatus: Scalars['String'];
+  hasEmergencyPower: Scalars['Boolean'];
+  startingStartupTime: Scalars['Float'];
+  remainingEta: Scalars['Float'];
+  totalEta: Scalars['Float'];
+  flightPathCoords: Array<FullCoordinate>;
+  remainingStartupTime?: Maybe<Scalars['Float']>;
+  showEta: Scalars['Boolean'];
+  showFlightSet: Scalars['Boolean'];
+  currentFlightSet?: Maybe<FlightSet>;
+  currentFlightPath?: Maybe<NavigationRoute>;
+  currentLocationName?: Maybe<Scalars['String']>;
+  currentLocationUrl?: Maybe<Scalars['String']>;
+  probes: Array<FsProbe>;
+  flightSetPathMap: Scalars['String'];
+  probeAssignments: Scalars['String'];
 };
 
+export type Ambiance = {
+  __typename?: 'Ambiance';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  asset: Scalars['String'];
+  volume: Scalars['Float'];
+  channel: Array<Scalars['Int']>;
+  playbackRate: Scalars['Float'];
+};
 
-export type QuerySystemArgs = {
+export type AmbianceInput = {
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  asset?: Maybe<Scalars['String']>;
+  volume?: Maybe<Scalars['Float']>;
+  channel?: Maybe<Array<Maybe<Scalars['Int']>>>;
+  playbackRate?: Maybe<Scalars['Float']>;
+};
+
+export type AppearanceComponent = {
+  __typename?: 'AppearanceComponent';
+  meshType?: Maybe<MeshTypeEnum>;
+  modelAsset?: Maybe<Scalars['String']>;
+  materialMapAsset?: Maybe<Scalars['String']>;
+  ringMapAsset?: Maybe<Scalars['String']>;
+  cloudMapAsset?: Maybe<Scalars['String']>;
+  emissiveColor?: Maybe<Scalars['String']>;
+  emissiveIntensity?: Maybe<Scalars['Float']>;
+  color?: Maybe<Scalars['String']>;
+  scale?: Maybe<Scalars['Float']>;
+};
+
+export type Asset = {
+  __typename?: 'Asset';
+  assetKey: Scalars['String'];
+  url: Scalars['String'];
+};
+
+export type AssetFolder = {
+  __typename?: 'AssetFolder';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  folderPath: Scalars['String'];
+  fullPath: Scalars['String'];
+  objects: Array<AssetObject>;
+};
+
+export type AssetObject = {
+  __typename?: 'AssetObject';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  folderPath: Scalars['String'];
+  fullPath: Scalars['String'];
+  url: Scalars['String'];
+};
+
+export type BasicCoordinate = {
+  __typename?: 'BasicCoordinate';
+  x: Scalars['Float'];
+  y: Scalars['Float'];
+};
+
+export type BasicCoordinateInput = {
+  x: Scalars['Float'];
+  y: Scalars['Float'];
+};
+
+export type BehaviorComponent = {
+  __typename?: 'BehaviorComponent';
+  behavior: Behaviors;
+  targetId?: Maybe<Scalars['ID']>;
+  destination?: Maybe<EntityCoordinates>;
+};
+
+export enum Behaviors {
+  HoldPosition = 'holdPosition',
+  Wander = 'wander',
+  Follow = 'follow',
+  Avoid = 'avoid',
+  Attack = 'attack'
+}
+
+
+export type Card = {
+  __typename?: 'Card';
+  name: Scalars['String'];
+  component: Scalars['String'];
+  hidden?: Maybe<Scalars['Boolean']>;
+  assigned?: Maybe<Scalars['Boolean']>;
+  newStation?: Maybe<Scalars['Boolean']>;
+};
+
+export type CardInput = {
+  name?: Maybe<Scalars['String']>;
+  component?: Maybe<Scalars['String']>;
+};
+
+export enum ChannelModeMessageType {
+  Allsoundoff = 'allsoundoff',
+  Resetallcontrollers = 'resetallcontrollers',
+  Localcontroloff = 'localcontroloff',
+  Localcontrolon = 'localcontrolon',
+  Allnotesoff = 'allnotesoff',
+  Omnimodeoff = 'omnimodeoff',
+  Omnimodeon = 'omnimodeon',
+  Monomodeon = 'monomodeon',
+  Polymodeon = 'polymodeon'
+}
+
+export type Chart = {
+  __typename?: 'Chart';
+  id?: Maybe<Scalars['ID']>;
+  admitTime?: Maybe<Scalars['String']>;
+  dischargeTime?: Maybe<Scalars['String']>;
+  bloodPressure?: Maybe<Scalars['String']>;
+  heartRate?: Maybe<Scalars['Float']>;
+  temperature?: Maybe<Scalars['Float']>;
+  o2levels?: Maybe<Scalars['Float']>;
+  symptoms?: Maybe<Array<Maybe<Scalars['String']>>>;
+  diagnosis?: Maybe<Array<Maybe<Scalars['String']>>>;
+  treatment?: Maybe<Scalars['String']>;
+  treatmentRequest?: Maybe<Scalars['Boolean']>;
+  painPoints?: Maybe<Array<Maybe<PainPoint>>>;
+};
+
+export type ChartInput = {
+  id?: Maybe<Scalars['ID']>;
+  admitTime?: Maybe<Scalars['String']>;
+  dischargeTime?: Maybe<Scalars['String']>;
+  bloodPressure?: Maybe<Scalars['String']>;
+  heartRate?: Maybe<Scalars['Float']>;
+  temperature?: Maybe<Scalars['Float']>;
+  o2levels?: Maybe<Scalars['Float']>;
+  symptoms?: Maybe<Array<Maybe<Scalars['String']>>>;
+  treatment?: Maybe<Scalars['String']>;
+  treatmentRequest?: Maybe<Scalars['Boolean']>;
+  painPoints?: Maybe<Array<Maybe<PainPointInput>>>;
+};
+
+export type Client = {
+  __typename?: 'Client';
+  id: Scalars['ID'];
+  label?: Maybe<Scalars['String']>;
+  connected?: Maybe<Scalars['Boolean']>;
+  flight?: Maybe<Flight>;
+  simulator?: Maybe<Simulator>;
+  station?: Maybe<Station>;
+  loginName?: Maybe<Scalars['String']>;
+  loginState?: Maybe<Scalars['String']>;
+  ping?: Maybe<Scalars['String']>;
+  offlineState?: Maybe<Scalars['String']>;
+  movie?: Maybe<Scalars['String']>;
+  training?: Maybe<Scalars['Boolean']>;
+  soundPlayer?: Maybe<Scalars['Boolean']>;
+  caches?: Maybe<Array<Maybe<Scalars['String']>>>;
+  hypercard?: Maybe<Scalars['String']>;
+  overlay?: Maybe<Scalars['Boolean']>;
+  cracked?: Maybe<Scalars['Boolean']>;
+  commandLineOutput?: Maybe<Array<Maybe<Scalars['String']>>>;
+  commandLineFeedback?: Maybe<Array<Maybe<CommandLineFeedback>>>;
+  currentCard?: Maybe<Card>;
+  token?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+  mobile?: Maybe<Scalars['Boolean']>;
+  cards?: Maybe<Array<Maybe<Scalars['String']>>>;
+  keypad?: Maybe<Keypad>;
+};
+
+export type ColoredCoordinate = {
+  __typename?: 'ColoredCoordinate';
+  color: Scalars['String'];
+  x: Scalars['Float'];
+  y: Scalars['Float'];
+};
+
+export type ColoredCoordinateInput = {
+  color: Scalars['String'];
+  x: Scalars['Float'];
+  y: Scalars['Float'];
+};
+
+export type CommArrow = {
+  __typename?: 'CommArrow';
+  id?: Maybe<Scalars['ID']>;
+  signal?: Maybe<Scalars['ID']>;
+  frequency?: Maybe<Scalars['Float']>;
+  connected?: Maybe<Scalars['Boolean']>;
+  muted?: Maybe<Scalars['Boolean']>;
+};
+
+export type CommArrowExtended = {
+  __typename?: 'CommArrowExtended';
+  id?: Maybe<Scalars['ID']>;
+  signal?: Maybe<Scalars['ID']>;
+  range?: Maybe<Scalars['String']>;
+  frequency?: Maybe<Scalars['Float']>;
+  connected?: Maybe<Scalars['Boolean']>;
+};
+
+export type CommArrowInput = {
+  id?: Maybe<Scalars['ID']>;
+  signal?: Maybe<Scalars['ID']>;
+  frequency?: Maybe<Scalars['Float']>;
+  connected?: Maybe<Scalars['Boolean']>;
+};
+
+export type CommRange = {
+  __typename?: 'CommRange';
+  lower?: Maybe<Scalars['Float']>;
+  upper?: Maybe<Scalars['Float']>;
+};
+
+export type CommRanges = {
+  __typename?: 'CommRanges';
+  military?: Maybe<CommRange>;
+  commercial?: Maybe<CommRange>;
+  priority?: Maybe<CommRange>;
+  emergency?: Maybe<CommRange>;
+};
+
+export type CommSignal = {
+  __typename?: 'CommSignal';
+  id?: Maybe<Scalars['ID']>;
+  image?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  range?: Maybe<CommRange>;
+  color?: Maybe<Scalars['String']>;
+};
+
+export type CommSignalExtended = {
+  __typename?: 'CommSignalExtended';
+  id?: Maybe<Scalars['ID']>;
+  color?: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  ranges?: Maybe<CommRanges>;
+};
+
+export type CommSignalInput = {
+  id?: Maybe<Scalars['ID']>;
+  image?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  range?: Maybe<RangeInput>;
+  color?: Maybe<Scalars['String']>;
+};
+
+export type CommUpdateInput = {
+  state?: Maybe<Scalars['String']>;
+  frequency?: Maybe<Scalars['Float']>;
+  amplitude?: Maybe<Scalars['Float']>;
+};
+
+export type CommandLine = {
+  __typename?: 'CommandLine';
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  commands?: Maybe<Array<Maybe<CommandLineCommand>>>;
+  components?: Maybe<Scalars['JSON']>;
+  connections?: Maybe<Scalars['JSON']>;
+  values?: Maybe<Scalars['JSON']>;
+  config?: Maybe<Scalars['JSON']>;
+};
+
+export type CommandLineCommand = {
+  __typename?: 'CommandLineCommand';
+  name?: Maybe<Scalars['String']>;
+  help?: Maybe<Scalars['String']>;
+  hidden?: Maybe<Scalars['Boolean']>;
+};
+
+export type CommandLineFeedback = {
+  __typename?: 'CommandLineFeedback';
+  id?: Maybe<Scalars['ID']>;
+  clientId?: Maybe<Scalars['ID']>;
+  command?: Maybe<Scalars['String']>;
+  approve?: Maybe<Scalars['String']>;
+  deny?: Maybe<Scalars['String']>;
+  triggers?: Maybe<Array<Maybe<TimelineItem>>>;
+};
+
+export type ComputerCore = {
+  __typename?: 'ComputerCore';
+  id?: Maybe<Scalars['ID']>;
+  simulatorId?: Maybe<Scalars['ID']>;
+  users?: Maybe<Array<Maybe<ComputerCoreUser>>>;
+  files?: Maybe<Array<Maybe<ComputerCoreFile>>>;
+  virii?: Maybe<Array<Maybe<ComputerCoreVirus>>>;
+  terminals?: Maybe<Array<Maybe<ComputerCoreTerminals>>>;
+  history?: Maybe<Array<Maybe<Scalars['String']>>>;
+  hackingActive?: Maybe<Scalars['Boolean']>;
+  activeHackingPreset?: Maybe<HackingPreset>;
+  hackingState?: Maybe<Scalars['String']>;
+  hackingPortScanFrequency?: Maybe<Scalars['Float']>;
+  hackingLog: Array<Scalars['String']>;
+  hackingPorts: HackingPorts;
+};
+
+export type ComputerCoreFile = {
+  __typename?: 'ComputerCoreFile';
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  level?: Maybe<Scalars['Int']>;
+  corrupted?: Maybe<Scalars['Boolean']>;
+  restoring?: Maybe<Scalars['Boolean']>;
+};
+
+export type ComputerCoreFileInput = {
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  level?: Maybe<Scalars['Int']>;
+  corrupted?: Maybe<Scalars['Boolean']>;
+  restoring?: Maybe<Scalars['Boolean']>;
+};
+
+export type ComputerCoreTerminals = {
+  __typename?: 'ComputerCoreTerminals';
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  status?: Maybe<Terminal_Status>;
+};
+
+export type ComputerCoreUser = {
+  __typename?: 'ComputerCoreUser';
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  password?: Maybe<Scalars['String']>;
+  hacker?: Maybe<Scalars['Boolean']>;
+  level?: Maybe<Scalars['Int']>;
+};
+
+export type ComputerCoreUserInput = {
+  name?: Maybe<Scalars['String']>;
+  password?: Maybe<Scalars['String']>;
+  hacker?: Maybe<Scalars['Boolean']>;
+  level?: Maybe<Scalars['Int']>;
+};
+
+export type ComputerCoreVirus = {
+  __typename?: 'ComputerCoreVirus';
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+export type Coolant = {
+  __typename?: 'Coolant';
+  temperature?: Maybe<Scalars['Float']>;
+  quantity?: Maybe<Scalars['Float']>;
+  rate?: Maybe<Scalars['Float']>;
+};
+
+export type CoolantRegulator = {
+  __typename?: 'CoolantRegulator';
+  id?: Maybe<Scalars['ID']>;
+  simulatorId?: Maybe<Scalars['ID']>;
+  type?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  coolant?: Maybe<Coolant>;
+  damage?: Maybe<Scalars['Float']>;
+};
+
+export type CoolantTank = SystemInterface & {
+  __typename?: 'CoolantTank';
+  id?: Maybe<Scalars['ID']>;
+  simulatorId?: Maybe<Scalars['ID']>;
+  type?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  displayName?: Maybe<Scalars['String']>;
+  upgradeName?: Maybe<Scalars['String']>;
+  upgraded?: Maybe<Scalars['Boolean']>;
+  coolant?: Maybe<Scalars['Float']>;
+  coolantRate?: Maybe<Scalars['Float']>;
+  damage?: Maybe<Damage>;
+  power?: Maybe<Power>;
+  stealthFactor?: Maybe<Scalars['Float']>;
+  locations?: Maybe<Array<Maybe<Room>>>;
+};
+
+export type Coordinates = {
+  __typename?: 'Coordinates';
+  x?: Maybe<Scalars['Float']>;
+  y?: Maybe<Scalars['Float']>;
+  z?: Maybe<Scalars['Float']>;
+};
+
+export type CoordinatesInput = {
+  x?: Maybe<Scalars['Float']>;
+  y?: Maybe<Scalars['Float']>;
+  z?: Maybe<Scalars['Float']>;
+};
+
+export type CoreFeed = {
+  __typename?: 'CoreFeed';
+  id?: Maybe<Scalars['ID']>;
+  simulatorId?: Maybe<Scalars['ID']>;
+  component?: Maybe<Scalars['String']>;
+  ignored?: Maybe<Scalars['Boolean']>;
+  timestamp?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  body?: Maybe<Scalars['String']>;
+  color?: Maybe<Scalars['String']>;
+};
+
+export type CoreLayout = {
+  __typename?: 'CoreLayout';
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  config?: Maybe<Scalars['String']>;
+};
+
+export type CoreLayoutInput = {
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  config?: Maybe<Scalars['String']>;
+};
+
+export type Countermeasure = {
+  __typename?: 'Countermeasure';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  modules: Array<CountermeasureModule>;
+  locked: Scalars['Boolean'];
+  active: Scalars['Boolean'];
+  building: Scalars['Boolean'];
+  totalPowerUsed: Scalars['Float'];
+  readyToLaunch: Scalars['Boolean'];
+  powerUsage: Scalars['Float'];
+  availablePower: Scalars['Float'];
+  buildPercentage: Scalars['Float'];
+  note: Scalars['String'];
+};
+
+export type CountermeasureConfigOptions = {
+  __typename?: 'CountermeasureConfigOptions';
+  type: Scalars['String'];
+  label: Scalars['String'];
+};
+
+export type CountermeasureModule = {
+  __typename?: 'CountermeasureModule';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  description: Scalars['String'];
+  powerRequirement: Scalars['Float'];
+  resourceRequirements: CountermeasureResources;
+  configurationOptions: Array<CountermeasureConfigOptions>;
+  config: Scalars['JSON'];
+  buildProgress: Scalars['Float'];
+  activated: Scalars['Boolean'];
+};
+
+export type CountermeasureResources = {
+  __typename?: 'CountermeasureResources';
+  copper: Scalars['Float'];
+  titanium: Scalars['Float'];
+  carbon: Scalars['Float'];
+  plastic: Scalars['Float'];
+  plasma: Scalars['Float'];
+};
+
+export type CountermeasureSlot = {
+  __typename?: 'CountermeasureSlot';
+  slot1?: Maybe<Countermeasure>;
+  slot2?: Maybe<Countermeasure>;
+  slot3?: Maybe<Countermeasure>;
+  slot4?: Maybe<Countermeasure>;
+  slot5?: Maybe<Countermeasure>;
+  slot6?: Maybe<Countermeasure>;
+  slot7?: Maybe<Countermeasure>;
+  slot8?: Maybe<Countermeasure>;
+};
+
+export enum CountermeasureSlotEnum {
+  Slot1 = 'slot1',
+  Slot2 = 'slot2',
+  Slot3 = 'slot3',
+  Slot4 = 'slot4',
+  Slot5 = 'slot5',
+  Slot6 = 'slot6',
+  Slot7 = 'slot7',
+  Slot8 = 'slot8'
+}
+
+export type Countermeasures = SystemInterface & {
+  __typename?: 'Countermeasures';
+  id: Scalars['ID'];
+  simulatorId?: Maybe<Scalars['ID']>;
+  class?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  displayName: Scalars['String'];
+  upgradeName?: Maybe<Scalars['String']>;
+  upgraded?: Maybe<Scalars['Boolean']>;
+  damage: Damage;
+  power: Power;
+  stealthFactor?: Maybe<Scalars['Float']>;
+  locations?: Maybe<Array<Maybe<Room>>>;
+  materials: CountermeasureResources;
+  slots: CountermeasureSlot;
+  launched: Array<Countermeasure>;
+};
+
+export type Crew = {
+  __typename?: 'Crew';
+  id?: Maybe<Scalars['ID']>;
+  simulatorId?: Maybe<Scalars['ID']>;
+  firstName?: Maybe<Scalars['String']>;
+  lastName?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  gender?: Maybe<Scalars['String']>;
+  age?: Maybe<Scalars['Int']>;
+  rank?: Maybe<Scalars['String']>;
+  position?: Maybe<Scalars['String']>;
+  killed?: Maybe<Scalars['Boolean']>;
+  location?: Maybe<Deck>;
+  workRoom?: Maybe<Room>;
+  restRoom?: Maybe<Room>;
+  inventory?: Maybe<Array<Maybe<InventoryItem>>>;
+  charts?: Maybe<Array<Maybe<Chart>>>;
+};
+
+export type CrewCountInput = {
+  crew?: Maybe<Scalars['ID']>;
+  count?: Maybe<Scalars['Int']>;
+};
+
+export type CrewInput = {
+  id?: Maybe<Scalars['ID']>;
+  simulatorId?: Maybe<Scalars['ID']>;
+  firstName?: Maybe<Scalars['String']>;
+  lastName?: Maybe<Scalars['String']>;
+  gender?: Maybe<Scalars['String']>;
+  age?: Maybe<Scalars['String']>;
+  rank?: Maybe<Scalars['String']>;
+  position?: Maybe<Scalars['String']>;
+  killed?: Maybe<Scalars['Boolean']>;
+  workRoom?: Maybe<Scalars['Int']>;
+  restRoom?: Maybe<Scalars['Int']>;
+};
+
+export type Crm = SystemInterface & {
+  __typename?: 'Crm';
+  id?: Maybe<Scalars['ID']>;
+  simulatorId?: Maybe<Scalars['ID']>;
+  type?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  displayName?: Maybe<Scalars['String']>;
+  upgradeName?: Maybe<Scalars['String']>;
+  upgraded?: Maybe<Scalars['Boolean']>;
+  damage?: Maybe<Damage>;
+  power?: Maybe<Power>;
+  stealthFactor?: Maybe<Scalars['Float']>;
+  locations?: Maybe<Array<Maybe<Room>>>;
+  password?: Maybe<Scalars['String']>;
+  activated?: Maybe<Scalars['Boolean']>;
+  fighterImage?: Maybe<Scalars['String']>;
+  fighters?: Maybe<Array<Maybe<CrmFighter>>>;
+  enemies?: Maybe<Array<Maybe<CrmFighter>>>;
+  fighterStrength?: Maybe<Scalars['Float']>;
+  enemyStrength?: Maybe<Scalars['Float']>;
+  fighterCount?: Maybe<Scalars['Int']>;
+  enemyCount?: Maybe<Scalars['Int']>;
+  fighterDestroyedCount?: Maybe<Scalars['Int']>;
+  enemyDestroyedCount?: Maybe<Scalars['Int']>;
+  fighterIcon?: Maybe<Scalars['String']>;
+  enemyIcon?: Maybe<Scalars['String']>;
+  attacking?: Maybe<Scalars['Boolean']>;
+  interval?: Maybe<Scalars['Float']>;
+  phasers?: Maybe<Array<Maybe<CrmPhaserShot>>>;
+  torpedos?: Maybe<Array<Maybe<CrmTorpedo>>>;
+};
+
+export type CrmFighter = {
+  __typename?: 'CrmFighter';
+  id?: Maybe<Scalars['ID']>;
+  clientId?: Maybe<Scalars['ID']>;
+  client?: Maybe<Client>;
+  icon?: Maybe<Scalars['String']>;
+  size?: Maybe<Scalars['Float']>;
+  speed?: Maybe<Scalars['Float']>;
+  strength?: Maybe<Scalars['Float']>;
+  attacking?: Maybe<Scalars['Boolean']>;
+  hull?: Maybe<Scalars['Float']>;
+  shield?: Maybe<Scalars['Float']>;
+  shieldRaised?: Maybe<Scalars['Boolean']>;
+  phaserLevel?: Maybe<Scalars['Float']>;
+  torpedoCount?: Maybe<Scalars['Int']>;
+  torpedoLoaded?: Maybe<Scalars['Boolean']>;
+  destroyed?: Maybe<Scalars['Boolean']>;
+  docked?: Maybe<Scalars['Boolean']>;
+  position?: Maybe<Coordinates>;
+  velocity?: Maybe<Coordinates>;
+  frags?: Maybe<Scalars['Int']>;
+};
+
+export type CrmPhaserShot = {
+  __typename?: 'CrmPhaserShot';
+  target?: Maybe<Coordinates>;
+  destination?: Maybe<Coordinates>;
+};
+
+export type CrmTorpedo = {
+  __typename?: 'CrmTorpedo';
+  id?: Maybe<Scalars['ID']>;
+  position?: Maybe<Coordinates>;
+  destroyed?: Maybe<Scalars['Boolean']>;
+};
+
+export enum Damage_Step_Types {
+  Required = 'required',
+  Optional = 'optional'
+}
+
+export enum Damage_Types {
+  Default = 'default',
+  Rnd = 'rnd',
+  Engineering = 'engineering'
+}
+
+export enum DmxChannelProperty {
+  Red = 'red',
+  Green = 'green',
+  Blue = 'blue',
+  Amber = 'amber',
+  White = 'white',
+  Uv = 'uv',
+  Intensity = 'intensity',
+  Strobe = 'strobe',
+  Generic = 'generic',
+  Focus = 'focus',
+  Nothing = 'nothing'
+}
+
+export type DmxConfig = {
+  __typename?: 'DMXConfig';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  config: Scalars['JSON'];
+  actionStrength: Scalars['Float'];
+};
+
+export type DmxDevice = {
+  __typename?: 'DMXDevice';
+  id: Scalars['ID'];
+  class: Scalars['String'];
+  name: Scalars['String'];
+  channels: Array<DmxChannelProperty>;
+};
+
+export type DmxFixture = {
+  __typename?: 'DMXFixture';
+  id: Scalars['ID'];
+  class: Scalars['String'];
+  name: Scalars['String'];
+  clientId?: Maybe<Scalars['String']>;
+  DMXDeviceId: Scalars['String'];
+  DMXDevice: DmxDevice;
+  simulatorId: Scalars['String'];
+  channel: Scalars['Int'];
+  mode: DmxFixtureMode;
+  tags: Array<Scalars['String']>;
+  passiveChannels: DmxPassiveChannels;
+};
+
+export enum DmxFixtureMode {
+  Active = 'active',
+  Passive = 'passive'
+}
+
+export type DmxPassiveChannels = {
+  __typename?: 'DMXPassiveChannels';
+  amber?: Maybe<Scalars['Int']>;
+  white?: Maybe<Scalars['Int']>;
+  uv?: Maybe<Scalars['Int']>;
+  intensity?: Maybe<Scalars['Int']>;
+  strobe?: Maybe<Scalars['Int']>;
+  generic?: Maybe<Scalars['Int']>;
+  nothing?: Maybe<Scalars['Int']>;
+  color?: Maybe<Scalars['String']>;
+};
+
+export type DmxPassiveChannelsInput = {
+  amber?: Maybe<Scalars['Int']>;
+  white?: Maybe<Scalars['Int']>;
+  uv?: Maybe<Scalars['Int']>;
+  intensity?: Maybe<Scalars['Int']>;
+  strobe?: Maybe<Scalars['Int']>;
+  generic?: Maybe<Scalars['Int']>;
+  nothing?: Maybe<Scalars['Int']>;
+  color?: Maybe<Scalars['String']>;
+};
+
+export type DmxSet = {
+  __typename?: 'DMXSet';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  fixtureIds: Array<Scalars['String']>;
+  fixtures: Array<DmxFixture>;
+};
+
+export enum Docking_Direction {
+  Unspecified = 'unspecified',
+  Arriving = 'arriving',
+  Departing = 'departing'
+}
+
+export enum Docking_Types {
+  Shuttlebay = 'shuttlebay',
+  Dockingport = 'dockingport',
+  Specialized = 'specialized'
+}
+
+export type Damage = {
+  __typename?: 'Damage';
+  damaged?: Maybe<Scalars['Boolean']>;
+  destroyed?: Maybe<Scalars['Boolean']>;
+  report?: Maybe<Scalars['String']>;
+  reportSteps?: Maybe<Array<Maybe<DamageReportStep>>>;
+  requested?: Maybe<Scalars['Boolean']>;
+  reactivationCode?: Maybe<Scalars['String']>;
+  neededReactivationCode?: Maybe<Scalars['String']>;
+  currentStep?: Maybe<Scalars['Int']>;
+  validate?: Maybe<Scalars['Boolean']>;
+  which?: Maybe<Damage_Types>;
+  taskReportDamage?: Maybe<Scalars['Boolean']>;
+};
+
+export type DamageReportStep = {
+  __typename?: 'DamageReportStep';
+  id?: Maybe<Scalars['ID']>;
+  text?: Maybe<Scalars['String']>;
+  validate?: Maybe<Scalars['Boolean']>;
+  validated?: Maybe<Scalars['Boolean']>;
+};
+
+export type DamageStep = {
+  __typename?: 'DamageStep';
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  args?: Maybe<DamageStepArgs>;
+};
+
+export type DamageStepArgs = {
+  __typename?: 'DamageStepArgs';
+  end?: Maybe<Scalars['Boolean']>;
+  cleanup?: Maybe<Scalars['Boolean']>;
+  name?: Maybe<Scalars['String']>;
+  orders?: Maybe<Scalars['String']>;
+  room?: Maybe<Scalars['String']>;
+  preamble?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+  message?: Maybe<Scalars['String']>;
+  code?: Maybe<Scalars['String']>;
+  backup?: Maybe<Scalars['String']>;
+  inventory?: Maybe<Scalars['String']>;
+  destination?: Maybe<Scalars['String']>;
+  equipment?: Maybe<Scalars['String']>;
+  query?: Maybe<Scalars['String']>;
+  reactivate?: Maybe<Scalars['Boolean']>;
+};
+
+export type DamageStepArgsInput = {
+  end?: Maybe<Scalars['Boolean']>;
+  cleanup?: Maybe<Scalars['Boolean']>;
+  name?: Maybe<Scalars['String']>;
+  orders?: Maybe<Scalars['String']>;
+  room?: Maybe<Scalars['String']>;
+  preamble?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+  message?: Maybe<Scalars['String']>;
+  code?: Maybe<Scalars['String']>;
+  backup?: Maybe<Scalars['String']>;
+  inventory?: Maybe<Scalars['String']>;
+  destination?: Maybe<Scalars['String']>;
+  equipment?: Maybe<Scalars['String']>;
+  query?: Maybe<Scalars['String']>;
+  reactivate?: Maybe<Scalars['Boolean']>;
+};
+
+export type DamageStepInput = {
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  args?: Maybe<DamageStepArgsInput>;
+  type?: Maybe<Damage_Step_Types>;
+};
+
+export type DamageTask = {
+  __typename?: 'DamageTask';
+  id?: Maybe<Scalars['ID']>;
+  taskTemplate?: Maybe<TaskTemplate>;
+  required?: Maybe<Scalars['Boolean']>;
+  nextSteps?: Maybe<Array<Maybe<TaskTemplate>>>;
+};
+
+export type DamageTaskInput = {
+  id?: Maybe<Scalars['ID']>;
+  required?: Maybe<Scalars['Boolean']>;
+  nextSteps?: Maybe<Array<Maybe<Scalars['ID']>>>;
+};
+
+export type Deck = {
+  __typename?: 'Deck';
+  id?: Maybe<Scalars['ID']>;
+  simulatorId?: Maybe<Scalars['ID']>;
+  number?: Maybe<Scalars['Int']>;
+  svgPath?: Maybe<Scalars['String']>;
+  doors?: Maybe<Scalars['Boolean']>;
+  evac?: Maybe<Scalars['Boolean']>;
+  rooms?: Maybe<Array<Maybe<Room>>>;
+  hallway?: Maybe<Scalars['String']>;
+  crewCount?: Maybe<Scalars['Int']>;
+  environment?: Maybe<Environment>;
+};
+
+export type DirectionInput = {
+  x?: Maybe<Scalars['Float']>;
+  y?: Maybe<Scalars['Float']>;
+  z?: Maybe<Scalars['Float']>;
+};
+
+export type DockingPort = {
+  __typename?: 'DockingPort';
+  id?: Maybe<Scalars['ID']>;
+  simulatorId?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  shipName?: Maybe<Scalars['String']>;
+  type?: Maybe<Docking_Types>;
+  clamps?: Maybe<Scalars['Boolean']>;
+  compress?: Maybe<Scalars['Boolean']>;
+  doors?: Maybe<Scalars['Boolean']>;
+  image?: Maybe<Scalars['String']>;
+  docked?: Maybe<Scalars['Boolean']>;
+  damage?: Maybe<Damage>;
+  direction?: Maybe<Docking_Direction>;
+  position?: Maybe<Coordinates>;
+  deck?: Maybe<Deck>;
+  inventory?: Maybe<Array<Maybe<InventoryItem>>>;
+};
+
+export type DockingPortInput = {
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  shipName?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+  clamps?: Maybe<Scalars['Boolean']>;
+  compress?: Maybe<Scalars['Boolean']>;
+  doors?: Maybe<Scalars['Boolean']>;
+  image?: Maybe<Scalars['String']>;
+  docked?: Maybe<Scalars['Boolean']>;
+  direction?: Maybe<Docking_Direction>;
+  position?: Maybe<CoordinatesInput>;
+  deckId?: Maybe<Scalars['ID']>;
+};
+
+export type Document = {
+  __typename?: 'Document';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  asset: Scalars['String'];
+};
+
+export type Engine = SystemInterface & {
+  __typename?: 'Engine';
+  id?: Maybe<Scalars['ID']>;
+  simulatorId?: Maybe<Scalars['ID']>;
+  type?: Maybe<Scalars['String']>;
+  power?: Maybe<Power>;
+  name?: Maybe<Scalars['String']>;
+  displayName?: Maybe<Scalars['String']>;
+  upgradeName?: Maybe<Scalars['String']>;
+  upgraded?: Maybe<Scalars['Boolean']>;
+  stealthFactor?: Maybe<Scalars['Float']>;
+  speeds?: Maybe<Array<Maybe<Speed>>>;
+  speed?: Maybe<Scalars['Int']>;
+  previousSpeed?: Maybe<Scalars['Int']>;
+  velocity?: Maybe<Scalars['Float']>;
+  speedFactor?: Maybe<Scalars['Float']>;
+  acceleration?: Maybe<Scalars['Float']>;
+  useAcceleration?: Maybe<Scalars['Boolean']>;
+  heat?: Maybe<Scalars['Float']>;
+  damage?: Maybe<Damage>;
+  on?: Maybe<Scalars['Boolean']>;
+  coolant?: Maybe<Scalars['Float']>;
+  locations?: Maybe<Array<Maybe<Room>>>;
+};
+
+export type EngineComponent = {
+  __typename?: 'EngineComponent';
+  maxSpeed?: Maybe<Scalars['Float']>;
+  currentSpeed?: Maybe<Scalars['Float']>;
+  heat?: Maybe<Scalars['Float']>;
+  heatRate?: Maybe<Scalars['Float']>;
+  coolant?: Maybe<Scalars['Float']>;
+  cooling?: Maybe<Scalars['Boolean']>;
+};
+
+export type EntitiesLocationInput = {
+  id: Scalars['ID'];
+  position: EntityCoordinatesInput;
+};
+
+export type Entity = {
+  __typename?: 'Entity';
+  id: Scalars['ID'];
+  interval?: Maybe<Scalars['Int']>;
+  reset?: Maybe<Scalars['Boolean']>;
+  appearance?: Maybe<AppearanceComponent>;
+  behavior?: Maybe<BehaviorComponent>;
+  identity?: Maybe<IdentityComponent>;
+  location?: Maybe<LocationComponent>;
+  stage?: Maybe<StageComponent>;
+  stageChild?: Maybe<StageChildComponent>;
+  light?: Maybe<LightComponent>;
+  glow?: Maybe<GlowComponent>;
+  template?: Maybe<TemplateComponent>;
+  enginesWarp?: Maybe<EngineComponent>;
+  enginesImpulse?: Maybe<EngineComponent>;
+  thrusters?: Maybe<ThrustersComponent>;
+};
+
+export type EntityCoordinates = {
+  __typename?: 'EntityCoordinates';
+  x: Scalars['Float'];
+  y: Scalars['Float'];
+  z: Scalars['Float'];
+};
+
+export type EntityCoordinatesInput = {
+  x: Scalars['Float'];
+  y: Scalars['Float'];
+  z: Scalars['Float'];
+};
+
+export enum EntityEngineEnum {
+  Warp = 'warp',
+  Impulse = 'impulse'
+}
+
+export type Environment = {
+  __typename?: 'Environment';
+  id?: Maybe<Scalars['ID']>;
+  oxygen?: Maybe<Scalars['Float']>;
+  nitrogen?: Maybe<Scalars['Float']>;
+  trace?: Maybe<Scalars['Float']>;
+  pressure?: Maybe<Scalars['Float']>;
+  temperature?: Maybe<Scalars['Float']>;
+  humidity?: Maybe<Scalars['Float']>;
+  gravity?: Maybe<Scalars['Float']>;
+};
+
+export type EnvironmentInput = {
+  id?: Maybe<Scalars['ID']>;
+  oxygen?: Maybe<Scalars['Float']>;
+  nitrogen?: Maybe<Scalars['Float']>;
+  trace?: Maybe<Scalars['Float']>;
+  pressure?: Maybe<Scalars['Float']>;
+  temperature?: Maybe<Scalars['Float']>;
+  humidity?: Maybe<Scalars['Float']>;
+  gravity?: Maybe<Scalars['Float']>;
+};
+
+export type Equipment = {
+  __typename?: 'Equipment';
+  id: Scalars['ID'];
+  count: Scalars['Float'];
+};
+
+export type EquipmentInput = {
+  id?: Maybe<Scalars['ID']>;
+  count?: Maybe<Scalars['Int']>;
+};
+
+export type Exocomp = {
+  __typename?: 'Exocomp';
+  id?: Maybe<Scalars['ID']>;
+  simulatorId?: Maybe<Scalars['ID']>;
+  class?: Maybe<Scalars['String']>;
+  state?: Maybe<Scalars['String']>;
+  completion?: Maybe<Scalars['Float']>;
+  parts?: Maybe<Array<Maybe<Scalars['String']>>>;
+  destination?: Maybe<System>;
+  logs?: Maybe<Array<Maybe<ExocompLog>>>;
+  difficulty?: Maybe<Scalars['Float']>;
+  damage?: Maybe<Damage>;
+};
+
+export type ExocompInput = {
+  id?: Maybe<Scalars['ID']>;
+  simulatorId?: Maybe<Scalars['ID']>;
+  parts?: Maybe<Array<Maybe<Scalars['String']>>>;
+  destination?: Maybe<Scalars['ID']>;
+  upgrade?: Maybe<Scalars['Boolean']>;
+};
+
+export type ExocompLog = {
+  __typename?: 'ExocompLog';
+  timestamp?: Maybe<Scalars['Float']>;
+  message?: Maybe<Scalars['String']>;
+};
+
+export type ExternalMission = {
+  __typename?: 'ExternalMission';
+  title?: Maybe<Scalars['String']>;
+  author?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  url?: Maybe<Scalars['String']>;
+  date?: Maybe<Scalars['String']>;
+};
+
+export type ExternalSimulator = {
+  __typename?: 'ExternalSimulator';
+  title?: Maybe<Scalars['String']>;
+  author?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  url?: Maybe<Scalars['String']>;
+  date?: Maybe<Scalars['String']>;
+};
+
+export type Externals = {
+  __typename?: 'Externals';
+  simulators?: Maybe<Array<Maybe<ExternalSimulator>>>;
+  missions?: Maybe<Array<Maybe<ExternalMission>>>;
+};
+
+export type FbAwardInput = {
+  id: Scalars['ID'];
+  Name: Scalars['String'];
+  ClassHours: Scalars['Float'];
+  FlightHours: Scalars['Float'];
+  Description: Scalars['String'];
+  ImageURL?: Maybe<Scalars['String']>;
+};
+
+export type FbAwards = {
+  __typename?: 'FBAwards';
+  id: Scalars['ID'];
+  Name: Scalars['String'];
+  ClassHours: Scalars['Float'];
+  FlightHours: Scalars['Float'];
+  Description: Scalars['String'];
+  ImageURL?: Maybe<Scalars['String']>;
+};
+
+export type FbCurrentSelections = {
+  __typename?: 'FBCurrentSelections';
+  Mission?: Maybe<Scalars['ID']>;
+  Simulator?: Maybe<Scalars['ID']>;
+  StationEmailLinks?: Maybe<Array<FbStationEmailLinks>>;
+  Awards?: Maybe<Array<FbAwards>>;
+  EventId?: Maybe<Scalars['ID']>;
+  flightSubmissions?: Maybe<Array<Scalars['String']>>;
+};
+
+export type FbFullSimulator = {
+  __typename?: 'FBFullSimulator';
+  id: Scalars['ID'];
+  Name: Scalars['String'];
+  Roles: Scalars['String'];
+  Missions: Array<FbMission>;
+};
+
+export type FbMission = {
+  __typename?: 'FBMission';
+  id: Scalars['ID'];
+  Name: Scalars['String'];
+  FlightHours: Scalars['Float'];
+  ClassHours: Scalars['Float'];
+  Synopsis: Scalars['String'];
+  Retired?: Maybe<Scalars['Boolean']>;
+};
+
+export type FbPageText = {
+  __typename?: 'FBPageText';
+  Awards?: Maybe<Scalars['String']>;
+  Heading?: Maybe<Scalars['String']>;
+  Subheading?: Maybe<Scalars['String']>;
+  EmailHeading?: Maybe<Scalars['String']>;
+  EmailNotFound?: Maybe<Scalars['String']>;
+};
+
+export type FbStationEmailLinks = {
+  __typename?: 'FBStationEmailLinks';
+  station?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+};
+
+export type FbUser = {
+  __typename?: 'FBUser';
   id: Scalars['ID'];
 };
 
-
-export type QueryTacticalMapsArgs = {
-  flightId?: Maybe<Scalars['ID']>;
-};
-
-
-export type QueryTacticalMapArgs = {
+export type FsEquipmentInput = {
   id: Scalars['ID'];
+  count: Scalars['Float'];
 };
 
+export type FsProbe = {
+  __typename?: 'FSProbe';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  type: Scalars['String'];
+  equipment: Array<Equipment>;
+};
 
-export type QueryTargetingArgs = {
+export type FsProbeInput = {
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  type: Scalars['String'];
+  equipment: Array<FsEquipmentInput>;
+};
+
+export type Flight = {
+  __typename?: 'Flight';
+  id: Scalars['ID'];
+  name?: Maybe<Scalars['String']>;
+  date?: Maybe<Scalars['String']>;
+  running?: Maybe<Scalars['Boolean']>;
+  timelineStep?: Maybe<Scalars['Int']>;
+  simulators?: Maybe<Array<Maybe<Simulator>>>;
+  flightType?: Maybe<Scalars['String']>;
+  transmitted?: Maybe<Scalars['Boolean']>;
+  clients?: Maybe<Array<Maybe<SpaceEdventuresClient>>>;
+};
+
+export type FlightSet = {
+  __typename?: 'FlightSet';
+  backgroundImg: Scalars['String'];
+  startOptions: Array<NavigationStartOptions>;
+  speedOptions: Array<NavigationSpeedOptions>;
+  exitOptions: Array<NavigationExitOptions>;
+  pointsOfInterest: Array<PointOfInterest>;
+  defaultStartingLocation: BasicCoordinate;
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  borders: Array<MapBorder>;
+  imageMaxX: Scalars['Float'];
+  imageMaxY: Scalars['Float'];
+  pixelsPerSecond: Scalars['Float'];
+  label?: Maybe<Scalars['String']>;
+  probeLaunchRangeRadius: Scalars['Float'];
+  addOnTraining?: Maybe<Scalars['Boolean']>;
+  pixelDistanceModifier?: Maybe<Scalars['Float']>;
+};
+
+export type FlightSetInput = {
+  backgroundImg: Scalars['String'];
+  startOptions: Array<NavigationStartOptionsInput>;
+  speedOptions: Array<NavigationSpeedOptionsInput>;
+  exitOptions: Array<NavigationExitOptionsInput>;
+  pointsOfInterest: Array<PointOfInterestInput>;
+  defaultStartingLocation: BasicCoordinateInput;
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  borders: Array<MapBorderInput>;
+  imageMaxX: Scalars['Float'];
+  imageMaxY: Scalars['Float'];
+  pixelsPerSecond: Scalars['Float'];
+  label?: Maybe<Scalars['String']>;
+  probeLaunchRangeRadius: Scalars['Float'];
+  addOnTraining?: Maybe<Scalars['Boolean']>;
+  pixelDistanceModifier?: Maybe<Scalars['Float']>;
+};
+
+export type FlightType = {
+  __typename?: 'FlightType';
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  flightHours?: Maybe<Scalars['Float']>;
+  classHours?: Maybe<Scalars['Float']>;
+};
+
+export type FormFields = {
+  __typename?: 'FormFields';
+  id?: Maybe<Scalars['ID']>;
+  type?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  options?: Maybe<Array<Maybe<FormOptions>>>;
+  value?: Maybe<Scalars['String']>;
+  max?: Maybe<Scalars['Int']>;
+  min?: Maybe<Scalars['Int']>;
+};
+
+export type FormFieldsInput = {
+  id?: Maybe<Scalars['ID']>;
+  type?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  options?: Maybe<Array<Maybe<FormOptionsInput>>>;
+  value?: Maybe<Scalars['String']>;
+  max?: Maybe<Scalars['Int']>;
+  min?: Maybe<Scalars['Int']>;
+};
+
+export type FormOptions = {
+  __typename?: 'FormOptions';
+  id?: Maybe<Scalars['ID']>;
+  label?: Maybe<Scalars['String']>;
+};
+
+export type FormOptionsInput = {
+  id?: Maybe<Scalars['ID']>;
+  label?: Maybe<Scalars['String']>;
+};
+
+export type FormResults = {
+  __typename?: 'FormResults';
+  client?: Maybe<Scalars['String']>;
+  station?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  form?: Maybe<Array<Maybe<FormFields>>>;
+};
+
+export type FormResultsInput = {
+  client?: Maybe<Scalars['String']>;
+  form?: Maybe<Array<Maybe<FormFieldsInput>>>;
+};
+
+export type FullCoordinate = {
+  __typename?: 'FullCoordinate';
+  speed: Scalars['Float'];
+  color: Scalars['String'];
+  x: Scalars['Float'];
+  y: Scalars['Float'];
+};
+
+export type FullCoordinateInput = {
+  speed: Scalars['Float'];
+  color: Scalars['String'];
+  x: Scalars['Float'];
+  y: Scalars['Float'];
+};
+
+export type GlowComponent = {
+  __typename?: 'GlowComponent';
+  glowMode?: Maybe<GlowModeEnum>;
+  color?: Maybe<Scalars['String']>;
+};
+
+export enum GlowModeEnum {
+  Glow = 'glow',
+  Halo = 'halo',
+  Shell = 'shell'
+}
+
+export type GoogleSheet = {
+  __typename?: 'GoogleSheet';
+  id?: Maybe<Scalars['ID']>;
+  title?: Maybe<Scalars['String']>;
+};
+
+export type GoogleSheetFile = {
+  __typename?: 'GoogleSheetFile';
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+export type GoogleSheets = {
+  __typename?: 'GoogleSheets';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
 };
 
+export type GoogleSpreadsheet = {
+  __typename?: 'GoogleSpreadsheet';
+  id?: Maybe<Scalars['ID']>;
+  title?: Maybe<Scalars['String']>;
+  sheets?: Maybe<Array<Maybe<GoogleSheet>>>;
+};
 
-export type QueryTaskReportArgs = {
+export enum Hull_Plating_Mode {
+  Kinetic = 'kinetic',
+  Energy = 'energy',
+  Radiation = 'radiation'
+}
+
+export type HackingLrm = {
+  __typename?: 'HackingLRM';
+  id: Scalars['String'];
+  title: Scalars['String'];
+  message: Scalars['String'];
+};
+
+export type HackingPorts = {
+  __typename?: 'HackingPorts';
+  logs?: Maybe<Scalars['Int']>;
+  longRange?: Maybe<Scalars['Int']>;
+  remoteControl?: Maybe<Scalars['Int']>;
+  fileViewer?: Maybe<Scalars['Int']>;
+};
+
+export type HackingPreset = {
+  __typename?: 'HackingPreset';
+  id: Scalars['String'];
+  name: Scalars['String'];
+  logs: Scalars['Boolean'];
+  longRange: Scalars['Boolean'];
+  longRangeMessages: Array<HackingLrm>;
+  remoteControl: Scalars['Boolean'];
+  commandLines: Array<Scalars['String']>;
+  fileViewer: Scalars['Boolean'];
+  files: Array<ComputerCoreFile>;
+};
+
+export type HazardChoiceMapEntry = {
+  __typename?: 'HazardChoiceMapEntry';
+  poiId: Scalars['ID'];
+  hazardChoice: Scalars['String'];
+};
+
+export type HazardChoiceMapEntryInput = {
+  poiId: Scalars['ID'];
+  hazardChoice: Scalars['String'];
+};
+
+export type HeatInterface = {
+  heat?: Maybe<Scalars['Float']>;
+  coolant?: Maybe<Scalars['Float']>;
+};
+
+export type History = {
+  __typename?: 'History';
+  date?: Maybe<Scalars['String']>;
+  text?: Maybe<Scalars['String']>;
+};
+
+export type HullPlating = SystemInterface & {
+  __typename?: 'HullPlating';
+  id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   type?: Maybe<Scalars['String']>;
-  cleared?: Maybe<Scalars['Boolean']>;
+  name?: Maybe<Scalars['String']>;
+  displayName?: Maybe<Scalars['String']>;
+  upgradeName?: Maybe<Scalars['String']>;
+  upgraded?: Maybe<Scalars['Boolean']>;
+  extra?: Maybe<Scalars['Boolean']>;
+  damage?: Maybe<Damage>;
+  locations?: Maybe<Array<Maybe<Room>>>;
+  stealthFactor?: Maybe<Scalars['Float']>;
+  power?: Maybe<Power>;
+  engaged?: Maybe<Scalars['Boolean']>;
+  mode?: Maybe<Hull_Plating_Mode>;
+  pulse?: Maybe<Scalars['Boolean']>;
 };
 
+export enum Isochip_States {
+  Empty = 'empty',
+  Diagnostic = 'diagnostic',
+  Nominal = 'nominal',
+  Invalid = 'invalid'
+}
 
-export type QueryTasksArgs = {
-  simulatorId: Scalars['ID'];
-  station?: Maybe<Scalars['String']>;
-  definitions?: Maybe<Array<Scalars['String']>>;
+export type IdCoordinate = {
+  __typename?: 'IdCoordinate';
+  id: Scalars['ID'];
+  x: Scalars['Float'];
+  y: Scalars['Float'];
 };
 
+export type IdCoordinateInput = {
+  id: Scalars['ID'];
+  x: Scalars['Float'];
+  y: Scalars['Float'];
+};
 
-export type QueryTaskDefinitionsArgs = {
+export type IdentityComponent = {
+  __typename?: 'IdentityComponent';
+  name?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+};
+
+export type Interface = {
+  __typename?: 'Interface';
+  id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
+  templateId?: Maybe<Scalars['ID']>;
+  deviceType?: Maybe<InterfaceDevice>;
+  name?: Maybe<Scalars['String']>;
+  components?: Maybe<Scalars['JSON']>;
+  connections?: Maybe<Scalars['JSON']>;
+  values?: Maybe<Scalars['JSON']>;
+  config?: Maybe<Scalars['JSON']>;
 };
 
-
-export type QueryTaskInstructionsArgs = {
-  simulatorId?: Maybe<Scalars['ID']>;
-  definition: Scalars['String'];
-  requiredValues: Scalars['JSON'];
-  task?: Maybe<TaskInput>;
+export type InterfaceDevice = {
+  __typename?: 'InterfaceDevice';
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  width?: Maybe<Scalars['Int']>;
+  height?: Maybe<Scalars['Int']>;
+  isLandscape?: Maybe<Scalars['Boolean']>;
 };
 
-
-export type QueryTeamsArgs = {
+export type InternalComm = SystemInterface & {
+  __typename?: 'InternalComm';
+  id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   type?: Maybe<Scalars['String']>;
-  cleared?: Maybe<Scalars['Boolean']>;
+  power?: Maybe<Power>;
+  name?: Maybe<Scalars['String']>;
+  displayName?: Maybe<Scalars['String']>;
+  upgradeName?: Maybe<Scalars['String']>;
+  upgraded?: Maybe<Scalars['Boolean']>;
+  state?: Maybe<Scalars['String']>;
+  outgoing?: Maybe<Scalars['String']>;
+  incoming?: Maybe<Scalars['String']>;
+  damage?: Maybe<Damage>;
+  stealthFactor?: Maybe<Scalars['Float']>;
+  locations?: Maybe<Array<Maybe<Room>>>;
 };
 
-
-export type Query_TemplateArgs = {
-  simulatorId: Scalars['ID'];
+export type InventoryCount = {
+  inventory?: Maybe<Scalars['ID']>;
+  count?: Maybe<Scalars['Int']>;
 };
 
+export type InventoryCountInput = {
+  id?: Maybe<Scalars['ID']>;
+  count?: Maybe<Scalars['Int']>;
+};
 
-export type QueryThrustersArgs = {
+export type InventoryItem = {
+  __typename?: 'InventoryItem';
+  id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  count?: Maybe<Scalars['Int']>;
+  metadata?: Maybe<InventoryMetadata>;
+  roomCount?: Maybe<Array<Maybe<RoomCount>>>;
+  teamCount?: Maybe<Array<Maybe<TeamCount>>>;
+};
+
+export type InventoryItemInput = {
+  simulatorId?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  metadata?: Maybe<InventoryMetadataInput>;
+  roomCount?: Maybe<Array<Maybe<RoomCountInput>>>;
+  crewCount?: Maybe<Array<Maybe<CrewCountInput>>>;
+};
+
+export type InventoryLog = {
+  __typename?: 'InventoryLog';
+  timestamp?: Maybe<Scalars['String']>;
+  log?: Maybe<Scalars['String']>;
+};
+
+export type InventoryMetadata = {
+  __typename?: 'InventoryMetadata';
+  type?: Maybe<Scalars['String']>;
+  size?: Maybe<Scalars['Int']>;
+  description?: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
+  science?: Maybe<Scalars['Boolean']>;
+  defense?: Maybe<Scalars['Boolean']>;
+};
+
+export type InventoryMetadataInput = {
+  type?: Maybe<Scalars['String']>;
+  size?: Maybe<Scalars['Int']>;
+  description?: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
+  science?: Maybe<Scalars['Boolean']>;
+  defense?: Maybe<Scalars['Boolean']>;
+};
+
+export type Isochip = {
+  __typename?: 'Isochip';
+  id?: Maybe<Scalars['ID']>;
+  system?: Maybe<System>;
+  simulator?: Maybe<Simulator>;
+  slot?: Maybe<Scalars['Int']>;
+  requiredChip?: Maybe<Scalars['Int']>;
+  chip?: Maybe<Scalars['Int']>;
+  label?: Maybe<Scalars['String']>;
+  state?: Maybe<Isochip_States>;
+};
+
+export type IsochipInput = {
+  system?: Maybe<Scalars['ID']>;
+  simulator?: Maybe<Scalars['ID']>;
+  slot?: Maybe<Scalars['Int']>;
+  requiredChip?: Maybe<Scalars['Int']>;
+  chip?: Maybe<Scalars['Int']>;
+  label?: Maybe<Scalars['String']>;
 };
 
 
-export type QueryThrusterArgs = {
+export type JumpDrive = SystemInterface & {
+  __typename?: 'JumpDrive';
+  id?: Maybe<Scalars['ID']>;
+  simulatorId?: Maybe<Scalars['ID']>;
+  type?: Maybe<Scalars['String']>;
+  power?: Maybe<Power>;
+  name?: Maybe<Scalars['String']>;
+  displayName?: Maybe<Scalars['String']>;
+  stealthFactor?: Maybe<Scalars['Float']>;
+  damage?: Maybe<Damage>;
+  upgradeName?: Maybe<Scalars['String']>;
+  upgraded?: Maybe<Scalars['Boolean']>;
+  locations?: Maybe<Array<Maybe<Room>>>;
+  sectors?: Maybe<JumpDriveSectors>;
+  env?: Maybe<Scalars['Float']>;
+  activated?: Maybe<Scalars['Boolean']>;
+  stress?: Maybe<Scalars['Float']>;
+  enabled?: Maybe<Scalars['Boolean']>;
+  ringsExtended?: Maybe<Scalars['Boolean']>;
+};
+
+export type JumpDriveSector = {
+  __typename?: 'JumpDriveSector';
+  level?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Float']>;
+};
+
+export type JumpDriveSectors = {
+  __typename?: 'JumpDriveSectors';
+  fore?: Maybe<JumpDriveSector>;
+  aft?: Maybe<JumpDriveSector>;
+  starboard?: Maybe<JumpDriveSector>;
+  port?: Maybe<JumpDriveSector>;
+};
+
+export type Keyboard = {
+  __typename?: 'Keyboard';
   id: Scalars['ID'];
+  name?: Maybe<Scalars['String']>;
+  keys?: Maybe<Array<Maybe<KeyboardKey>>>;
 };
 
-
-export type QueryThxArgs = {
-  simulatorId?: Maybe<Scalars['ID']>;
-};
-
-
-export type QueryTorpedosArgs = {
-  simulatorId?: Maybe<Scalars['ID']>;
-};
-
-
-export type QueryTorpedoArgs = {
+export type KeyboardKey = {
+  __typename?: 'KeyboardKey';
   id: Scalars['ID'];
+  key?: Maybe<Scalars['String']>;
+  keyCode?: Maybe<Scalars['String']>;
+  meta?: Maybe<Array<Maybe<Scalars['String']>>>;
+  actions?: Maybe<Array<Maybe<MacroAction>>>;
 };
 
+export type KeyboardKeyInput = {
+  id?: Maybe<Scalars['ID']>;
+  key?: Maybe<Scalars['String']>;
+  keyCode?: Maybe<Scalars['String']>;
+  meta?: Maybe<Array<Maybe<Scalars['String']>>>;
+  actions?: Maybe<Array<Maybe<ActionInput>>>;
+};
 
-export type QueryTractorBeamArgs = {
+export type Keypad = {
+  __typename?: 'Keypad';
+  id?: Maybe<Scalars['ID']>;
+  label?: Maybe<Scalars['String']>;
+  code?: Maybe<Array<Maybe<Scalars['Int']>>>;
+  enteredCode?: Maybe<Array<Maybe<Scalars['Int']>>>;
+  codeLength?: Maybe<Scalars['Int']>;
+  giveHints?: Maybe<Scalars['Boolean']>;
+  allowedAttempts?: Maybe<Scalars['Int']>;
+  attempts?: Maybe<Scalars['Int']>;
+  locked?: Maybe<Scalars['Boolean']>;
+};
+
+export enum Lighting_Action {
+  Normal = 'normal',
+  Darken = 'darken',
+  Blackout = 'blackout',
+  Work = 'work',
+  Fade = 'fade',
+  Shake = 'shake',
+  Strobe = 'strobe',
+  Oscillate = 'oscillate'
+}
+
+export type LrCommunications = SystemInterface & {
+  __typename?: 'LRCommunications';
+  id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
+  type?: Maybe<Scalars['String']>;
+  power?: Maybe<Power>;
+  name?: Maybe<Scalars['String']>;
+  displayName?: Maybe<Scalars['String']>;
+  damage?: Maybe<Damage>;
+  upgradeName?: Maybe<Scalars['String']>;
+  upgraded?: Maybe<Scalars['Boolean']>;
+  stealthFactor?: Maybe<Scalars['Float']>;
+  locations?: Maybe<Array<Maybe<Room>>>;
+  messages?: Maybe<Array<Maybe<LrMessage>>>;
+  satellites?: Maybe<Scalars['Int']>;
+  interception?: Maybe<Scalars['Boolean']>;
+  locked?: Maybe<Scalars['Boolean']>;
+  decoded?: Maybe<Scalars['Boolean']>;
+  difficulty?: Maybe<Scalars['Int']>;
+  presetMessages?: Maybe<Array<Maybe<PresetAnswer>>>;
 };
 
 
-export type QueryTransportersArgs = {
+export type LrCommunicationsMessagesArgs = {
+  crew?: Maybe<Scalars['Boolean']>;
+  sent?: Maybe<Scalars['Boolean']>;
+  approved?: Maybe<Scalars['Boolean']>;
+};
+
+export type LrMessage = {
+  __typename?: 'LRMessage';
+  id?: Maybe<Scalars['ID']>;
+  message?: Maybe<Scalars['String']>;
+  decodedMessage?: Maybe<Scalars['String']>;
+  crew?: Maybe<Scalars['Boolean']>;
+  sent?: Maybe<Scalars['Boolean']>;
+  deleted?: Maybe<Scalars['Boolean']>;
+  encrypted?: Maybe<Scalars['Boolean']>;
+  approved?: Maybe<Scalars['Boolean']>;
+  sender?: Maybe<Scalars['String']>;
+  datestamp?: Maybe<Scalars['String']>;
+  timestamp?: Maybe<Scalars['String']>;
+  a?: Maybe<Scalars['Int']>;
+  f?: Maybe<Scalars['Int']>;
+  ra?: Maybe<Scalars['Int']>;
+  rf?: Maybe<Scalars['Int']>;
+};
+
+export type LibraryCategory = {
+  __typename?: 'LibraryCategory';
+  name?: Maybe<Scalars['String']>;
+  entries?: Maybe<Array<Maybe<LibraryEntry>>>;
+};
+
+export type LibraryEntry = {
+  __typename?: 'LibraryEntry';
+  id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
+  title?: Maybe<Scalars['String']>;
+  body?: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+  categories?: Maybe<Array<Maybe<Scalars['String']>>>;
+  seeAlso?: Maybe<Array<Maybe<LibraryEntry>>>;
+  font?: Maybe<Scalars['String']>;
 };
 
-
-export type QueryTranswarpArgs = {
+export type LibraryInput = {
+  id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
+  title?: Maybe<Scalars['String']>;
+  body?: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+  categories?: Maybe<Array<Maybe<Scalars['String']>>>;
+  seeAlso?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  font?: Maybe<Scalars['String']>;
 };
 
+export type LightComponent = {
+  __typename?: 'LightComponent';
+  intensity?: Maybe<Scalars['Float']>;
+  decay?: Maybe<Scalars['Float']>;
+  color?: Maybe<Scalars['String']>;
+};
 
-export type QueryTriggersArgs = {
+export type Lighting = {
+  __typename?: 'Lighting';
+  intensity: Scalars['Float'];
+  action: Lighting_Action;
+  actionStrength: Scalars['Float'];
+  transitionDuration: Scalars['Int'];
+  useAlertColor?: Maybe<Scalars['Boolean']>;
+  color?: Maybe<Scalars['String']>;
+  dmxConfig?: Maybe<DmxConfig>;
+};
+
+export type LightingInput = {
+  intensity?: Maybe<Scalars['Float']>;
+  action?: Maybe<Lighting_Action>;
+  actionStrength?: Maybe<Scalars['Float']>;
+  transitionDuration?: Maybe<Scalars['Int']>;
+  useAlertColor?: Maybe<Scalars['Boolean']>;
+  color?: Maybe<Scalars['String']>;
+  dmxConfig?: Maybe<Scalars['String']>;
+};
+
+export type Location = Deck | Room;
+
+export type LocationComponent = {
+  __typename?: 'LocationComponent';
+  inert: Scalars['Boolean'];
+  position: EntityCoordinates;
+  velocity: EntityCoordinates;
+  acceleration: EntityCoordinates;
+  rotation: Quaternion;
+  rotationVelocity: EntityCoordinates;
+  rotationAcceleration: EntityCoordinates;
+};
+
+export type LocationInput = {
+  x: Scalars['Float'];
+  y: Scalars['Float'];
+};
+
+export type Log = {
+  __typename?: 'Log';
+  id?: Maybe<Scalars['ID']>;
+  clientId?: Maybe<Scalars['ID']>;
+  flightId?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
+  timestamp?: Maybe<Scalars['String']>;
+  log?: Maybe<Scalars['String']>;
 };
 
-
-export type QueryViewscreensArgs = {
+export type LogInput = {
+  clientId?: Maybe<Scalars['ID']>;
+  flightId?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
+  timestamp?: Maybe<Scalars['String']>;
+  log?: Maybe<Scalars['String']>;
 };
 
-
-export type QueryCountermeasuresArgs = {
-  simulatorId: Scalars['ID'];
+export type LongRangeCommInput = {
+  id?: Maybe<Scalars['ID']>;
+  interception?: Maybe<Scalars['Boolean']>;
+  locked?: Maybe<Scalars['Boolean']>;
+  decoded?: Maybe<Scalars['Boolean']>;
 };
 
+export type Macro = {
+  __typename?: 'Macro';
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  actions?: Maybe<Array<Maybe<MacroAction>>>;
+};
 
-export type QueryEntityArgs = {
+export type MacroAction = {
+  __typename?: 'MacroAction';
   id: Scalars['ID'];
+  event: Scalars['String'];
+  args: Scalars['String'];
+  delay?: Maybe<Scalars['Int']>;
+  needsConfig?: Maybe<Scalars['Boolean']>;
+  noCancelOnReset?: Maybe<Scalars['Boolean']>;
 };
 
-
-export type QueryEntitiesArgs = {
-  flightId: Scalars['ID'];
-  inert?: Maybe<Scalars['Boolean']>;
+export type MacroButton = {
+  __typename?: 'MacroButton';
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  actions?: Maybe<Array<Maybe<MacroAction>>>;
+  color?: Maybe<NotifyColors>;
+  category?: Maybe<Scalars['String']>;
 };
 
-
-export type QueryDmxFixturesArgs = {
-  simulatorId?: Maybe<Scalars['ID']>;
+export type MacroButtonConfig = {
+  __typename?: 'MacroButtonConfig';
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  buttons?: Maybe<Array<Maybe<MacroButton>>>;
 };
 
+export type MacroInput = {
+  stepId?: Maybe<Scalars['ID']>;
+  event?: Maybe<Scalars['String']>;
+  args?: Maybe<Scalars['String']>;
+  delay?: Maybe<Scalars['Int']>;
+  noCancelOnReset?: Maybe<Scalars['Boolean']>;
+};
 
-export type QueryDmxConfigArgs = {
+export type MapBorder = {
+  __typename?: 'MapBorder';
+  name: Scalars['String'];
   id: Scalars['ID'];
+  location: MapBorderLocation;
+  iconUrl: Scalars['String'];
+  riskIndex: Scalars['Float'];
 };
 
+export type MapBorderInput = {
+  name: Scalars['String'];
+  id: Scalars['ID'];
+  location: MapBorderLocationInput;
+  iconUrl: Scalars['String'];
+  riskIndex: Scalars['Float'];
+};
 
-export type QueryTaskFlowsArgs = {
+export type MapBorderLocation = {
+  __typename?: 'MapBorderLocation';
+  side: Scalars['String'];
+};
+
+export type MapBorderLocationInput = {
+  side: Scalars['String'];
+};
+
+export enum MeshTypeEnum {
+  Sphere = 'sphere',
+  Cube = 'cube',
+  Model = 'model',
+  Sprite = 'sprite',
+  Planet = 'planet',
+  Star = 'star'
+}
+
+export type Message = {
+  __typename?: 'Message';
+  id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
+  destination?: Maybe<Scalars['String']>;
+  sender?: Maybe<Scalars['String']>;
+  timestamp?: Maybe<Scalars['String']>;
+  content?: Maybe<Scalars['String']>;
 };
+
+export type MessageInput = {
+  simulatorId?: Maybe<Scalars['ID']>;
+  destination?: Maybe<Scalars['String']>;
+  sender?: Maybe<Scalars['String']>;
+  timestamp?: Maybe<Scalars['String']>;
+  content?: Maybe<Scalars['String']>;
+};
+
+export enum MidiActionMode {
+  Macro = 'macro',
+  MomentaryMacro = 'momentaryMacro',
+  Toggle = 'toggle',
+  ValueAssignment = 'valueAssignment'
+}
+
+export type MidiControl = {
+  __typename?: 'MidiControl';
+  id?: Maybe<Scalars['ID']>;
+  channel?: Maybe<Scalars['Int']>;
+  messageType?: Maybe<MidiMessageType>;
+  key?: Maybe<Scalars['Int']>;
+  controllerNumber?: Maybe<Scalars['Int']>;
+  channelModeMessage?: Maybe<ChannelModeMessageType>;
+  actionMode?: Maybe<MidiActionMode>;
+  config?: Maybe<Scalars['JSON']>;
+};
+
+export type MidiControlInput = {
+  channel?: Maybe<Scalars['Int']>;
+  messageType?: Maybe<MidiMessageType>;
+  key?: Maybe<Scalars['Int']>;
+  controllerNumber?: Maybe<Scalars['Int']>;
+  channelModeMessage?: Maybe<ChannelModeMessageType>;
+  actionMode?: Maybe<MidiActionMode>;
+  config?: Maybe<Scalars['JSON']>;
+};
+
+export enum MidiMessageType {
+  Noteoff = 'noteoff',
+  Noteon = 'noteon',
+  Keypressure = 'keypressure',
+  Controlchange = 'controlchange',
+  Programchange = 'programchange',
+  Channelpressure = 'channelpressure',
+  Pitchbendchange = 'pitchbendchange'
+}
+
+export type MidiSet = {
+  __typename?: 'MidiSet';
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  deviceName?: Maybe<Scalars['String']>;
+  controls?: Maybe<Array<Maybe<MidiControl>>>;
+};
+
+export type Mission = {
+  __typename?: 'Mission';
+  id: Scalars['ID'];
+  name?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  category?: Maybe<Scalars['String']>;
+  timeline: Array<TimelineStep>;
+  simulators?: Maybe<Array<Maybe<Simulator>>>;
+  aux?: Maybe<Scalars['Boolean']>;
+  extraRequirements?: Maybe<SimulatorCapabilities>;
+  requirements?: Maybe<SimulatorCapabilities>;
+};
+
+
+export type MissionRequirementsArgs = {
+  all?: Maybe<Scalars['Boolean']>;
+};
+
+export type Motu = {
+  __typename?: 'Motu';
+  id?: Maybe<Scalars['ID']>;
+  offline?: Maybe<Scalars['Boolean']>;
+  address?: Maybe<Scalars['String']>;
+  inputs?: Maybe<Array<Maybe<MotuInput>>>;
+  outputs?: Maybe<Array<Maybe<MotuOutput>>>;
+  sends?: Maybe<Array<Maybe<MotuPatch>>>;
+};
+
+export type MotuChannel = {
+  __typename?: 'MotuChannel';
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  chan?: Maybe<Scalars['Int']>;
+  type?: Maybe<MotuType>;
+  fader?: Maybe<Scalars['Float']>;
+  mute?: Maybe<Scalars['Int']>;
+};
+
+export type MotuChannelInput = {
+  fader?: Maybe<Scalars['Float']>;
+  mute?: Maybe<Scalars['Int']>;
+};
+
+export type MotuComp = {
+  __typename?: 'MotuComp';
+  enable?: Maybe<Scalars['Float']>;
+  release?: Maybe<Scalars['Float']>;
+  makeup?: Maybe<Scalars['Float']>;
+  trim?: Maybe<Scalars['Float']>;
+  peak?: Maybe<Scalars['Float']>;
+  attack?: Maybe<Scalars['Float']>;
+  ratio?: Maybe<Scalars['Float']>;
+  threshold?: Maybe<Scalars['Float']>;
+};
+
+export type MotuEq = {
+  __typename?: 'MotuEQ';
+  enable?: Maybe<Scalars['Int']>;
+  freq?: Maybe<Scalars['Float']>;
+  gain?: Maybe<Scalars['Float']>;
+  bw?: Maybe<Scalars['Float']>;
+  mode?: Maybe<Scalars['Int']>;
+};
+
+export type MotuGate = {
+  __typename?: 'MotuGate';
+  release?: Maybe<Scalars['Float']>;
+  enable?: Maybe<Scalars['Int']>;
+  attack?: Maybe<Scalars['Float']>;
+  threshold?: Maybe<Scalars['Float']>;
+};
+
+export type MotuInput = {
+  __typename?: 'MotuInput';
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  chan?: Maybe<Scalars['Int']>;
+  type?: Maybe<MotuType>;
+  gate?: Maybe<MotuGate>;
+  comp?: Maybe<MotuComp>;
+  fader?: Maybe<Scalars['Float']>;
+  mute?: Maybe<Scalars['Int']>;
+  pan?: Maybe<Scalars['Float']>;
+  highshelf?: Maybe<MotuEq>;
+  mid1?: Maybe<MotuEq>;
+  mid2?: Maybe<MotuEq>;
+  lowshelf?: Maybe<MotuEq>;
+};
+
+export type MotuOutput = {
+  __typename?: 'MotuOutput';
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  chan?: Maybe<Scalars['Int']>;
+  type?: Maybe<MotuType>;
+  prefader?: Maybe<Scalars['Float']>;
+  fader?: Maybe<Scalars['Float']>;
+  mute?: Maybe<Scalars['Int']>;
+  panner?: Maybe<Scalars['Float']>;
+  highshelf?: Maybe<MotuEq>;
+  mid1?: Maybe<MotuEq>;
+  mid2?: Maybe<MotuEq>;
+  lowshelf?: Maybe<MotuEq>;
+};
+
+export type MotuPatch = {
+  __typename?: 'MotuPatch';
+  input?: Maybe<MotuInput>;
+  output?: Maybe<MotuOutput>;
+  send?: Maybe<Scalars['Float']>;
+  mute?: Maybe<Scalars['Boolean']>;
+};
+
+export enum MotuType {
+  Chan = 'chan',
+  Aux = 'aux',
+  Group = 'group'
+}
 
 export type Mutation = {
   __typename?: 'Mutation';
@@ -773,6 +2089,7 @@ export type Mutation = {
   clientActivateLights?: Maybe<Scalars['String']>;
   clientAddCache?: Maybe<Scalars['String']>;
   clientRemoveCache?: Maybe<Scalars['String']>;
+  /** Macro: Clients: Set Hypercard */
   setClientHypercard?: Maybe<Scalars['String']>;
   /** Macro: Sounds: Play a sound */
   playSound?: Maybe<Scalars['String']>;
@@ -1035,6 +2352,8 @@ export type Mutation = {
   internalCommCallIncoming?: Maybe<Scalars['String']>;
   internalCommCallOutgoing?: Maybe<Scalars['String']>;
   addInventory?: Maybe<Scalars['String']>;
+  /** Macro: Inventory: Add Multiple Inventory */
+  addMultipleInventory?: Maybe<Scalars['String']>;
   removeInventory?: Maybe<Scalars['String']>;
   moveInventory?: Maybe<Scalars['String']>;
   updateInventoryCount?: Maybe<Scalars['String']>;
@@ -1578,6 +2897,8 @@ export type Mutation = {
   triggerSurvey?: Maybe<Scalars['String']>;
   surveyFormResponse?: Maybe<Scalars['String']>;
   endSurvey?: Maybe<Scalars['String']>;
+  /** Macro: Systems: Add Extra Report to Simulator */
+  addExtraReportToSimulator?: Maybe<Scalars['String']>;
   addSystemToSimulator?: Maybe<Scalars['String']>;
   removeSystemFromSimulator?: Maybe<Scalars['String']>;
   updateSystemName?: Maybe<Scalars['String']>;
@@ -3227,6 +4548,11 @@ export type MutationInternalCommCallOutgoingArgs = {
 
 export type MutationAddInventoryArgs = {
   inventory?: Maybe<InventoryItemInput>;
+};
+
+
+export type MutationAddMultipleInventoryArgs = {
+  inventory?: Maybe<Array<Maybe<InventoryItemInput>>>;
 };
 
 
@@ -5536,6 +6862,13 @@ export type MutationEndSurveyArgs = {
 };
 
 
+export type MutationAddExtraReportToSimulatorArgs = {
+  simulatorId: Scalars['ID'];
+  name: Scalars['String'];
+  which?: Maybe<Scalars['String']>;
+};
+
+
 export type MutationAddSystemToSimulatorArgs = {
   simulatorId: Scalars['ID'];
   className: Scalars['String'];
@@ -6839,6 +8172,2120 @@ export type MutationEntityRemoveThrustersArgs = {
   id: Scalars['ID'];
 };
 
+export type NamedCoordinate = {
+  __typename?: 'NamedCoordinate';
+  name: Scalars['String'];
+  x: Scalars['Float'];
+  y: Scalars['Float'];
+};
+
+export type NamedCoordinateInput = {
+  name: Scalars['String'];
+  x: Scalars['Float'];
+  y: Scalars['Float'];
+};
+
+export type NamedNavigationRoute = {
+  __typename?: 'NamedNavigationRoute';
+  name: Scalars['String'];
+  id: Scalars['ID'];
+  targetLocationId: Scalars['ID'];
+  secondaryRouteOptions: Array<SecondaryNavigationRouteOption>;
+  isBorder: Scalars['Boolean'];
+  startOption: NavigationStartOptions;
+  speedOption: NavigationSpeedOptions;
+  exitOption: NavigationExitOptions;
+};
+
+export type NamedNavigationRouteInput = {
+  name: Scalars['String'];
+  id: Scalars['ID'];
+  targetLocationId: Scalars['ID'];
+  secondaryRouteOptions: Array<SecondaryNavigationRouteOptionInput>;
+  isBorder: Scalars['Boolean'];
+  startOption: NavigationStartOptionsInput;
+  speedOption: NavigationSpeedOptionsInput;
+  exitOption: NavigationExitOptionsInput;
+};
+
+export type NamedObject = {
+  __typename?: 'NamedObject';
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+};
+
+export type NavLoc = {
+  __typename?: 'NavLoc';
+  x?: Maybe<Scalars['String']>;
+  y?: Maybe<Scalars['String']>;
+  z?: Maybe<Scalars['String']>;
+};
+
+export type NavLocInput = {
+  x?: Maybe<Scalars['String']>;
+  y?: Maybe<Scalars['String']>;
+  z?: Maybe<Scalars['String']>;
+};
+
+export type NavPreset = {
+  __typename?: 'NavPreset';
+  name?: Maybe<Scalars['String']>;
+  course?: Maybe<NavLoc>;
+};
+
+export type NavPresetInput = {
+  name?: Maybe<Scalars['String']>;
+  course?: Maybe<NavLocInput>;
+};
+
+export type Navigation = SystemInterface & {
+  __typename?: 'Navigation';
+  id?: Maybe<Scalars['ID']>;
+  simulatorId?: Maybe<Scalars['ID']>;
+  type?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  displayName?: Maybe<Scalars['String']>;
+  power?: Maybe<Power>;
+  damage?: Maybe<Damage>;
+  upgradeName?: Maybe<Scalars['String']>;
+  upgraded?: Maybe<Scalars['Boolean']>;
+  stealthFactor?: Maybe<Scalars['Float']>;
+  calculate?: Maybe<Scalars['Boolean']>;
+  currentCourse?: Maybe<NavLoc>;
+  calculatedCourse?: Maybe<NavLoc>;
+  destination?: Maybe<Scalars['String']>;
+  scanning?: Maybe<Scalars['Boolean']>;
+  destinations?: Maybe<Array<Maybe<Scalars['String']>>>;
+  presets?: Maybe<Array<Maybe<NavPreset>>>;
+  thrusters?: Maybe<Scalars['Boolean']>;
+  locations?: Maybe<Array<Maybe<Room>>>;
+};
+
+export type NavigationExitOptions = {
+  __typename?: 'NavigationExitOptions';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  riskModifier: Scalars['Float'];
+  imgUrl: Scalars['String'];
+};
+
+export type NavigationExitOptionsInput = {
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  riskModifier: Scalars['Float'];
+  imgUrl: Scalars['String'];
+};
+
+export type NavigationHazard = {
+  __typename?: 'NavigationHazard';
+  name: Scalars['String'];
+  description: Scalars['String'];
+  navOptions: Array<NavigationHazardNavOptions>;
+  imgUrl: Scalars['String'];
+};
+
+export type NavigationHazardInput = {
+  name: Scalars['String'];
+  description: Scalars['String'];
+  navOptions: Array<NavigationHazardNavOptionsInput>;
+  imgUrl: Scalars['String'];
+};
+
+export type NavigationHazardNavOptions = {
+  __typename?: 'NavigationHazardNavOptions';
+  action: Scalars['String'];
+  speedModifier: Scalars['Float'];
+  riskModifier: Scalars['Float'];
+  imgUrl: Scalars['String'];
+  isArrivalOnly: Scalars['Boolean'];
+};
+
+export type NavigationHazardNavOptionsInput = {
+  action: Scalars['String'];
+  speedModifier: Scalars['Float'];
+  riskModifier: Scalars['Float'];
+  imgUrl: Scalars['String'];
+  isArrivalOnly: Scalars['Boolean'];
+};
+
+export type NavigationRoute = {
+  __typename?: 'NavigationRoute';
+  targetLocationId: Scalars['ID'];
+  secondaryRouteOptions: Array<SecondaryNavigationRouteOption>;
+  isBorder: Scalars['Boolean'];
+  startOption: NavigationStartOptions;
+  speedOption: NavigationSpeedOptions;
+  exitOption: NavigationExitOptions;
+};
+
+export type NavigationRouteInput = {
+  targetLocationId: Scalars['ID'];
+  secondaryRouteOptions: Array<SecondaryNavigationRouteOptionInput>;
+  isBorder: Scalars['Boolean'];
+  startOption: NavigationStartOptionsInput;
+  speedOption: NavigationSpeedOptionsInput;
+  exitOption: NavigationExitOptionsInput;
+};
+
+export type NavigationSpeedOptions = {
+  __typename?: 'NavigationSpeedOptions';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  speedModifier: Scalars['Float'];
+  riskModifier: Scalars['Float'];
+  requiresMaxEngines: Scalars['Boolean'];
+  imgUrl: Scalars['String'];
+};
+
+export type NavigationSpeedOptionsInput = {
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  speedModifier: Scalars['Float'];
+  riskModifier: Scalars['Float'];
+  requiresMaxEngines: Scalars['Boolean'];
+  imgUrl: Scalars['String'];
+};
+
+export type NavigationStartOptions = {
+  __typename?: 'NavigationStartOptions';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  riskModifier: Scalars['Float'];
+  imgUrl: Scalars['String'];
+  secondsForStartup: Scalars['Float'];
+};
+
+export type NavigationStartOptionsInput = {
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  riskModifier: Scalars['Float'];
+  imgUrl: Scalars['String'];
+  secondsForStartup: Scalars['Float'];
+};
+
+export type Notification = {
+  __typename?: 'Notification';
+  id?: Maybe<Scalars['ID']>;
+  title?: Maybe<Scalars['String']>;
+  body?: Maybe<Scalars['String']>;
+  color?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+  trigger?: Maybe<Scalars['String']>;
+  duration?: Maybe<Scalars['Int']>;
+  relevantCards?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+export enum NotifyColors {
+  Primary = 'primary',
+  Secondary = 'secondary',
+  Success = 'success',
+  Danger = 'danger',
+  Warning = 'warning',
+  Info = 'info',
+  Light = 'light',
+  Dark = 'dark'
+}
+
+export type Objective = {
+  __typename?: 'Objective';
+  id?: Maybe<Scalars['ID']>;
+  simulatorId?: Maybe<Scalars['ID']>;
+  timestamp?: Maybe<Scalars['String']>;
+  station?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  completed?: Maybe<Scalars['Boolean']>;
+  cancelled?: Maybe<Scalars['Boolean']>;
+  crewComplete?: Maybe<Scalars['Boolean']>;
+  order?: Maybe<Scalars['Int']>;
+};
+
+export type ObjectiveInput = {
+  id?: Maybe<Scalars['ID']>;
+  simulatorId?: Maybe<Scalars['ID']>;
+  station?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  completed?: Maybe<Scalars['Boolean']>;
+  cancelled?: Maybe<Scalars['Boolean']>;
+  crewComplete?: Maybe<Scalars['Boolean']>;
+  order?: Maybe<Scalars['Int']>;
+};
+
+export enum Ping_Modes {
+  Active = 'active',
+  Passive = 'passive',
+  Manual = 'manual'
+}
+
+export enum Pip_Position {
+  BottomLeft = 'bottomLeft',
+  BottomRight = 'bottomRight',
+  TopLeft = 'topLeft',
+  TopRight = 'topRight',
+  Center = 'center'
+}
+
+export enum Pip_Size {
+  Small = 'small',
+  Medium = 'medium',
+  Large = 'large'
+}
+
+export enum Priorities {
+  Low = 'low',
+  Normal = 'normal',
+  Critical = 'critical',
+  Emergency = 'emergency'
+}
+
+export type PainPoint = {
+  __typename?: 'PainPoint';
+  x?: Maybe<Scalars['Float']>;
+  y?: Maybe<Scalars['Float']>;
+};
+
+export type PainPointInput = {
+  x?: Maybe<Scalars['Float']>;
+  y?: Maybe<Scalars['Float']>;
+};
+
+export type PanelCable = {
+  __typename?: 'PanelCable';
+  id?: Maybe<Scalars['ID']>;
+  color?: Maybe<Scalars['String']>;
+  components?: Maybe<Array<Maybe<Scalars['ID']>>>;
+};
+
+export type PanelCableInput = {
+  id?: Maybe<Scalars['ID']>;
+  color?: Maybe<Scalars['String']>;
+  components?: Maybe<Array<Maybe<Scalars['ID']>>>;
+};
+
+export type PanelComponent = {
+  __typename?: 'PanelComponent';
+  id?: Maybe<Scalars['ID']>;
+  component?: Maybe<Scalars['String']>;
+  level?: Maybe<Scalars['Float']>;
+  label?: Maybe<Scalars['String']>;
+  color?: Maybe<Scalars['String']>;
+  x?: Maybe<Scalars['Float']>;
+  y?: Maybe<Scalars['Float']>;
+  scale?: Maybe<Scalars['Float']>;
+};
+
+export type PanelComponentInput = {
+  id?: Maybe<Scalars['ID']>;
+  component?: Maybe<Scalars['String']>;
+  level?: Maybe<Scalars['Float']>;
+  label?: Maybe<Scalars['String']>;
+  color?: Maybe<Scalars['String']>;
+  x?: Maybe<Scalars['Float']>;
+  y?: Maybe<Scalars['Float']>;
+  scale?: Maybe<Scalars['Float']>;
+};
+
+export type PanelConnection = {
+  __typename?: 'PanelConnection';
+  id?: Maybe<Scalars['ID']>;
+  to?: Maybe<Scalars['ID']>;
+  from?: Maybe<Scalars['ID']>;
+};
+
+export type PanelConnectionInput = {
+  id?: Maybe<Scalars['ID']>;
+  to?: Maybe<Scalars['ID']>;
+  from?: Maybe<Scalars['ID']>;
+};
+
+export enum ParticleTypes {
+  Dilithium = 'Dilithium',
+  Tachyon = 'Tachyon',
+  Neutrino = 'Neutrino',
+  AntiMatter = 'AntiMatter',
+  Anomaly = 'Anomaly',
+  Resonance = 'Resonance',
+  Graviton = 'Graviton',
+  Lithium = 'Lithium',
+  Magnetic = 'Magnetic',
+  Helium = 'Helium',
+  Hydrogen = 'Hydrogen',
+  Oxygen = 'Oxygen',
+  Carbon = 'Carbon',
+  Radiation = 'Radiation'
+}
+
+export type Phaser = SystemInterface & {
+  __typename?: 'Phaser';
+  id?: Maybe<Scalars['ID']>;
+  simulatorId?: Maybe<Scalars['ID']>;
+  type?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  displayName?: Maybe<Scalars['String']>;
+  upgradeName?: Maybe<Scalars['String']>;
+  upgraded?: Maybe<Scalars['Boolean']>;
+  stealthFactor?: Maybe<Scalars['Float']>;
+  power?: Maybe<Power>;
+  damage?: Maybe<Damage>;
+  arc?: Maybe<Scalars['Float']>;
+  coolant?: Maybe<Scalars['Float']>;
+  beams?: Maybe<Array<Maybe<PhaserBeam>>>;
+  locations?: Maybe<Array<Maybe<Room>>>;
+  holdToCharge?: Maybe<Scalars['Boolean']>;
+  chargeSpeed?: Maybe<Scalars['Float']>;
+};
+
+export type PhaserBeam = {
+  __typename?: 'PhaserBeam';
+  id?: Maybe<Scalars['ID']>;
+  power?: Maybe<Power>;
+  damage?: Maybe<Damage>;
+  charge?: Maybe<Scalars['Float']>;
+  state?: Maybe<Scalars['String']>;
+  heat?: Maybe<Scalars['Float']>;
+};
+
+export type PointOfInterest = {
+  __typename?: 'PointOfInterest';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  location: XyLocation;
+  isVisible: Scalars['Boolean'];
+  isFogOfWar: Scalars['Boolean'];
+  speedIndex: Scalars['Float'];
+  riskIndex: Scalars['Float'];
+  type: PointOfInterestType;
+  information: PointOfInterestInformation;
+  iconUrl: Scalars['String'];
+  fullImageUrl: Scalars['String'];
+  transitOptions?: Maybe<Array<SecondaryStopTransitOption>>;
+  showName?: Maybe<Scalars['Boolean']>;
+};
+
+export type PointOfInterestInformation = {
+  __typename?: 'PointOfInterestInformation';
+  basicInformation: Scalars['String'];
+  hasBasicInformation: Scalars['Boolean'];
+  detailedInformation: Scalars['String'];
+  hasDetailedInformation: Scalars['Boolean'];
+  secretInformation: Scalars['String'];
+  hasSecretInformation: Scalars['Boolean'];
+};
+
+export type PointOfInterestInformationInput = {
+  basicInformation: Scalars['String'];
+  hasBasicInformation: Scalars['Boolean'];
+  detailedInformation: Scalars['String'];
+  hasDetailedInformation: Scalars['Boolean'];
+  secretInformation: Scalars['String'];
+  hasSecretInformation: Scalars['Boolean'];
+};
+
+export type PointOfInterestInput = {
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  location: LocationInput;
+  isVisible: Scalars['Boolean'];
+  isFogOfWar: Scalars['Boolean'];
+  speedIndex: Scalars['Float'];
+  riskIndex: Scalars['Float'];
+  type: PointOfInterestTypeInput;
+  information: PointOfInterestInformationInput;
+  iconUrl: Scalars['String'];
+  fullImageUrl: Scalars['String'];
+  transitOptions?: Maybe<Array<Maybe<SecondaryStopTransitOptionInput>>>;
+  showName?: Maybe<Scalars['Boolean']>;
+};
+
+export type PointOfInterestObject = {
+  __typename?: 'PointOfInterestObject';
+  category: Scalars['String'];
+  imageUri: Scalars['String'];
+};
+
+export type PointOfInterestType = {
+  __typename?: 'PointOfInterestType';
+  category: Scalars['String'];
+  imageUri: Scalars['String'];
+};
+
+export type PointOfInterestTypeInput = {
+  category: Scalars['String'];
+  imageUri: Scalars['String'];
+};
+
+export type Power = {
+  __typename?: 'Power';
+  power?: Maybe<Scalars['Int']>;
+  powerLevels?: Maybe<Array<Maybe<Scalars['Int']>>>;
+  defaultLevel?: Maybe<Scalars['Int']>;
+};
+
+export type PresetAnswer = {
+  __typename?: 'PresetAnswer';
+  label: Scalars['String'];
+  value: Scalars['String'];
+};
+
+export type PresetAnswerInput = {
+  label?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+};
+
+export type PrintQueue = {
+  __typename?: 'PrintQueue';
+  id: Scalars['ID'];
+  simulatorId: Scalars['String'];
+  asset: Scalars['String'];
+  timestamp: Scalars['Float'];
+};
+
+export type Probe = {
+  __typename?: 'Probe';
+  id: Scalars['ID'];
+  name?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['ID']>;
+  launched?: Maybe<Scalars['Boolean']>;
+  equipment?: Maybe<Array<Maybe<ProbeEquipment>>>;
+  engine?: Maybe<Engine>;
+  phaser?: Maybe<Phaser>;
+  navigation?: Maybe<Navigation>;
+  query?: Maybe<Scalars['String']>;
+  querying?: Maybe<Scalars['Boolean']>;
+  response?: Maybe<Scalars['String']>;
+  charge?: Maybe<Scalars['Float']>;
+  history?: Maybe<Array<Maybe<History>>>;
+};
+
+export type ProbeAssignment = {
+  __typename?: 'ProbeAssignment';
+  probeId: Scalars['ID'];
+  flightPathCoords: Array<BasicCoordinate>;
+  data: Array<Scalars['String']>;
+  remainingFuelCellCount: Scalars['Float'];
+  hasBeenViewed: Scalars['Boolean'];
+  currentLocation: BasicCoordinate;
+  targetLocationName: Scalars['String'];
+  currentEta: Scalars['Float'];
+  totalEta: Scalars['Float'];
+  completed: Scalars['Boolean'];
+};
+
+export type ProbeAssignmentInput = {
+  probeId: Scalars['ID'];
+  flightPathCoords: Array<BasicCoordinateInput>;
+  data: Array<Scalars['String']>;
+  remainingFuelCellCount: Scalars['Float'];
+  hasBeenViewed: Scalars['Boolean'];
+  currentLocation: BasicCoordinateInput;
+  targetLocationName: Scalars['String'];
+  currentEta: Scalars['Float'];
+  totalEta: Scalars['Float'];
+  completed: Scalars['Boolean'];
+};
+
+export type ProbeEquipment = {
+  __typename?: 'ProbeEquipment';
+  id?: Maybe<Scalars['ID']>;
+  description?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  size?: Maybe<Scalars['Float']>;
+  count?: Maybe<Scalars['Int']>;
+  damage?: Maybe<Damage>;
+  availableProbes?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+export type ProbeEquipmentInput = {
+  description?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  size?: Maybe<Scalars['Float']>;
+  count?: Maybe<Scalars['Int']>;
+};
+
+export type ProbeInput = {
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['ID']>;
+  equipment?: Maybe<Array<Maybe<EquipmentInput>>>;
+  launched?: Maybe<Scalars['Boolean']>;
+};
+
+export type ProbeType = {
+  __typename?: 'ProbeType';
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  size?: Maybe<Scalars['Float']>;
+  count?: Maybe<Scalars['Int']>;
+  availableEquipment?: Maybe<Array<Maybe<ProbeEquipment>>>;
+};
+
+export type ProbeTypeInput = {
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  size?: Maybe<Scalars['Float']>;
+  count?: Maybe<Scalars['Int']>;
+};
+
+export type Probes = SystemInterface & {
+  __typename?: 'Probes';
+  id: Scalars['ID'];
+  simulatorId?: Maybe<Scalars['ID']>;
+  type?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  power?: Maybe<Power>;
+  damage?: Maybe<Damage>;
+  displayName?: Maybe<Scalars['String']>;
+  upgradeName?: Maybe<Scalars['String']>;
+  upgraded?: Maybe<Scalars['Boolean']>;
+  stealthFactor?: Maybe<Scalars['Float']>;
+  locations?: Maybe<Array<Maybe<Room>>>;
+  torpedo?: Maybe<Scalars['Boolean']>;
+  processedData?: Maybe<Scalars['String']>;
+  probes?: Maybe<Array<Maybe<Probe>>>;
+  equipment?: Maybe<Array<Maybe<ProbeEquipment>>>;
+  types?: Maybe<Array<Maybe<ProbeType>>>;
+  scienceTypes?: Maybe<Array<Maybe<ScienceType>>>;
+};
+
+
+export type ProbesProbesArgs = {
+  network?: Maybe<Scalars['Boolean']>;
+};
+
+export type ProcessedData = {
+  __typename?: 'ProcessedData';
+  value: Scalars['String'];
+  time: Scalars['String'];
+};
+
+export type Quaternion = {
+  __typename?: 'Quaternion';
+  x: Scalars['Float'];
+  y: Scalars['Float'];
+  z: Scalars['Float'];
+  w: Scalars['Float'];
+};
+
+export type QuaternionInput = {
+  x: Scalars['Float'];
+  y: Scalars['Float'];
+  z: Scalars['Float'];
+  w: Scalars['Float'];
+};
+
+export type Query = {
+  __typename?: 'Query';
+  _empty?: Maybe<Scalars['String']>;
+  actions?: Maybe<Action>;
+  asset?: Maybe<Asset>;
+  assets?: Maybe<Array<Maybe<Asset>>>;
+  assetFolders?: Maybe<Array<Maybe<AssetFolder>>>;
+  clients?: Maybe<Array<Maybe<Client>>>;
+  keypad?: Maybe<Keypad>;
+  keypads?: Maybe<Array<Maybe<Keypad>>>;
+  scanner?: Maybe<Scanner>;
+  scanners?: Maybe<Array<Maybe<Scanner>>>;
+  commandLine?: Maybe<Array<Maybe<CommandLine>>>;
+  commandLineCommands?: Maybe<Array<Maybe<CommandLineCommand>>>;
+  computerCore?: Maybe<Array<Maybe<ComputerCore>>>;
+  oneComputerCore?: Maybe<ComputerCore>;
+  hackingPresets: Array<HackingPreset>;
+  coolant?: Maybe<Array<Maybe<CoolantTank>>>;
+  systemCoolant?: Maybe<Array<Maybe<SystemCoolant>>>;
+  coreFeed?: Maybe<Array<Maybe<CoreFeed>>>;
+  coreLayouts?: Maybe<Array<Maybe<CoreLayout>>>;
+  crew?: Maybe<Array<Maybe<Crew>>>;
+  crewCount?: Maybe<Scalars['Int']>;
+  crm?: Maybe<Crm>;
+  crmFighter?: Maybe<CrmFighter>;
+  decks?: Maybe<Array<Maybe<Deck>>>;
+  docking?: Maybe<Array<Maybe<DockingPort>>>;
+  engines?: Maybe<Array<Maybe<Engine>>>;
+  engine?: Maybe<Engine>;
+  exocomps?: Maybe<Array<Maybe<Exocomp>>>;
+  externals?: Maybe<Externals>;
+  hasFirebaseConnection: Scalars['Boolean'];
+  getFirebaseSimulators?: Maybe<Array<FbFullSimulator>>;
+  getFirebaseUser?: Maybe<Scalars['Boolean']>;
+  getFirebaseAwards?: Maybe<Array<FbAwards>>;
+  getFirebaseLogoSrc?: Maybe<Scalars['String']>;
+  getFirebaseWebsiteQRCode?: Maybe<Scalars['String']>;
+  getFirebaseEventId?: Maybe<Scalars['ID']>;
+  getFirebasePageText?: Maybe<FbPageText>;
+  getCurrentFirebaseSelections?: Maybe<FbCurrentSelections>;
+  flights: Array<Flight>;
+  events?: Maybe<Array<Maybe<Scalars['String']>>>;
+  advancedNavAndAstrometric?: Maybe<AdvancedNavigationAndAstrometrics>;
+  advancedNavAndAstrometrics?: Maybe<Array<Maybe<AdvancedNavigationAndAstrometrics>>>;
+  getFlightSet?: Maybe<FlightSet>;
+  getAllFlightSets: Array<Maybe<FlightSet>>;
+  advancedNavStars?: Maybe<AdvancedNavStarsData>;
+  googleSheets?: Maybe<Scalars['String']>;
+  googleSheetsGetSpreadsheet?: Maybe<GoogleSpreadsheet>;
+  hullPlating?: Maybe<HullPlating>;
+  hullPlatings?: Maybe<Array<Maybe<HullPlating>>>;
+  interfaces?: Maybe<Array<Maybe<Interface>>>;
+  interfaceDevices?: Maybe<Array<Maybe<InterfaceDevice>>>;
+  internalComm?: Maybe<Array<Maybe<InternalComm>>>;
+  inventory?: Maybe<Array<Maybe<InventoryItem>>>;
+  isochips?: Maybe<Array<Maybe<Isochip>>>;
+  jumpDrive?: Maybe<Array<Maybe<JumpDrive>>>;
+  keyboard?: Maybe<Array<Maybe<Keyboard>>>;
+  libraryEntries?: Maybe<Array<Maybe<LibraryEntry>>>;
+  longRangeCommunications?: Maybe<Array<Maybe<LrCommunications>>>;
+  macros?: Maybe<Array<Maybe<Macro>>>;
+  macroButtons?: Maybe<Array<Maybe<MacroButtonConfig>>>;
+  messages?: Maybe<Array<Maybe<Message>>>;
+  midiSets?: Maybe<Array<Maybe<MidiSet>>>;
+  missions: Array<Mission>;
+  auxTimelines?: Maybe<Array<Maybe<TimelineInstance>>>;
+  motus?: Maybe<Array<Maybe<Motu>>>;
+  motu?: Maybe<Motu>;
+  motuChannel?: Maybe<MotuChannel>;
+  motuSend?: Maybe<MotuPatch>;
+  navigation?: Maybe<Array<Maybe<Navigation>>>;
+  navigate?: Maybe<Navigation>;
+  objective?: Maybe<Array<Maybe<Objective>>>;
+  officerLogs?: Maybe<Array<Maybe<Log>>>;
+  shipLogs?: Maybe<Array<Maybe<Log>>>;
+  phasers?: Maybe<Array<Maybe<Phaser>>>;
+  phaser?: Maybe<Phaser>;
+  probes: Array<Probes>;
+  probe?: Maybe<Probes>;
+  probeEquipment: Array<ProbeEquipment>;
+  railgun?: Maybe<Array<Maybe<Railgun>>>;
+  reactors?: Maybe<Array<Maybe<Reactor>>>;
+  reactor?: Maybe<Reactor>;
+  recordSnippets?: Maybe<Array<Maybe<RecordSnippet>>>;
+  recordTemplates?: Maybe<Array<Maybe<RecordSnippet>>>;
+  rooms?: Maybe<Array<Maybe<Room>>>;
+  sensors: Array<Sensors>;
+  sensor?: Maybe<Sensors>;
+  sensorContacts?: Maybe<Array<Maybe<SensorContact>>>;
+  sets?: Maybe<Array<Maybe<Set>>>;
+  shields?: Maybe<Array<Maybe<Shield>>>;
+  shortRangeComm?: Maybe<Array<Maybe<ShortRangeComm>>>;
+  sickbay?: Maybe<Array<Maybe<Sickbay>>>;
+  sickbaySingle?: Maybe<Sickbay>;
+  symptoms?: Maybe<Array<Maybe<Scalars['String']>>>;
+  signalJammers?: Maybe<Array<Maybe<SignalJammer>>>;
+  simulators: Array<Simulator>;
+  softwarePanels?: Maybe<Array<Maybe<SoftwarePanel>>>;
+  stations?: Maybe<Array<Maybe<StationSet>>>;
+  station?: Maybe<Station>;
+  stealthField?: Maybe<Array<Maybe<StealthField>>>;
+  stealth?: Maybe<StealthField>;
+  subspaceField?: Maybe<Array<Maybe<SubspaceField>>>;
+  surveyform?: Maybe<Array<Maybe<SurveyForm>>>;
+  systems?: Maybe<Array<Maybe<System>>>;
+  system?: Maybe<System>;
+  allSystems: Array<Scalars['String']>;
+  tacticalMaps?: Maybe<Array<Maybe<TacticalMap>>>;
+  tacticalMap?: Maybe<TacticalMap>;
+  targeting?: Maybe<Array<Maybe<Targeting>>>;
+  taskReport?: Maybe<Array<Maybe<TaskReport>>>;
+  tasks?: Maybe<Array<Maybe<Task>>>;
+  taskTemplates: Array<TaskTemplate>;
+  taskDefinitions: Array<TaskDefinition>;
+  taskInstructions?: Maybe<Scalars['String']>;
+  teams?: Maybe<Array<Maybe<Team>>>;
+  damagePositions?: Maybe<Array<Maybe<Scalars['String']>>>;
+  exocompParts?: Maybe<Array<Maybe<Scalars['String']>>>;
+  _template?: Maybe<Template>;
+  thorium?: Maybe<Thorium>;
+  thrusters?: Maybe<Array<Maybe<Thruster>>>;
+  thruster?: Maybe<Thruster>;
+  thx?: Maybe<Array<Maybe<Thx>>>;
+  torpedos?: Maybe<Array<Maybe<Torpedo>>>;
+  torpedo?: Maybe<Torpedo>;
+  tractorBeam?: Maybe<Array<Maybe<TractorBeam>>>;
+  transporters?: Maybe<Array<Maybe<Transporter>>>;
+  transwarp?: Maybe<Array<Maybe<Transwarp>>>;
+  triggers?: Maybe<Array<Maybe<Trigger>>>;
+  viewscreens?: Maybe<Array<Maybe<Viewscreen>>>;
+  countermeasures?: Maybe<Countermeasures>;
+  countermeasureModuleType: Array<CountermeasureModule>;
+  entity?: Maybe<Entity>;
+  entities: Array<Maybe<Entity>>;
+  dmxDevices: Array<DmxDevice>;
+  dmxSets: Array<DmxSet>;
+  dmxFixtures: Array<DmxFixture>;
+  dmxConfig?: Maybe<DmxConfig>;
+  dmxConfigs: Array<DmxConfig>;
+  taskFlows: Array<TaskFlow>;
+};
+
+
+export type QueryActionsArgs = {
+  stationId?: Maybe<Scalars['ID']>;
+  clientId?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryAssetArgs = {
+  assetKey: Scalars['String'];
+};
+
+
+export type QueryAssetsArgs = {
+  assetKeys: Array<Scalars['String']>;
+};
+
+
+export type QueryAssetFoldersArgs = {
+  name?: Maybe<Scalars['String']>;
+  names?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+
+export type QueryClientsArgs = {
+  all?: Maybe<Scalars['Boolean']>;
+  clientId?: Maybe<Scalars['ID']>;
+  simulatorId?: Maybe<Scalars['ID']>;
+  stationName?: Maybe<Scalars['String']>;
+  flightId?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryKeypadArgs = {
+  client: Scalars['ID'];
+};
+
+
+export type QueryKeypadsArgs = {
+  simulatorId: Scalars['ID'];
+};
+
+
+export type QueryScannerArgs = {
+  client: Scalars['ID'];
+};
+
+
+export type QueryScannersArgs = {
+  simulatorId: Scalars['ID'];
+};
+
+
+export type QueryCommandLineArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryCommandLineCommandsArgs = {
+  simulatorId: Scalars['ID'];
+};
+
+
+export type QueryComputerCoreArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryOneComputerCoreArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryCoolantArgs = {
+  simulatorId: Scalars['ID'];
+};
+
+
+export type QuerySystemCoolantArgs = {
+  simulatorId: Scalars['ID'];
+  systemId?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryCoreFeedArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryCoreLayoutsArgs = {
+  name?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryCrewArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+  position?: Maybe<Scalars['String']>;
+  killed?: Maybe<Scalars['Boolean']>;
+};
+
+
+export type QueryCrewCountArgs = {
+  simulatorId: Scalars['ID'];
+  position?: Maybe<Scalars['String']>;
+  killed?: Maybe<Scalars['Boolean']>;
+};
+
+
+export type QueryCrmArgs = {
+  id?: Maybe<Scalars['ID']>;
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryCrmFighterArgs = {
+  simulatorId: Scalars['ID'];
+  clientId: Scalars['ID'];
+};
+
+
+export type QueryDecksArgs = {
+  simulatorId: Scalars['ID'];
+  number?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryDockingArgs = {
+  id?: Maybe<Scalars['ID']>;
+  simulatorId?: Maybe<Scalars['ID']>;
+  type?: Maybe<Docking_Types>;
+};
+
+
+export type QueryEnginesArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryEngineArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryExocompsArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryGetFirebaseUserArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryFlightsArgs = {
+  running?: Maybe<Scalars['Boolean']>;
+  id?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryAdvancedNavAndAstrometricArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryAdvancedNavAndAstrometricsArgs = {
+  simulatorId: Scalars['ID'];
+};
+
+
+export type QueryGetFlightSetArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryAdvancedNavStarsArgs = {
+  simulatorId: Scalars['ID'];
+};
+
+
+export type QueryGoogleSheetsGetSpreadsheetArgs = {
+  spreadsheetId: Scalars['ID'];
+};
+
+
+export type QueryHullPlatingArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryHullPlatingsArgs = {
+  simulatorId: Scalars['ID'];
+};
+
+
+export type QueryInterfacesArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryInternalCommArgs = {
+  simulatorId: Scalars['ID'];
+};
+
+
+export type QueryInventoryArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  deck?: Maybe<Scalars['ID']>;
+  room?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryIsochipsArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryJumpDriveArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryLibraryEntriesArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+  type?: Maybe<Scalars['String']>;
+  all?: Maybe<Scalars['Boolean']>;
+};
+
+
+export type QueryLongRangeCommunicationsArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryMessagesArgs = {
+  simulatorId: Scalars['ID'];
+  station?: Maybe<Scalars['String']>;
+  group?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryMidiSetsArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryMissionsArgs = {
+  id?: Maybe<Scalars['ID']>;
+  aux?: Maybe<Scalars['Boolean']>;
+};
+
+
+export type QueryAuxTimelinesArgs = {
+  simulatorId: Scalars['ID'];
+};
+
+
+export type QueryMotuArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryMotuChannelArgs = {
+  id: Scalars['ID'];
+  channelId: Scalars['ID'];
+};
+
+
+export type QueryMotuSendArgs = {
+  id: Scalars['ID'];
+  inputId: Scalars['ID'];
+  outputId: Scalars['ID'];
+};
+
+
+export type QueryNavigationArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryNavigateArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryObjectiveArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryOfficerLogsArgs = {
+  clientId?: Maybe<Scalars['ID']>;
+  flightId: Scalars['ID'];
+};
+
+
+export type QueryShipLogsArgs = {
+  simulatorId: Scalars['ID'];
+};
+
+
+export type QueryPhasersArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryPhaserArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryProbesArgs = {
+  simulatorId: Scalars['ID'];
+};
+
+
+export type QueryProbeArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryRailgunArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryReactorsArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+  model?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryReactorArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryRecordSnippetsArgs = {
+  simulatorId: Scalars['ID'];
+  visible?: Maybe<Scalars['Boolean']>;
+};
+
+
+export type QueryRoomsArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+  deck?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  role?: Maybe<RoomRoles>;
+};
+
+
+export type QuerySensorsArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+  domain?: Maybe<Scalars['String']>;
+};
+
+
+export type QuerySensorArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QuerySensorContactsArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+  sensorsId?: Maybe<Scalars['ID']>;
+  hostile?: Maybe<Scalars['Boolean']>;
+  type?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryShieldsArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryShortRangeCommArgs = {
+  simulatorId: Scalars['ID'];
+};
+
+
+export type QuerySickbayArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type QuerySickbaySingleArgs = {
+  id?: Maybe<Scalars['ID']>;
+};
+
+
+export type QuerySignalJammersArgs = {
+  simulatorId: Scalars['ID'];
+};
+
+
+export type QuerySimulatorsArgs = {
+  template?: Maybe<Scalars['Boolean']>;
+  id?: Maybe<Scalars['ID']>;
+};
+
+
+export type QuerySoftwarePanelsArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryStationArgs = {
+  simulatorId: Scalars['ID'];
+  station: Scalars['String'];
+};
+
+
+export type QueryStealthFieldArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryStealthArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QuerySubspaceFieldArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type QuerySurveyformArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+  active?: Maybe<Scalars['Boolean']>;
+};
+
+
+export type QuerySystemsArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+  type?: Maybe<Scalars['String']>;
+  power?: Maybe<Scalars['Boolean']>;
+  heat?: Maybe<Scalars['Boolean']>;
+  extra?: Maybe<Scalars['Boolean']>;
+  damageWhich?: Maybe<Scalars['String']>;
+};
+
+
+export type QuerySystemArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryTacticalMapsArgs = {
+  flightId?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryTacticalMapArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryTargetingArgs = {
+  id?: Maybe<Scalars['ID']>;
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryTaskReportArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+  type?: Maybe<Scalars['String']>;
+  cleared?: Maybe<Scalars['Boolean']>;
+};
+
+
+export type QueryTasksArgs = {
+  simulatorId: Scalars['ID'];
+  station?: Maybe<Scalars['String']>;
+  definitions?: Maybe<Array<Scalars['String']>>;
+};
+
+
+export type QueryTaskDefinitionsArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryTaskInstructionsArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+  definition: Scalars['String'];
+  requiredValues: Scalars['JSON'];
+  task?: Maybe<TaskInput>;
+};
+
+
+export type QueryTeamsArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+  type?: Maybe<Scalars['String']>;
+  cleared?: Maybe<Scalars['Boolean']>;
+};
+
+
+export type Query_TemplateArgs = {
+  simulatorId: Scalars['ID'];
+};
+
+
+export type QueryThrustersArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryThrusterArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryThxArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryTorpedosArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryTorpedoArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryTractorBeamArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryTransportersArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryTranswarpArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryTriggersArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryViewscreensArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryCountermeasuresArgs = {
+  simulatorId: Scalars['ID'];
+};
+
+
+export type QueryEntityArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryEntitiesArgs = {
+  flightId: Scalars['ID'];
+  inert?: Maybe<Scalars['Boolean']>;
+};
+
+
+export type QueryDmxFixturesArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryDmxConfigArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryTaskFlowsArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+export enum Reactor_Models {
+  Reactor = 'reactor',
+  Battery = 'battery'
+}
+
+export type Railgun = SystemInterface & {
+  __typename?: 'Railgun';
+  id?: Maybe<Scalars['ID']>;
+  simulatorId?: Maybe<Scalars['ID']>;
+  type?: Maybe<Scalars['String']>;
+  power?: Maybe<Power>;
+  name?: Maybe<Scalars['String']>;
+  displayName?: Maybe<Scalars['String']>;
+  upgradeName?: Maybe<Scalars['String']>;
+  upgraded?: Maybe<Scalars['Boolean']>;
+  stealthFactor?: Maybe<Scalars['Float']>;
+  heat?: Maybe<Scalars['Float']>;
+  damage?: Maybe<Damage>;
+  coolant?: Maybe<Scalars['Float']>;
+  locations?: Maybe<Array<Maybe<Room>>>;
+  availableAmmo?: Maybe<Scalars['Int']>;
+  maxAmmo?: Maybe<Scalars['Int']>;
+  ammo?: Maybe<Scalars['Int']>;
+};
+
+export type RangeInput = {
+  upper?: Maybe<Scalars['Float']>;
+  lower?: Maybe<Scalars['Float']>;
+};
+
+export type Reactor = SystemInterface & {
+  __typename?: 'Reactor';
+  id: Scalars['ID'];
+  simulatorId?: Maybe<Scalars['ID']>;
+  type?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  displayName?: Maybe<Scalars['String']>;
+  upgradeName?: Maybe<Scalars['String']>;
+  upgraded?: Maybe<Scalars['Boolean']>;
+  stealthFactor?: Maybe<Scalars['Float']>;
+  power?: Maybe<Power>;
+  heat?: Maybe<Scalars['Float']>;
+  heatRate?: Maybe<Scalars['Float']>;
+  coolant?: Maybe<Scalars['Float']>;
+  damage?: Maybe<Damage>;
+  model?: Maybe<Reactor_Models>;
+  ejected?: Maybe<Scalars['Boolean']>;
+  externalPower?: Maybe<Scalars['Boolean']>;
+  powerOutput?: Maybe<Scalars['Int']>;
+  efficiency?: Maybe<Scalars['Float']>;
+  efficiencies?: Maybe<Array<ReactorEfficiency>>;
+  batteryChargeLevel?: Maybe<Scalars['Float']>;
+  batteryChargeRate?: Maybe<Scalars['Float']>;
+  depletion?: Maybe<Scalars['Float']>;
+  hasWings?: Maybe<Scalars['Boolean']>;
+  leftWingPower?: Maybe<Scalars['Int']>;
+  leftWingRequest?: Maybe<Scalars['Int']>;
+  leftWingRequested?: Maybe<Scalars['Boolean']>;
+  rightWingPower?: Maybe<Scalars['Int']>;
+  rightWingRequest?: Maybe<Scalars['Int']>;
+  rightWingRequested?: Maybe<Scalars['Boolean']>;
+  alphaLevel?: Maybe<Scalars['Float']>;
+  betaLevel?: Maybe<Scalars['Float']>;
+  alphaTarget?: Maybe<Scalars['Float']>;
+  betaTarget?: Maybe<Scalars['Float']>;
+  dilithiumRate?: Maybe<Scalars['Float']>;
+  locations?: Maybe<Array<Maybe<Room>>>;
+  requireBalance?: Maybe<Scalars['Boolean']>;
+};
+
+export type ReactorEfficiency = {
+  __typename?: 'ReactorEfficiency';
+  label: Scalars['String'];
+  color: Scalars['String'];
+  efficiency?: Maybe<Scalars['Float']>;
+};
+
+export type ReactorEfficiencyInput = {
+  label: Scalars['String'];
+  color: Scalars['String'];
+  efficiency: Scalars['Float'];
+};
+
+export type RecordEntry = {
+  __typename?: 'RecordEntry';
+  id?: Maybe<Scalars['ID']>;
+  contents?: Maybe<Scalars['String']>;
+  original?: Maybe<Scalars['String']>;
+  timestamp?: Maybe<Scalars['String']>;
+  category?: Maybe<Scalars['String']>;
+  modified?: Maybe<Scalars['Boolean']>;
+};
+
+export type RecordSnippet = {
+  __typename?: 'RecordSnippet';
+  id?: Maybe<Scalars['ID']>;
+  simulatorId?: Maybe<Scalars['ID']>;
+  sensorContactId?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  type?: Maybe<RecordSnippetType>;
+  visible?: Maybe<Scalars['Boolean']>;
+  launched?: Maybe<Scalars['Boolean']>;
+  records?: Maybe<Array<Maybe<RecordEntry>>>;
+  templateRecords?: Maybe<Array<Maybe<RecordEntry>>>;
+};
+
+export enum RecordSnippetType {
+  Normal = 'normal',
+  Buoy = 'buoy',
+  External = 'external'
+}
+
+export type RemoteAccessCode = {
+  __typename?: 'RemoteAccessCode';
+  id?: Maybe<Scalars['ID']>;
+  code?: Maybe<Scalars['String']>;
+  state?: Maybe<Scalars['String']>;
+  station?: Maybe<Scalars['String']>;
+  timestamp?: Maybe<Scalars['String']>;
+};
+
+export type RemoteAsset = {
+  url?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+export type RequirementInput = {
+  cards?: Maybe<Array<Maybe<Scalars['String']>>>;
+  systems?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+export type Room = {
+  __typename?: 'Room';
+  id?: Maybe<Scalars['ID']>;
+  simulatorId?: Maybe<Scalars['ID']>;
+  deck?: Maybe<Deck>;
+  name?: Maybe<Scalars['String']>;
+  roles?: Maybe<Array<Maybe<RoomRoles>>>;
+  gas?: Maybe<Scalars['Boolean']>;
+  svgPath?: Maybe<Scalars['String']>;
+  inventory?: Maybe<Array<Maybe<InventoryItem>>>;
+  systems?: Maybe<Array<Maybe<System>>>;
+};
+
+export type RoomCount = {
+  __typename?: 'RoomCount';
+  room?: Maybe<Room>;
+  count?: Maybe<Scalars['Int']>;
+};
+
+export type RoomCountInput = {
+  room?: Maybe<Scalars['ID']>;
+  count?: Maybe<Scalars['Int']>;
+};
+
+export type RoomInput = {
+  name?: Maybe<Scalars['String']>;
+  deck?: Maybe<Scalars['Int']>;
+  roles?: Maybe<Array<Maybe<RoomRoles>>>;
+};
+
+export enum RoomRoles {
+  Probe = 'probe',
+  Torpedo = 'torpedo',
+  DamageTeam = 'damageTeam',
+  SecurityTeam = 'securityTeam',
+  MedicalTeam = 'medicalTeam'
+}
+
+export type Rotation = {
+  __typename?: 'Rotation';
+  yaw?: Maybe<Scalars['Float']>;
+  pitch?: Maybe<Scalars['Float']>;
+  roll?: Maybe<Scalars['Float']>;
+};
+
+export type RotationInput = {
+  yaw?: Maybe<Scalars['Float']>;
+  pitch?: Maybe<Scalars['Float']>;
+  roll?: Maybe<Scalars['Float']>;
+};
+
+export enum Science_Burst_Detector {
+  Burst = 'burst',
+  Detector = 'detector'
+}
+
+export type Scanner = {
+  __typename?: 'Scanner';
+  id?: Maybe<Scalars['ID']>;
+  label?: Maybe<Scalars['String']>;
+  scanRequest?: Maybe<Scalars['String']>;
+  scanResults?: Maybe<Scalars['String']>;
+  scanning?: Maybe<Scalars['Boolean']>;
+};
+
+export type ScienceProbeEvent = {
+  __typename?: 'ScienceProbeEvent';
+  simulatorId: Scalars['ID'];
+  name: Scalars['String'];
+  type: Scalars['String'];
+  charge: Scalars['Float'];
+};
+
+export type ScienceType = {
+  __typename?: 'ScienceType';
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  type?: Maybe<Science_Burst_Detector>;
+  description?: Maybe<Scalars['String']>;
+  equipment?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+export type SecondaryNavigationRouteOption = {
+  __typename?: 'SecondaryNavigationRouteOption';
+  targetLocationId: Scalars['ID'];
+};
+
+export type SecondaryNavigationRouteOptionInput = {
+  targetLocationId: Scalars['ID'];
+};
+
+export type SecondaryStopTransitOption = {
+  __typename?: 'SecondaryStopTransitOption';
+  name: Scalars['String'];
+  timeModifier: Scalars['Float'];
+  riskModifier: Scalars['Float'];
+  iconUrl: Scalars['String'];
+};
+
+export type SecondaryStopTransitOptionInput = {
+  name: Scalars['String'];
+  timeModifier: Scalars['Float'];
+  riskModifier: Scalars['Float'];
+  iconUrl: Scalars['String'];
+};
+
+export type SensorContact = {
+  __typename?: 'SensorContact';
+  id: Scalars['ID'];
+  name?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+  size?: Maybe<Scalars['Float']>;
+  icon?: Maybe<Scalars['String']>;
+  picture?: Maybe<Scalars['String']>;
+  color?: Maybe<Scalars['String']>;
+  rotation?: Maybe<Scalars['Float']>;
+  speed?: Maybe<Scalars['Float']>;
+  location?: Maybe<Coordinates>;
+  destination?: Maybe<Coordinates>;
+  position?: Maybe<Coordinates>;
+  startTime?: Maybe<Scalars['Float']>;
+  endTime?: Maybe<Scalars['Float']>;
+  movementTime?: Maybe<Scalars['Int']>;
+  infrared?: Maybe<Scalars['Boolean']>;
+  cloaked?: Maybe<Scalars['Boolean']>;
+  destroyed?: Maybe<Scalars['Boolean']>;
+  forceUpdate?: Maybe<Scalars['Boolean']>;
+  targeted?: Maybe<Scalars['Boolean']>;
+  selected?: Maybe<Scalars['Boolean']>;
+  locked?: Maybe<Scalars['Boolean']>;
+  disabled?: Maybe<Scalars['Boolean']>;
+  hostile?: Maybe<Scalars['Boolean']>;
+  hitpoints?: Maybe<Scalars['Int']>;
+  autoFire?: Maybe<Scalars['Boolean']>;
+  particle?: Maybe<ParticleTypes>;
+};
+
+export type SensorContactInput = {
+  sensorId?: Maybe<Scalars['ID']>;
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+  size?: Maybe<Scalars['Float']>;
+  icon?: Maybe<Scalars['String']>;
+  picture?: Maybe<Scalars['String']>;
+  color?: Maybe<Scalars['String']>;
+  speed?: Maybe<Scalars['Float']>;
+  rotation?: Maybe<Scalars['Float']>;
+  location?: Maybe<CoordinatesInput>;
+  destination?: Maybe<CoordinatesInput>;
+  infrared?: Maybe<Scalars['Boolean']>;
+  cloaked?: Maybe<Scalars['Boolean']>;
+  destroyed?: Maybe<Scalars['Boolean']>;
+  locked?: Maybe<Scalars['Boolean']>;
+  disabled?: Maybe<Scalars['Boolean']>;
+  hostile?: Maybe<Scalars['Boolean']>;
+  hitpoints?: Maybe<Scalars['Int']>;
+  autoFire?: Maybe<Scalars['Boolean']>;
+  particle?: Maybe<ParticleTypes>;
+};
+
+export type SensorScan = {
+  __typename?: 'SensorScan';
+  id: Scalars['ID'];
+  timestamp?: Maybe<Scalars['String']>;
+  mode?: Maybe<Scalars['String']>;
+  location?: Maybe<Scalars['String']>;
+  request?: Maybe<Scalars['String']>;
+  response?: Maybe<Scalars['String']>;
+  scanning?: Maybe<Scalars['Boolean']>;
+  cancelled?: Maybe<Scalars['Boolean']>;
+};
+
+export type SensorScanInput = {
+  id?: Maybe<Scalars['ID']>;
+  timestamp?: Maybe<Scalars['String']>;
+  mode?: Maybe<Scalars['String']>;
+  location?: Maybe<Scalars['String']>;
+  request?: Maybe<Scalars['String']>;
+  response?: Maybe<Scalars['String']>;
+  scanning?: Maybe<Scalars['Boolean']>;
+  cancelled?: Maybe<Scalars['Boolean']>;
+};
+
+export type Sensors = SystemInterface & {
+  __typename?: 'Sensors';
+  id: Scalars['ID'];
+  simulatorId?: Maybe<Scalars['ID']>;
+  type?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  displayName?: Maybe<Scalars['String']>;
+  upgradeName?: Maybe<Scalars['String']>;
+  upgraded?: Maybe<Scalars['Boolean']>;
+  stealthFactor?: Maybe<Scalars['Float']>;
+  domain: Scalars['String'];
+  pings?: Maybe<Scalars['Boolean']>;
+  timeSincePing?: Maybe<Scalars['Int']>;
+  pingMode?: Maybe<Ping_Modes>;
+  scanResults?: Maybe<Scalars['String']>;
+  scanRequest?: Maybe<Scalars['String']>;
+  processedData?: Maybe<Array<ProcessedData>>;
+  presetAnswers?: Maybe<Array<Maybe<PresetAnswer>>>;
+  scanning?: Maybe<Scalars['Boolean']>;
+  power?: Maybe<Power>;
+  contacts?: Maybe<Array<Maybe<SensorContact>>>;
+  armyContacts?: Maybe<Array<Maybe<SensorContact>>>;
+  damage?: Maybe<Damage>;
+  scans?: Maybe<Array<Maybe<SensorScan>>>;
+  history?: Maybe<Scalars['Boolean']>;
+  autoTarget?: Maybe<Scalars['Boolean']>;
+  frozen?: Maybe<Scalars['Boolean']>;
+  autoThrusters?: Maybe<Scalars['Boolean']>;
+  interference?: Maybe<Scalars['Float']>;
+  movement?: Maybe<Coordinates>;
+  segments?: Maybe<Array<Maybe<SensorsSegment>>>;
+  locations?: Maybe<Array<Maybe<Room>>>;
+  defaultHitpoints?: Maybe<Scalars['Int']>;
+  defaultSpeed?: Maybe<Scalars['Float']>;
+  missPercent?: Maybe<Scalars['Float']>;
+};
+
+export type SensorsSegment = {
+  __typename?: 'SensorsSegment';
+  ring?: Maybe<Scalars['Int']>;
+  line?: Maybe<Scalars['Int']>;
+  state?: Maybe<Scalars['Boolean']>;
+};
+
+export type Set = {
+  __typename?: 'Set';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  clients: Array<SetClient>;
+};
+
+export type SetClient = {
+  __typename?: 'SetClient';
+  id?: Maybe<Scalars['ID']>;
+  client?: Maybe<Client>;
+  simulator?: Maybe<Simulator>;
+  stationSet?: Maybe<StationSet>;
+  station?: Maybe<Scalars['String']>;
+  secondary?: Maybe<Scalars['Boolean']>;
+  soundPlayer?: Maybe<Scalars['Boolean']>;
+};
+
+export type SetClientInput = {
+  id?: Maybe<Scalars['ID']>;
+  clientId?: Maybe<Scalars['ID']>;
+  simulatorId?: Maybe<Scalars['ID']>;
+  stationSet?: Maybe<Scalars['ID']>;
+  station?: Maybe<Scalars['ID']>;
+  secondary?: Maybe<Scalars['Boolean']>;
+  soundPlayer?: Maybe<Scalars['Boolean']>;
+};
+
+export type Shield = SystemInterface & {
+  __typename?: 'Shield';
+  id?: Maybe<Scalars['ID']>;
+  simulatorId?: Maybe<Scalars['ID']>;
+  type?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  displayName?: Maybe<Scalars['String']>;
+  upgradeName?: Maybe<Scalars['String']>;
+  upgraded?: Maybe<Scalars['Boolean']>;
+  stealthFactor?: Maybe<Scalars['Float']>;
+  heat?: Maybe<Scalars['Float']>;
+  coolant?: Maybe<Scalars['Float']>;
+  position?: Maybe<Scalars['Int']>;
+  power?: Maybe<Power>;
+  frequency?: Maybe<Scalars['Float']>;
+  state?: Maybe<Scalars['Boolean']>;
+  integrity?: Maybe<Scalars['Float']>;
+  damage?: Maybe<Damage>;
+  locations?: Maybe<Array<Maybe<Room>>>;
+};
+
+export type Ship = {
+  __typename?: 'Ship';
+  clamps?: Maybe<Scalars['Boolean']>;
+  ramps?: Maybe<Scalars['Boolean']>;
+  airlock?: Maybe<Scalars['Boolean']>;
+  legs?: Maybe<Scalars['Boolean']>;
+  bridgeCrew?: Maybe<Scalars['Int']>;
+  extraPeople?: Maybe<Scalars['Int']>;
+  radiation?: Maybe<Scalars['Float']>;
+  velocity?: Maybe<Scalars['Float']>;
+  remoteAccessCodes?: Maybe<Array<Maybe<RemoteAccessCode>>>;
+  selfDestructTime?: Maybe<Scalars['Float']>;
+  selfDestructCode?: Maybe<Scalars['String']>;
+  selfDestructAuto?: Maybe<Scalars['Boolean']>;
+  inventoryLogs?: Maybe<Array<Maybe<InventoryLog>>>;
+};
+
+export type ShortRangeComm = SystemInterface & {
+  __typename?: 'ShortRangeComm';
+  id?: Maybe<Scalars['ID']>;
+  simulatorId?: Maybe<Scalars['ID']>;
+  type?: Maybe<Scalars['String']>;
+  power?: Maybe<Power>;
+  damage?: Maybe<Damage>;
+  name?: Maybe<Scalars['String']>;
+  displayName?: Maybe<Scalars['String']>;
+  upgradeName?: Maybe<Scalars['String']>;
+  upgraded?: Maybe<Scalars['Boolean']>;
+  stealthFactor?: Maybe<Scalars['Float']>;
+  heat?: Maybe<Scalars['Float']>;
+  coolant?: Maybe<Scalars['Float']>;
+  frequency?: Maybe<Scalars['Float']>;
+  amplitude?: Maybe<Scalars['Float']>;
+  state?: Maybe<Scalars['String']>;
+  arrows?: Maybe<Array<Maybe<CommArrow>>>;
+  signals?: Maybe<Array<Maybe<CommSignal>>>;
+  locations?: Maybe<Array<Maybe<Room>>>;
+};
+
+export type ShortRangeCommExtended = {
+  __typename?: 'ShortRangeCommExtended';
+  id?: Maybe<Scalars['ID']>;
+  simulatorId?: Maybe<Scalars['ID']>;
+  type?: Maybe<Scalars['String']>;
+  power?: Maybe<Power>;
+  damage?: Maybe<Damage>;
+  name?: Maybe<Scalars['String']>;
+  frequency?: Maybe<Scalars['Float']>;
+  amplitude?: Maybe<Scalars['Float']>;
+  state?: Maybe<Scalars['String']>;
+  arrows?: Maybe<Array<Maybe<CommArrow>>>;
+  signals?: Maybe<Array<Maybe<CommSignal>>>;
+};
+
+export type ShownCoordinate = {
+  __typename?: 'ShownCoordinate';
+  showName?: Maybe<Scalars['Boolean']>;
+  name: Scalars['String'];
+  x: Scalars['Float'];
+  y: Scalars['Float'];
+};
+
+export type ShownCoordinateInput = {
+  showName?: Maybe<Scalars['Boolean']>;
+  name: Scalars['String'];
+  x: Scalars['Float'];
+  y: Scalars['Float'];
+};
+
+export type Sickbay = SystemInterface & {
+  __typename?: 'Sickbay';
+  id?: Maybe<Scalars['ID']>;
+  simulatorId?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  displayName?: Maybe<Scalars['String']>;
+  upgradeName?: Maybe<Scalars['String']>;
+  upgraded?: Maybe<Scalars['Boolean']>;
+  type?: Maybe<Scalars['String']>;
+  damage?: Maybe<Damage>;
+  power?: Maybe<Power>;
+  stealthFactor?: Maybe<Scalars['Float']>;
+  locations?: Maybe<Array<Maybe<Room>>>;
+  deconProgram?: Maybe<Scalars['String']>;
+  deconLocation?: Maybe<Scalars['String']>;
+  deconActive?: Maybe<Scalars['Boolean']>;
+  deconOffset?: Maybe<Scalars['Float']>;
+  autoFinishDecon?: Maybe<Scalars['Boolean']>;
+  sickbayRoster?: Maybe<Array<Maybe<Crew>>>;
+  bunks?: Maybe<Array<Maybe<SickbayBunk>>>;
+};
+
+export type SickbayBunk = {
+  __typename?: 'SickbayBunk';
+  id?: Maybe<Scalars['ID']>;
+  sickbayId?: Maybe<Scalars['ID']>;
+  scanRequest?: Maybe<Scalars['String']>;
+  scanResults?: Maybe<Scalars['String']>;
+  scanning?: Maybe<Scalars['Boolean']>;
+  patient?: Maybe<Crew>;
+};
+
+export type Signal = {
+  __typename?: 'Signal';
+  id?: Maybe<Scalars['ID']>;
+  type?: Maybe<Scalars['String']>;
+  level?: Maybe<Scalars['Float']>;
+  power?: Maybe<Scalars['Float']>;
+};
+
+export type SignalJammer = SystemInterface & {
+  __typename?: 'SignalJammer';
+  id?: Maybe<Scalars['ID']>;
+  simulatorId?: Maybe<Scalars['ID']>;
+  type?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  displayName?: Maybe<Scalars['String']>;
+  upgradeName?: Maybe<Scalars['String']>;
+  upgraded?: Maybe<Scalars['Boolean']>;
+  damage?: Maybe<Damage>;
+  power?: Maybe<Power>;
+  stealthFactor?: Maybe<Scalars['Float']>;
+  addsSensorsInterference?: Maybe<Scalars['Boolean']>;
+  active?: Maybe<Scalars['Boolean']>;
+  level?: Maybe<Scalars['Float']>;
+  strength?: Maybe<Scalars['Float']>;
+  signals?: Maybe<Array<Maybe<Signal>>>;
+  locations?: Maybe<Array<Maybe<Room>>>;
+};
+
+export type SignalJammerInput = {
+  id?: Maybe<Scalars['ID']>;
+  active?: Maybe<Scalars['Boolean']>;
+  level?: Maybe<Scalars['Float']>;
+  strength?: Maybe<Scalars['Float']>;
+};
+
+export type Simulator = {
+  __typename?: 'Simulator';
+  id: Scalars['ID'];
+  name?: Maybe<Scalars['String']>;
+  alertlevel?: Maybe<Scalars['String']>;
+  alertLevelLock?: Maybe<Scalars['Boolean']>;
+  layout?: Maybe<Scalars['String']>;
+  caps?: Maybe<Scalars['Boolean']>;
+  template?: Maybe<Scalars['Boolean']>;
+  templateId?: Maybe<Scalars['ID']>;
+  systems?: Maybe<Array<System>>;
+  stations?: Maybe<Array<Station>>;
+  mission?: Maybe<Mission>;
+  missionConfigs?: Maybe<Scalars['JSON']>;
+  currentTimelineStep?: Maybe<Scalars['Int']>;
+  executedTimelineSteps?: Maybe<Array<Scalars['ID']>>;
+  timelines?: Maybe<Array<TimelineInstance>>;
+  decks?: Maybe<Array<Maybe<Deck>>>;
+  rooms?: Maybe<Array<Maybe<Room>>>;
+  ship?: Maybe<Ship>;
+  stepDamage?: Maybe<Scalars['Boolean']>;
+  verifyStep?: Maybe<Scalars['Boolean']>;
+  requiredDamageSteps?: Maybe<Array<Maybe<DamageStep>>>;
+  optionalDamageSteps?: Maybe<Array<Maybe<DamageStep>>>;
+  exocomps?: Maybe<Scalars['Int']>;
+  training?: Maybe<Scalars['Boolean']>;
+  panels?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  commandLines?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  triggers?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  triggersPaused?: Maybe<Scalars['Boolean']>;
+  interfaces?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  midiSets?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  bridgeOfficerMessaging?: Maybe<Scalars['Boolean']>;
+  hasPrinter?: Maybe<Scalars['Boolean']>;
+  hasLegs?: Maybe<Scalars['Boolean']>;
+  spaceEdventuresId?: Maybe<Scalars['String']>;
+  flipped?: Maybe<Scalars['Boolean']>;
+  capabilities?: Maybe<SimulatorCapabilities>;
+  documents?: Maybe<Array<Document>>;
+  ambiance?: Maybe<Array<Ambiance>>;
+  assets?: Maybe<SimulatorAssets>;
+  soundEffects?: Maybe<Scalars['JSON']>;
+  damageTasks?: Maybe<Array<Maybe<DamageTask>>>;
+  lighting?: Maybe<Lighting>;
+  stationSets?: Maybe<Array<Maybe<StationSet>>>;
+  stationSet?: Maybe<StationSet>;
+};
+
+export type SimulatorAssets = {
+  __typename?: 'SimulatorAssets';
+  mesh?: Maybe<Scalars['String']>;
+  texture?: Maybe<Scalars['String']>;
+  side?: Maybe<Scalars['String']>;
+  top?: Maybe<Scalars['String']>;
+  logo?: Maybe<Scalars['String']>;
+  bridge?: Maybe<Scalars['String']>;
+};
+
+export type SimulatorAssetsInput = {
+  mesh?: Maybe<Scalars['String']>;
+  texture?: Maybe<Scalars['String']>;
+  side?: Maybe<Scalars['String']>;
+  top?: Maybe<Scalars['String']>;
+  logo?: Maybe<Scalars['String']>;
+  bridge?: Maybe<Scalars['String']>;
+};
+
+export type SimulatorCapabilities = {
+  __typename?: 'SimulatorCapabilities';
+  systems: Array<Scalars['String']>;
+  cards: Array<Scalars['String']>;
+  spaceEdventures?: Maybe<Scalars['Boolean']>;
+  docking?: Maybe<Scalars['Boolean']>;
+};
+
+export type SimulatorInput = {
+  simulatorId: Scalars['ID'];
+  stationSet: Scalars['ID'];
+  missionId?: Maybe<Scalars['ID']>;
+};
+
+export type SoftwarePanel = {
+  __typename?: 'SoftwarePanel';
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  cables?: Maybe<Array<Maybe<PanelCable>>>;
+  components?: Maybe<Array<Maybe<PanelComponent>>>;
+  connections?: Maybe<Array<Maybe<PanelConnection>>>;
+};
+
+export type SoftwarePanelInput = {
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  cables?: Maybe<Array<Maybe<PanelCableInput>>>;
+  components?: Maybe<Array<Maybe<PanelComponentInput>>>;
+  connections?: Maybe<Array<Maybe<PanelConnectionInput>>>;
+};
+
+export type Sound = {
+  __typename?: 'Sound';
+  id?: Maybe<Scalars['ID']>;
+  clients?: Maybe<Array<Maybe<Scalars['String']>>>;
+  asset?: Maybe<Scalars['String']>;
+  url?: Maybe<Scalars['String']>;
+  volume?: Maybe<Scalars['Float']>;
+  playbackRate?: Maybe<Scalars['Float']>;
+  channel?: Maybe<Array<Maybe<Scalars['Int']>>>;
+  looping?: Maybe<Scalars['Boolean']>;
+  preserveChannels?: Maybe<Scalars['Boolean']>;
+};
+
+export type SoundInput = {
+  id?: Maybe<Scalars['ID']>;
+  clients?: Maybe<Array<Maybe<Scalars['String']>>>;
+  asset?: Maybe<Scalars['String']>;
+  volume?: Maybe<Scalars['Float']>;
+  playbackRate?: Maybe<Scalars['Float']>;
+  channel?: Maybe<Array<Maybe<Scalars['Int']>>>;
+  looping?: Maybe<Scalars['Boolean']>;
+  preserveChannels?: Maybe<Scalars['Boolean']>;
+};
+
+export type SpaceEdventuresCenter = {
+  __typename?: 'SpaceEdventuresCenter';
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  token?: Maybe<Scalars['String']>;
+  simulators?: Maybe<Array<Maybe<NamedObject>>>;
+  missions?: Maybe<Array<Maybe<NamedObject>>>;
+  badges?: Maybe<Array<Maybe<NamedObject>>>;
+  flightTypes?: Maybe<Array<Maybe<FlightType>>>;
+};
+
+export type SpaceEdventuresClient = {
+  __typename?: 'SpaceEdventuresClient';
+  id?: Maybe<Scalars['ID']>;
+  token?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+};
+
+export type Speed = {
+  __typename?: 'Speed';
+  text?: Maybe<Scalars['String']>;
+  number?: Maybe<Scalars['Float']>;
+  velocity?: Maybe<Scalars['Float']>;
+  optimal?: Maybe<Scalars['Boolean']>;
+};
+
+export type SpeedInput = {
+  text?: Maybe<Scalars['String']>;
+  number?: Maybe<Scalars['Float']>;
+  velocity?: Maybe<Scalars['Float']>;
+  optimal?: Maybe<Scalars['Boolean']>;
+};
+
+export type StageChildComponent = {
+  __typename?: 'StageChildComponent';
+  parentId: Scalars['ID'];
+  parent?: Maybe<Entity>;
+};
+
+export type StageComponent = {
+  __typename?: 'StageComponent';
+  scaleLabel?: Maybe<Scalars['String']>;
+  scaleLabelShort?: Maybe<Scalars['String']>;
+  skyboxKey?: Maybe<Scalars['String']>;
+  childrenAsSprites?: Maybe<Scalars['Boolean']>;
+};
+
+export type Station = {
+  __typename?: 'Station';
+  name: Scalars['String'];
+  tags?: Maybe<Array<Scalars['String']>>;
+  description?: Maybe<Scalars['String']>;
+  training?: Maybe<Scalars['String']>;
+  login?: Maybe<Scalars['Boolean']>;
+  executive?: Maybe<Scalars['Boolean']>;
+  messageGroups?: Maybe<Array<Maybe<Scalars['String']>>>;
+  layout?: Maybe<Scalars['String']>;
+  widgets?: Maybe<Array<Maybe<Scalars['String']>>>;
+  cards?: Maybe<Array<Card>>;
+  ambiance?: Maybe<Scalars['String']>;
+};
+
+
+export type StationCardsArgs = {
+  showHidden?: Maybe<Scalars['Boolean']>;
+};
+
+export type StationSet = {
+  __typename?: 'StationSet';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  simulator?: Maybe<Simulator>;
+  crewCount?: Maybe<Scalars['Int']>;
+  stations: Array<Station>;
+};
+
+export type StealthField = SystemInterface & {
+  __typename?: 'StealthField';
+  id?: Maybe<Scalars['ID']>;
+  simulatorId?: Maybe<Scalars['ID']>;
+  type?: Maybe<Scalars['String']>;
+  power?: Maybe<Power>;
+  damage?: Maybe<Damage>;
+  name?: Maybe<Scalars['String']>;
+  displayName?: Maybe<Scalars['String']>;
+  upgradeName?: Maybe<Scalars['String']>;
+  upgraded?: Maybe<Scalars['Boolean']>;
+  stealthFactor?: Maybe<Scalars['Float']>;
+  activated?: Maybe<Scalars['Boolean']>;
+  charge?: Maybe<Scalars['Boolean']>;
+  changeAlert?: Maybe<Scalars['Boolean']>;
+  sensorsSonar?: Maybe<Scalars['Boolean']>;
+  state?: Maybe<Scalars['Boolean']>;
+  quadrants?: Maybe<StealthQuad>;
+  locations?: Maybe<Array<Maybe<Room>>>;
+};
+
+export type StealthQuad = {
+  __typename?: 'StealthQuad';
+  fore?: Maybe<Scalars['Float']>;
+  aft?: Maybe<Scalars['Float']>;
+  port?: Maybe<Scalars['Float']>;
+  starboard?: Maybe<Scalars['Float']>;
+};
+
+export type StringCoordinates = {
+  __typename?: 'StringCoordinates';
+  x?: Maybe<Scalars['String']>;
+  y?: Maybe<Scalars['String']>;
+  z?: Maybe<Scalars['String']>;
+};
+
+export type StringCoordinatesInput = {
+  x?: Maybe<Scalars['String']>;
+  y?: Maybe<Scalars['String']>;
+  z?: Maybe<Scalars['String']>;
+};
+
 export type Subscription = {
   __typename?: 'Subscription';
   _empty?: Maybe<Scalars['String']>;
@@ -7511,3055 +10958,6 @@ export type SubscriptionTaskFlowsArgs = {
   simulatorId?: Maybe<Scalars['ID']>;
 };
 
-export type Action = {
-  __typename?: 'Action';
-  action?: Maybe<Scalars['String']>;
-  message?: Maybe<Scalars['String']>;
-  voice?: Maybe<Scalars['String']>;
-  duration?: Maybe<Scalars['Float']>;
-};
-
-export type Ambiance = {
-  __typename?: 'Ambiance';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  asset: Scalars['String'];
-  volume: Scalars['Float'];
-  channel: Array<Scalars['Int']>;
-  playbackRate: Scalars['Float'];
-};
-
-export type AmbianceInput = {
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  asset?: Maybe<Scalars['String']>;
-  volume?: Maybe<Scalars['Float']>;
-  channel?: Maybe<Array<Maybe<Scalars['Int']>>>;
-  playbackRate?: Maybe<Scalars['Float']>;
-};
-
-export type Asset = {
-  __typename?: 'Asset';
-  assetKey: Scalars['String'];
-  url: Scalars['String'];
-};
-
-export type AssetObject = {
-  __typename?: 'AssetObject';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  folderPath: Scalars['String'];
-  fullPath: Scalars['String'];
-  url: Scalars['String'];
-};
-
-export type AssetFolder = {
-  __typename?: 'AssetFolder';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  folderPath: Scalars['String'];
-  fullPath: Scalars['String'];
-  objects: Array<AssetObject>;
-};
-
-export type RemoteAsset = {
-  url?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-};
-
-export type SimulatorAssets = {
-  __typename?: 'SimulatorAssets';
-  mesh?: Maybe<Scalars['String']>;
-  texture?: Maybe<Scalars['String']>;
-  side?: Maybe<Scalars['String']>;
-  top?: Maybe<Scalars['String']>;
-  logo?: Maybe<Scalars['String']>;
-  bridge?: Maybe<Scalars['String']>;
-};
-
-export type SimulatorAssetsInput = {
-  mesh?: Maybe<Scalars['String']>;
-  texture?: Maybe<Scalars['String']>;
-  side?: Maybe<Scalars['String']>;
-  top?: Maybe<Scalars['String']>;
-  logo?: Maybe<Scalars['String']>;
-  bridge?: Maybe<Scalars['String']>;
-};
-
-export type Client = {
-  __typename?: 'Client';
-  id: Scalars['ID'];
-  label?: Maybe<Scalars['String']>;
-  connected?: Maybe<Scalars['Boolean']>;
-  flight?: Maybe<Flight>;
-  simulator?: Maybe<Simulator>;
-  station?: Maybe<Station>;
-  loginName?: Maybe<Scalars['String']>;
-  loginState?: Maybe<Scalars['String']>;
-  ping?: Maybe<Scalars['String']>;
-  offlineState?: Maybe<Scalars['String']>;
-  movie?: Maybe<Scalars['String']>;
-  training?: Maybe<Scalars['Boolean']>;
-  soundPlayer?: Maybe<Scalars['Boolean']>;
-  caches?: Maybe<Array<Maybe<Scalars['String']>>>;
-  hypercard?: Maybe<Scalars['String']>;
-  overlay?: Maybe<Scalars['Boolean']>;
-  cracked?: Maybe<Scalars['Boolean']>;
-  commandLineOutput?: Maybe<Array<Maybe<Scalars['String']>>>;
-  commandLineFeedback?: Maybe<Array<Maybe<CommandLineFeedback>>>;
-  currentCard?: Maybe<Card>;
-  token?: Maybe<Scalars['String']>;
-  email?: Maybe<Scalars['String']>;
-  mobile?: Maybe<Scalars['Boolean']>;
-  cards?: Maybe<Array<Maybe<Scalars['String']>>>;
-  keypad?: Maybe<Keypad>;
-};
-
-export type CommandLineFeedback = {
-  __typename?: 'CommandLineFeedback';
-  id?: Maybe<Scalars['ID']>;
-  clientId?: Maybe<Scalars['ID']>;
-  command?: Maybe<Scalars['String']>;
-  approve?: Maybe<Scalars['String']>;
-  deny?: Maybe<Scalars['String']>;
-  triggers?: Maybe<Array<Maybe<TimelineItem>>>;
-};
-
-export type Keypad = {
-  __typename?: 'Keypad';
-  id?: Maybe<Scalars['ID']>;
-  label?: Maybe<Scalars['String']>;
-  code?: Maybe<Array<Maybe<Scalars['Int']>>>;
-  enteredCode?: Maybe<Array<Maybe<Scalars['Int']>>>;
-  codeLength?: Maybe<Scalars['Int']>;
-  giveHints?: Maybe<Scalars['Boolean']>;
-  allowedAttempts?: Maybe<Scalars['Int']>;
-  attempts?: Maybe<Scalars['Int']>;
-  locked?: Maybe<Scalars['Boolean']>;
-};
-
-export type Scanner = {
-  __typename?: 'Scanner';
-  id?: Maybe<Scalars['ID']>;
-  label?: Maybe<Scalars['String']>;
-  scanRequest?: Maybe<Scalars['String']>;
-  scanResults?: Maybe<Scalars['String']>;
-  scanning?: Maybe<Scalars['Boolean']>;
-};
-
-export type Sound = {
-  __typename?: 'Sound';
-  id?: Maybe<Scalars['ID']>;
-  clients?: Maybe<Array<Maybe<Scalars['String']>>>;
-  asset?: Maybe<Scalars['String']>;
-  url?: Maybe<Scalars['String']>;
-  volume?: Maybe<Scalars['Float']>;
-  playbackRate?: Maybe<Scalars['Float']>;
-  channel?: Maybe<Array<Maybe<Scalars['Int']>>>;
-  looping?: Maybe<Scalars['Boolean']>;
-  preserveChannels?: Maybe<Scalars['Boolean']>;
-};
-
-export type SoundInput = {
-  id?: Maybe<Scalars['ID']>;
-  clients?: Maybe<Array<Maybe<Scalars['String']>>>;
-  asset?: Maybe<Scalars['String']>;
-  volume?: Maybe<Scalars['Float']>;
-  playbackRate?: Maybe<Scalars['Float']>;
-  channel?: Maybe<Array<Maybe<Scalars['Int']>>>;
-  looping?: Maybe<Scalars['Boolean']>;
-  preserveChannels?: Maybe<Scalars['Boolean']>;
-};
-
-export type CommandLine = {
-  __typename?: 'CommandLine';
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  commands?: Maybe<Array<Maybe<CommandLineCommand>>>;
-  components?: Maybe<Scalars['JSON']>;
-  connections?: Maybe<Scalars['JSON']>;
-  values?: Maybe<Scalars['JSON']>;
-  config?: Maybe<Scalars['JSON']>;
-};
-
-export type CommandLineCommand = {
-  __typename?: 'CommandLineCommand';
-  name?: Maybe<Scalars['String']>;
-  help?: Maybe<Scalars['String']>;
-  hidden?: Maybe<Scalars['Boolean']>;
-};
-
-export type ComputerCore = {
-  __typename?: 'ComputerCore';
-  id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  users?: Maybe<Array<Maybe<ComputerCoreUser>>>;
-  files?: Maybe<Array<Maybe<ComputerCoreFile>>>;
-  virii?: Maybe<Array<Maybe<ComputerCoreVirus>>>;
-  terminals?: Maybe<Array<Maybe<ComputerCoreTerminals>>>;
-  history?: Maybe<Array<Maybe<Scalars['String']>>>;
-  hackingActive?: Maybe<Scalars['Boolean']>;
-  activeHackingPreset?: Maybe<HackingPreset>;
-  hackingState?: Maybe<Scalars['String']>;
-  hackingPortScanFrequency?: Maybe<Scalars['Float']>;
-  hackingLog: Array<Scalars['String']>;
-  hackingPorts: HackingPorts;
-};
-
-export type ComputerCoreUser = {
-  __typename?: 'ComputerCoreUser';
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  password?: Maybe<Scalars['String']>;
-  hacker?: Maybe<Scalars['Boolean']>;
-  level?: Maybe<Scalars['Int']>;
-};
-
-export type ComputerCoreFile = {
-  __typename?: 'ComputerCoreFile';
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  level?: Maybe<Scalars['Int']>;
-  corrupted?: Maybe<Scalars['Boolean']>;
-  restoring?: Maybe<Scalars['Boolean']>;
-};
-
-export type ComputerCoreFileInput = {
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  level?: Maybe<Scalars['Int']>;
-  corrupted?: Maybe<Scalars['Boolean']>;
-  restoring?: Maybe<Scalars['Boolean']>;
-};
-
-export type ComputerCoreVirus = {
-  __typename?: 'ComputerCoreVirus';
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-};
-
-export type ComputerCoreTerminals = {
-  __typename?: 'ComputerCoreTerminals';
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  status?: Maybe<Terminal_Status>;
-};
-
-export enum Terminal_Status {
-  F = 'F',
-  O = 'O',
-  S = 'S',
-  R = 'R'
-}
-
-export type ComputerCoreUserInput = {
-  name?: Maybe<Scalars['String']>;
-  password?: Maybe<Scalars['String']>;
-  hacker?: Maybe<Scalars['Boolean']>;
-  level?: Maybe<Scalars['Int']>;
-};
-
-export type HackingLrm = {
-  __typename?: 'HackingLRM';
-  id: Scalars['String'];
-  title: Scalars['String'];
-  message: Scalars['String'];
-};
-
-export type HackingPorts = {
-  __typename?: 'HackingPorts';
-  logs?: Maybe<Scalars['Int']>;
-  longRange?: Maybe<Scalars['Int']>;
-  remoteControl?: Maybe<Scalars['Int']>;
-  fileViewer?: Maybe<Scalars['Int']>;
-};
-
-export type HackingPreset = {
-  __typename?: 'HackingPreset';
-  id: Scalars['String'];
-  name: Scalars['String'];
-  logs: Scalars['Boolean'];
-  longRange: Scalars['Boolean'];
-  longRangeMessages: Array<HackingLrm>;
-  remoteControl: Scalars['Boolean'];
-  commandLines: Array<Scalars['String']>;
-  fileViewer: Scalars['Boolean'];
-  files: Array<ComputerCoreFile>;
-};
-
-export type Coolant = {
-  __typename?: 'Coolant';
-  temperature?: Maybe<Scalars['Float']>;
-  quantity?: Maybe<Scalars['Float']>;
-  rate?: Maybe<Scalars['Float']>;
-};
-
-export type CoolantTank = SystemInterface & {
-  __typename?: 'CoolantTank';
-  id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  type?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  displayName?: Maybe<Scalars['String']>;
-  upgradeName?: Maybe<Scalars['String']>;
-  upgraded?: Maybe<Scalars['Boolean']>;
-  coolant?: Maybe<Scalars['Float']>;
-  coolantRate?: Maybe<Scalars['Float']>;
-  damage?: Maybe<Damage>;
-  power?: Maybe<Power>;
-  stealthFactor?: Maybe<Scalars['Float']>;
-  locations?: Maybe<Array<Maybe<Room>>>;
-};
-
-export type CoolantRegulator = {
-  __typename?: 'CoolantRegulator';
-  id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  type?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  coolant?: Maybe<Coolant>;
-  damage?: Maybe<Scalars['Float']>;
-};
-
-export type SystemCoolant = {
-  __typename?: 'SystemCoolant';
-  systemId?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  displayName?: Maybe<Scalars['String']>;
-  type?: Maybe<Scalars['String']>;
-  coolant?: Maybe<Scalars['Float']>;
-  coolantRate?: Maybe<Scalars['Float']>;
-};
-
-export type CoreFeed = {
-  __typename?: 'CoreFeed';
-  id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  component?: Maybe<Scalars['String']>;
-  ignored?: Maybe<Scalars['Boolean']>;
-  timestamp?: Maybe<Scalars['String']>;
-  title?: Maybe<Scalars['String']>;
-  body?: Maybe<Scalars['String']>;
-  color?: Maybe<Scalars['String']>;
-};
-
-export type Timer = {
-  __typename?: 'Timer';
-  time?: Maybe<Scalars['String']>;
-  active?: Maybe<Scalars['Boolean']>;
-};
-
-export type CoreLayout = {
-  __typename?: 'CoreLayout';
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  config?: Maybe<Scalars['String']>;
-};
-
-export type CoreLayoutInput = {
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  config?: Maybe<Scalars['String']>;
-};
-
-export type Crew = {
-  __typename?: 'Crew';
-  id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  firstName?: Maybe<Scalars['String']>;
-  lastName?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  gender?: Maybe<Scalars['String']>;
-  age?: Maybe<Scalars['Int']>;
-  rank?: Maybe<Scalars['String']>;
-  position?: Maybe<Scalars['String']>;
-  killed?: Maybe<Scalars['Boolean']>;
-  location?: Maybe<Deck>;
-  workRoom?: Maybe<Room>;
-  restRoom?: Maybe<Room>;
-  inventory?: Maybe<Array<Maybe<InventoryItem>>>;
-  charts?: Maybe<Array<Maybe<Chart>>>;
-};
-
-export type CrewInput = {
-  id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  firstName?: Maybe<Scalars['String']>;
-  lastName?: Maybe<Scalars['String']>;
-  gender?: Maybe<Scalars['String']>;
-  age?: Maybe<Scalars['String']>;
-  rank?: Maybe<Scalars['String']>;
-  position?: Maybe<Scalars['String']>;
-  killed?: Maybe<Scalars['Boolean']>;
-  workRoom?: Maybe<Scalars['Int']>;
-  restRoom?: Maybe<Scalars['Int']>;
-};
-
-export type Crm = SystemInterface & {
-  __typename?: 'Crm';
-  id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  type?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  displayName?: Maybe<Scalars['String']>;
-  upgradeName?: Maybe<Scalars['String']>;
-  upgraded?: Maybe<Scalars['Boolean']>;
-  damage?: Maybe<Damage>;
-  power?: Maybe<Power>;
-  stealthFactor?: Maybe<Scalars['Float']>;
-  locations?: Maybe<Array<Maybe<Room>>>;
-  password?: Maybe<Scalars['String']>;
-  activated?: Maybe<Scalars['Boolean']>;
-  fighterImage?: Maybe<Scalars['String']>;
-  fighters?: Maybe<Array<Maybe<CrmFighter>>>;
-  enemies?: Maybe<Array<Maybe<CrmFighter>>>;
-  fighterStrength?: Maybe<Scalars['Float']>;
-  enemyStrength?: Maybe<Scalars['Float']>;
-  fighterCount?: Maybe<Scalars['Int']>;
-  enemyCount?: Maybe<Scalars['Int']>;
-  fighterDestroyedCount?: Maybe<Scalars['Int']>;
-  enemyDestroyedCount?: Maybe<Scalars['Int']>;
-  fighterIcon?: Maybe<Scalars['String']>;
-  enemyIcon?: Maybe<Scalars['String']>;
-  attacking?: Maybe<Scalars['Boolean']>;
-  interval?: Maybe<Scalars['Float']>;
-  phasers?: Maybe<Array<Maybe<CrmPhaserShot>>>;
-  torpedos?: Maybe<Array<Maybe<CrmTorpedo>>>;
-};
-
-export type CrmPhaserShot = {
-  __typename?: 'CrmPhaserShot';
-  target?: Maybe<Coordinates>;
-  destination?: Maybe<Coordinates>;
-};
-
-export type CrmTorpedo = {
-  __typename?: 'CrmTorpedo';
-  id?: Maybe<Scalars['ID']>;
-  position?: Maybe<Coordinates>;
-  destroyed?: Maybe<Scalars['Boolean']>;
-};
-
-export type CrmFighter = {
-  __typename?: 'CrmFighter';
-  id?: Maybe<Scalars['ID']>;
-  clientId?: Maybe<Scalars['ID']>;
-  client?: Maybe<Client>;
-  icon?: Maybe<Scalars['String']>;
-  size?: Maybe<Scalars['Float']>;
-  speed?: Maybe<Scalars['Float']>;
-  strength?: Maybe<Scalars['Float']>;
-  attacking?: Maybe<Scalars['Boolean']>;
-  hull?: Maybe<Scalars['Float']>;
-  shield?: Maybe<Scalars['Float']>;
-  shieldRaised?: Maybe<Scalars['Boolean']>;
-  phaserLevel?: Maybe<Scalars['Float']>;
-  torpedoCount?: Maybe<Scalars['Int']>;
-  torpedoLoaded?: Maybe<Scalars['Boolean']>;
-  destroyed?: Maybe<Scalars['Boolean']>;
-  docked?: Maybe<Scalars['Boolean']>;
-  position?: Maybe<Coordinates>;
-  velocity?: Maybe<Coordinates>;
-  frags?: Maybe<Scalars['Int']>;
-};
-
-export type Damage = {
-  __typename?: 'Damage';
-  damaged?: Maybe<Scalars['Boolean']>;
-  destroyed?: Maybe<Scalars['Boolean']>;
-  report?: Maybe<Scalars['String']>;
-  reportSteps?: Maybe<Array<Maybe<DamageReportStep>>>;
-  requested?: Maybe<Scalars['Boolean']>;
-  reactivationCode?: Maybe<Scalars['String']>;
-  neededReactivationCode?: Maybe<Scalars['String']>;
-  currentStep?: Maybe<Scalars['Int']>;
-  validate?: Maybe<Scalars['Boolean']>;
-  which?: Maybe<Damage_Types>;
-  taskReportDamage?: Maybe<Scalars['Boolean']>;
-};
-
-export enum Damage_Types {
-  Default = 'default',
-  Rnd = 'rnd',
-  Engineering = 'engineering'
-}
-
-export type DamageStep = {
-  __typename?: 'DamageStep';
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  args?: Maybe<DamageStepArgs>;
-};
-
-export type DamageStepArgs = {
-  __typename?: 'DamageStepArgs';
-  end?: Maybe<Scalars['Boolean']>;
-  cleanup?: Maybe<Scalars['Boolean']>;
-  name?: Maybe<Scalars['String']>;
-  orders?: Maybe<Scalars['String']>;
-  room?: Maybe<Scalars['String']>;
-  preamble?: Maybe<Scalars['String']>;
-  type?: Maybe<Scalars['String']>;
-  message?: Maybe<Scalars['String']>;
-  code?: Maybe<Scalars['String']>;
-  backup?: Maybe<Scalars['String']>;
-  inventory?: Maybe<Scalars['String']>;
-  destination?: Maybe<Scalars['String']>;
-  equipment?: Maybe<Scalars['String']>;
-  query?: Maybe<Scalars['String']>;
-  reactivate?: Maybe<Scalars['Boolean']>;
-};
-
-export type DamageTask = {
-  __typename?: 'DamageTask';
-  id?: Maybe<Scalars['ID']>;
-  taskTemplate?: Maybe<TaskTemplate>;
-  required?: Maybe<Scalars['Boolean']>;
-  nextSteps?: Maybe<Array<Maybe<TaskTemplate>>>;
-};
-
-export type DamageTaskInput = {
-  id?: Maybe<Scalars['ID']>;
-  required?: Maybe<Scalars['Boolean']>;
-  nextSteps?: Maybe<Array<Maybe<Scalars['ID']>>>;
-};
-
-export type DamageStepInput = {
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  args?: Maybe<DamageStepArgsInput>;
-  type?: Maybe<Damage_Step_Types>;
-};
-
-export enum Damage_Step_Types {
-  Required = 'required',
-  Optional = 'optional'
-}
-
-export type DamageStepArgsInput = {
-  end?: Maybe<Scalars['Boolean']>;
-  cleanup?: Maybe<Scalars['Boolean']>;
-  name?: Maybe<Scalars['String']>;
-  orders?: Maybe<Scalars['String']>;
-  room?: Maybe<Scalars['String']>;
-  preamble?: Maybe<Scalars['String']>;
-  type?: Maybe<Scalars['String']>;
-  message?: Maybe<Scalars['String']>;
-  code?: Maybe<Scalars['String']>;
-  backup?: Maybe<Scalars['String']>;
-  inventory?: Maybe<Scalars['String']>;
-  destination?: Maybe<Scalars['String']>;
-  equipment?: Maybe<Scalars['String']>;
-  query?: Maybe<Scalars['String']>;
-  reactivate?: Maybe<Scalars['Boolean']>;
-};
-
-export type DamageReportStep = {
-  __typename?: 'DamageReportStep';
-  id?: Maybe<Scalars['ID']>;
-  text?: Maybe<Scalars['String']>;
-  validate?: Maybe<Scalars['Boolean']>;
-  validated?: Maybe<Scalars['Boolean']>;
-};
-
-export type Deck = {
-  __typename?: 'Deck';
-  id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  number?: Maybe<Scalars['Int']>;
-  svgPath?: Maybe<Scalars['String']>;
-  doors?: Maybe<Scalars['Boolean']>;
-  evac?: Maybe<Scalars['Boolean']>;
-  rooms?: Maybe<Array<Maybe<Room>>>;
-  hallway?: Maybe<Scalars['String']>;
-  crewCount?: Maybe<Scalars['Int']>;
-  environment?: Maybe<Environment>;
-};
-
-export type Location = Deck | Room;
-
-export type DockingPort = {
-  __typename?: 'DockingPort';
-  id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  shipName?: Maybe<Scalars['String']>;
-  type?: Maybe<Docking_Types>;
-  clamps?: Maybe<Scalars['Boolean']>;
-  compress?: Maybe<Scalars['Boolean']>;
-  doors?: Maybe<Scalars['Boolean']>;
-  image?: Maybe<Scalars['String']>;
-  docked?: Maybe<Scalars['Boolean']>;
-  damage?: Maybe<Damage>;
-  direction?: Maybe<Docking_Direction>;
-  position?: Maybe<Coordinates>;
-  deck?: Maybe<Deck>;
-  inventory?: Maybe<Array<Maybe<InventoryItem>>>;
-};
-
-export type DockingPortInput = {
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  shipName?: Maybe<Scalars['String']>;
-  type?: Maybe<Scalars['String']>;
-  clamps?: Maybe<Scalars['Boolean']>;
-  compress?: Maybe<Scalars['Boolean']>;
-  doors?: Maybe<Scalars['Boolean']>;
-  image?: Maybe<Scalars['String']>;
-  docked?: Maybe<Scalars['Boolean']>;
-  direction?: Maybe<Docking_Direction>;
-  position?: Maybe<CoordinatesInput>;
-  deckId?: Maybe<Scalars['ID']>;
-};
-
-export enum Docking_Types {
-  Shuttlebay = 'shuttlebay',
-  Dockingport = 'dockingport',
-  Specialized = 'specialized'
-}
-
-export enum Docking_Direction {
-  Unspecified = 'unspecified',
-  Arriving = 'arriving',
-  Departing = 'departing'
-}
-
-export type Engine = SystemInterface & {
-  __typename?: 'Engine';
-  id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  type?: Maybe<Scalars['String']>;
-  power?: Maybe<Power>;
-  name?: Maybe<Scalars['String']>;
-  displayName?: Maybe<Scalars['String']>;
-  upgradeName?: Maybe<Scalars['String']>;
-  upgraded?: Maybe<Scalars['Boolean']>;
-  stealthFactor?: Maybe<Scalars['Float']>;
-  speeds?: Maybe<Array<Maybe<Speed>>>;
-  speed?: Maybe<Scalars['Int']>;
-  previousSpeed?: Maybe<Scalars['Int']>;
-  velocity?: Maybe<Scalars['Float']>;
-  speedFactor?: Maybe<Scalars['Float']>;
-  acceleration?: Maybe<Scalars['Float']>;
-  useAcceleration?: Maybe<Scalars['Boolean']>;
-  heat?: Maybe<Scalars['Float']>;
-  damage?: Maybe<Damage>;
-  on?: Maybe<Scalars['Boolean']>;
-  coolant?: Maybe<Scalars['Float']>;
-  locations?: Maybe<Array<Maybe<Room>>>;
-};
-
-export type Speed = {
-  __typename?: 'Speed';
-  text?: Maybe<Scalars['String']>;
-  number?: Maybe<Scalars['Float']>;
-  velocity?: Maybe<Scalars['Float']>;
-  optimal?: Maybe<Scalars['Boolean']>;
-};
-
-export type SpeedInput = {
-  text?: Maybe<Scalars['String']>;
-  number?: Maybe<Scalars['Float']>;
-  velocity?: Maybe<Scalars['Float']>;
-  optimal?: Maybe<Scalars['Boolean']>;
-};
-
-export type Environment = {
-  __typename?: 'Environment';
-  id?: Maybe<Scalars['ID']>;
-  oxygen?: Maybe<Scalars['Float']>;
-  nitrogen?: Maybe<Scalars['Float']>;
-  trace?: Maybe<Scalars['Float']>;
-  pressure?: Maybe<Scalars['Float']>;
-  temperature?: Maybe<Scalars['Float']>;
-  humidity?: Maybe<Scalars['Float']>;
-  gravity?: Maybe<Scalars['Float']>;
-};
-
-export type EnvironmentInput = {
-  id?: Maybe<Scalars['ID']>;
-  oxygen?: Maybe<Scalars['Float']>;
-  nitrogen?: Maybe<Scalars['Float']>;
-  trace?: Maybe<Scalars['Float']>;
-  pressure?: Maybe<Scalars['Float']>;
-  temperature?: Maybe<Scalars['Float']>;
-  humidity?: Maybe<Scalars['Float']>;
-  gravity?: Maybe<Scalars['Float']>;
-};
-
-export type Exocomp = {
-  __typename?: 'Exocomp';
-  id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  class?: Maybe<Scalars['String']>;
-  state?: Maybe<Scalars['String']>;
-  completion?: Maybe<Scalars['Float']>;
-  parts?: Maybe<Array<Maybe<Scalars['String']>>>;
-  destination?: Maybe<System>;
-  logs?: Maybe<Array<Maybe<ExocompLog>>>;
-  difficulty?: Maybe<Scalars['Float']>;
-  damage?: Maybe<Damage>;
-};
-
-export type ExocompLog = {
-  __typename?: 'ExocompLog';
-  timestamp?: Maybe<Scalars['Float']>;
-  message?: Maybe<Scalars['String']>;
-};
-
-export type ExocompInput = {
-  id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  parts?: Maybe<Array<Maybe<Scalars['String']>>>;
-  destination?: Maybe<Scalars['ID']>;
-  upgrade?: Maybe<Scalars['Boolean']>;
-};
-
-export type Externals = {
-  __typename?: 'Externals';
-  simulators?: Maybe<Array<Maybe<ExternalSimulator>>>;
-  missions?: Maybe<Array<Maybe<ExternalMission>>>;
-};
-
-export type ExternalSimulator = {
-  __typename?: 'ExternalSimulator';
-  title?: Maybe<Scalars['String']>;
-  author?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  url?: Maybe<Scalars['String']>;
-  date?: Maybe<Scalars['String']>;
-};
-
-export type ExternalMission = {
-  __typename?: 'ExternalMission';
-  title?: Maybe<Scalars['String']>;
-  author?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  url?: Maybe<Scalars['String']>;
-  date?: Maybe<Scalars['String']>;
-};
-
-export type FbFullSimulator = {
-  __typename?: 'FBFullSimulator';
-  id: Scalars['ID'];
-  Name: Scalars['String'];
-  Roles: Scalars['String'];
-  Missions: Array<FbMission>;
-};
-
-export type FbMission = {
-  __typename?: 'FBMission';
-  id: Scalars['ID'];
-  Name: Scalars['String'];
-  FlightHours: Scalars['Float'];
-  ClassHours: Scalars['Float'];
-  Synopsis: Scalars['String'];
-  Retired?: Maybe<Scalars['Boolean']>;
-};
-
-export type FbUser = {
-  __typename?: 'FBUser';
-  id: Scalars['ID'];
-};
-
-export type FbAwards = {
-  __typename?: 'FBAwards';
-  id: Scalars['ID'];
-  Name: Scalars['String'];
-  ClassHours: Scalars['Float'];
-  FlightHours: Scalars['Float'];
-  Description: Scalars['String'];
-  ImageURL?: Maybe<Scalars['String']>;
-};
-
-export type FbPageText = {
-  __typename?: 'FBPageText';
-  Awards?: Maybe<Scalars['String']>;
-  Heading?: Maybe<Scalars['String']>;
-  Subheading?: Maybe<Scalars['String']>;
-  EmailHeading?: Maybe<Scalars['String']>;
-  EmailNotFound?: Maybe<Scalars['String']>;
-};
-
-export type FbStationEmailLinks = {
-  __typename?: 'FBStationEmailLinks';
-  station?: Maybe<Scalars['String']>;
-  email?: Maybe<Scalars['String']>;
-};
-
-export type FbCurrentSelections = {
-  __typename?: 'FBCurrentSelections';
-  Mission?: Maybe<Scalars['ID']>;
-  Simulator?: Maybe<Scalars['ID']>;
-  StationEmailLinks?: Maybe<Array<FbStationEmailLinks>>;
-  Awards?: Maybe<Array<FbAwards>>;
-  EventId?: Maybe<Scalars['ID']>;
-  flightSubmissions?: Maybe<Array<Scalars['String']>>;
-};
-
-export type FbAwardInput = {
-  id: Scalars['ID'];
-  Name: Scalars['String'];
-  ClassHours: Scalars['Float'];
-  FlightHours: Scalars['Float'];
-  Description: Scalars['String'];
-  ImageURL?: Maybe<Scalars['String']>;
-};
-
-export type Flight = {
-  __typename?: 'Flight';
-  id: Scalars['ID'];
-  name?: Maybe<Scalars['String']>;
-  date?: Maybe<Scalars['String']>;
-  running?: Maybe<Scalars['Boolean']>;
-  timelineStep?: Maybe<Scalars['Int']>;
-  simulators?: Maybe<Array<Maybe<Simulator>>>;
-  flightType?: Maybe<Scalars['String']>;
-  transmitted?: Maybe<Scalars['Boolean']>;
-  clients?: Maybe<Array<Maybe<SpaceEdventuresClient>>>;
-};
-
-export type SpaceEdventuresClient = {
-  __typename?: 'SpaceEdventuresClient';
-  id?: Maybe<Scalars['ID']>;
-  token?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  email?: Maybe<Scalars['String']>;
-};
-
-export type AdvancedNavigationAndAstrometrics = SystemInterface & {
-  __typename?: 'AdvancedNavigationAndAstrometrics';
-  id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  type?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  displayName?: Maybe<Scalars['String']>;
-  upgradeName?: Maybe<Scalars['String']>;
-  upgraded?: Maybe<Scalars['Boolean']>;
-  extra?: Maybe<Scalars['Boolean']>;
-  damage?: Maybe<Damage>;
-  locations?: Maybe<Array<Maybe<Room>>>;
-  stealthFactor?: Maybe<Scalars['Float']>;
-  power?: Maybe<Power>;
-  flightSets: Array<FlightSet>;
-  currentLocation: BasicCoordinate;
-  coolantLevel: Scalars['Float'];
-  heatLevel: Scalars['Float'];
-  flightPaths: Array<NamedNavigationRoute>;
-  engineStatus: Scalars['String'];
-  hasEmergencyPower: Scalars['Boolean'];
-  startingStartupTime: Scalars['Float'];
-  remainingEta: Scalars['Float'];
-  totalEta: Scalars['Float'];
-  flightPathCoords: Array<FullCoordinate>;
-  remainingStartupTime?: Maybe<Scalars['Float']>;
-  showEta: Scalars['Boolean'];
-  showFlightSet: Scalars['Boolean'];
-  currentFlightSet?: Maybe<FlightSet>;
-  currentFlightPath?: Maybe<NavigationRoute>;
-  currentLocationName?: Maybe<Scalars['String']>;
-  currentLocationUrl?: Maybe<Scalars['String']>;
-  probes: Array<FsProbe>;
-  flightSetPathMap: Scalars['String'];
-  probeAssignments: Scalars['String'];
-};
-
-export type PointOfInterest = {
-  __typename?: 'PointOfInterest';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  location: XyLocation;
-  isVisible: Scalars['Boolean'];
-  isFogOfWar: Scalars['Boolean'];
-  speedIndex: Scalars['Float'];
-  riskIndex: Scalars['Float'];
-  type: PointOfInterestType;
-  information: PointOfInterestInformation;
-  iconUrl: Scalars['String'];
-  fullImageUrl: Scalars['String'];
-  transitOptions?: Maybe<Array<SecondaryStopTransitOption>>;
-  showName?: Maybe<Scalars['Boolean']>;
-};
-
-export type SecondaryStopTransitOption = {
-  __typename?: 'SecondaryStopTransitOption';
-  name: Scalars['String'];
-  timeModifier: Scalars['Float'];
-  riskModifier: Scalars['Float'];
-  iconUrl: Scalars['String'];
-};
-
-export type PointOfInterestInformation = {
-  __typename?: 'PointOfInterestInformation';
-  basicInformation: Scalars['String'];
-  hasBasicInformation: Scalars['Boolean'];
-  detailedInformation: Scalars['String'];
-  hasDetailedInformation: Scalars['Boolean'];
-  secretInformation: Scalars['String'];
-  hasSecretInformation: Scalars['Boolean'];
-};
-
-export type MapBorder = {
-  __typename?: 'MapBorder';
-  name: Scalars['String'];
-  id: Scalars['ID'];
-  location: MapBorderLocation;
-  iconUrl: Scalars['String'];
-  riskIndex: Scalars['Float'];
-};
-
-export type XyLocation = {
-  __typename?: 'XYLocation';
-  x: Scalars['Float'];
-  y: Scalars['Float'];
-};
-
-export type MapBorderLocation = {
-  __typename?: 'MapBorderLocation';
-  side: Scalars['String'];
-};
-
-export type PointOfInterestObject = {
-  __typename?: 'PointOfInterestObject';
-  category: Scalars['String'];
-  imageUri: Scalars['String'];
-};
-
-export type PointOfInterestType = {
-  __typename?: 'PointOfInterestType';
-  category: Scalars['String'];
-  imageUri: Scalars['String'];
-};
-
-export type NavigationHazardNavOptions = {
-  __typename?: 'NavigationHazardNavOptions';
-  action: Scalars['String'];
-  speedModifier: Scalars['Float'];
-  riskModifier: Scalars['Float'];
-  imgUrl: Scalars['String'];
-  isArrivalOnly: Scalars['Boolean'];
-};
-
-export type NavigationHazard = {
-  __typename?: 'NavigationHazard';
-  name: Scalars['String'];
-  description: Scalars['String'];
-  navOptions: Array<NavigationHazardNavOptions>;
-  imgUrl: Scalars['String'];
-};
-
-export type NavigationExitOptions = {
-  __typename?: 'NavigationExitOptions';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  riskModifier: Scalars['Float'];
-  imgUrl: Scalars['String'];
-};
-
-export type NavigationStartOptions = {
-  __typename?: 'NavigationStartOptions';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  riskModifier: Scalars['Float'];
-  imgUrl: Scalars['String'];
-  secondsForStartup: Scalars['Float'];
-};
-
-export type NavigationSpeedOptions = {
-  __typename?: 'NavigationSpeedOptions';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  speedModifier: Scalars['Float'];
-  riskModifier: Scalars['Float'];
-  requiresMaxEngines: Scalars['Boolean'];
-  imgUrl: Scalars['String'];
-};
-
-export type SecondaryNavigationRouteOption = {
-  __typename?: 'SecondaryNavigationRouteOption';
-  targetLocationId: Scalars['ID'];
-};
-
-export type NavigationRoute = {
-  __typename?: 'NavigationRoute';
-  targetLocationId: Scalars['ID'];
-  secondaryRouteOptions: Array<SecondaryNavigationRouteOption>;
-  isBorder: Scalars['Boolean'];
-  startOption: NavigationStartOptions;
-  speedOption: NavigationSpeedOptions;
-  exitOption: NavigationExitOptions;
-};
-
-export type HazardChoiceMapEntry = {
-  __typename?: 'HazardChoiceMapEntry';
-  poiId: Scalars['ID'];
-  hazardChoice: Scalars['String'];
-};
-
-export type NamedNavigationRoute = {
-  __typename?: 'NamedNavigationRoute';
-  name: Scalars['String'];
-  id: Scalars['ID'];
-  targetLocationId: Scalars['ID'];
-  secondaryRouteOptions: Array<SecondaryNavigationRouteOption>;
-  isBorder: Scalars['Boolean'];
-  startOption: NavigationStartOptions;
-  speedOption: NavigationSpeedOptions;
-  exitOption: NavigationExitOptions;
-};
-
-export type FlightSet = {
-  __typename?: 'FlightSet';
-  backgroundImg: Scalars['String'];
-  startOptions: Array<NavigationStartOptions>;
-  speedOptions: Array<NavigationSpeedOptions>;
-  exitOptions: Array<NavigationExitOptions>;
-  pointsOfInterest: Array<PointOfInterest>;
-  defaultStartingLocation: BasicCoordinate;
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  borders: Array<MapBorder>;
-  imageMaxX: Scalars['Float'];
-  imageMaxY: Scalars['Float'];
-  pixelsPerSecond: Scalars['Float'];
-  label?: Maybe<Scalars['String']>;
-  probeLaunchRangeRadius: Scalars['Float'];
-  addOnTraining?: Maybe<Scalars['Boolean']>;
-  pixelDistanceModifier?: Maybe<Scalars['Float']>;
-};
-
-export type BasicCoordinate = {
-  __typename?: 'BasicCoordinate';
-  x: Scalars['Float'];
-  y: Scalars['Float'];
-};
-
-export type ColoredCoordinate = {
-  __typename?: 'ColoredCoordinate';
-  color: Scalars['String'];
-  x: Scalars['Float'];
-  y: Scalars['Float'];
-};
-
-export type IdCoordinate = {
-  __typename?: 'IdCoordinate';
-  id: Scalars['ID'];
-  x: Scalars['Float'];
-  y: Scalars['Float'];
-};
-
-export type NamedCoordinate = {
-  __typename?: 'NamedCoordinate';
-  name: Scalars['String'];
-  x: Scalars['Float'];
-  y: Scalars['Float'];
-};
-
-export type ShownCoordinate = {
-  __typename?: 'ShownCoordinate';
-  showName?: Maybe<Scalars['Boolean']>;
-  name: Scalars['String'];
-  x: Scalars['Float'];
-  y: Scalars['Float'];
-};
-
-export type FullCoordinate = {
-  __typename?: 'FullCoordinate';
-  speed: Scalars['Float'];
-  color: Scalars['String'];
-  x: Scalars['Float'];
-  y: Scalars['Float'];
-};
-
-export type ProbeAssignment = {
-  __typename?: 'ProbeAssignment';
-  probeId: Scalars['ID'];
-  flightPathCoords: Array<BasicCoordinate>;
-  data: Array<Scalars['String']>;
-  remainingFuelCellCount: Scalars['Float'];
-  hasBeenViewed: Scalars['Boolean'];
-  currentLocation: BasicCoordinate;
-  targetLocationName: Scalars['String'];
-  currentEta: Scalars['Float'];
-  totalEta: Scalars['Float'];
-  completed: Scalars['Boolean'];
-};
-
-export type FsProbe = {
-  __typename?: 'FSProbe';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  type: Scalars['String'];
-  equipment: Array<Equipment>;
-};
-
-export type Equipment = {
-  __typename?: 'Equipment';
-  id: Scalars['ID'];
-  count: Scalars['Float'];
-};
-
-export type AdvancedNavStarsData = {
-  __typename?: 'AdvancedNavStarsData';
-  velocity: Scalars['Float'];
-  activating: Scalars['Boolean'];
-};
-
-export type PointOfInterestInput = {
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  location: LocationInput;
-  isVisible: Scalars['Boolean'];
-  isFogOfWar: Scalars['Boolean'];
-  speedIndex: Scalars['Float'];
-  riskIndex: Scalars['Float'];
-  type: PointOfInterestTypeInput;
-  information: PointOfInterestInformationInput;
-  iconUrl: Scalars['String'];
-  fullImageUrl: Scalars['String'];
-  transitOptions?: Maybe<Array<Maybe<SecondaryStopTransitOptionInput>>>;
-  showName?: Maybe<Scalars['Boolean']>;
-};
-
-export type LocationInput = {
-  x: Scalars['Float'];
-  y: Scalars['Float'];
-};
-
-export type SecondaryStopTransitOptionInput = {
-  name: Scalars['String'];
-  timeModifier: Scalars['Float'];
-  riskModifier: Scalars['Float'];
-  iconUrl: Scalars['String'];
-};
-
-export type PointOfInterestInformationInput = {
-  basicInformation: Scalars['String'];
-  hasBasicInformation: Scalars['Boolean'];
-  detailedInformation: Scalars['String'];
-  hasDetailedInformation: Scalars['Boolean'];
-  secretInformation: Scalars['String'];
-  hasSecretInformation: Scalars['Boolean'];
-};
-
-export type MapBorderInput = {
-  name: Scalars['String'];
-  id: Scalars['ID'];
-  location: MapBorderLocationInput;
-  iconUrl: Scalars['String'];
-  riskIndex: Scalars['Float'];
-};
-
-export type MapBorderLocationInput = {
-  side: Scalars['String'];
-};
-
-export type PointOfInterestTypeInput = {
-  category: Scalars['String'];
-  imageUri: Scalars['String'];
-};
-
-export type NavigationHazardNavOptionsInput = {
-  action: Scalars['String'];
-  speedModifier: Scalars['Float'];
-  riskModifier: Scalars['Float'];
-  imgUrl: Scalars['String'];
-  isArrivalOnly: Scalars['Boolean'];
-};
-
-export type NavigationHazardInput = {
-  name: Scalars['String'];
-  description: Scalars['String'];
-  navOptions: Array<NavigationHazardNavOptionsInput>;
-  imgUrl: Scalars['String'];
-};
-
-export type NavigationExitOptionsInput = {
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  riskModifier: Scalars['Float'];
-  imgUrl: Scalars['String'];
-};
-
-export type NavigationStartOptionsInput = {
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  riskModifier: Scalars['Float'];
-  imgUrl: Scalars['String'];
-  secondsForStartup: Scalars['Float'];
-};
-
-export type NavigationSpeedOptionsInput = {
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  speedModifier: Scalars['Float'];
-  riskModifier: Scalars['Float'];
-  requiresMaxEngines: Scalars['Boolean'];
-  imgUrl: Scalars['String'];
-};
-
-export type SecondaryNavigationRouteOptionInput = {
-  targetLocationId: Scalars['ID'];
-};
-
-export type NavigationRouteInput = {
-  targetLocationId: Scalars['ID'];
-  secondaryRouteOptions: Array<SecondaryNavigationRouteOptionInput>;
-  isBorder: Scalars['Boolean'];
-  startOption: NavigationStartOptionsInput;
-  speedOption: NavigationSpeedOptionsInput;
-  exitOption: NavigationExitOptionsInput;
-};
-
-export type HazardChoiceMapEntryInput = {
-  poiId: Scalars['ID'];
-  hazardChoice: Scalars['String'];
-};
-
-export type NamedNavigationRouteInput = {
-  name: Scalars['String'];
-  id: Scalars['ID'];
-  targetLocationId: Scalars['ID'];
-  secondaryRouteOptions: Array<SecondaryNavigationRouteOptionInput>;
-  isBorder: Scalars['Boolean'];
-  startOption: NavigationStartOptionsInput;
-  speedOption: NavigationSpeedOptionsInput;
-  exitOption: NavigationExitOptionsInput;
-};
-
-export type FlightSetInput = {
-  backgroundImg: Scalars['String'];
-  startOptions: Array<NavigationStartOptionsInput>;
-  speedOptions: Array<NavigationSpeedOptionsInput>;
-  exitOptions: Array<NavigationExitOptionsInput>;
-  pointsOfInterest: Array<PointOfInterestInput>;
-  defaultStartingLocation: BasicCoordinateInput;
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  borders: Array<MapBorderInput>;
-  imageMaxX: Scalars['Float'];
-  imageMaxY: Scalars['Float'];
-  pixelsPerSecond: Scalars['Float'];
-  label?: Maybe<Scalars['String']>;
-  probeLaunchRangeRadius: Scalars['Float'];
-  addOnTraining?: Maybe<Scalars['Boolean']>;
-  pixelDistanceModifier?: Maybe<Scalars['Float']>;
-};
-
-export type BasicCoordinateInput = {
-  x: Scalars['Float'];
-  y: Scalars['Float'];
-};
-
-export type ColoredCoordinateInput = {
-  color: Scalars['String'];
-  x: Scalars['Float'];
-  y: Scalars['Float'];
-};
-
-export type IdCoordinateInput = {
-  id: Scalars['ID'];
-  x: Scalars['Float'];
-  y: Scalars['Float'];
-};
-
-export type NamedCoordinateInput = {
-  name: Scalars['String'];
-  x: Scalars['Float'];
-  y: Scalars['Float'];
-};
-
-export type ShownCoordinateInput = {
-  showName?: Maybe<Scalars['Boolean']>;
-  name: Scalars['String'];
-  x: Scalars['Float'];
-  y: Scalars['Float'];
-};
-
-export type FullCoordinateInput = {
-  speed: Scalars['Float'];
-  color: Scalars['String'];
-  x: Scalars['Float'];
-  y: Scalars['Float'];
-};
-
-export type ProbeAssignmentInput = {
-  probeId: Scalars['ID'];
-  flightPathCoords: Array<BasicCoordinateInput>;
-  data: Array<Scalars['String']>;
-  remainingFuelCellCount: Scalars['Float'];
-  hasBeenViewed: Scalars['Boolean'];
-  currentLocation: BasicCoordinateInput;
-  targetLocationName: Scalars['String'];
-  currentEta: Scalars['Float'];
-  totalEta: Scalars['Float'];
-  completed: Scalars['Boolean'];
-};
-
-export type FsProbeInput = {
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  type: Scalars['String'];
-  equipment: Array<FsEquipmentInput>;
-};
-
-export type FsEquipmentInput = {
-  id: Scalars['ID'];
-  count: Scalars['Float'];
-};
-
-export type GoogleSheets = {
-  __typename?: 'GoogleSheets';
-  id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-};
-
-export type GoogleSheetFile = {
-  __typename?: 'GoogleSheetFile';
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-};
-
-export type GoogleSpreadsheet = {
-  __typename?: 'GoogleSpreadsheet';
-  id?: Maybe<Scalars['ID']>;
-  title?: Maybe<Scalars['String']>;
-  sheets?: Maybe<Array<Maybe<GoogleSheet>>>;
-};
-
-export type GoogleSheet = {
-  __typename?: 'GoogleSheet';
-  id?: Maybe<Scalars['ID']>;
-  title?: Maybe<Scalars['String']>;
-};
-
-export enum Hull_Plating_Mode {
-  Kinetic = 'kinetic',
-  Energy = 'energy',
-  Radiation = 'radiation'
-}
-
-export type HullPlating = SystemInterface & {
-  __typename?: 'HullPlating';
-  id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  type?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  displayName?: Maybe<Scalars['String']>;
-  upgradeName?: Maybe<Scalars['String']>;
-  upgraded?: Maybe<Scalars['Boolean']>;
-  extra?: Maybe<Scalars['Boolean']>;
-  damage?: Maybe<Damage>;
-  locations?: Maybe<Array<Maybe<Room>>>;
-  stealthFactor?: Maybe<Scalars['Float']>;
-  power?: Maybe<Power>;
-  engaged?: Maybe<Scalars['Boolean']>;
-  mode?: Maybe<Hull_Plating_Mode>;
-  pulse?: Maybe<Scalars['Boolean']>;
-};
-
-export type Interface = {
-  __typename?: 'Interface';
-  id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  templateId?: Maybe<Scalars['ID']>;
-  deviceType?: Maybe<InterfaceDevice>;
-  name?: Maybe<Scalars['String']>;
-  components?: Maybe<Scalars['JSON']>;
-  connections?: Maybe<Scalars['JSON']>;
-  values?: Maybe<Scalars['JSON']>;
-  config?: Maybe<Scalars['JSON']>;
-};
-
-export type InterfaceDevice = {
-  __typename?: 'InterfaceDevice';
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  width?: Maybe<Scalars['Int']>;
-  height?: Maybe<Scalars['Int']>;
-  isLandscape?: Maybe<Scalars['Boolean']>;
-};
-
-export type InternalComm = SystemInterface & {
-  __typename?: 'InternalComm';
-  id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  type?: Maybe<Scalars['String']>;
-  power?: Maybe<Power>;
-  name?: Maybe<Scalars['String']>;
-  displayName?: Maybe<Scalars['String']>;
-  upgradeName?: Maybe<Scalars['String']>;
-  upgraded?: Maybe<Scalars['Boolean']>;
-  state?: Maybe<Scalars['String']>;
-  outgoing?: Maybe<Scalars['String']>;
-  incoming?: Maybe<Scalars['String']>;
-  damage?: Maybe<Damage>;
-  stealthFactor?: Maybe<Scalars['Float']>;
-  locations?: Maybe<Array<Maybe<Room>>>;
-};
-
-export type InventoryItem = {
-  __typename?: 'InventoryItem';
-  id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  count?: Maybe<Scalars['Int']>;
-  metadata?: Maybe<InventoryMetadata>;
-  roomCount?: Maybe<Array<Maybe<RoomCount>>>;
-  teamCount?: Maybe<Array<Maybe<TeamCount>>>;
-};
-
-export type InventoryItemInput = {
-  simulatorId?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  metadata?: Maybe<InventoryMetadataInput>;
-  roomCount?: Maybe<Array<Maybe<RoomCountInput>>>;
-  crewCount?: Maybe<Array<Maybe<CrewCountInput>>>;
-};
-
-export type InventoryMetadata = {
-  __typename?: 'InventoryMetadata';
-  type?: Maybe<Scalars['String']>;
-  size?: Maybe<Scalars['Int']>;
-  description?: Maybe<Scalars['String']>;
-  image?: Maybe<Scalars['String']>;
-  science?: Maybe<Scalars['Boolean']>;
-  defense?: Maybe<Scalars['Boolean']>;
-};
-
-export type InventoryCount = {
-  inventory?: Maybe<Scalars['ID']>;
-  count?: Maybe<Scalars['Int']>;
-};
-
-export type InventoryCountInput = {
-  id?: Maybe<Scalars['ID']>;
-  count?: Maybe<Scalars['Int']>;
-};
-
-export type InventoryMetadataInput = {
-  type?: Maybe<Scalars['String']>;
-  size?: Maybe<Scalars['Int']>;
-  description?: Maybe<Scalars['String']>;
-  image?: Maybe<Scalars['String']>;
-  science?: Maybe<Scalars['Boolean']>;
-  defense?: Maybe<Scalars['Boolean']>;
-};
-
-export type RoomCount = {
-  __typename?: 'RoomCount';
-  room?: Maybe<Room>;
-  count?: Maybe<Scalars['Int']>;
-};
-
-export type TeamCount = {
-  __typename?: 'TeamCount';
-  team?: Maybe<Team>;
-  count?: Maybe<Scalars['Int']>;
-};
-
-export type RoomCountInput = {
-  room?: Maybe<Scalars['ID']>;
-  count?: Maybe<Scalars['Int']>;
-};
-
-export type CrewCountInput = {
-  crew?: Maybe<Scalars['ID']>;
-  count?: Maybe<Scalars['Int']>;
-};
-
-export type TeamCountInput = {
-  __typename?: 'TeamCountInput';
-  team?: Maybe<Scalars['ID']>;
-  count?: Maybe<Scalars['Int']>;
-};
-
-export type Isochip = {
-  __typename?: 'Isochip';
-  id?: Maybe<Scalars['ID']>;
-  system?: Maybe<System>;
-  simulator?: Maybe<Simulator>;
-  slot?: Maybe<Scalars['Int']>;
-  requiredChip?: Maybe<Scalars['Int']>;
-  chip?: Maybe<Scalars['Int']>;
-  label?: Maybe<Scalars['String']>;
-  state?: Maybe<Isochip_States>;
-};
-
-export enum Isochip_States {
-  Empty = 'empty',
-  Diagnostic = 'diagnostic',
-  Nominal = 'nominal',
-  Invalid = 'invalid'
-}
-
-export type IsochipInput = {
-  system?: Maybe<Scalars['ID']>;
-  simulator?: Maybe<Scalars['ID']>;
-  slot?: Maybe<Scalars['Int']>;
-  requiredChip?: Maybe<Scalars['Int']>;
-  chip?: Maybe<Scalars['Int']>;
-  label?: Maybe<Scalars['String']>;
-};
-
-export type JumpDrive = SystemInterface & {
-  __typename?: 'JumpDrive';
-  id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  type?: Maybe<Scalars['String']>;
-  power?: Maybe<Power>;
-  name?: Maybe<Scalars['String']>;
-  displayName?: Maybe<Scalars['String']>;
-  stealthFactor?: Maybe<Scalars['Float']>;
-  damage?: Maybe<Damage>;
-  upgradeName?: Maybe<Scalars['String']>;
-  upgraded?: Maybe<Scalars['Boolean']>;
-  locations?: Maybe<Array<Maybe<Room>>>;
-  sectors?: Maybe<JumpDriveSectors>;
-  env?: Maybe<Scalars['Float']>;
-  activated?: Maybe<Scalars['Boolean']>;
-  stress?: Maybe<Scalars['Float']>;
-  enabled?: Maybe<Scalars['Boolean']>;
-  ringsExtended?: Maybe<Scalars['Boolean']>;
-};
-
-export type JumpDriveSectors = {
-  __typename?: 'JumpDriveSectors';
-  fore?: Maybe<JumpDriveSector>;
-  aft?: Maybe<JumpDriveSector>;
-  starboard?: Maybe<JumpDriveSector>;
-  port?: Maybe<JumpDriveSector>;
-};
-
-export type JumpDriveSector = {
-  __typename?: 'JumpDriveSector';
-  level?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Float']>;
-};
-
-export type Keyboard = {
-  __typename?: 'Keyboard';
-  id: Scalars['ID'];
-  name?: Maybe<Scalars['String']>;
-  keys?: Maybe<Array<Maybe<KeyboardKey>>>;
-};
-
-export type KeyboardKey = {
-  __typename?: 'KeyboardKey';
-  id: Scalars['ID'];
-  key?: Maybe<Scalars['String']>;
-  keyCode?: Maybe<Scalars['String']>;
-  meta?: Maybe<Array<Maybe<Scalars['String']>>>;
-  actions?: Maybe<Array<Maybe<MacroAction>>>;
-};
-
-export type KeyboardKeyInput = {
-  id?: Maybe<Scalars['ID']>;
-  key?: Maybe<Scalars['String']>;
-  keyCode?: Maybe<Scalars['String']>;
-  meta?: Maybe<Array<Maybe<Scalars['String']>>>;
-  actions?: Maybe<Array<Maybe<ActionInput>>>;
-};
-
-export type MacroAction = {
-  __typename?: 'MacroAction';
-  id: Scalars['ID'];
-  event: Scalars['String'];
-  args: Scalars['String'];
-  delay?: Maybe<Scalars['Int']>;
-  needsConfig?: Maybe<Scalars['Boolean']>;
-  noCancelOnReset?: Maybe<Scalars['Boolean']>;
-};
-
-export type ActionInput = {
-  id?: Maybe<Scalars['ID']>;
-  event?: Maybe<Scalars['String']>;
-  args?: Maybe<Scalars['String']>;
-  delay?: Maybe<Scalars['Int']>;
-  noCancelOnReset?: Maybe<Scalars['Boolean']>;
-  needsConfig?: Maybe<Scalars['Boolean']>;
-};
-
-export type LibraryEntry = {
-  __typename?: 'LibraryEntry';
-  id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  title?: Maybe<Scalars['String']>;
-  body?: Maybe<Scalars['String']>;
-  image?: Maybe<Scalars['String']>;
-  type?: Maybe<Scalars['String']>;
-  categories?: Maybe<Array<Maybe<Scalars['String']>>>;
-  seeAlso?: Maybe<Array<Maybe<LibraryEntry>>>;
-  font?: Maybe<Scalars['String']>;
-};
-
-export type LibraryCategory = {
-  __typename?: 'LibraryCategory';
-  name?: Maybe<Scalars['String']>;
-  entries?: Maybe<Array<Maybe<LibraryEntry>>>;
-};
-
-export type LibraryInput = {
-  id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  title?: Maybe<Scalars['String']>;
-  body?: Maybe<Scalars['String']>;
-  image?: Maybe<Scalars['String']>;
-  type?: Maybe<Scalars['String']>;
-  categories?: Maybe<Array<Maybe<Scalars['String']>>>;
-  seeAlso?: Maybe<Array<Maybe<Scalars['ID']>>>;
-  font?: Maybe<Scalars['String']>;
-};
-
-export type Lighting = {
-  __typename?: 'Lighting';
-  intensity: Scalars['Float'];
-  action: Lighting_Action;
-  actionStrength: Scalars['Float'];
-  transitionDuration: Scalars['Int'];
-  useAlertColor?: Maybe<Scalars['Boolean']>;
-  color?: Maybe<Scalars['String']>;
-  dmxConfig?: Maybe<DmxConfig>;
-};
-
-export type LightingInput = {
-  intensity?: Maybe<Scalars['Float']>;
-  action?: Maybe<Lighting_Action>;
-  actionStrength?: Maybe<Scalars['Float']>;
-  transitionDuration?: Maybe<Scalars['Int']>;
-  useAlertColor?: Maybe<Scalars['Boolean']>;
-  color?: Maybe<Scalars['String']>;
-  dmxConfig?: Maybe<Scalars['String']>;
-};
-
-export enum Lighting_Action {
-  Normal = 'normal',
-  Darken = 'darken',
-  Blackout = 'blackout',
-  Work = 'work',
-  Fade = 'fade',
-  Shake = 'shake',
-  Strobe = 'strobe',
-  Oscillate = 'oscillate'
-}
-
-export type LrCommunications = SystemInterface & {
-  __typename?: 'LRCommunications';
-  id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  type?: Maybe<Scalars['String']>;
-  power?: Maybe<Power>;
-  name?: Maybe<Scalars['String']>;
-  displayName?: Maybe<Scalars['String']>;
-  damage?: Maybe<Damage>;
-  upgradeName?: Maybe<Scalars['String']>;
-  upgraded?: Maybe<Scalars['Boolean']>;
-  stealthFactor?: Maybe<Scalars['Float']>;
-  locations?: Maybe<Array<Maybe<Room>>>;
-  messages?: Maybe<Array<Maybe<LrMessage>>>;
-  satellites?: Maybe<Scalars['Int']>;
-  interception?: Maybe<Scalars['Boolean']>;
-  locked?: Maybe<Scalars['Boolean']>;
-  decoded?: Maybe<Scalars['Boolean']>;
-  difficulty?: Maybe<Scalars['Int']>;
-  presetMessages?: Maybe<Array<Maybe<PresetAnswer>>>;
-};
-
-
-export type LrCommunicationsMessagesArgs = {
-  crew?: Maybe<Scalars['Boolean']>;
-  sent?: Maybe<Scalars['Boolean']>;
-  approved?: Maybe<Scalars['Boolean']>;
-};
-
-export type LrMessage = {
-  __typename?: 'LRMessage';
-  id?: Maybe<Scalars['ID']>;
-  message?: Maybe<Scalars['String']>;
-  decodedMessage?: Maybe<Scalars['String']>;
-  crew?: Maybe<Scalars['Boolean']>;
-  sent?: Maybe<Scalars['Boolean']>;
-  deleted?: Maybe<Scalars['Boolean']>;
-  encrypted?: Maybe<Scalars['Boolean']>;
-  approved?: Maybe<Scalars['Boolean']>;
-  sender?: Maybe<Scalars['String']>;
-  datestamp?: Maybe<Scalars['String']>;
-  timestamp?: Maybe<Scalars['String']>;
-  a?: Maybe<Scalars['Int']>;
-  f?: Maybe<Scalars['Int']>;
-  ra?: Maybe<Scalars['Int']>;
-  rf?: Maybe<Scalars['Int']>;
-};
-
-export type LongRangeCommInput = {
-  id?: Maybe<Scalars['ID']>;
-  interception?: Maybe<Scalars['Boolean']>;
-  locked?: Maybe<Scalars['Boolean']>;
-  decoded?: Maybe<Scalars['Boolean']>;
-};
-
-export type Macro = {
-  __typename?: 'Macro';
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  actions?: Maybe<Array<Maybe<MacroAction>>>;
-};
-
-export type MacroButtonConfig = {
-  __typename?: 'MacroButtonConfig';
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  buttons?: Maybe<Array<Maybe<MacroButton>>>;
-};
-
-export type MacroButton = {
-  __typename?: 'MacroButton';
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  actions?: Maybe<Array<Maybe<MacroAction>>>;
-  color?: Maybe<NotifyColors>;
-  category?: Maybe<Scalars['String']>;
-};
-
-export type Message = {
-  __typename?: 'Message';
-  id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  destination?: Maybe<Scalars['String']>;
-  sender?: Maybe<Scalars['String']>;
-  timestamp?: Maybe<Scalars['String']>;
-  content?: Maybe<Scalars['String']>;
-};
-
-export type MessageInput = {
-  simulatorId?: Maybe<Scalars['ID']>;
-  destination?: Maybe<Scalars['String']>;
-  sender?: Maybe<Scalars['String']>;
-  timestamp?: Maybe<Scalars['String']>;
-  content?: Maybe<Scalars['String']>;
-};
-
-export type MidiSet = {
-  __typename?: 'MidiSet';
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  deviceName?: Maybe<Scalars['String']>;
-  controls?: Maybe<Array<Maybe<MidiControl>>>;
-};
-
-export type MidiControl = {
-  __typename?: 'MidiControl';
-  id?: Maybe<Scalars['ID']>;
-  channel?: Maybe<Scalars['Int']>;
-  messageType?: Maybe<MidiMessageType>;
-  key?: Maybe<Scalars['Int']>;
-  controllerNumber?: Maybe<Scalars['Int']>;
-  channelModeMessage?: Maybe<ChannelModeMessageType>;
-  actionMode?: Maybe<MidiActionMode>;
-  config?: Maybe<Scalars['JSON']>;
-};
-
-export type MidiControlInput = {
-  channel?: Maybe<Scalars['Int']>;
-  messageType?: Maybe<MidiMessageType>;
-  key?: Maybe<Scalars['Int']>;
-  controllerNumber?: Maybe<Scalars['Int']>;
-  channelModeMessage?: Maybe<ChannelModeMessageType>;
-  actionMode?: Maybe<MidiActionMode>;
-  config?: Maybe<Scalars['JSON']>;
-};
-
-export enum MidiActionMode {
-  Macro = 'macro',
-  MomentaryMacro = 'momentaryMacro',
-  Toggle = 'toggle',
-  ValueAssignment = 'valueAssignment'
-}
-
-export enum MidiMessageType {
-  Noteoff = 'noteoff',
-  Noteon = 'noteon',
-  Keypressure = 'keypressure',
-  Controlchange = 'controlchange',
-  Programchange = 'programchange',
-  Channelpressure = 'channelpressure',
-  Pitchbendchange = 'pitchbendchange'
-}
-
-export enum ChannelModeMessageType {
-  Allsoundoff = 'allsoundoff',
-  Resetallcontrollers = 'resetallcontrollers',
-  Localcontroloff = 'localcontroloff',
-  Localcontrolon = 'localcontrolon',
-  Allnotesoff = 'allnotesoff',
-  Omnimodeoff = 'omnimodeoff',
-  Omnimodeon = 'omnimodeon',
-  Monomodeon = 'monomodeon',
-  Polymodeon = 'polymodeon'
-}
-
-export type Mission = {
-  __typename?: 'Mission';
-  id: Scalars['ID'];
-  name?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  category?: Maybe<Scalars['String']>;
-  timeline: Array<TimelineStep>;
-  simulators?: Maybe<Array<Maybe<Simulator>>>;
-  aux?: Maybe<Scalars['Boolean']>;
-  extraRequirements?: Maybe<SimulatorCapabilities>;
-  requirements?: Maybe<SimulatorCapabilities>;
-};
-
-
-export type MissionRequirementsArgs = {
-  all?: Maybe<Scalars['Boolean']>;
-};
-
-export type MacroInput = {
-  stepId?: Maybe<Scalars['ID']>;
-  event?: Maybe<Scalars['String']>;
-  args?: Maybe<Scalars['String']>;
-  delay?: Maybe<Scalars['Int']>;
-  noCancelOnReset?: Maybe<Scalars['Boolean']>;
-};
-
-export type RequirementInput = {
-  cards?: Maybe<Array<Maybe<Scalars['String']>>>;
-  systems?: Maybe<Array<Maybe<Scalars['String']>>>;
-};
-
-export type TimelineStep = {
-  __typename?: 'TimelineStep';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  order?: Maybe<Scalars['Int']>;
-  timelineItems: Array<TimelineItem>;
-};
-
-export type TimelineItem = {
-  __typename?: 'TimelineItem';
-  id: Scalars['ID'];
-  name?: Maybe<Scalars['String']>;
-  type?: Maybe<Scalars['String']>;
-  event: Scalars['String'];
-  needsConfig?: Maybe<Scalars['Boolean']>;
-  args?: Maybe<Scalars['String']>;
-  delay?: Maybe<Scalars['Int']>;
-  noCancelOnReset?: Maybe<Scalars['Boolean']>;
-};
-
-export enum Timeline_Item_Config_Type {
-  Client = 'client',
-  Station = 'station'
-}
-
-export type TimelineItemInput = {
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  type?: Maybe<Scalars['String']>;
-  event?: Maybe<Scalars['String']>;
-  args?: Maybe<Scalars['String']>;
-  delay?: Maybe<Scalars['Int']>;
-  noCancelOnReset?: Maybe<Scalars['Boolean']>;
-};
-
-export type TimelineInstance = {
-  __typename?: 'TimelineInstance';
-  id?: Maybe<Scalars['ID']>;
-  mission?: Maybe<Mission>;
-  currentTimelineStep?: Maybe<Scalars['Int']>;
-  executedTimelineSteps?: Maybe<Array<Maybe<Scalars['ID']>>>;
-};
-
-export type Motu = {
-  __typename?: 'Motu';
-  id?: Maybe<Scalars['ID']>;
-  offline?: Maybe<Scalars['Boolean']>;
-  address?: Maybe<Scalars['String']>;
-  inputs?: Maybe<Array<Maybe<MotuInput>>>;
-  outputs?: Maybe<Array<Maybe<MotuOutput>>>;
-  sends?: Maybe<Array<Maybe<MotuPatch>>>;
-};
-
-export type MotuChannel = {
-  __typename?: 'MotuChannel';
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  chan?: Maybe<Scalars['Int']>;
-  type?: Maybe<MotuType>;
-  fader?: Maybe<Scalars['Float']>;
-  mute?: Maybe<Scalars['Int']>;
-};
-
-export type MotuInput = {
-  __typename?: 'MotuInput';
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  chan?: Maybe<Scalars['Int']>;
-  type?: Maybe<MotuType>;
-  gate?: Maybe<MotuGate>;
-  comp?: Maybe<MotuComp>;
-  fader?: Maybe<Scalars['Float']>;
-  mute?: Maybe<Scalars['Int']>;
-  pan?: Maybe<Scalars['Float']>;
-  highshelf?: Maybe<MotuEq>;
-  mid1?: Maybe<MotuEq>;
-  mid2?: Maybe<MotuEq>;
-  lowshelf?: Maybe<MotuEq>;
-};
-
-export type MotuGate = {
-  __typename?: 'MotuGate';
-  release?: Maybe<Scalars['Float']>;
-  enable?: Maybe<Scalars['Int']>;
-  attack?: Maybe<Scalars['Float']>;
-  threshold?: Maybe<Scalars['Float']>;
-};
-
-export type MotuComp = {
-  __typename?: 'MotuComp';
-  enable?: Maybe<Scalars['Float']>;
-  release?: Maybe<Scalars['Float']>;
-  makeup?: Maybe<Scalars['Float']>;
-  trim?: Maybe<Scalars['Float']>;
-  peak?: Maybe<Scalars['Float']>;
-  attack?: Maybe<Scalars['Float']>;
-  ratio?: Maybe<Scalars['Float']>;
-  threshold?: Maybe<Scalars['Float']>;
-};
-
-export type MotuOutput = {
-  __typename?: 'MotuOutput';
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  chan?: Maybe<Scalars['Int']>;
-  type?: Maybe<MotuType>;
-  prefader?: Maybe<Scalars['Float']>;
-  fader?: Maybe<Scalars['Float']>;
-  mute?: Maybe<Scalars['Int']>;
-  panner?: Maybe<Scalars['Float']>;
-  highshelf?: Maybe<MotuEq>;
-  mid1?: Maybe<MotuEq>;
-  mid2?: Maybe<MotuEq>;
-  lowshelf?: Maybe<MotuEq>;
-};
-
-export type MotuEq = {
-  __typename?: 'MotuEQ';
-  enable?: Maybe<Scalars['Int']>;
-  freq?: Maybe<Scalars['Float']>;
-  gain?: Maybe<Scalars['Float']>;
-  bw?: Maybe<Scalars['Float']>;
-  mode?: Maybe<Scalars['Int']>;
-};
-
-export type MotuPatch = {
-  __typename?: 'MotuPatch';
-  input?: Maybe<MotuInput>;
-  output?: Maybe<MotuOutput>;
-  send?: Maybe<Scalars['Float']>;
-  mute?: Maybe<Scalars['Boolean']>;
-};
-
-export type MotuChannelInput = {
-  fader?: Maybe<Scalars['Float']>;
-  mute?: Maybe<Scalars['Int']>;
-};
-
-export enum MotuType {
-  Chan = 'chan',
-  Aux = 'aux',
-  Group = 'group'
-}
-
-export type Navigation = SystemInterface & {
-  __typename?: 'Navigation';
-  id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  type?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  displayName?: Maybe<Scalars['String']>;
-  power?: Maybe<Power>;
-  damage?: Maybe<Damage>;
-  upgradeName?: Maybe<Scalars['String']>;
-  upgraded?: Maybe<Scalars['Boolean']>;
-  stealthFactor?: Maybe<Scalars['Float']>;
-  calculate?: Maybe<Scalars['Boolean']>;
-  currentCourse?: Maybe<NavLoc>;
-  calculatedCourse?: Maybe<NavLoc>;
-  destination?: Maybe<Scalars['String']>;
-  scanning?: Maybe<Scalars['Boolean']>;
-  destinations?: Maybe<Array<Maybe<Scalars['String']>>>;
-  presets?: Maybe<Array<Maybe<NavPreset>>>;
-  thrusters?: Maybe<Scalars['Boolean']>;
-  locations?: Maybe<Array<Maybe<Room>>>;
-};
-
-export type NavLoc = {
-  __typename?: 'NavLoc';
-  x?: Maybe<Scalars['String']>;
-  y?: Maybe<Scalars['String']>;
-  z?: Maybe<Scalars['String']>;
-};
-
-export type NavLocInput = {
-  x?: Maybe<Scalars['String']>;
-  y?: Maybe<Scalars['String']>;
-  z?: Maybe<Scalars['String']>;
-};
-
-export type NavPreset = {
-  __typename?: 'NavPreset';
-  name?: Maybe<Scalars['String']>;
-  course?: Maybe<NavLoc>;
-};
-
-export type NavPresetInput = {
-  name?: Maybe<Scalars['String']>;
-  course?: Maybe<NavLocInput>;
-};
-
-export type Objective = {
-  __typename?: 'Objective';
-  id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  timestamp?: Maybe<Scalars['String']>;
-  station?: Maybe<Scalars['String']>;
-  title?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  completed?: Maybe<Scalars['Boolean']>;
-  cancelled?: Maybe<Scalars['Boolean']>;
-  crewComplete?: Maybe<Scalars['Boolean']>;
-  order?: Maybe<Scalars['Int']>;
-};
-
-export type ObjectiveInput = {
-  id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  station?: Maybe<Scalars['String']>;
-  title?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  completed?: Maybe<Scalars['Boolean']>;
-  cancelled?: Maybe<Scalars['Boolean']>;
-  crewComplete?: Maybe<Scalars['Boolean']>;
-  order?: Maybe<Scalars['Int']>;
-};
-
-export type Log = {
-  __typename?: 'Log';
-  id?: Maybe<Scalars['ID']>;
-  clientId?: Maybe<Scalars['ID']>;
-  flightId?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  timestamp?: Maybe<Scalars['String']>;
-  log?: Maybe<Scalars['String']>;
-};
-
-export type LogInput = {
-  clientId?: Maybe<Scalars['ID']>;
-  flightId?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  timestamp?: Maybe<Scalars['String']>;
-  log?: Maybe<Scalars['String']>;
-};
-
-export type Phaser = SystemInterface & {
-  __typename?: 'Phaser';
-  id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  type?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  displayName?: Maybe<Scalars['String']>;
-  upgradeName?: Maybe<Scalars['String']>;
-  upgraded?: Maybe<Scalars['Boolean']>;
-  stealthFactor?: Maybe<Scalars['Float']>;
-  power?: Maybe<Power>;
-  damage?: Maybe<Damage>;
-  arc?: Maybe<Scalars['Float']>;
-  coolant?: Maybe<Scalars['Float']>;
-  beams?: Maybe<Array<Maybe<PhaserBeam>>>;
-  locations?: Maybe<Array<Maybe<Room>>>;
-  holdToCharge?: Maybe<Scalars['Boolean']>;
-  chargeSpeed?: Maybe<Scalars['Float']>;
-};
-
-export type PhaserBeam = {
-  __typename?: 'PhaserBeam';
-  id?: Maybe<Scalars['ID']>;
-  power?: Maybe<Power>;
-  damage?: Maybe<Damage>;
-  charge?: Maybe<Scalars['Float']>;
-  state?: Maybe<Scalars['String']>;
-  heat?: Maybe<Scalars['Float']>;
-};
-
-export type Power = {
-  __typename?: 'Power';
-  power?: Maybe<Scalars['Int']>;
-  powerLevels?: Maybe<Array<Maybe<Scalars['Int']>>>;
-  defaultLevel?: Maybe<Scalars['Int']>;
-};
-
-export type Probes = SystemInterface & {
-  __typename?: 'Probes';
-  id: Scalars['ID'];
-  simulatorId?: Maybe<Scalars['ID']>;
-  type?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  power?: Maybe<Power>;
-  damage?: Maybe<Damage>;
-  displayName?: Maybe<Scalars['String']>;
-  upgradeName?: Maybe<Scalars['String']>;
-  upgraded?: Maybe<Scalars['Boolean']>;
-  stealthFactor?: Maybe<Scalars['Float']>;
-  locations?: Maybe<Array<Maybe<Room>>>;
-  torpedo?: Maybe<Scalars['Boolean']>;
-  processedData?: Maybe<Scalars['String']>;
-  probes?: Maybe<Array<Maybe<Probe>>>;
-  equipment?: Maybe<Array<Maybe<ProbeEquipment>>>;
-  types?: Maybe<Array<Maybe<ProbeType>>>;
-  scienceTypes?: Maybe<Array<Maybe<ScienceType>>>;
-};
-
-
-export type ProbesProbesArgs = {
-  network?: Maybe<Scalars['Boolean']>;
-};
-
-export type Probe = {
-  __typename?: 'Probe';
-  id: Scalars['ID'];
-  name?: Maybe<Scalars['String']>;
-  type?: Maybe<Scalars['ID']>;
-  launched?: Maybe<Scalars['Boolean']>;
-  equipment?: Maybe<Array<Maybe<ProbeEquipment>>>;
-  engine?: Maybe<Engine>;
-  phaser?: Maybe<Phaser>;
-  navigation?: Maybe<Navigation>;
-  query?: Maybe<Scalars['String']>;
-  querying?: Maybe<Scalars['Boolean']>;
-  response?: Maybe<Scalars['String']>;
-  charge?: Maybe<Scalars['Float']>;
-  history?: Maybe<Array<Maybe<History>>>;
-};
-
-export type History = {
-  __typename?: 'History';
-  date?: Maybe<Scalars['String']>;
-  text?: Maybe<Scalars['String']>;
-};
-
-export type ScienceProbeEvent = {
-  __typename?: 'ScienceProbeEvent';
-  simulatorId: Scalars['ID'];
-  name: Scalars['String'];
-  type: Scalars['String'];
-  charge: Scalars['Float'];
-};
-
-export type ProbeInput = {
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  type?: Maybe<Scalars['ID']>;
-  equipment?: Maybe<Array<Maybe<EquipmentInput>>>;
-  launched?: Maybe<Scalars['Boolean']>;
-};
-
-export type EquipmentInput = {
-  id?: Maybe<Scalars['ID']>;
-  count?: Maybe<Scalars['Int']>;
-};
-
-export type ProbeEquipment = {
-  __typename?: 'ProbeEquipment';
-  id?: Maybe<Scalars['ID']>;
-  description?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  size?: Maybe<Scalars['Float']>;
-  count?: Maybe<Scalars['Int']>;
-  damage?: Maybe<Damage>;
-  availableProbes?: Maybe<Array<Maybe<Scalars['String']>>>;
-};
-
-export type ProbeEquipmentInput = {
-  description?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  size?: Maybe<Scalars['Float']>;
-  count?: Maybe<Scalars['Int']>;
-};
-
-export type ProbeType = {
-  __typename?: 'ProbeType';
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  size?: Maybe<Scalars['Float']>;
-  count?: Maybe<Scalars['Int']>;
-  availableEquipment?: Maybe<Array<Maybe<ProbeEquipment>>>;
-};
-
-export type ProbeTypeInput = {
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  size?: Maybe<Scalars['Float']>;
-  count?: Maybe<Scalars['Int']>;
-};
-
-export type ScienceType = {
-  __typename?: 'ScienceType';
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  type?: Maybe<Science_Burst_Detector>;
-  description?: Maybe<Scalars['String']>;
-  equipment?: Maybe<Array<Maybe<Scalars['String']>>>;
-};
-
-export enum Science_Burst_Detector {
-  Burst = 'burst',
-  Detector = 'detector'
-}
-
-export type Railgun = SystemInterface & {
-  __typename?: 'Railgun';
-  id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  type?: Maybe<Scalars['String']>;
-  power?: Maybe<Power>;
-  name?: Maybe<Scalars['String']>;
-  displayName?: Maybe<Scalars['String']>;
-  upgradeName?: Maybe<Scalars['String']>;
-  upgraded?: Maybe<Scalars['Boolean']>;
-  stealthFactor?: Maybe<Scalars['Float']>;
-  heat?: Maybe<Scalars['Float']>;
-  damage?: Maybe<Damage>;
-  coolant?: Maybe<Scalars['Float']>;
-  locations?: Maybe<Array<Maybe<Room>>>;
-  availableAmmo?: Maybe<Scalars['Int']>;
-  maxAmmo?: Maybe<Scalars['Int']>;
-  ammo?: Maybe<Scalars['Int']>;
-};
-
-export type Reactor = SystemInterface & {
-  __typename?: 'Reactor';
-  id: Scalars['ID'];
-  simulatorId?: Maybe<Scalars['ID']>;
-  type?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  displayName?: Maybe<Scalars['String']>;
-  upgradeName?: Maybe<Scalars['String']>;
-  upgraded?: Maybe<Scalars['Boolean']>;
-  stealthFactor?: Maybe<Scalars['Float']>;
-  power?: Maybe<Power>;
-  heat?: Maybe<Scalars['Float']>;
-  heatRate?: Maybe<Scalars['Float']>;
-  coolant?: Maybe<Scalars['Float']>;
-  damage?: Maybe<Damage>;
-  model?: Maybe<Reactor_Models>;
-  ejected?: Maybe<Scalars['Boolean']>;
-  externalPower?: Maybe<Scalars['Boolean']>;
-  powerOutput?: Maybe<Scalars['Int']>;
-  efficiency?: Maybe<Scalars['Float']>;
-  efficiencies?: Maybe<Array<ReactorEfficiency>>;
-  batteryChargeLevel?: Maybe<Scalars['Float']>;
-  batteryChargeRate?: Maybe<Scalars['Float']>;
-  depletion?: Maybe<Scalars['Float']>;
-  hasWings?: Maybe<Scalars['Boolean']>;
-  leftWingPower?: Maybe<Scalars['Int']>;
-  leftWingRequest?: Maybe<Scalars['Int']>;
-  leftWingRequested?: Maybe<Scalars['Boolean']>;
-  rightWingPower?: Maybe<Scalars['Int']>;
-  rightWingRequest?: Maybe<Scalars['Int']>;
-  rightWingRequested?: Maybe<Scalars['Boolean']>;
-  alphaLevel?: Maybe<Scalars['Float']>;
-  betaLevel?: Maybe<Scalars['Float']>;
-  alphaTarget?: Maybe<Scalars['Float']>;
-  betaTarget?: Maybe<Scalars['Float']>;
-  dilithiumRate?: Maybe<Scalars['Float']>;
-  locations?: Maybe<Array<Maybe<Room>>>;
-  requireBalance?: Maybe<Scalars['Boolean']>;
-};
-
-export enum Reactor_Models {
-  Reactor = 'reactor',
-  Battery = 'battery'
-}
-
-export type ReactorEfficiency = {
-  __typename?: 'ReactorEfficiency';
-  label: Scalars['String'];
-  color: Scalars['String'];
-  efficiency?: Maybe<Scalars['Float']>;
-};
-
-export type ReactorEfficiencyInput = {
-  label: Scalars['String'];
-  color: Scalars['String'];
-  efficiency: Scalars['Float'];
-};
-
-export type RecordEntry = {
-  __typename?: 'RecordEntry';
-  id?: Maybe<Scalars['ID']>;
-  contents?: Maybe<Scalars['String']>;
-  original?: Maybe<Scalars['String']>;
-  timestamp?: Maybe<Scalars['String']>;
-  category?: Maybe<Scalars['String']>;
-  modified?: Maybe<Scalars['Boolean']>;
-};
-
-export type RecordSnippet = {
-  __typename?: 'RecordSnippet';
-  id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  sensorContactId?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  type?: Maybe<RecordSnippetType>;
-  visible?: Maybe<Scalars['Boolean']>;
-  launched?: Maybe<Scalars['Boolean']>;
-  records?: Maybe<Array<Maybe<RecordEntry>>>;
-  templateRecords?: Maybe<Array<Maybe<RecordEntry>>>;
-};
-
-export enum RecordSnippetType {
-  Normal = 'normal',
-  Buoy = 'buoy',
-  External = 'external'
-}
-
-export type Room = {
-  __typename?: 'Room';
-  id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  deck?: Maybe<Deck>;
-  name?: Maybe<Scalars['String']>;
-  roles?: Maybe<Array<Maybe<RoomRoles>>>;
-  gas?: Maybe<Scalars['Boolean']>;
-  svgPath?: Maybe<Scalars['String']>;
-  inventory?: Maybe<Array<Maybe<InventoryItem>>>;
-  systems?: Maybe<Array<Maybe<System>>>;
-};
-
-export type RoomInput = {
-  name?: Maybe<Scalars['String']>;
-  deck?: Maybe<Scalars['Int']>;
-  roles?: Maybe<Array<Maybe<RoomRoles>>>;
-};
-
-export enum RoomRoles {
-  Probe = 'probe',
-  Torpedo = 'torpedo',
-  DamageTeam = 'damageTeam',
-  SecurityTeam = 'securityTeam',
-  MedicalTeam = 'medicalTeam'
-}
-
-
-
-export type ProcessedData = {
-  __typename?: 'ProcessedData';
-  value: Scalars['String'];
-  time: Scalars['String'];
-};
-
-export type Sensors = SystemInterface & {
-  __typename?: 'Sensors';
-  id: Scalars['ID'];
-  simulatorId?: Maybe<Scalars['ID']>;
-  type?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  displayName?: Maybe<Scalars['String']>;
-  upgradeName?: Maybe<Scalars['String']>;
-  upgraded?: Maybe<Scalars['Boolean']>;
-  stealthFactor?: Maybe<Scalars['Float']>;
-  domain: Scalars['String'];
-  pings?: Maybe<Scalars['Boolean']>;
-  timeSincePing?: Maybe<Scalars['Int']>;
-  pingMode?: Maybe<Ping_Modes>;
-  scanResults?: Maybe<Scalars['String']>;
-  scanRequest?: Maybe<Scalars['String']>;
-  processedData?: Maybe<Array<ProcessedData>>;
-  presetAnswers?: Maybe<Array<Maybe<PresetAnswer>>>;
-  scanning?: Maybe<Scalars['Boolean']>;
-  power?: Maybe<Power>;
-  contacts?: Maybe<Array<Maybe<SensorContact>>>;
-  armyContacts?: Maybe<Array<Maybe<SensorContact>>>;
-  damage?: Maybe<Damage>;
-  scans?: Maybe<Array<Maybe<SensorScan>>>;
-  history?: Maybe<Scalars['Boolean']>;
-  autoTarget?: Maybe<Scalars['Boolean']>;
-  frozen?: Maybe<Scalars['Boolean']>;
-  autoThrusters?: Maybe<Scalars['Boolean']>;
-  interference?: Maybe<Scalars['Float']>;
-  movement?: Maybe<Coordinates>;
-  segments?: Maybe<Array<Maybe<SensorsSegment>>>;
-  locations?: Maybe<Array<Maybe<Room>>>;
-  defaultHitpoints?: Maybe<Scalars['Int']>;
-  defaultSpeed?: Maybe<Scalars['Float']>;
-  missPercent?: Maybe<Scalars['Float']>;
-};
-
-export type SensorScan = {
-  __typename?: 'SensorScan';
-  id: Scalars['ID'];
-  timestamp?: Maybe<Scalars['String']>;
-  mode?: Maybe<Scalars['String']>;
-  location?: Maybe<Scalars['String']>;
-  request?: Maybe<Scalars['String']>;
-  response?: Maybe<Scalars['String']>;
-  scanning?: Maybe<Scalars['Boolean']>;
-  cancelled?: Maybe<Scalars['Boolean']>;
-};
-
-export type SensorScanInput = {
-  id?: Maybe<Scalars['ID']>;
-  timestamp?: Maybe<Scalars['String']>;
-  mode?: Maybe<Scalars['String']>;
-  location?: Maybe<Scalars['String']>;
-  request?: Maybe<Scalars['String']>;
-  response?: Maybe<Scalars['String']>;
-  scanning?: Maybe<Scalars['Boolean']>;
-  cancelled?: Maybe<Scalars['Boolean']>;
-};
-
-export type SensorContact = {
-  __typename?: 'SensorContact';
-  id: Scalars['ID'];
-  name?: Maybe<Scalars['String']>;
-  type?: Maybe<Scalars['String']>;
-  size?: Maybe<Scalars['Float']>;
-  icon?: Maybe<Scalars['String']>;
-  picture?: Maybe<Scalars['String']>;
-  color?: Maybe<Scalars['String']>;
-  rotation?: Maybe<Scalars['Float']>;
-  speed?: Maybe<Scalars['Float']>;
-  location?: Maybe<Coordinates>;
-  destination?: Maybe<Coordinates>;
-  position?: Maybe<Coordinates>;
-  startTime?: Maybe<Scalars['Float']>;
-  endTime?: Maybe<Scalars['Float']>;
-  movementTime?: Maybe<Scalars['Int']>;
-  infrared?: Maybe<Scalars['Boolean']>;
-  cloaked?: Maybe<Scalars['Boolean']>;
-  destroyed?: Maybe<Scalars['Boolean']>;
-  forceUpdate?: Maybe<Scalars['Boolean']>;
-  targeted?: Maybe<Scalars['Boolean']>;
-  selected?: Maybe<Scalars['Boolean']>;
-  locked?: Maybe<Scalars['Boolean']>;
-  disabled?: Maybe<Scalars['Boolean']>;
-  hostile?: Maybe<Scalars['Boolean']>;
-  hitpoints?: Maybe<Scalars['Int']>;
-  autoFire?: Maybe<Scalars['Boolean']>;
-  particle?: Maybe<ParticleTypes>;
-};
-
-export enum ParticleTypes {
-  Dilithium = 'Dilithium',
-  Tachyon = 'Tachyon',
-  Neutrino = 'Neutrino',
-  AntiMatter = 'AntiMatter',
-  Anomaly = 'Anomaly',
-  Resonance = 'Resonance',
-  Graviton = 'Graviton',
-  Lithium = 'Lithium',
-  Magnetic = 'Magnetic',
-  Helium = 'Helium',
-  Hydrogen = 'Hydrogen',
-  Oxygen = 'Oxygen',
-  Carbon = 'Carbon',
-  Radiation = 'Radiation'
-}
-
-export type SensorsSegment = {
-  __typename?: 'SensorsSegment';
-  ring?: Maybe<Scalars['Int']>;
-  line?: Maybe<Scalars['Int']>;
-  state?: Maybe<Scalars['Boolean']>;
-};
-
-export type PresetAnswer = {
-  __typename?: 'PresetAnswer';
-  label: Scalars['String'];
-  value: Scalars['String'];
-};
-
-export type PresetAnswerInput = {
-  label?: Maybe<Scalars['String']>;
-  value?: Maybe<Scalars['String']>;
-};
-
-export type SensorContactInput = {
-  sensorId?: Maybe<Scalars['ID']>;
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  type?: Maybe<Scalars['String']>;
-  size?: Maybe<Scalars['Float']>;
-  icon?: Maybe<Scalars['String']>;
-  picture?: Maybe<Scalars['String']>;
-  color?: Maybe<Scalars['String']>;
-  speed?: Maybe<Scalars['Float']>;
-  rotation?: Maybe<Scalars['Float']>;
-  location?: Maybe<CoordinatesInput>;
-  destination?: Maybe<CoordinatesInput>;
-  infrared?: Maybe<Scalars['Boolean']>;
-  cloaked?: Maybe<Scalars['Boolean']>;
-  destroyed?: Maybe<Scalars['Boolean']>;
-  locked?: Maybe<Scalars['Boolean']>;
-  disabled?: Maybe<Scalars['Boolean']>;
-  hostile?: Maybe<Scalars['Boolean']>;
-  hitpoints?: Maybe<Scalars['Int']>;
-  autoFire?: Maybe<Scalars['Boolean']>;
-  particle?: Maybe<ParticleTypes>;
-};
-
-export enum Ping_Modes {
-  Active = 'active',
-  Passive = 'passive',
-  Manual = 'manual'
-}
-
-export type Set = {
-  __typename?: 'Set';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  clients: Array<SetClient>;
-};
-
-export type SetClient = {
-  __typename?: 'SetClient';
-  id?: Maybe<Scalars['ID']>;
-  client?: Maybe<Client>;
-  simulator?: Maybe<Simulator>;
-  stationSet?: Maybe<StationSet>;
-  station?: Maybe<Scalars['String']>;
-  secondary?: Maybe<Scalars['Boolean']>;
-  soundPlayer?: Maybe<Scalars['Boolean']>;
-};
-
-export type SetClientInput = {
-  id?: Maybe<Scalars['ID']>;
-  clientId?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  stationSet?: Maybe<Scalars['ID']>;
-  station?: Maybe<Scalars['ID']>;
-  secondary?: Maybe<Scalars['Boolean']>;
-  soundPlayer?: Maybe<Scalars['Boolean']>;
-};
-
-export type Shield = SystemInterface & {
-  __typename?: 'Shield';
-  id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  type?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  displayName?: Maybe<Scalars['String']>;
-  upgradeName?: Maybe<Scalars['String']>;
-  upgraded?: Maybe<Scalars['Boolean']>;
-  stealthFactor?: Maybe<Scalars['Float']>;
-  heat?: Maybe<Scalars['Float']>;
-  coolant?: Maybe<Scalars['Float']>;
-  position?: Maybe<Scalars['Int']>;
-  power?: Maybe<Power>;
-  frequency?: Maybe<Scalars['Float']>;
-  state?: Maybe<Scalars['Boolean']>;
-  integrity?: Maybe<Scalars['Float']>;
-  damage?: Maybe<Damage>;
-  locations?: Maybe<Array<Maybe<Room>>>;
-};
-
-export type Ship = {
-  __typename?: 'Ship';
-  clamps?: Maybe<Scalars['Boolean']>;
-  ramps?: Maybe<Scalars['Boolean']>;
-  airlock?: Maybe<Scalars['Boolean']>;
-  legs?: Maybe<Scalars['Boolean']>;
-  bridgeCrew?: Maybe<Scalars['Int']>;
-  extraPeople?: Maybe<Scalars['Int']>;
-  radiation?: Maybe<Scalars['Float']>;
-  velocity?: Maybe<Scalars['Float']>;
-  remoteAccessCodes?: Maybe<Array<Maybe<RemoteAccessCode>>>;
-  selfDestructTime?: Maybe<Scalars['Float']>;
-  selfDestructCode?: Maybe<Scalars['String']>;
-  selfDestructAuto?: Maybe<Scalars['Boolean']>;
-  inventoryLogs?: Maybe<Array<Maybe<InventoryLog>>>;
-};
-
-export type InventoryLog = {
-  __typename?: 'InventoryLog';
-  timestamp?: Maybe<Scalars['String']>;
-  log?: Maybe<Scalars['String']>;
-};
-
-export type RemoteAccessCode = {
-  __typename?: 'RemoteAccessCode';
-  id?: Maybe<Scalars['ID']>;
-  code?: Maybe<Scalars['String']>;
-  state?: Maybe<Scalars['String']>;
-  station?: Maybe<Scalars['String']>;
-  timestamp?: Maybe<Scalars['String']>;
-};
-
-export type Notification = {
-  __typename?: 'Notification';
-  id?: Maybe<Scalars['ID']>;
-  title?: Maybe<Scalars['String']>;
-  body?: Maybe<Scalars['String']>;
-  color?: Maybe<Scalars['String']>;
-  type?: Maybe<Scalars['String']>;
-  trigger?: Maybe<Scalars['String']>;
-  duration?: Maybe<Scalars['Int']>;
-  relevantCards?: Maybe<Array<Maybe<Scalars['String']>>>;
-};
-
-export enum NotifyColors {
-  Primary = 'primary',
-  Secondary = 'secondary',
-  Success = 'success',
-  Danger = 'danger',
-  Warning = 'warning',
-  Info = 'info',
-  Light = 'light',
-  Dark = 'dark'
-}
-
-export type PrintQueue = {
-  __typename?: 'PrintQueue';
-  id: Scalars['ID'];
-  simulatorId: Scalars['String'];
-  asset: Scalars['String'];
-  timestamp: Scalars['Float'];
-};
-
-export type ShortRangeComm = SystemInterface & {
-  __typename?: 'ShortRangeComm';
-  id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  type?: Maybe<Scalars['String']>;
-  power?: Maybe<Power>;
-  damage?: Maybe<Damage>;
-  name?: Maybe<Scalars['String']>;
-  displayName?: Maybe<Scalars['String']>;
-  upgradeName?: Maybe<Scalars['String']>;
-  upgraded?: Maybe<Scalars['Boolean']>;
-  stealthFactor?: Maybe<Scalars['Float']>;
-  heat?: Maybe<Scalars['Float']>;
-  coolant?: Maybe<Scalars['Float']>;
-  frequency?: Maybe<Scalars['Float']>;
-  amplitude?: Maybe<Scalars['Float']>;
-  state?: Maybe<Scalars['String']>;
-  arrows?: Maybe<Array<Maybe<CommArrow>>>;
-  signals?: Maybe<Array<Maybe<CommSignal>>>;
-  locations?: Maybe<Array<Maybe<Room>>>;
-};
-
-export type ShortRangeCommExtended = {
-  __typename?: 'ShortRangeCommExtended';
-  id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  type?: Maybe<Scalars['String']>;
-  power?: Maybe<Power>;
-  damage?: Maybe<Damage>;
-  name?: Maybe<Scalars['String']>;
-  frequency?: Maybe<Scalars['Float']>;
-  amplitude?: Maybe<Scalars['Float']>;
-  state?: Maybe<Scalars['String']>;
-  arrows?: Maybe<Array<Maybe<CommArrow>>>;
-  signals?: Maybe<Array<Maybe<CommSignal>>>;
-};
-
-export type CommArrow = {
-  __typename?: 'CommArrow';
-  id?: Maybe<Scalars['ID']>;
-  signal?: Maybe<Scalars['ID']>;
-  frequency?: Maybe<Scalars['Float']>;
-  connected?: Maybe<Scalars['Boolean']>;
-  muted?: Maybe<Scalars['Boolean']>;
-};
-
-export type CommSignal = {
-  __typename?: 'CommSignal';
-  id?: Maybe<Scalars['ID']>;
-  image?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  range?: Maybe<CommRange>;
-  color?: Maybe<Scalars['String']>;
-};
-
-export type CommArrowExtended = {
-  __typename?: 'CommArrowExtended';
-  id?: Maybe<Scalars['ID']>;
-  signal?: Maybe<Scalars['ID']>;
-  range?: Maybe<Scalars['String']>;
-  frequency?: Maybe<Scalars['Float']>;
-  connected?: Maybe<Scalars['Boolean']>;
-};
-
-export type CommSignalExtended = {
-  __typename?: 'CommSignalExtended';
-  id?: Maybe<Scalars['ID']>;
-  color?: Maybe<Scalars['String']>;
-  image?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  ranges?: Maybe<CommRanges>;
-};
-
-export type CommRanges = {
-  __typename?: 'CommRanges';
-  military?: Maybe<CommRange>;
-  commercial?: Maybe<CommRange>;
-  priority?: Maybe<CommRange>;
-  emergency?: Maybe<CommRange>;
-};
-
-export type CommRange = {
-  __typename?: 'CommRange';
-  lower?: Maybe<Scalars['Float']>;
-  upper?: Maybe<Scalars['Float']>;
-};
-
-export type RangeInput = {
-  upper?: Maybe<Scalars['Float']>;
-  lower?: Maybe<Scalars['Float']>;
-};
-
-export type CommSignalInput = {
-  id?: Maybe<Scalars['ID']>;
-  image?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  range?: Maybe<RangeInput>;
-  color?: Maybe<Scalars['String']>;
-};
-
-export type CommArrowInput = {
-  id?: Maybe<Scalars['ID']>;
-  signal?: Maybe<Scalars['ID']>;
-  frequency?: Maybe<Scalars['Float']>;
-  connected?: Maybe<Scalars['Boolean']>;
-};
-
-export type CommUpdateInput = {
-  state?: Maybe<Scalars['String']>;
-  frequency?: Maybe<Scalars['Float']>;
-  amplitude?: Maybe<Scalars['Float']>;
-};
-
-export type Sickbay = SystemInterface & {
-  __typename?: 'Sickbay';
-  id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  displayName?: Maybe<Scalars['String']>;
-  upgradeName?: Maybe<Scalars['String']>;
-  upgraded?: Maybe<Scalars['Boolean']>;
-  type?: Maybe<Scalars['String']>;
-  damage?: Maybe<Damage>;
-  power?: Maybe<Power>;
-  stealthFactor?: Maybe<Scalars['Float']>;
-  locations?: Maybe<Array<Maybe<Room>>>;
-  deconProgram?: Maybe<Scalars['String']>;
-  deconLocation?: Maybe<Scalars['String']>;
-  deconActive?: Maybe<Scalars['Boolean']>;
-  deconOffset?: Maybe<Scalars['Float']>;
-  autoFinishDecon?: Maybe<Scalars['Boolean']>;
-  sickbayRoster?: Maybe<Array<Maybe<Crew>>>;
-  bunks?: Maybe<Array<Maybe<SickbayBunk>>>;
-};
-
-export type SickbayBunk = {
-  __typename?: 'SickbayBunk';
-  id?: Maybe<Scalars['ID']>;
-  sickbayId?: Maybe<Scalars['ID']>;
-  scanRequest?: Maybe<Scalars['String']>;
-  scanResults?: Maybe<Scalars['String']>;
-  scanning?: Maybe<Scalars['Boolean']>;
-  patient?: Maybe<Crew>;
-};
-
-export type Chart = {
-  __typename?: 'Chart';
-  id?: Maybe<Scalars['ID']>;
-  admitTime?: Maybe<Scalars['String']>;
-  dischargeTime?: Maybe<Scalars['String']>;
-  bloodPressure?: Maybe<Scalars['String']>;
-  heartRate?: Maybe<Scalars['Float']>;
-  temperature?: Maybe<Scalars['Float']>;
-  o2levels?: Maybe<Scalars['Float']>;
-  symptoms?: Maybe<Array<Maybe<Scalars['String']>>>;
-  diagnosis?: Maybe<Array<Maybe<Scalars['String']>>>;
-  treatment?: Maybe<Scalars['String']>;
-  treatmentRequest?: Maybe<Scalars['Boolean']>;
-  painPoints?: Maybe<Array<Maybe<PainPoint>>>;
-};
-
-export type PainPoint = {
-  __typename?: 'PainPoint';
-  x?: Maybe<Scalars['Float']>;
-  y?: Maybe<Scalars['Float']>;
-};
-
-export type PainPointInput = {
-  x?: Maybe<Scalars['Float']>;
-  y?: Maybe<Scalars['Float']>;
-};
-
-export type ChartInput = {
-  id?: Maybe<Scalars['ID']>;
-  admitTime?: Maybe<Scalars['String']>;
-  dischargeTime?: Maybe<Scalars['String']>;
-  bloodPressure?: Maybe<Scalars['String']>;
-  heartRate?: Maybe<Scalars['Float']>;
-  temperature?: Maybe<Scalars['Float']>;
-  o2levels?: Maybe<Scalars['Float']>;
-  symptoms?: Maybe<Array<Maybe<Scalars['String']>>>;
-  treatment?: Maybe<Scalars['String']>;
-  treatmentRequest?: Maybe<Scalars['Boolean']>;
-  painPoints?: Maybe<Array<Maybe<PainPointInput>>>;
-};
-
-export type SignalJammer = SystemInterface & {
-  __typename?: 'SignalJammer';
-  id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  type?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  displayName?: Maybe<Scalars['String']>;
-  upgradeName?: Maybe<Scalars['String']>;
-  upgraded?: Maybe<Scalars['Boolean']>;
-  damage?: Maybe<Damage>;
-  power?: Maybe<Power>;
-  stealthFactor?: Maybe<Scalars['Float']>;
-  addsSensorsInterference?: Maybe<Scalars['Boolean']>;
-  active?: Maybe<Scalars['Boolean']>;
-  level?: Maybe<Scalars['Float']>;
-  strength?: Maybe<Scalars['Float']>;
-  signals?: Maybe<Array<Maybe<Signal>>>;
-  locations?: Maybe<Array<Maybe<Room>>>;
-};
-
-export type Signal = {
-  __typename?: 'Signal';
-  id?: Maybe<Scalars['ID']>;
-  type?: Maybe<Scalars['String']>;
-  level?: Maybe<Scalars['Float']>;
-  power?: Maybe<Scalars['Float']>;
-};
-
-export type SignalJammerInput = {
-  id?: Maybe<Scalars['ID']>;
-  active?: Maybe<Scalars['Boolean']>;
-  level?: Maybe<Scalars['Float']>;
-  strength?: Maybe<Scalars['Float']>;
-};
-
-export type SimulatorInput = {
-  simulatorId: Scalars['ID'];
-  stationSet: Scalars['ID'];
-  missionId?: Maybe<Scalars['ID']>;
-};
-
-export type Simulator = {
-  __typename?: 'Simulator';
-  id: Scalars['ID'];
-  name?: Maybe<Scalars['String']>;
-  alertlevel?: Maybe<Scalars['String']>;
-  alertLevelLock?: Maybe<Scalars['Boolean']>;
-  layout?: Maybe<Scalars['String']>;
-  caps?: Maybe<Scalars['Boolean']>;
-  template?: Maybe<Scalars['Boolean']>;
-  templateId?: Maybe<Scalars['ID']>;
-  systems?: Maybe<Array<System>>;
-  stations?: Maybe<Array<Station>>;
-  mission?: Maybe<Mission>;
-  missionConfigs?: Maybe<Scalars['JSON']>;
-  currentTimelineStep?: Maybe<Scalars['Int']>;
-  executedTimelineSteps?: Maybe<Array<Scalars['ID']>>;
-  timelines?: Maybe<Array<TimelineInstance>>;
-  decks?: Maybe<Array<Maybe<Deck>>>;
-  rooms?: Maybe<Array<Maybe<Room>>>;
-  ship?: Maybe<Ship>;
-  stepDamage?: Maybe<Scalars['Boolean']>;
-  verifyStep?: Maybe<Scalars['Boolean']>;
-  requiredDamageSteps?: Maybe<Array<Maybe<DamageStep>>>;
-  optionalDamageSteps?: Maybe<Array<Maybe<DamageStep>>>;
-  exocomps?: Maybe<Scalars['Int']>;
-  training?: Maybe<Scalars['Boolean']>;
-  panels?: Maybe<Array<Maybe<Scalars['ID']>>>;
-  commandLines?: Maybe<Array<Maybe<Scalars['ID']>>>;
-  triggers?: Maybe<Array<Maybe<Scalars['ID']>>>;
-  triggersPaused?: Maybe<Scalars['Boolean']>;
-  interfaces?: Maybe<Array<Maybe<Scalars['ID']>>>;
-  midiSets?: Maybe<Array<Maybe<Scalars['ID']>>>;
-  bridgeOfficerMessaging?: Maybe<Scalars['Boolean']>;
-  hasPrinter?: Maybe<Scalars['Boolean']>;
-  hasLegs?: Maybe<Scalars['Boolean']>;
-  spaceEdventuresId?: Maybe<Scalars['String']>;
-  flipped?: Maybe<Scalars['Boolean']>;
-  capabilities?: Maybe<SimulatorCapabilities>;
-  documents?: Maybe<Array<Document>>;
-  ambiance?: Maybe<Array<Ambiance>>;
-  assets?: Maybe<SimulatorAssets>;
-  soundEffects?: Maybe<Scalars['JSON']>;
-  damageTasks?: Maybe<Array<Maybe<DamageTask>>>;
-  lighting?: Maybe<Lighting>;
-  stationSets?: Maybe<Array<Maybe<StationSet>>>;
-  stationSet?: Maybe<StationSet>;
-};
-
-export type Document = {
-  __typename?: 'Document';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  asset: Scalars['String'];
-};
-
-export type SimulatorCapabilities = {
-  __typename?: 'SimulatorCapabilities';
-  systems: Array<Scalars['String']>;
-  cards: Array<Scalars['String']>;
-  spaceEdventures?: Maybe<Scalars['Boolean']>;
-  docking?: Maybe<Scalars['Boolean']>;
-};
-
-export type SoftwarePanel = {
-  __typename?: 'SoftwarePanel';
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  cables?: Maybe<Array<Maybe<PanelCable>>>;
-  components?: Maybe<Array<Maybe<PanelComponent>>>;
-  connections?: Maybe<Array<Maybe<PanelConnection>>>;
-};
-
-export type PanelCable = {
-  __typename?: 'PanelCable';
-  id?: Maybe<Scalars['ID']>;
-  color?: Maybe<Scalars['String']>;
-  components?: Maybe<Array<Maybe<Scalars['ID']>>>;
-};
-
-export type PanelComponent = {
-  __typename?: 'PanelComponent';
-  id?: Maybe<Scalars['ID']>;
-  component?: Maybe<Scalars['String']>;
-  level?: Maybe<Scalars['Float']>;
-  label?: Maybe<Scalars['String']>;
-  color?: Maybe<Scalars['String']>;
-  x?: Maybe<Scalars['Float']>;
-  y?: Maybe<Scalars['Float']>;
-  scale?: Maybe<Scalars['Float']>;
-};
-
-export type PanelConnection = {
-  __typename?: 'PanelConnection';
-  id?: Maybe<Scalars['ID']>;
-  to?: Maybe<Scalars['ID']>;
-  from?: Maybe<Scalars['ID']>;
-};
-
-export type SoftwarePanelInput = {
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  cables?: Maybe<Array<Maybe<PanelCableInput>>>;
-  components?: Maybe<Array<Maybe<PanelComponentInput>>>;
-  connections?: Maybe<Array<Maybe<PanelConnectionInput>>>;
-};
-
-export type PanelCableInput = {
-  id?: Maybe<Scalars['ID']>;
-  color?: Maybe<Scalars['String']>;
-  components?: Maybe<Array<Maybe<Scalars['ID']>>>;
-};
-
-export type PanelComponentInput = {
-  id?: Maybe<Scalars['ID']>;
-  component?: Maybe<Scalars['String']>;
-  level?: Maybe<Scalars['Float']>;
-  label?: Maybe<Scalars['String']>;
-  color?: Maybe<Scalars['String']>;
-  x?: Maybe<Scalars['Float']>;
-  y?: Maybe<Scalars['Float']>;
-  scale?: Maybe<Scalars['Float']>;
-};
-
-export type PanelConnectionInput = {
-  id?: Maybe<Scalars['ID']>;
-  to?: Maybe<Scalars['ID']>;
-  from?: Maybe<Scalars['ID']>;
-};
-
-export type StationSet = {
-  __typename?: 'StationSet';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  simulator?: Maybe<Simulator>;
-  crewCount?: Maybe<Scalars['Int']>;
-  stations: Array<Station>;
-};
-
-export type Station = {
-  __typename?: 'Station';
-  name: Scalars['String'];
-  tags?: Maybe<Array<Scalars['String']>>;
-  description?: Maybe<Scalars['String']>;
-  training?: Maybe<Scalars['String']>;
-  login?: Maybe<Scalars['Boolean']>;
-  executive?: Maybe<Scalars['Boolean']>;
-  messageGroups?: Maybe<Array<Maybe<Scalars['String']>>>;
-  layout?: Maybe<Scalars['String']>;
-  widgets?: Maybe<Array<Maybe<Scalars['String']>>>;
-  cards?: Maybe<Array<Card>>;
-  ambiance?: Maybe<Scalars['String']>;
-};
-
-
-export type StationCardsArgs = {
-  showHidden?: Maybe<Scalars['Boolean']>;
-};
-
-export type Card = {
-  __typename?: 'Card';
-  name: Scalars['String'];
-  component: Scalars['String'];
-  hidden?: Maybe<Scalars['Boolean']>;
-  assigned?: Maybe<Scalars['Boolean']>;
-  newStation?: Maybe<Scalars['Boolean']>;
-};
-
-export type CardInput = {
-  name?: Maybe<Scalars['String']>;
-  component?: Maybe<Scalars['String']>;
-};
-
-export type StealthField = SystemInterface & {
-  __typename?: 'StealthField';
-  id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  type?: Maybe<Scalars['String']>;
-  power?: Maybe<Power>;
-  damage?: Maybe<Damage>;
-  name?: Maybe<Scalars['String']>;
-  displayName?: Maybe<Scalars['String']>;
-  upgradeName?: Maybe<Scalars['String']>;
-  upgraded?: Maybe<Scalars['Boolean']>;
-  stealthFactor?: Maybe<Scalars['Float']>;
-  activated?: Maybe<Scalars['Boolean']>;
-  charge?: Maybe<Scalars['Boolean']>;
-  changeAlert?: Maybe<Scalars['Boolean']>;
-  sensorsSonar?: Maybe<Scalars['Boolean']>;
-  state?: Maybe<Scalars['Boolean']>;
-  quadrants?: Maybe<StealthQuad>;
-  locations?: Maybe<Array<Maybe<Room>>>;
-};
-
-export type StealthQuad = {
-  __typename?: 'StealthQuad';
-  fore?: Maybe<Scalars['Float']>;
-  aft?: Maybe<Scalars['Float']>;
-  port?: Maybe<Scalars['Float']>;
-  starboard?: Maybe<Scalars['Float']>;
-};
-
 export type SubspaceField = SystemInterface & {
   __typename?: 'SubspaceField';
   id?: Maybe<Scalars['ID']>;
@@ -10601,67 +10999,6 @@ export type SurveyForm = {
   results?: Maybe<Array<Maybe<FormResults>>>;
 };
 
-export type FormResults = {
-  __typename?: 'FormResults';
-  client?: Maybe<Scalars['String']>;
-  station?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  form?: Maybe<Array<Maybe<FormFields>>>;
-};
-
-export type FormFields = {
-  __typename?: 'FormFields';
-  id?: Maybe<Scalars['ID']>;
-  type?: Maybe<Scalars['String']>;
-  title?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  options?: Maybe<Array<Maybe<FormOptions>>>;
-  value?: Maybe<Scalars['String']>;
-  max?: Maybe<Scalars['Int']>;
-  min?: Maybe<Scalars['Int']>;
-};
-
-export type FormOptions = {
-  __typename?: 'FormOptions';
-  id?: Maybe<Scalars['ID']>;
-  label?: Maybe<Scalars['String']>;
-};
-
-export type FormResultsInput = {
-  client?: Maybe<Scalars['String']>;
-  form?: Maybe<Array<Maybe<FormFieldsInput>>>;
-};
-
-export type FormFieldsInput = {
-  id?: Maybe<Scalars['ID']>;
-  type?: Maybe<Scalars['String']>;
-  title?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  options?: Maybe<Array<Maybe<FormOptionsInput>>>;
-  value?: Maybe<Scalars['String']>;
-  max?: Maybe<Scalars['Int']>;
-  min?: Maybe<Scalars['Int']>;
-};
-
-export type FormOptionsInput = {
-  id?: Maybe<Scalars['ID']>;
-  label?: Maybe<Scalars['String']>;
-};
-
-export type SystemInterface = {
-  id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  type?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  displayName?: Maybe<Scalars['String']>;
-  upgradeName?: Maybe<Scalars['String']>;
-  upgraded?: Maybe<Scalars['Boolean']>;
-  damage?: Maybe<Damage>;
-  power?: Maybe<Power>;
-  stealthFactor?: Maybe<Scalars['Float']>;
-  locations?: Maybe<Array<Maybe<Room>>>;
-};
-
 export type System = SystemInterface & {
   __typename?: 'System';
   id?: Maybe<Scalars['ID']>;
@@ -10688,75 +11025,56 @@ export type System = SystemInterface & {
   damageTasks?: Maybe<Array<Maybe<DamageTask>>>;
 };
 
-export type TacticalMap = {
-  __typename?: 'TacticalMap';
-  id?: Maybe<Scalars['ID']>;
+export type SystemCoolant = {
+  __typename?: 'SystemCoolant';
+  systemId?: Maybe<Scalars['ID']>;
+  simulatorId?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
-  template?: Maybe<Scalars['Boolean']>;
-  flight?: Maybe<Flight>;
-  layers?: Maybe<Array<Maybe<TacticalLayer>>>;
-  frozen?: Maybe<Scalars['Boolean']>;
-  interval?: Maybe<Scalars['Float']>;
+  displayName?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+  coolant?: Maybe<Scalars['Float']>;
+  coolantRate?: Maybe<Scalars['Float']>;
 };
 
-export type TacticalLayer = {
-  __typename?: 'TacticalLayer';
+export type SystemInterface = {
   id?: Maybe<Scalars['ID']>;
+  simulatorId?: Maybe<Scalars['ID']>;
+  type?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
-  type?: Maybe<Tactical_Types>;
-  opacity?: Maybe<Scalars['Float']>;
-  items?: Maybe<Array<Maybe<TacticalItem>>>;
-  image?: Maybe<Scalars['String']>;
-  color?: Maybe<Scalars['String']>;
-  labels?: Maybe<Scalars['Boolean']>;
-  gridCols?: Maybe<Scalars['Int']>;
-  gridRows?: Maybe<Scalars['Int']>;
-  paths?: Maybe<Array<Maybe<TacticalPath>>>;
-  advance?: Maybe<Scalars['Boolean']>;
-  asset?: Maybe<Scalars['String']>;
-  autoplay?: Maybe<Scalars['Boolean']>;
-  loop?: Maybe<Scalars['Boolean']>;
-  playbackSpeed?: Maybe<Scalars['Float']>;
-  mute?: Maybe<Scalars['Boolean']>;
+  displayName?: Maybe<Scalars['String']>;
+  upgradeName?: Maybe<Scalars['String']>;
+  upgraded?: Maybe<Scalars['Boolean']>;
+  damage?: Maybe<Damage>;
+  power?: Maybe<Power>;
+  stealthFactor?: Maybe<Scalars['Float']>;
+  locations?: Maybe<Array<Maybe<Room>>>;
 };
 
-export type TacticalLayerInput = {
-  id?: Maybe<Scalars['ID']>;
-  type?: Maybe<Tactical_Types>;
-  opacity?: Maybe<Scalars['Float']>;
-  image?: Maybe<Scalars['String']>;
-  color?: Maybe<Scalars['String']>;
-  labels?: Maybe<Scalars['Boolean']>;
-  gridCols?: Maybe<Scalars['Int']>;
-  gridRows?: Maybe<Scalars['Int']>;
-  advance?: Maybe<Scalars['Boolean']>;
-  asset?: Maybe<Scalars['String']>;
-  autoplay?: Maybe<Scalars['Boolean']>;
-  loop?: Maybe<Scalars['Boolean']>;
-  mute?: Maybe<Scalars['Boolean']>;
-  playbackSpeed?: Maybe<Scalars['Float']>;
-};
+export enum Tactical_Types {
+  Grid = 'grid',
+  Image = 'image',
+  Objects = 'objects',
+  Path = 'path',
+  Video = 'video'
+}
 
-export type ThrusterControls = {
-  __typename?: 'ThrusterControls';
-  rotation?: Maybe<Scalars['String']>;
-  reversed?: Maybe<Scalars['Boolean']>;
-  matchRotation?: Maybe<Scalars['Boolean']>;
-  up?: Maybe<Scalars['String']>;
-  down?: Maybe<Scalars['String']>;
-  left?: Maybe<Scalars['String']>;
-  right?: Maybe<Scalars['String']>;
-};
+export enum Team_Types {
+  Security = 'security',
+  Damage = 'damage',
+  Medical = 'medical'
+}
 
-export type ThrusterControlsInput = {
-  rotation?: Maybe<Scalars['String']>;
-  reversed?: Maybe<Scalars['Boolean']>;
-  matchRotation?: Maybe<Scalars['Boolean']>;
-  up?: Maybe<Scalars['String']>;
-  down?: Maybe<Scalars['String']>;
-  left?: Maybe<Scalars['String']>;
-  right?: Maybe<Scalars['String']>;
-};
+export enum Terminal_Status {
+  F = 'F',
+  O = 'O',
+  S = 'S',
+  R = 'R'
+}
+
+export enum Timeline_Item_Config_Type {
+  Client = 'client',
+  Station = 'station'
+}
 
 export type TacticalItem = {
   __typename?: 'TacticalItem';
@@ -10805,6 +11123,55 @@ export type TacticalItemInput = {
   thrusterControls?: Maybe<ThrusterControlsInput>;
 };
 
+export type TacticalLayer = {
+  __typename?: 'TacticalLayer';
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  type?: Maybe<Tactical_Types>;
+  opacity?: Maybe<Scalars['Float']>;
+  items?: Maybe<Array<Maybe<TacticalItem>>>;
+  image?: Maybe<Scalars['String']>;
+  color?: Maybe<Scalars['String']>;
+  labels?: Maybe<Scalars['Boolean']>;
+  gridCols?: Maybe<Scalars['Int']>;
+  gridRows?: Maybe<Scalars['Int']>;
+  paths?: Maybe<Array<Maybe<TacticalPath>>>;
+  advance?: Maybe<Scalars['Boolean']>;
+  asset?: Maybe<Scalars['String']>;
+  autoplay?: Maybe<Scalars['Boolean']>;
+  loop?: Maybe<Scalars['Boolean']>;
+  playbackSpeed?: Maybe<Scalars['Float']>;
+  mute?: Maybe<Scalars['Boolean']>;
+};
+
+export type TacticalLayerInput = {
+  id?: Maybe<Scalars['ID']>;
+  type?: Maybe<Tactical_Types>;
+  opacity?: Maybe<Scalars['Float']>;
+  image?: Maybe<Scalars['String']>;
+  color?: Maybe<Scalars['String']>;
+  labels?: Maybe<Scalars['Boolean']>;
+  gridCols?: Maybe<Scalars['Int']>;
+  gridRows?: Maybe<Scalars['Int']>;
+  advance?: Maybe<Scalars['Boolean']>;
+  asset?: Maybe<Scalars['String']>;
+  autoplay?: Maybe<Scalars['Boolean']>;
+  loop?: Maybe<Scalars['Boolean']>;
+  mute?: Maybe<Scalars['Boolean']>;
+  playbackSpeed?: Maybe<Scalars['Float']>;
+};
+
+export type TacticalMap = {
+  __typename?: 'TacticalMap';
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  template?: Maybe<Scalars['Boolean']>;
+  flight?: Maybe<Flight>;
+  layers?: Maybe<Array<Maybe<TacticalLayer>>>;
+  frozen?: Maybe<Scalars['Boolean']>;
+  interval?: Maybe<Scalars['Float']>;
+};
+
 export type TacticalPath = {
   __typename?: 'TacticalPath';
   id?: Maybe<Scalars['ID']>;
@@ -10829,13 +11196,17 @@ export type TacticalPathInput = {
   arrow?: Maybe<Scalars['Boolean']>;
 };
 
-export enum Tactical_Types {
-  Grid = 'grid',
-  Image = 'image',
-  Objects = 'objects',
-  Path = 'path',
-  Video = 'video'
-}
+export type TargetClassInput = {
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  size?: Maybe<Scalars['Float']>;
+  icon?: Maybe<Scalars['String']>;
+  picture?: Maybe<Scalars['String']>;
+  speed?: Maybe<Scalars['Float']>;
+  quadrant?: Maybe<Scalars['Int']>;
+  moving?: Maybe<Scalars['Boolean']>;
+  clickToTarget?: Maybe<Scalars['Boolean']>;
+};
 
 export type Targeting = SystemInterface & {
   __typename?: 'Targeting';
@@ -10861,33 +11232,8 @@ export type Targeting = SystemInterface & {
   enteredTarget?: Maybe<StringCoordinates>;
 };
 
-export type StringCoordinates = {
-  __typename?: 'StringCoordinates';
-  x?: Maybe<Scalars['String']>;
-  y?: Maybe<Scalars['String']>;
-  z?: Maybe<Scalars['String']>;
-};
-
-export type StringCoordinatesInput = {
-  x?: Maybe<Scalars['String']>;
-  y?: Maybe<Scalars['String']>;
-  z?: Maybe<Scalars['String']>;
-};
-
 export type TargetingClass = {
   __typename?: 'TargetingClass';
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  size?: Maybe<Scalars['Float']>;
-  icon?: Maybe<Scalars['String']>;
-  picture?: Maybe<Scalars['String']>;
-  speed?: Maybe<Scalars['Float']>;
-  quadrant?: Maybe<Scalars['Int']>;
-  moving?: Maybe<Scalars['Boolean']>;
-  clickToTarget?: Maybe<Scalars['Boolean']>;
-};
-
-export type TargetClassInput = {
   id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
   size?: Maybe<Scalars['Float']>;
@@ -10916,17 +11262,6 @@ export type TargetingContact = {
   clickToTarget?: Maybe<Scalars['Boolean']>;
 };
 
-export type TaskReport = {
-  __typename?: 'TaskReport';
-  id?: Maybe<Scalars['ID']>;
-  simulatorId?: Maybe<Scalars['ID']>;
-  system?: Maybe<System>;
-  type?: Maybe<Scalars['String']>;
-  stepCount?: Maybe<Scalars['Int']>;
-  name?: Maybe<Scalars['String']>;
-  tasks?: Maybe<Array<Maybe<Task>>>;
-};
-
 export type Task = {
   __typename?: 'Task';
   id: Scalars['ID'];
@@ -10950,6 +11285,38 @@ export type Task = {
   assigned?: Maybe<Scalars['Boolean']>;
 };
 
+export type TaskDefinition = {
+  __typename?: 'TaskDefinition';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  class: Scalars['String'];
+  stations?: Maybe<Array<Maybe<Station>>>;
+  active: Scalars['Boolean'];
+  valuesInput: Scalars['JSON'];
+  valuesValue: Scalars['JSON'];
+};
+
+export type TaskFlow = {
+  __typename?: 'TaskFlow';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  category: Scalars['String'];
+  currentStep: Scalars['Int'];
+  steps: Array<TaskFlowStep>;
+  completed: Scalars['Boolean'];
+};
+
+export type TaskFlowStep = {
+  __typename?: 'TaskFlowStep';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  tasks: Array<Task>;
+  activeTasks: Array<Task>;
+  completeAll: Scalars['Boolean'];
+  delay: Scalars['Int'];
+  completed: Scalars['Boolean'];
+};
+
 export type TaskInput = {
   simulatorId?: Maybe<Scalars['ID']>;
   definition?: Maybe<Scalars['String']>;
@@ -10958,6 +11325,17 @@ export type TaskInput = {
   station?: Maybe<Scalars['String']>;
   macros?: Maybe<Array<Maybe<ActionInput>>>;
   preMacros?: Maybe<Array<Maybe<ActionInput>>>;
+};
+
+export type TaskReport = {
+  __typename?: 'TaskReport';
+  id?: Maybe<Scalars['ID']>;
+  simulatorId?: Maybe<Scalars['ID']>;
+  system?: Maybe<System>;
+  type?: Maybe<Scalars['String']>;
+  stepCount?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+  tasks?: Maybe<Array<Maybe<Task>>>;
 };
 
 export type TaskTemplate = {
@@ -10969,17 +11347,6 @@ export type TaskTemplate = {
   reportTypes?: Maybe<Array<Scalars['String']>>;
   macros?: Maybe<Array<MacroAction>>;
   preMacros?: Maybe<Array<MacroAction>>;
-};
-
-export type TaskDefinition = {
-  __typename?: 'TaskDefinition';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  class: Scalars['String'];
-  stations?: Maybe<Array<Maybe<Station>>>;
-  active: Scalars['Boolean'];
-  valuesInput: Scalars['JSON'];
-  valuesValue: Scalars['JSON'];
 };
 
 export type Team = {
@@ -10995,6 +11362,18 @@ export type Team = {
   cleared?: Maybe<Scalars['Boolean']>;
 };
 
+export type TeamCount = {
+  __typename?: 'TeamCount';
+  team?: Maybe<Team>;
+  count?: Maybe<Scalars['Int']>;
+};
+
+export type TeamCountInput = {
+  __typename?: 'TeamCountInput';
+  team?: Maybe<Scalars['ID']>;
+  count?: Maybe<Scalars['Int']>;
+};
+
 export type TeamInput = {
   id?: Maybe<Scalars['ID']>;
   type?: Maybe<Team_Types>;
@@ -11006,22 +11385,14 @@ export type TeamInput = {
   officers?: Maybe<Array<Maybe<Scalars['ID']>>>;
 };
 
-export enum Team_Types {
-  Security = 'security',
-  Damage = 'damage',
-  Medical = 'medical'
-}
-
-export enum Priorities {
-  Low = 'low',
-  Normal = 'normal',
-  Critical = 'critical',
-  Emergency = 'emergency'
-}
-
 export type Template = {
   __typename?: 'Template';
   id?: Maybe<Scalars['ID']>;
+};
+
+export type TemplateComponent = {
+  __typename?: 'TemplateComponent';
+  category?: Maybe<Scalars['String']>;
 };
 
 export type Thorium = {
@@ -11034,32 +11405,6 @@ export type Thorium = {
   spaceEdventuresCenter?: Maybe<SpaceEdventuresCenter>;
   port?: Maybe<Scalars['Int']>;
   httpOnly?: Maybe<Scalars['Boolean']>;
-};
-
-export type SpaceEdventuresCenter = {
-  __typename?: 'SpaceEdventuresCenter';
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  token?: Maybe<Scalars['String']>;
-  simulators?: Maybe<Array<Maybe<NamedObject>>>;
-  missions?: Maybe<Array<Maybe<NamedObject>>>;
-  badges?: Maybe<Array<Maybe<NamedObject>>>;
-  flightTypes?: Maybe<Array<Maybe<FlightType>>>;
-};
-
-export type NamedObject = {
-  __typename?: 'NamedObject';
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-};
-
-export type FlightType = {
-  __typename?: 'FlightType';
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  flightHours?: Maybe<Scalars['Float']>;
-  classHours?: Maybe<Scalars['Float']>;
 };
 
 export type Thruster = SystemInterface & {
@@ -11084,46 +11429,33 @@ export type Thruster = SystemInterface & {
   movementSpeed?: Maybe<Scalars['Float']>;
 };
 
-export type Coordinates = {
-  __typename?: 'Coordinates';
-  x?: Maybe<Scalars['Float']>;
-  y?: Maybe<Scalars['Float']>;
-  z?: Maybe<Scalars['Float']>;
+export type ThrusterControls = {
+  __typename?: 'ThrusterControls';
+  rotation?: Maybe<Scalars['String']>;
+  reversed?: Maybe<Scalars['Boolean']>;
+  matchRotation?: Maybe<Scalars['Boolean']>;
+  up?: Maybe<Scalars['String']>;
+  down?: Maybe<Scalars['String']>;
+  left?: Maybe<Scalars['String']>;
+  right?: Maybe<Scalars['String']>;
 };
 
-export type CoordinatesInput = {
-  x?: Maybe<Scalars['Float']>;
-  y?: Maybe<Scalars['Float']>;
-  z?: Maybe<Scalars['Float']>;
+export type ThrusterControlsInput = {
+  rotation?: Maybe<Scalars['String']>;
+  reversed?: Maybe<Scalars['Boolean']>;
+  matchRotation?: Maybe<Scalars['Boolean']>;
+  up?: Maybe<Scalars['String']>;
+  down?: Maybe<Scalars['String']>;
+  left?: Maybe<Scalars['String']>;
+  right?: Maybe<Scalars['String']>;
 };
 
-export type Rotation = {
-  __typename?: 'Rotation';
-  yaw?: Maybe<Scalars['Float']>;
-  pitch?: Maybe<Scalars['Float']>;
-  roll?: Maybe<Scalars['Float']>;
-};
-
-export type RotationInput = {
-  yaw?: Maybe<Scalars['Float']>;
-  pitch?: Maybe<Scalars['Float']>;
-  roll?: Maybe<Scalars['Float']>;
-};
-
-export type DirectionInput = {
-  x?: Maybe<Scalars['Float']>;
-  y?: Maybe<Scalars['Float']>;
-  z?: Maybe<Scalars['Float']>;
-};
-
-export type ThxClient = {
-  __typename?: 'ThxClient';
-  id?: Maybe<Scalars['ID']>;
-  charge?: Maybe<Scalars['Float']>;
-  lock?: Maybe<Scalars['Boolean']>;
-  station?: Maybe<Station>;
-  executive?: Maybe<Scalars['Boolean']>;
-  connected?: Maybe<Scalars['Boolean']>;
+export type ThrustersComponent = {
+  __typename?: 'ThrustersComponent';
+  direction?: Maybe<Coordinates>;
+  rotationDelta?: Maybe<Coordinates>;
+  rotationSpeed?: Maybe<Scalars['Float']>;
+  movementSpeed?: Maybe<Scalars['Float']>;
 };
 
 export type Thx = SystemInterface & {
@@ -11141,6 +11473,61 @@ export type Thx = SystemInterface & {
   locations?: Maybe<Array<Maybe<Room>>>;
   activated?: Maybe<Scalars['Boolean']>;
   clients?: Maybe<Array<Maybe<ThxClient>>>;
+};
+
+export type ThxClient = {
+  __typename?: 'ThxClient';
+  id?: Maybe<Scalars['ID']>;
+  charge?: Maybe<Scalars['Float']>;
+  lock?: Maybe<Scalars['Boolean']>;
+  station?: Maybe<Station>;
+  executive?: Maybe<Scalars['Boolean']>;
+  connected?: Maybe<Scalars['Boolean']>;
+};
+
+export type TimelineInstance = {
+  __typename?: 'TimelineInstance';
+  id?: Maybe<Scalars['ID']>;
+  mission?: Maybe<Mission>;
+  currentTimelineStep?: Maybe<Scalars['Int']>;
+  executedTimelineSteps?: Maybe<Array<Maybe<Scalars['ID']>>>;
+};
+
+export type TimelineItem = {
+  __typename?: 'TimelineItem';
+  id: Scalars['ID'];
+  name?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+  event: Scalars['String'];
+  needsConfig?: Maybe<Scalars['Boolean']>;
+  args?: Maybe<Scalars['String']>;
+  delay?: Maybe<Scalars['Int']>;
+  noCancelOnReset?: Maybe<Scalars['Boolean']>;
+};
+
+export type TimelineItemInput = {
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+  event?: Maybe<Scalars['String']>;
+  args?: Maybe<Scalars['String']>;
+  delay?: Maybe<Scalars['Int']>;
+  noCancelOnReset?: Maybe<Scalars['Boolean']>;
+};
+
+export type TimelineStep = {
+  __typename?: 'TimelineStep';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  order?: Maybe<Scalars['Int']>;
+  timelineItems: Array<TimelineItem>;
+};
+
+export type Timer = {
+  __typename?: 'Timer';
+  time?: Maybe<Scalars['String']>;
+  active?: Maybe<Scalars['Boolean']>;
 };
 
 export type Torpedo = SystemInterface & {
@@ -11161,29 +11548,6 @@ export type Torpedo = SystemInterface & {
   locations?: Maybe<Array<Maybe<Room>>>;
 };
 
-export type Warhead = {
-  __typename?: 'Warhead';
-  id?: Maybe<Scalars['ID']>;
-  type?: Maybe<Scalars['String']>;
-  probe?: Maybe<Probe>;
-};
-
-export type WarheadInput = {
-  type?: Maybe<Scalars['String']>;
-  probe?: Maybe<Scalars['ID']>;
-};
-
-export type TractorBeamBeam = {
-  __typename?: 'TractorBeamBeam';
-  id: Scalars['ID'];
-  state: Scalars['Boolean'];
-  target: Scalars['Boolean'];
-  targetLabel: Scalars['String'];
-  strength: Scalars['Float'];
-  stress: Scalars['Float'];
-  scanning: Scalars['Boolean'];
-};
-
 export type TractorBeam = SystemInterface & {
   __typename?: 'TractorBeam';
   id: Scalars['ID'];
@@ -11198,6 +11562,17 @@ export type TractorBeam = SystemInterface & {
   stealthFactor?: Maybe<Scalars['Float']>;
   locations?: Maybe<Array<Maybe<Room>>>;
   beams: Array<TractorBeamBeam>;
+};
+
+export type TractorBeamBeam = {
+  __typename?: 'TractorBeamBeam';
+  id: Scalars['ID'];
+  state: Scalars['Boolean'];
+  target: Scalars['Boolean'];
+  targetLabel: Scalars['String'];
+  strength: Scalars['Float'];
+  stress: Scalars['Float'];
+  scanning: Scalars['Boolean'];
 };
 
 export type Transporter = SystemInterface & {
@@ -11221,14 +11596,6 @@ export type Transporter = SystemInterface & {
   locations?: Maybe<Array<Maybe<Room>>>;
 };
 
-export type TransporterTarget = {
-  __typename?: 'TransporterTarget';
-  id?: Maybe<Scalars['ID']>;
-  icon?: Maybe<Scalars['String']>;
-  moving?: Maybe<Scalars['Boolean']>;
-  position?: Maybe<Coordinates>;
-};
-
 export type TransporterInput = {
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
@@ -11236,6 +11603,14 @@ export type TransporterInput = {
   destination?: Maybe<Scalars['String']>;
   charge?: Maybe<Scalars['Float']>;
   state?: Maybe<Scalars['String']>;
+};
+
+export type TransporterTarget = {
+  __typename?: 'TransporterTarget';
+  id?: Maybe<Scalars['ID']>;
+  icon?: Maybe<Scalars['String']>;
+  moving?: Maybe<Scalars['Boolean']>;
+  position?: Maybe<Coordinates>;
 };
 
 export type Transwarp = SystemInterface & {
@@ -11299,373 +11674,22 @@ export type ViewscreenPictureInPicture = {
   size?: Maybe<Pip_Size>;
 };
 
-export enum Pip_Position {
-  BottomLeft = 'bottomLeft',
-  BottomRight = 'bottomRight',
-  TopLeft = 'topLeft',
-  TopRight = 'topRight',
-  Center = 'center'
-}
-
-export enum Pip_Size {
-  Small = 'small',
-  Medium = 'medium',
-  Large = 'large'
-}
-
-export type Countermeasures = SystemInterface & {
-  __typename?: 'Countermeasures';
-  id: Scalars['ID'];
-  simulatorId?: Maybe<Scalars['ID']>;
-  class?: Maybe<Scalars['String']>;
+export type Warhead = {
+  __typename?: 'Warhead';
+  id?: Maybe<Scalars['ID']>;
   type?: Maybe<Scalars['String']>;
-  name: Scalars['String'];
-  displayName: Scalars['String'];
-  upgradeName?: Maybe<Scalars['String']>;
-  upgraded?: Maybe<Scalars['Boolean']>;
-  damage: Damage;
-  power: Power;
-  stealthFactor?: Maybe<Scalars['Float']>;
-  locations?: Maybe<Array<Maybe<Room>>>;
-  materials: CountermeasureResources;
-  slots: CountermeasureSlot;
-  launched: Array<Countermeasure>;
+  probe?: Maybe<Probe>;
 };
 
-export type Countermeasure = {
-  __typename?: 'Countermeasure';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  modules: Array<CountermeasureModule>;
-  locked: Scalars['Boolean'];
-  active: Scalars['Boolean'];
-  building: Scalars['Boolean'];
-  totalPowerUsed: Scalars['Float'];
-  readyToLaunch: Scalars['Boolean'];
-  powerUsage: Scalars['Float'];
-  availablePower: Scalars['Float'];
-  buildPercentage: Scalars['Float'];
-  note: Scalars['String'];
-};
-
-export type CountermeasureResources = {
-  __typename?: 'CountermeasureResources';
-  copper: Scalars['Float'];
-  titanium: Scalars['Float'];
-  carbon: Scalars['Float'];
-  plastic: Scalars['Float'];
-  plasma: Scalars['Float'];
-};
-
-export type CountermeasureConfigOptions = {
-  __typename?: 'CountermeasureConfigOptions';
-  type: Scalars['String'];
-  label: Scalars['String'];
-};
-
-export type CountermeasureModule = {
-  __typename?: 'CountermeasureModule';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  description: Scalars['String'];
-  powerRequirement: Scalars['Float'];
-  resourceRequirements: CountermeasureResources;
-  configurationOptions: Array<CountermeasureConfigOptions>;
-  config: Scalars['JSON'];
-  buildProgress: Scalars['Float'];
-  activated: Scalars['Boolean'];
-};
-
-export enum CountermeasureSlotEnum {
-  Slot1 = 'slot1',
-  Slot2 = 'slot2',
-  Slot3 = 'slot3',
-  Slot4 = 'slot4',
-  Slot5 = 'slot5',
-  Slot6 = 'slot6',
-  Slot7 = 'slot7',
-  Slot8 = 'slot8'
-}
-
-export type CountermeasureSlot = {
-  __typename?: 'CountermeasureSlot';
-  slot1?: Maybe<Countermeasure>;
-  slot2?: Maybe<Countermeasure>;
-  slot3?: Maybe<Countermeasure>;
-  slot4?: Maybe<Countermeasure>;
-  slot5?: Maybe<Countermeasure>;
-  slot6?: Maybe<Countermeasure>;
-  slot7?: Maybe<Countermeasure>;
-  slot8?: Maybe<Countermeasure>;
-};
-
-export type Entity = {
-  __typename?: 'Entity';
-  id: Scalars['ID'];
-  interval?: Maybe<Scalars['Int']>;
-  reset?: Maybe<Scalars['Boolean']>;
-  appearance?: Maybe<AppearanceComponent>;
-  behavior?: Maybe<BehaviorComponent>;
-  identity?: Maybe<IdentityComponent>;
-  location?: Maybe<LocationComponent>;
-  stage?: Maybe<StageComponent>;
-  stageChild?: Maybe<StageChildComponent>;
-  light?: Maybe<LightComponent>;
-  glow?: Maybe<GlowComponent>;
-  template?: Maybe<TemplateComponent>;
-  enginesWarp?: Maybe<EngineComponent>;
-  enginesImpulse?: Maybe<EngineComponent>;
-  thrusters?: Maybe<ThrustersComponent>;
-};
-
-export enum DmxChannelProperty {
-  Red = 'red',
-  Green = 'green',
-  Blue = 'blue',
-  Amber = 'amber',
-  White = 'white',
-  Uv = 'uv',
-  Intensity = 'intensity',
-  Strobe = 'strobe',
-  Generic = 'generic',
-  Focus = 'focus',
-  Nothing = 'nothing'
-}
-
-export type DmxDevice = {
-  __typename?: 'DMXDevice';
-  id: Scalars['ID'];
-  class: Scalars['String'];
-  name: Scalars['String'];
-  channels: Array<DmxChannelProperty>;
-};
-
-export enum DmxFixtureMode {
-  Active = 'active',
-  Passive = 'passive'
-}
-
-export type DmxPassiveChannels = {
-  __typename?: 'DMXPassiveChannels';
-  amber?: Maybe<Scalars['Int']>;
-  white?: Maybe<Scalars['Int']>;
-  uv?: Maybe<Scalars['Int']>;
-  intensity?: Maybe<Scalars['Int']>;
-  strobe?: Maybe<Scalars['Int']>;
-  generic?: Maybe<Scalars['Int']>;
-  nothing?: Maybe<Scalars['Int']>;
-  color?: Maybe<Scalars['String']>;
-};
-
-export type DmxPassiveChannelsInput = {
-  amber?: Maybe<Scalars['Int']>;
-  white?: Maybe<Scalars['Int']>;
-  uv?: Maybe<Scalars['Int']>;
-  intensity?: Maybe<Scalars['Int']>;
-  strobe?: Maybe<Scalars['Int']>;
-  generic?: Maybe<Scalars['Int']>;
-  nothing?: Maybe<Scalars['Int']>;
-  color?: Maybe<Scalars['String']>;
-};
-
-export type DmxFixture = {
-  __typename?: 'DMXFixture';
-  id: Scalars['ID'];
-  class: Scalars['String'];
-  name: Scalars['String'];
-  clientId?: Maybe<Scalars['String']>;
-  DMXDeviceId: Scalars['String'];
-  DMXDevice: DmxDevice;
-  simulatorId: Scalars['String'];
-  channel: Scalars['Int'];
-  mode: DmxFixtureMode;
-  tags: Array<Scalars['String']>;
-  passiveChannels: DmxPassiveChannels;
-};
-
-export type DmxSet = {
-  __typename?: 'DMXSet';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  fixtureIds: Array<Scalars['String']>;
-  fixtures: Array<DmxFixture>;
-};
-
-export type DmxConfig = {
-  __typename?: 'DMXConfig';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  config: Scalars['JSON'];
-  actionStrength: Scalars['Float'];
-};
-
-export type TaskFlowStep = {
-  __typename?: 'TaskFlowStep';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  tasks: Array<Task>;
-  activeTasks: Array<Task>;
-  completeAll: Scalars['Boolean'];
-  delay: Scalars['Int'];
-  completed: Scalars['Boolean'];
-};
-
-export type TaskFlow = {
-  __typename?: 'TaskFlow';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  category: Scalars['String'];
-  currentStep: Scalars['Int'];
-  steps: Array<TaskFlowStep>;
-  completed: Scalars['Boolean'];
-};
-
-export enum MeshTypeEnum {
-  Sphere = 'sphere',
-  Cube = 'cube',
-  Model = 'model',
-  Sprite = 'sprite',
-  Planet = 'planet',
-  Star = 'star'
-}
-
-export type AppearanceComponent = {
-  __typename?: 'AppearanceComponent';
-  meshType?: Maybe<MeshTypeEnum>;
-  modelAsset?: Maybe<Scalars['String']>;
-  materialMapAsset?: Maybe<Scalars['String']>;
-  ringMapAsset?: Maybe<Scalars['String']>;
-  cloudMapAsset?: Maybe<Scalars['String']>;
-  emissiveColor?: Maybe<Scalars['String']>;
-  emissiveIntensity?: Maybe<Scalars['Float']>;
-  color?: Maybe<Scalars['String']>;
-  scale?: Maybe<Scalars['Float']>;
-};
-
-export enum Behaviors {
-  HoldPosition = 'holdPosition',
-  Wander = 'wander',
-  Follow = 'follow',
-  Avoid = 'avoid',
-  Attack = 'attack'
-}
-
-export type BehaviorComponent = {
-  __typename?: 'BehaviorComponent';
-  behavior: Behaviors;
-  targetId?: Maybe<Scalars['ID']>;
-  destination?: Maybe<EntityCoordinates>;
-};
-
-export type IdentityComponent = {
-  __typename?: 'IdentityComponent';
-  name?: Maybe<Scalars['String']>;
+export type WarheadInput = {
   type?: Maybe<Scalars['String']>;
+  probe?: Maybe<Scalars['ID']>;
 };
 
-export type Quaternion = {
-  __typename?: 'Quaternion';
+export type XyLocation = {
+  __typename?: 'XYLocation';
   x: Scalars['Float'];
   y: Scalars['Float'];
-  z: Scalars['Float'];
-  w: Scalars['Float'];
-};
-
-export type QuaternionInput = {
-  x: Scalars['Float'];
-  y: Scalars['Float'];
-  z: Scalars['Float'];
-  w: Scalars['Float'];
-};
-
-export type EntityCoordinates = {
-  __typename?: 'EntityCoordinates';
-  x: Scalars['Float'];
-  y: Scalars['Float'];
-  z: Scalars['Float'];
-};
-
-export type EntityCoordinatesInput = {
-  x: Scalars['Float'];
-  y: Scalars['Float'];
-  z: Scalars['Float'];
-};
-
-export type LocationComponent = {
-  __typename?: 'LocationComponent';
-  inert: Scalars['Boolean'];
-  position: EntityCoordinates;
-  velocity: EntityCoordinates;
-  acceleration: EntityCoordinates;
-  rotation: Quaternion;
-  rotationVelocity: EntityCoordinates;
-  rotationAcceleration: EntityCoordinates;
-};
-
-export type EntitiesLocationInput = {
-  id: Scalars['ID'];
-  position: EntityCoordinatesInput;
-};
-
-export type StageComponent = {
-  __typename?: 'StageComponent';
-  scaleLabel?: Maybe<Scalars['String']>;
-  scaleLabelShort?: Maybe<Scalars['String']>;
-  skyboxKey?: Maybe<Scalars['String']>;
-  childrenAsSprites?: Maybe<Scalars['Boolean']>;
-};
-
-export type StageChildComponent = {
-  __typename?: 'StageChildComponent';
-  parentId: Scalars['ID'];
-  parent?: Maybe<Entity>;
-};
-
-export type LightComponent = {
-  __typename?: 'LightComponent';
-  intensity?: Maybe<Scalars['Float']>;
-  decay?: Maybe<Scalars['Float']>;
-  color?: Maybe<Scalars['String']>;
-};
-
-export enum GlowModeEnum {
-  Glow = 'glow',
-  Halo = 'halo',
-  Shell = 'shell'
-}
-
-export type GlowComponent = {
-  __typename?: 'GlowComponent';
-  glowMode?: Maybe<GlowModeEnum>;
-  color?: Maybe<Scalars['String']>;
-};
-
-export type TemplateComponent = {
-  __typename?: 'TemplateComponent';
-  category?: Maybe<Scalars['String']>;
-};
-
-export type EngineComponent = {
-  __typename?: 'EngineComponent';
-  maxSpeed?: Maybe<Scalars['Float']>;
-  currentSpeed?: Maybe<Scalars['Float']>;
-  heat?: Maybe<Scalars['Float']>;
-  heatRate?: Maybe<Scalars['Float']>;
-  coolant?: Maybe<Scalars['Float']>;
-  cooling?: Maybe<Scalars['Boolean']>;
-};
-
-export enum EntityEngineEnum {
-  Warp = 'warp',
-  Impulse = 'impulse'
-}
-
-export type ThrustersComponent = {
-  __typename?: 'ThrustersComponent';
-  direction?: Maybe<Coordinates>;
-  rotationDelta?: Maybe<Coordinates>;
-  rotationSpeed?: Maybe<Scalars['Float']>;
-  movementSpeed?: Maybe<Scalars['Float']>;
 };
 
 /** A GraphQL Schema defines the capabilities of a GraphQL server. It exposes all available types and directives on the server, as well as the entry points for query, mutation, and subscription operations. */
@@ -11686,7 +11710,7 @@ export type __Schema = {
 
 /**
  * The fundamental unit of any GraphQL Schema is the type. There are many kinds of types in GraphQL as represented by the `__TypeKind` enum.
- * 
+ *
  * Depending on the kind of a type, certain fields describe information about that type. Scalar types provide no information beyond a name, description and optional `specifiedByUrl`, while Enum types provide their values. Object and Interface types provide the fields they describe. Abstract types, Union and Interface, provide the Object types possible at runtime. List and NonNull types compose other types.
  */
 export type __Type = {
@@ -11706,7 +11730,7 @@ export type __Type = {
 
 /**
  * The fundamental unit of any GraphQL Schema is the type. There are many kinds of types in GraphQL as represented by the `__TypeKind` enum.
- * 
+ *
  * Depending on the kind of a type, certain fields describe information about that type. Scalar types provide no information beyond a name, description and optional `specifiedByUrl`, while Enum types provide their values. Object and Interface types provide the fields they describe. Abstract types, Union and Interface, provide the Object types possible at runtime. List and NonNull types compose other types.
  */
 export type __TypeFieldsArgs = {
@@ -11716,10 +11740,20 @@ export type __TypeFieldsArgs = {
 
 /**
  * The fundamental unit of any GraphQL Schema is the type. There are many kinds of types in GraphQL as represented by the `__TypeKind` enum.
- * 
+ *
  * Depending on the kind of a type, certain fields describe information about that type. Scalar types provide no information beyond a name, description and optional `specifiedByUrl`, while Enum types provide their values. Object and Interface types provide the fields they describe. Abstract types, Union and Interface, provide the Object types possible at runtime. List and NonNull types compose other types.
  */
 export type __TypeEnumValuesArgs = {
+  includeDeprecated?: Maybe<Scalars['Boolean']>;
+};
+
+
+/**
+ * The fundamental unit of any GraphQL Schema is the type. There are many kinds of types in GraphQL as represented by the `__TypeKind` enum.
+ *
+ * Depending on the kind of a type, certain fields describe information about that type. Scalar types provide no information beyond a name, description and optional `specifiedByUrl`, while Enum types provide their values. Object and Interface types provide the fields they describe. Abstract types, Union and Interface, provide the Object types possible at runtime. List and NonNull types compose other types.
+ */
+export type __TypeInputFieldsArgs = {
   includeDeprecated?: Maybe<Scalars['Boolean']>;
 };
 
@@ -11754,6 +11788,12 @@ export type __Field = {
   deprecationReason?: Maybe<Scalars['String']>;
 };
 
+
+/** Object and Interface types are described by a list of Fields, each of which has a name, potentially a list of arguments, and a return type. */
+export type __FieldArgsArgs = {
+  includeDeprecated?: Maybe<Scalars['Boolean']>;
+};
+
 /** Arguments provided to Fields or Directives and the input fields of an InputObject are represented as Input Values which describe their type and optionally a default value. */
 export type __InputValue = {
   __typename?: '__InputValue';
@@ -11762,6 +11802,8 @@ export type __InputValue = {
   type: __Type;
   /** A GraphQL-formatted string representing the default value for this input value. */
   defaultValue?: Maybe<Scalars['String']>;
+  isDeprecated: Scalars['Boolean'];
+  deprecationReason?: Maybe<Scalars['String']>;
 };
 
 /** One possible value for a given Enum. Enum values are unique values, not a placeholder for a string or numeric value. However an Enum value is returned in a JSON response as a string. */
@@ -11775,7 +11817,7 @@ export type __EnumValue = {
 
 /**
  * A Directive provides a way to describe alternate runtime execution and type validation behavior in a GraphQL document.
- * 
+ *
  * In some cases, you need to provide options to alter GraphQL's execution behavior in ways field arguments will not suffice, such as conditionally including or skipping a field. Directives provide this by describing additional information to the executor.
  */
 export type __Directive = {
@@ -11785,6 +11827,16 @@ export type __Directive = {
   isRepeatable: Scalars['Boolean'];
   locations: Array<__DirectiveLocation>;
   args: Array<__InputValue>;
+};
+
+
+/**
+ * A Directive provides a way to describe alternate runtime execution and type validation behavior in a GraphQL document.
+ *
+ * In some cases, you need to provide options to alter GraphQL's execution behavior in ways field arguments will not suffice, such as conditionally including or skipping a field. Directives provide this by describing additional information to the executor.
+ */
+export type __DirectiveArgsArgs = {
+  includeDeprecated?: Maybe<Scalars['Boolean']>;
 };
 
 /** A Directive can be adjacent to many parts of the GraphQL language, a __DirectiveLocation describes one such possible adjacencies. */
@@ -12042,7 +12094,7 @@ export type MissionMacrosQuery = (
 
 export type RemoteAssetLoadMutationVariables = Exact<{
   folderPath: Scalars['String'];
-  files: Array<RemoteAsset>;
+  files: Array<RemoteAsset> | RemoteAsset;
 }>;
 
 
@@ -12893,6 +12945,17 @@ export type HackingTransferToLongRangeMutation = (
   & Pick<Mutation, 'sendLongRangeMessage'>
 );
 
+export type HackingSetFrequencyMutationVariables = Exact<{
+  id: Scalars['ID'];
+  frequency: Scalars['Float'];
+}>;
+
+
+export type HackingSetFrequencyMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'computerCoreSetHackingFrequency'>
+);
+
 export type HackingSetPresetMutationVariables = Exact<{
   id: Scalars['ID'];
   presetId: Scalars['ID'];
@@ -13703,7 +13766,7 @@ export type AddMissionMutation = (
 
 export type ExecuteMacrosMutationVariables = Exact<{
   simulatorId: Scalars['ID'];
-  macros: Array<Maybe<MacroInput>>;
+  macros: Array<Maybe<MacroInput>> | Maybe<MacroInput>;
 }>;
 
 
@@ -14187,7 +14250,7 @@ export type DmxDeviceRemoveMutation = (
 
 export type DmxDeviceSetChannelsMutationVariables = Exact<{
   id: Scalars['ID'];
-  channels: Array<DmxChannelProperty>;
+  channels: Array<DmxChannelProperty> | DmxChannelProperty;
 }>;
 
 
@@ -14298,7 +14361,7 @@ export type DmxFixtureSetPassiveChannelsMutation = (
 
 export type DmxFixtureSetTagsMutationVariables = Exact<{
   id: Scalars['ID'];
-  newTags: Array<Scalars['String']>;
+  newTags: Array<Scalars['String']> | Scalars['String'];
 }>;
 
 
@@ -14467,7 +14530,7 @@ export type FlightTypesQuery = (
 
 export type StartFlightMutationVariables = Exact<{
   name: Scalars['String'];
-  simulators: Array<SimulatorInput>;
+  simulators: Array<SimulatorInput> | SimulatorInput;
   flightType?: Maybe<Scalars['String']>;
 }>;
 
@@ -15353,7 +15416,7 @@ export type StationSetConfigSubscription = (
 export type StationSetTagsMutationVariables = Exact<{
   stationSetId: Scalars['ID'];
   stationName: Scalars['String'];
-  tags: Array<Scalars['String']>;
+  tags: Array<Scalars['String']> | Scalars['String'];
 }>;
 
 
@@ -15403,7 +15466,7 @@ export type RenameTaskTemplateMutation = (
 
 export type SetTaskMacroMutationVariables = Exact<{
   id: Scalars['ID'];
-  macros: Array<ActionInput>;
+  macros: Array<ActionInput> | ActionInput;
 }>;
 
 
@@ -15414,7 +15477,7 @@ export type SetTaskMacroMutation = (
 
 export type SetTaskPreMacroMutationVariables = Exact<{
   id: Scalars['ID'];
-  macros: Array<ActionInput>;
+  macros: Array<ActionInput> | ActionInput;
 }>;
 
 
@@ -15425,7 +15488,7 @@ export type SetTaskPreMacroMutation = (
 
 export type SetTaskTemplateReportTypesMutationVariables = Exact<{
   id: Scalars['ID'];
-  reportTypes: Array<Maybe<Scalars['String']>>;
+  reportTypes: Array<Maybe<Scalars['String']>> | Maybe<Scalars['String']>;
 }>;
 
 
@@ -15709,7 +15772,7 @@ export type EntitySetThrustersMutation = (
 );
 
 export type EntitiesSetPositionMutationVariables = Exact<{
-  entities: Array<EntitiesLocationInput>;
+  entities: Array<EntitiesLocationInput> | EntitiesLocationInput;
 }>;
 
 
@@ -15813,7 +15876,7 @@ export type EntitiesQuery = (
 );
 
 export type EntityRemoveMutationVariables = Exact<{
-  id: Array<Scalars['ID']>;
+  id: Array<Scalars['ID']> | Scalars['ID'];
 }>;
 
 
@@ -15989,6 +16052,11 @@ export type SoundPickerQuery = (
   "__schema": {
     "types": [
       {
+        "kind": "INTERFACE",
+        "name": "HeatInterface",
+        "possibleTypes": []
+      },
+      {
         "kind": "UNION",
         "name": "Location",
         "possibleTypes": [
@@ -16005,16 +16073,19 @@ export type SoundPickerQuery = (
         "name": "SystemInterface",
         "possibleTypes": [
           {
+            "name": "AdvancedNavigationAndAstrometrics"
+          },
+          {
             "name": "CoolantTank"
+          },
+          {
+            "name": "Countermeasures"
           },
           {
             "name": "Crm"
           },
           {
             "name": "Engine"
-          },
-          {
-            "name": "AdvancedNavigationAndAstrometrics"
           },
           {
             "name": "HullPlating"
@@ -16087,9 +16158,6 @@ export type SoundPickerQuery = (
           },
           {
             "name": "Transwarp"
-          },
-          {
-            "name": "Countermeasures"
           }
         ]
       }
@@ -16836,7 +16904,12 @@ export function useHandleOnAssignProbeMutation(baseOptions?: ApolloReactHooks.Mu
 export type HandleOnAssignProbeMutationHookResult = ReturnType<typeof useHandleOnAssignProbeMutation>;
 export const HandleOverrideLocationDocument = gql`
     mutation HandleOverrideLocation($id: ID!, $location: BasicCoordinateInput!, $currentLocationUrl: String, $currentLocationName: String) {
-  handleOverrideLocation(id: $id, location: $location, currentLocationUrl: $currentLocationUrl, currentLocationName: $currentLocationName)
+  handleOverrideLocation(
+    id: $id
+    location: $location
+    currentLocationUrl: $currentLocationUrl
+    currentLocationName: $currentLocationName
+  )
 }
     `;
 export function useHandleOverrideLocationMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HandleOverrideLocationMutation, HandleOverrideLocationMutationVariables>) {
@@ -17128,7 +17201,12 @@ export function useCountermeasuresBuildCountermeasureMutation(baseOptions?: Apol
 export type CountermeasuresBuildCountermeasureMutationHookResult = ReturnType<typeof useCountermeasuresBuildCountermeasureMutation>;
 export const CountermeasuresConfigureModuleDocument = gql`
     mutation CountermeasuresConfigureModule($id: ID!, $slot: CountermeasureSlotEnum!, $moduleId: ID!, $config: JSON!) {
-  countermeasuresConfigureModule(id: $id, slot: $slot, moduleId: $moduleId, config: $config)
+  countermeasuresConfigureModule(
+    id: $id
+    slot: $slot
+    moduleId: $moduleId
+    config: $config
+  )
 }
     `;
 export function useCountermeasuresConfigureModuleMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CountermeasuresConfigureModuleMutation, CountermeasuresConfigureModuleMutationVariables>) {
@@ -17193,7 +17271,11 @@ export function useCountermeasuresRemoveModuleMutation(baseOptions?: ApolloReact
 export type CountermeasuresRemoveModuleMutationHookResult = ReturnType<typeof useCountermeasuresRemoveModuleMutation>;
 export const CountermeasuresSetFdNoteDocument = gql`
     mutation CountermeasuresSetFDNote($id: ID!, $countermeasureId: ID!, $note: String!) {
-  countermeasuresSetFDNote(id: $id, countermeasureId: $countermeasureId, note: $note)
+  countermeasuresSetFDNote(
+    id: $id
+    countermeasureId: $countermeasureId
+    note: $note
+  )
 }
     `;
 export function useCountermeasuresSetFdNoteMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CountermeasuresSetFdNoteMutation, CountermeasuresSetFdNoteMutationVariables>) {
@@ -17362,13 +17444,28 @@ export function useHackingRemoveLogMutation(baseOptions?: ApolloReactHooks.Mutat
 export type HackingRemoveLogMutationHookResult = ReturnType<typeof useHackingRemoveLogMutation>;
 export const HackingTransferToLongRangeDocument = gql`
     mutation HackingTransferToLongRange($simulatorId: ID!, $message: String!, $sender: String) {
-  sendLongRangeMessage(simulatorId: $simulatorId, message: $message, crew: true, decoded: true, sender: $sender)
+  sendLongRangeMessage(
+    simulatorId: $simulatorId
+    message: $message
+    crew: true
+    decoded: true
+    sender: $sender
+  )
 }
     `;
 export function useHackingTransferToLongRangeMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HackingTransferToLongRangeMutation, HackingTransferToLongRangeMutationVariables>) {
         return ApolloReactHooks.useMutation<HackingTransferToLongRangeMutation, HackingTransferToLongRangeMutationVariables>(HackingTransferToLongRangeDocument, baseOptions);
       }
 export type HackingTransferToLongRangeMutationHookResult = ReturnType<typeof useHackingTransferToLongRangeMutation>;
+export const HackingSetFrequencyDocument = gql`
+    mutation HackingSetFrequency($id: ID!, $frequency: Float!) {
+  computerCoreSetHackingFrequency(id: $id, frequency: $frequency)
+}
+    `;
+export function useHackingSetFrequencyMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HackingSetFrequencyMutation, HackingSetFrequencyMutationVariables>) {
+        return ApolloReactHooks.useMutation<HackingSetFrequencyMutation, HackingSetFrequencyMutationVariables>(HackingSetFrequencyDocument, baseOptions);
+      }
+export type HackingSetFrequencyMutationHookResult = ReturnType<typeof useHackingSetFrequencyMutation>;
 export const HackingSetPresetDocument = gql`
     mutation HackingSetPreset($id: ID!, $presetId: ID!) {
   computerCoreHackingPreset(id: $id, presetId: $presetId)
@@ -17389,7 +17486,11 @@ export function useHackingUpdateFilesMutation(baseOptions?: ApolloReactHooks.Mut
 export type HackingUpdateFilesMutationHookResult = ReturnType<typeof useHackingUpdateFilesMutation>;
 export const LightingSetEffectDocument = gql`
     mutation LightingSetEffect($simulatorId: ID!, $effect: LIGHTING_ACTION!, $duration: Float!) {
-  lightingSetEffect(simulatorId: $simulatorId, effect: $effect, duration: $duration)
+  lightingSetEffect(
+    simulatorId: $simulatorId
+    effect: $effect
+    duration: $duration
+  )
 }
     `;
 export function useLightingSetEffectMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<LightingSetEffectMutation, LightingSetEffectMutationVariables>) {
@@ -17761,7 +17862,11 @@ export function useSensorsSubscription(baseOptions?: ApolloReactHooks.Subscripti
 export type SensorsSubscriptionHookResult = ReturnType<typeof useSensorsSubscription>;
 export const SetCalculatedTargetDocument = gql`
     mutation SetCalculatedTarget($simulatorId: ID, $coordinates: CoordinatesInput!, $contactId: ID) {
-  setTargetingCalculatedTarget(simulatorId: $simulatorId, coordinates: $coordinates, contactId: $contactId)
+  setTargetingCalculatedTarget(
+    simulatorId: $simulatorId
+    coordinates: $coordinates
+    contactId: $contactId
+  )
 }
     `;
 export function useSetCalculatedTargetMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SetCalculatedTargetMutation, SetCalculatedTargetMutationVariables>) {
@@ -18180,7 +18285,11 @@ export function useExecuteMacrosMutation(baseOptions?: ApolloReactHooks.Mutation
 export type ExecuteMacrosMutationHookResult = ReturnType<typeof useExecuteMacrosMutation>;
 export const SetSimulatorMissionDocument = gql`
     mutation SetSimulatorMission($simulatorId: ID!, $missionId: ID!, $stepId: ID) {
-  setSimulatorMission(simulatorId: $simulatorId, missionId: $missionId, stepId: $stepId)
+  setSimulatorMission(
+    simulatorId: $simulatorId
+    missionId: $missionId
+    stepId: $stepId
+  )
 }
     `;
 export function useSetSimulatorMissionMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SetSimulatorMissionMutation, SetSimulatorMissionMutationVariables>) {
@@ -18189,7 +18298,11 @@ export function useSetSimulatorMissionMutation(baseOptions?: ApolloReactHooks.Mu
 export type SetSimulatorMissionMutationHookResult = ReturnType<typeof useSetSimulatorMissionMutation>;
 export const SetSimulatorTimelineStepDocument = gql`
     mutation SetSimulatorTimelineStep($simulatorId: ID!, $auxTimelineId: ID, $step: Int!) {
-  setSimulatorTimelineStep(simulatorId: $simulatorId, timelineId: $auxTimelineId, step: $step)
+  setSimulatorTimelineStep(
+    simulatorId: $simulatorId
+    timelineId: $auxTimelineId
+    step: $step
+  )
 }
     `;
 export function useSetSimulatorTimelineStepMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SetSimulatorTimelineStepMutation, SetSimulatorTimelineStepMutationVariables>) {
@@ -18447,7 +18560,13 @@ export function useSetSoundPlayerMutation(baseOptions?: ApolloReactHooks.Mutatio
 export type SetSoundPlayerMutationHookResult = ReturnType<typeof useSetSoundPlayerMutation>;
 export const ApplyClientSetDocument = gql`
     mutation ApplyClientSet($id: ID!, $flightId: ID!, $simulatorId: ID!, $templateId: ID!, $stationSetId: ID!) {
-  applyClientSet(id: $id, flightId: $flightId, simulatorId: $simulatorId, templateId: $templateId, stationSetId: $stationSetId)
+  applyClientSet(
+    id: $id
+    flightId: $flightId
+    simulatorId: $simulatorId
+    templateId: $templateId
+    stationSetId: $stationSetId
+  )
 }
     `;
 export function useApplyClientSetMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ApplyClientSetMutation, ApplyClientSetMutationVariables>) {
@@ -19120,7 +19239,12 @@ export function useMacroDuplicateActionMutation(baseOptions?: ApolloReactHooks.M
 export type MacroDuplicateActionMutationHookResult = ReturnType<typeof useMacroDuplicateActionMutation>;
 export const TimelineAddItemDocument = gql`
     mutation TimelineAddItem($simulatorId: ID, $missionId: ID, $timelineStepId: ID!, $timelineItem: TimelineItemInput!) {
-  addTimelineItemToTimelineStep(simulatorId: $simulatorId, missionId: $missionId, timelineStepId: $timelineStepId, timelineItem: $timelineItem)
+  addTimelineItemToTimelineStep(
+    simulatorId: $simulatorId
+    missionId: $missionId
+    timelineStepId: $timelineStepId
+    timelineItem: $timelineItem
+  )
 }
     `;
 export function useTimelineAddItemMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<TimelineAddItemMutation, TimelineAddItemMutationVariables>) {
@@ -19129,7 +19253,12 @@ export function useTimelineAddItemMutation(baseOptions?: ApolloReactHooks.Mutati
 export type TimelineAddItemMutationHookResult = ReturnType<typeof useTimelineAddItemMutation>;
 export const TimelineAddStepDocument = gql`
     mutation TimelineAddStep($simulatorId: ID, $missionId: ID, $name: String!, $description: String) {
-  addTimelineStep(simulatorId: $simulatorId, missionId: $missionId, name: $name, description: $description)
+  addTimelineStep(
+    simulatorId: $simulatorId
+    missionId: $missionId
+    name: $name
+    description: $description
+  )
 }
     `;
 export function useTimelineAddStepMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<TimelineAddStepMutation, TimelineAddStepMutationVariables>) {
@@ -19138,7 +19267,11 @@ export function useTimelineAddStepMutation(baseOptions?: ApolloReactHooks.Mutati
 export type TimelineAddStepMutationHookResult = ReturnType<typeof useTimelineAddStepMutation>;
 export const TimelineDuplicateItemDocument = gql`
     mutation TimelineDuplicateItem($missionId: ID!, $timelineStepId: ID!, $timelineItemId: ID!) {
-  timelineDuplicateItem(missionId: $missionId, timelineStepId: $timelineStepId, timelineItemId: $timelineItemId)
+  timelineDuplicateItem(
+    missionId: $missionId
+    timelineStepId: $timelineStepId
+    timelineItemId: $timelineItemId
+  )
 }
     `;
 export function useTimelineDuplicateItemMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<TimelineDuplicateItemMutation, TimelineDuplicateItemMutationVariables>) {
@@ -19156,7 +19289,13 @@ export function useTimelineDuplicateStepMutation(baseOptions?: ApolloReactHooks.
 export type TimelineDuplicateStepMutationHookResult = ReturnType<typeof useTimelineDuplicateStepMutation>;
 export const EditMissionDocument = gql`
     mutation EditMission($missionId: ID!, $name: String, $description: String, $category: String, $aux: Boolean) {
-  editMission(missionId: $missionId, name: $name, description: $description, category: $category, aux: $aux)
+  editMission(
+    missionId: $missionId
+    name: $name
+    description: $description
+    category: $category
+    aux: $aux
+  )
 }
     `;
 export function useEditMissionMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<EditMissionMutation, EditMissionMutationVariables>) {
@@ -19233,7 +19372,11 @@ export function useRemoveMissionMutation(baseOptions?: ApolloReactHooks.Mutation
 export type RemoveMissionMutationHookResult = ReturnType<typeof useRemoveMissionMutation>;
 export const TimelineRemoveItemDocument = gql`
     mutation TimelineRemoveItem($missionId: ID!, $timelineStepId: ID!, $timelineItemId: ID!) {
-  removeTimelineStepItem(missionId: $missionId, timelineStepId: $timelineStepId, timelineItemId: $timelineItemId)
+  removeTimelineStepItem(
+    missionId: $missionId
+    timelineStepId: $timelineStepId
+    timelineItemId: $timelineItemId
+  )
 }
     `;
 export function useTimelineRemoveItemMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<TimelineRemoveItemMutation, TimelineRemoveItemMutationVariables>) {
@@ -19251,7 +19394,12 @@ export function useTimelineRemoveStepMutation(baseOptions?: ApolloReactHooks.Mut
 export type TimelineRemoveStepMutationHookResult = ReturnType<typeof useTimelineRemoveStepMutation>;
 export const TimelineReorderItemDocument = gql`
     mutation TimelineReorderItem($missionId: ID, $timelineStepId: ID!, $timelineItemId: ID!, $order: Int!) {
-  reorderTimelineItem(missionId: $missionId, timelineStepId: $timelineStepId, timelineItemId: $timelineItemId, order: $order)
+  reorderTimelineItem(
+    missionId: $missionId
+    timelineStepId: $timelineStepId
+    timelineItemId: $timelineItemId
+    order: $order
+  )
 }
     `;
 export function useTimelineReorderItemMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<TimelineReorderItemMutation, TimelineReorderItemMutationVariables>) {
@@ -19260,7 +19408,11 @@ export function useTimelineReorderItemMutation(baseOptions?: ApolloReactHooks.Mu
 export type TimelineReorderItemMutationHookResult = ReturnType<typeof useTimelineReorderItemMutation>;
 export const TimelineReorderStepDocument = gql`
     mutation TimelineReorderStep($missionId: ID, $timelineStepId: ID!, $order: Int!) {
-  reorderTimelineStep(missionId: $missionId, timelineStepId: $timelineStepId, order: $order)
+  reorderTimelineStep(
+    missionId: $missionId
+    timelineStepId: $timelineStepId
+    order: $order
+  )
 }
     `;
 export function useTimelineReorderStepMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<TimelineReorderStepMutation, TimelineReorderStepMutationVariables>) {
@@ -19278,7 +19430,13 @@ export function useMissionSetRequirementsMutation(baseOptions?: ApolloReactHooks
 export type MissionSetRequirementsMutationHookResult = ReturnType<typeof useMissionSetRequirementsMutation>;
 export const TimelineUpdateItemDocument = gql`
     mutation TimelineUpdateItem($simulatorId: ID, $missionId: ID, $timelineStepId: ID!, $timelineItemId: ID!, $timelineItem: TimelineItemInput!) {
-  updateTimelineStepItem(simulatorId: $simulatorId, missionId: $missionId, timelineStepId: $timelineStepId, timelineItemId: $timelineItemId, updateTimelineItem: $timelineItem)
+  updateTimelineStepItem(
+    simulatorId: $simulatorId
+    missionId: $missionId
+    timelineStepId: $timelineStepId
+    timelineItemId: $timelineItemId
+    updateTimelineItem: $timelineItem
+  )
 }
     `;
 export function useTimelineUpdateItemMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<TimelineUpdateItemMutation, TimelineUpdateItemMutationVariables>) {
@@ -19287,7 +19445,13 @@ export function useTimelineUpdateItemMutation(baseOptions?: ApolloReactHooks.Mut
 export type TimelineUpdateItemMutationHookResult = ReturnType<typeof useTimelineUpdateItemMutation>;
 export const TimelineUpdateStepDocument = gql`
     mutation TimelineUpdateStep($simulatorId: ID, $missionId: ID, $timelineStepId: ID!, $name: String, $description: String) {
-  updateTimelineStep(simulatorId: $simulatorId, missionId: $missionId, timelineStepId: $timelineStepId, name: $name, description: $description)
+  updateTimelineStep(
+    simulatorId: $simulatorId
+    missionId: $missionId
+    timelineStepId: $timelineStepId
+    name: $name
+    description: $description
+  )
 }
     `;
 export function useTimelineUpdateStepMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<TimelineUpdateStepMutation, TimelineUpdateStepMutationVariables>) {
@@ -19414,7 +19578,10 @@ export function useSetsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<Set
 export type SetsQueryHookResult = ReturnType<typeof useSetsQuery>;
 export const UpdateSetClientDocument = gql`
     mutation UpdateSetClient($id: ID!, $clientId: ID!, $secondary: Boolean, $soundPlayer: Boolean) {
-  updateSetClient(id: $id, client: {id: $clientId, secondary: $secondary, soundPlayer: $soundPlayer})
+  updateSetClient(
+    id: $id
+    client: {id: $clientId, secondary: $secondary, soundPlayer: $soundPlayer}
+  )
 }
     `;
 export function useUpdateSetClientMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateSetClientMutation, UpdateSetClientMutationVariables>) {
@@ -19423,7 +19590,13 @@ export function useUpdateSetClientMutation(baseOptions?: ApolloReactHooks.Mutati
 export type UpdateSetClientMutationHookResult = ReturnType<typeof useUpdateSetClientMutation>;
 export const AddCardDocument = gql`
     mutation AddCard($id: ID!, $name: String!, $cardName: String!, $cardComponent: String!, $cardIcon: String) {
-  addCardToStation(stationSetID: $id, stationName: $name, cardName: $cardName, cardComponent: $cardComponent, cardIcon: $cardIcon)
+  addCardToStation(
+    stationSetID: $id
+    stationName: $name
+    cardName: $cardName
+    cardComponent: $cardComponent
+    cardIcon: $cardIcon
+  )
 }
     `;
 export function useAddCardMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AddCardMutation, AddCardMutationVariables>) {
@@ -19466,7 +19639,11 @@ export function usePanelsAndInterfacesQuery(baseOptions?: ApolloReactHooks.Query
 export type PanelsAndInterfacesQueryHookResult = ReturnType<typeof usePanelsAndInterfacesQuery>;
 export const RemoveCardDocument = gql`
     mutation RemoveCard($id: ID!, $stationName: String!, $cardName: String!) {
-  removeCardFromStation(stationSetID: $id, stationName: $stationName, cardName: $cardName)
+  removeCardFromStation(
+    stationSetID: $id
+    stationName: $stationName
+    cardName: $cardName
+  )
 }
     `;
 export function useRemoveCardMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<RemoveCardMutation, RemoveCardMutationVariables>) {
@@ -19484,7 +19661,11 @@ export function useRemoveStationMutation(baseOptions?: ApolloReactHooks.Mutation
 export type RemoveStationMutationHookResult = ReturnType<typeof useRemoveStationMutation>;
 export const RenameStationDocument = gql`
     mutation RenameStation($id: ID!, $name: String!, $newName: String!) {
-  editStationInStationSet(stationSetID: $id, stationName: $name, newStationName: $newName)
+  editStationInStationSet(
+    stationSetID: $id
+    stationName: $name
+    newStationName: $newName
+  )
 }
     `;
 export function useRenameStationMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<RenameStationMutation, RenameStationMutationVariables>) {
@@ -19493,7 +19674,12 @@ export function useRenameStationMutation(baseOptions?: ApolloReactHooks.Mutation
 export type RenameStationMutationHookResult = ReturnType<typeof useRenameStationMutation>;
 export const ReorderStationWidgetsDocument = gql`
     mutation ReorderStationWidgets($id: ID!, $name: String!, $widget: String!, $order: Int!) {
-  reorderStationWidgets(stationSetId: $id, stationName: $name, widget: $widget, order: $order)
+  reorderStationWidgets(
+    stationSetId: $id
+    stationName: $name
+    widget: $widget
+    order: $order
+  )
 }
     `;
 export function useReorderStationWidgetsMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ReorderStationWidgetsMutation, ReorderStationWidgetsMutationVariables>) {
@@ -19502,7 +19688,11 @@ export function useReorderStationWidgetsMutation(baseOptions?: ApolloReactHooks.
 export type ReorderStationWidgetsMutationHookResult = ReturnType<typeof useReorderStationWidgetsMutation>;
 export const SetAmbianceDocument = gql`
     mutation SetAmbiance($stationSetID: ID!, $stationName: String!, $ambiance: String) {
-  setStationAmbiance(stationSetID: $stationSetID, stationName: $stationName, ambiance: $ambiance)
+  setStationAmbiance(
+    stationSetID: $stationSetID
+    stationName: $stationName
+    ambiance: $ambiance
+  )
 }
     `;
 export function useSetAmbianceMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SetAmbianceMutation, SetAmbianceMutationVariables>) {
@@ -19520,7 +19710,11 @@ export function useSetStationCrewCountMutation(baseOptions?: ApolloReactHooks.Mu
 export type SetStationCrewCountMutationHookResult = ReturnType<typeof useSetStationCrewCountMutation>;
 export const SetStationDescriptionDocument = gql`
     mutation SetStationDescription($stationSetID: ID!, $stationName: String!, $description: String!) {
-  setStationDescription(stationSetID: $stationSetID, stationName: $stationName, description: $description)
+  setStationDescription(
+    stationSetID: $stationSetID
+    stationName: $stationName
+    description: $description
+  )
 }
     `;
 export function useSetStationDescriptionMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SetStationDescriptionMutation, SetStationDescriptionMutationVariables>) {
@@ -19538,7 +19732,11 @@ export function useSetStationLayoutMutation(baseOptions?: ApolloReactHooks.Mutat
 export type SetStationLayoutMutationHookResult = ReturnType<typeof useSetStationLayoutMutation>;
 export const StationSetTrainingDocument = gql`
     mutation StationSetTraining($stationSetID: ID!, $stationName: String!, $training: String!) {
-  setStationTraining(stationSetID: $stationSetID, stationName: $stationName, training: $training)
+  setStationTraining(
+    stationSetID: $stationSetID
+    stationName: $stationName
+    training: $training
+  )
 }
     `;
 export function useStationSetTrainingMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<StationSetTrainingMutation, StationSetTrainingMutationVariables>) {
@@ -19547,7 +19745,12 @@ export function useStationSetTrainingMutation(baseOptions?: ApolloReactHooks.Mut
 export type StationSetTrainingMutationHookResult = ReturnType<typeof useStationSetTrainingMutation>;
 export const ToggleStationMessageGroupDocument = gql`
     mutation ToggleStationMessageGroup($stationSetId: ID!, $station: String!, $group: String!, $state: Boolean!) {
-  toggleStationMessageGroup(stationSetId: $stationSetId, station: $station, group: $group, state: $state)
+  toggleStationMessageGroup(
+    stationSetId: $stationSetId
+    station: $station
+    group: $group
+    state: $state
+  )
 }
     `;
 export function useToggleStationMessageGroupMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ToggleStationMessageGroupMutation, ToggleStationMessageGroupMutationVariables>) {
@@ -19556,7 +19759,11 @@ export function useToggleStationMessageGroupMutation(baseOptions?: ApolloReactHo
 export type ToggleStationMessageGroupMutationHookResult = ReturnType<typeof useToggleStationMessageGroupMutation>;
 export const ToggleStationExecDocument = gql`
     mutation ToggleStationExec($stationSetID: ID!, $stationName: String!, $exec: Boolean!) {
-  setStationExecutive(stationSetID: $stationSetID, stationName: $stationName, exec: $exec)
+  setStationExecutive(
+    stationSetID: $stationSetID
+    stationName: $stationName
+    exec: $exec
+  )
 }
     `;
 export function useToggleStationExecMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ToggleStationExecMutation, ToggleStationExecMutationVariables>) {
@@ -19565,7 +19772,11 @@ export function useToggleStationExecMutation(baseOptions?: ApolloReactHooks.Muta
 export type ToggleStationExecMutationHookResult = ReturnType<typeof useToggleStationExecMutation>;
 export const ToggleStationLoginDocument = gql`
     mutation ToggleStationLogin($stationSetID: ID!, $stationName: String!, $login: Boolean!) {
-  setStationLogin(stationSetID: $stationSetID, stationName: $stationName, login: $login)
+  setStationLogin(
+    stationSetID: $stationSetID
+    stationName: $stationName
+    login: $login
+  )
 }
     `;
 export function useToggleStationLoginMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ToggleStationLoginMutation, ToggleStationLoginMutationVariables>) {
@@ -19574,7 +19785,12 @@ export function useToggleStationLoginMutation(baseOptions?: ApolloReactHooks.Mut
 export type ToggleStationLoginMutationHookResult = ReturnType<typeof useToggleStationLoginMutation>;
 export const ToggleStationWidgetDocument = gql`
     mutation ToggleStationWidget($stationSetID: ID!, $stationName: String!, $widget: String!, $state: Boolean!) {
-  toggleStationWidgets(stationSetID: $stationSetID, stationName: $stationName, widget: $widget, state: $state)
+  toggleStationWidgets(
+    stationSetID: $stationSetID
+    stationName: $stationName
+    widget: $widget
+    state: $state
+  )
 }
     `;
 export function useToggleStationWidgetMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ToggleStationWidgetMutation, ToggleStationWidgetMutationVariables>) {
@@ -19583,7 +19799,14 @@ export function useToggleStationWidgetMutation(baseOptions?: ApolloReactHooks.Mu
 export type ToggleStationWidgetMutationHookResult = ReturnType<typeof useToggleStationWidgetMutation>;
 export const UpdateStationCardDocument = gql`
     mutation UpdateStationCard($stationSetId: ID!, $stationName: String!, $cardName: String!, $name: String, $component: String, $icon: String) {
-  editCardInStationSet(stationSetID: $stationSetId, stationName: $stationName, cardName: $cardName, newCardName: $name, cardComponent: $component, cardIcon: $icon)
+  editCardInStationSet(
+    stationSetID: $stationSetId
+    stationName: $stationName
+    cardName: $cardName
+    newCardName: $name
+    cardComponent: $component
+    cardIcon: $icon
+  )
 }
     `;
 export function useUpdateStationCardMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateStationCardMutation, UpdateStationCardMutationVariables>) {
@@ -19859,7 +20082,11 @@ export function useStationSetConfigSubscription(baseOptions?: ApolloReactHooks.S
 export type StationSetConfigSubscriptionHookResult = ReturnType<typeof useStationSetConfigSubscription>;
 export const StationSetTagsDocument = gql`
     mutation StationSetTags($stationSetId: ID!, $stationName: String!, $tags: [String!]!) {
-  setStationTags(stationSetID: $stationSetId, stationName: $stationName, tags: $tags)
+  setStationTags(
+    stationSetID: $stationSetId
+    stationName: $stationName
+    tags: $tags
+  )
 }
     `;
 export function useStationSetTagsMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<StationSetTagsMutation, StationSetTagsMutationVariables>) {
@@ -20166,7 +20393,12 @@ export function useEntityRemoveThrustersMutation(baseOptions?: ApolloReactHooks.
 export type EntityRemoveThrustersMutationHookResult = ReturnType<typeof useEntityRemoveThrustersMutation>;
 export const EntitySetEngineDocument = gql`
     mutation EntitySetEngine($id: ID!, $type: EntityEngineEnum!, $maxSpeed: Float, $currentSpeed: Float) {
-  entitySetEngine(id: $id, type: $type, maxSpeed: $maxSpeed, currentSpeed: $currentSpeed)
+  entitySetEngine(
+    id: $id
+    type: $type
+    maxSpeed: $maxSpeed
+    currentSpeed: $currentSpeed
+  )
 }
     `;
 export function useEntitySetEngineMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<EntitySetEngineMutation, EntitySetEngineMutationVariables>) {
@@ -20175,7 +20407,13 @@ export function useEntitySetEngineMutation(baseOptions?: ApolloReactHooks.Mutati
 export type EntitySetEngineMutationHookResult = ReturnType<typeof useEntitySetEngineMutation>;
 export const EntitySetThrustersDocument = gql`
     mutation EntitySetThrusters($id: ID!, $rotationSpeed: Float, $movementSpeed: Float, $direction: CoordinatesInput, $rotationDelta: CoordinatesInput) {
-  entitySetThrusters(id: $id, rotationSpeed: $rotationSpeed, movementSpeed: $movementSpeed, direction: $direction, rotationDelta: $rotationDelta)
+  entitySetThrusters(
+    id: $id
+    rotationSpeed: $rotationSpeed
+    movementSpeed: $movementSpeed
+    direction: $direction
+    rotationDelta: $rotationDelta
+  )
 }
     `;
 export function useEntitySetThrustersMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<EntitySetThrustersMutation, EntitySetThrustersMutationVariables>) {
@@ -20199,9 +20437,22 @@ export const EntityCreateDocument = gql`
   entitySetStageChild(parentId: $stageParentId)
   entitySetLocation(position: $position)
   entitySetIdentity(name: $name)
-  entitySetAppearance(color: $color, meshType: $meshType, modelAsset: $modelAsset, materialMapAsset: $materialMapAsset, ringMapAsset: $ringMapAsset, cloudMapAsset: $cloudMapAsset, emissiveColor: $emissiveColor, emissiveIntensity: $emissiveIntensity)
+  entitySetAppearance(
+    color: $color
+    meshType: $meshType
+    modelAsset: $modelAsset
+    materialMapAsset: $materialMapAsset
+    ringMapAsset: $ringMapAsset
+    cloudMapAsset: $cloudMapAsset
+    emissiveColor: $emissiveColor
+    emissiveIntensity: $emissiveIntensity
+  )
   entitySetGlow(glowMode: $glowMode, color: $glowColor)
-  entitySetLight(intensity: $lightIntensity, color: $lightColor, decay: $lightDecay)
+  entitySetLight(
+    intensity: $lightIntensity
+    color: $lightColor
+    decay: $lightDecay
+  )
 }
     `;
 export function useEntityCreateMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<EntityCreateMutation, EntityCreateMutationVariables>) {
@@ -20257,7 +20508,18 @@ export function useEntityRemoveStageMutation(baseOptions?: ApolloReactHooks.Muta
 export type EntityRemoveStageMutationHookResult = ReturnType<typeof useEntityRemoveStageMutation>;
 export const EntitySetAppearanceDocument = gql`
     mutation EntitySetAppearance($id: ID!, $color: String, $meshType: MeshTypeEnum, $modelAsset: String, $materialMapAsset: String, $cloudMapAsset: String, $ringMapAsset: String, $emissiveColor: String, $emissiveIntensity: Float, $scale: Float) {
-  entitySetAppearance(id: $id, color: $color, meshType: $meshType, modelAsset: $modelAsset, materialMapAsset: $materialMapAsset, cloudMapAsset: $cloudMapAsset, ringMapAsset: $ringMapAsset, emissiveColor: $emissiveColor, emissiveIntensity: $emissiveIntensity, scale: $scale)
+  entitySetAppearance(
+    id: $id
+    color: $color
+    meshType: $meshType
+    modelAsset: $modelAsset
+    materialMapAsset: $materialMapAsset
+    cloudMapAsset: $cloudMapAsset
+    ringMapAsset: $ringMapAsset
+    emissiveColor: $emissiveColor
+    emissiveIntensity: $emissiveIntensity
+    scale: $scale
+  )
 }
     `;
 export function useEntitySetAppearanceMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<EntitySetAppearanceMutation, EntitySetAppearanceMutationVariables>) {
@@ -20293,7 +20555,15 @@ export function useEntitySetLightMutation(baseOptions?: ApolloReactHooks.Mutatio
 export type EntitySetLightMutationHookResult = ReturnType<typeof useEntitySetLightMutation>;
 export const EntitySetLocationDocument = gql`
     mutation EntitySetLocation($id: ID!, $position: EntityCoordinatesInput, $velocity: EntityCoordinatesInput, $acceleration: EntityCoordinatesInput, $rotation: QuaternionInput, $rotationVelocity: EntityCoordinatesInput, $rotationAcceleration: EntityCoordinatesInput) {
-  entitySetLocation(id: $id, position: $position, velocity: $velocity, acceleration: $acceleration, rotation: $rotation, rotationVelocity: $rotationVelocity, rotationAcceleration: $rotationAcceleration)
+  entitySetLocation(
+    id: $id
+    position: $position
+    velocity: $velocity
+    acceleration: $acceleration
+    rotation: $rotation
+    rotationVelocity: $rotationVelocity
+    rotationAcceleration: $rotationAcceleration
+  )
 }
     `;
 export function useEntitySetLocationMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<EntitySetLocationMutation, EntitySetLocationMutationVariables>) {
@@ -20311,7 +20581,12 @@ export function useEntitySetRotationVelocityMagnitudeMutation(baseOptions?: Apol
 export type EntitySetRotationVelocityMagnitudeMutationHookResult = ReturnType<typeof useEntitySetRotationVelocityMagnitudeMutation>;
 export const EntitySetStageDocument = gql`
     mutation EntitySetStage($id: ID!, $scaleLabel: String, $scaleLabelShort: String, $skyboxKey: String) {
-  entitySetStage(id: $id, scaleLabel: $scaleLabel, scaleLabelShort: $scaleLabelShort, skyboxKey: $skyboxKey)
+  entitySetStage(
+    id: $id
+    scaleLabel: $scaleLabel
+    scaleLabelShort: $scaleLabelShort
+    skyboxKey: $skyboxKey
+  )
 }
     `;
 export function useEntitySetStageMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<EntitySetStageMutation, EntitySetStageMutationVariables>) {
