@@ -214,7 +214,7 @@ export class FirebaseManager {
             FlightHours: this.selectedMission.FlightHours,
             ClassHours: this.selectedMission.ClassHours,
             Simulator: this.selectedSimulator.id,
-            Mission: this.selectedMission.id,
+            Mission: this.selectedMission.Name,
             Awards: this.awards,
             OfficerLogs: officerLogMap
         };
