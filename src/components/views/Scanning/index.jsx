@@ -167,12 +167,8 @@ class Scanning extends Component {
     });
   }
   newScan = () => {
-    const {
-      selectedScanType,
-      scanRequest,
-      selectedDeck,
-      selectedRoom,
-    } = this.state;
+    const {selectedScanType, scanRequest, selectedDeck, selectedRoom} =
+      this.state;
     const {decks, sensors} = this.props.data;
     const deck = decks.find(d => d.id === selectedDeck);
     const room = deck && deck.rooms.find(r => r.id === selectedRoom);
@@ -331,7 +327,9 @@ class Scanning extends Component {
         <Col sm={{size: 6, offset: history ? 0 : 2}}>
           {domain === "internal" && (
             <Row>
-              <h4>Location Select:</h4>
+              <Col>
+                <h4>Location Select:</h4>
+              </Col>
             </Row>
           )}
           {domain === "internal" && (
@@ -365,123 +363,139 @@ class Scanning extends Component {
               </Col>
             </Row>
           )}
-          <Row style={{marginTop: "20px"}}>
-            <h4>Scan Input:</h4>
-          </Row>
-          <Row className="scan-input">
-            <Col>
-              <Input
-                type="text"
-                disabled={selectedScan}
-                onChange={this._setScanRequest.bind(this)}
-                value={this.state.scanRequest}
-              />
-            </Col>
-          </Row>
-          {scanning ? (
-            <div>
-              <Row>
-                <Col sm="auto">
-                  <Button
-                    size="lg"
-                    color="danger"
-                    onClick={
-                      history ? this.cancelScan : this._stopScan.bind(this)
-                    }
-                  >
-                    Cancel Scan
-                  </Button>
-                </Col>
-              </Row>
-              <Row style={{marginTop: "50px"}}>
-                <h4 className="text-center">Scan in progress...</h4>
-                {domain === "internal" ? (
-                  <Card className="scannerBox" style={{overflow: "hidden"}}>
-                    <div
-                      alt="ship"
-                      style={{
-                        width: "100%",
-                        height: "30vh",
-                        backgroundImage: `url("/assets${this.props.simulator.assets.side}")`,
-                        backgroundSize: "contain",
-                        backgroundPosition: "center",
-                        backgroundRepeat: "no-repeat",
-                      }}
-                      draggable="false"
-                    />
-
-                    <div className="scanner" />
-                  </Card>
-                ) : (
-                  <Card className="scannerBox">
-                    <video
-                      ref={"ReactVideo"}
-                      autoPlay
-                      loop
-                      muted
-                      style={{height: "100%", width: "100%"}}
+          <form
+            onSubmit={e => {
+              e.preventDefault();
+              if (history) {
+                this.newScan();
+              } else {
+                this._scanRequest();
+              }
+            }}
+          >
+            <Row>
+              <Col>
+                <h4>Scan Input:</h4>
+              </Col>
+            </Row>
+            <Row className="scan-input">
+              <Col>
+                <Input
+                  type="text"
+                  disabled={selectedScan}
+                  onChange={this._setScanRequest.bind(this)}
+                  value={this.state.scanRequest}
+                />
+              </Col>
+            </Row>
+            {scanning ? (
+              <div>
+                <Row>
+                  <Col sm="auto">
+                    <Button
+                      size="lg"
+                      color="danger"
+                      onClick={
+                        history ? this.cancelScan : this._stopScan.bind(this)
+                      }
                     >
-                      <source
-                        src={require("../Sensors/scansvid.mov")}
-                        type="video/mp4"
+                      Cancel Scan
+                    </Button>
+                  </Col>
+                </Row>
+                <Row style={{marginTop: "50px"}}>
+                  <h4 className="text-center">Scan in progress...</h4>
+                  {domain === "internal" ? (
+                    <Card className="scannerBox" style={{overflow: "hidden"}}>
+                      <div
+                        alt="ship"
+                        style={{
+                          width: "100%",
+                          height: "30vh",
+                          backgroundImage: `url("/assets${this.props.simulator.assets.side}")`,
+                          backgroundSize: "contain",
+                          backgroundPosition: "center",
+                          backgroundRepeat: "no-repeat",
+                        }}
+                        draggable="false"
                       />
-                    </video>
-                  </Card>
-                )}
-              </Row>
-            </div>
-          ) : (
-            <div>
-              <Row>
-                <Col sm="auto">
-                  <Button
-                    className="begin-scan"
-                    size="lg"
-                    disabled={
-                      selectedScan || this.state.scanRequest.trim().length === 0
-                    }
-                    onClick={
-                      history ? this.newScan : this._scanRequest.bind(this)
-                    }
-                  >
-                    Begin Scan
-                  </Button>
-                </Col>
-                <Col sm="auto">
-                  <Button
-                    color="warning"
-                    size="lg"
-                    disabled={selectedScan}
-                    onClick={() =>
-                      this.setState({
-                        selectedDeck: null,
-                        selectedRoom: null,
-                        scanRequest: "",
-                      })
-                    }
-                  >
-                    Clear
-                  </Button>
-                </Col>
-              </Row>
-              <Row style={{marginTop: "50px"}}>
-                <h4>Scan Results:</h4>
-              </Row>
-              <Row>
-                <Col>
-                  <Card className="results">
-                    <CardBody>
-                      <p>
-                        <Typing keyDelay={20} key={scanResults}>
-                          {scanResults}
-                        </Typing>
-                      </p>
-                    </CardBody>
-                  </Card>
-                </Col>
-              </Row>
-            </div>
-          )}
+
+                      <div className="scanner" />
+                    </Card>
+                  ) : (
+                    <Card className="scannerBox">
+                      <video
+                        ref={"ReactVideo"}
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        style={{height: "100%", width: "100%"}}
+                      >
+                        <source
+                          src={require("../Sensors/scansvid.mov")}
+                          type="video/mp4"
+                        />
+                      </video>
+                    </Card>
+                  )}
+                </Row>
+              </div>
+            ) : (
+              <div>
+                <Row>
+                  <Col sm="auto">
+                    <Button
+                      className="begin-scan"
+                      size="lg"
+                      disabled={
+                        selectedScan ||
+                        this.state.scanRequest.trim().length === 0
+                      }
+                      onClick={
+                        history ? this.newScan : this._scanRequest.bind(this)
+                      }
+                    >
+                      Begin Scan
+                    </Button>
+                    <Button
+                      style={{marginLeft: "0.5rem"}}
+                      color="warning"
+                      size="lg"
+                      disabled={selectedScan}
+                      onClick={() =>
+                        this.setState({
+                          selectedDeck: null,
+                          selectedRoom: null,
+                          scanRequest: "",
+                        })
+                      }
+                    >
+                      Clear
+                    </Button>
+                  </Col>
+                </Row>
+                <Row style={{marginTop: "1rem"}}>
+                  <Col>
+                    <h4>Scan Results:</h4>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <Card className="results">
+                      <CardBody>
+                        <p>
+                          <Typing keyDelay={20} key={scanResults}>
+                            {scanResults}
+                          </Typing>
+                        </p>
+                      </CardBody>
+                    </Card>
+                  </Col>
+                </Row>
+              </div>
+            )}
+          </form>
         </Col>
         <Col sm={{size: 2, offset: history ? 0 : 1}} className="scantype">
           <h4>Scan Type:</h4>

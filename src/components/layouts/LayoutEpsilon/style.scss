@@ -491,4 +491,15 @@ $alertp: #4d1980;
   pre {
     color: white;
   }
+  @media screen and (max-width: 768px) {
+    .card-area {
+      top: 50px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      height: calc(100vh - 100px);
+    }
+    .card-name {
+      font-size: 1.25rem !important;
+    }
+  }
 }
