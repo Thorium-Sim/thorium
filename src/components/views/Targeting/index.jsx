@@ -403,7 +403,6 @@ class Targeting extends Component {
         targeting.power.powerLevels &&
         targeting.power.power < targeting.power.powerLevels[0]) ||
       (targeting.damage && targeting.damage.damaged);
-    console.log(phasers);
     return (
       <Container fluid className="targeting-control flex-column">
         <SubscriptionHelper
