@@ -192,7 +192,7 @@ const EdVenturesAppComp: React.FC<any> = (props) => {
                         <div>
                             <h2 className='heading-text-area'>{Heading}</h2>
                         </div>
-                        <h1 className='event-id-text'>{getCurrentFirebaseSelections.EventId}</h1>
+                        <h1 className='event-id-text' style={{ textTransform: 'none'}}>{getCurrentFirebaseSelections.EventId}</h1>
                         <h6>
                             {Subheading}
                         </h6>
