@@ -63,10 +63,8 @@ function generateBackgroundImage(al) {
   return BlueImage;
 }
 
-export default ({simulator, lite, viewscreen}) => {
+export default function Layoutlass({simulator, lite, viewscreen}) {
   const al = simulator.alertlevel;
-  const video = videoColor(al);
-  console.log("image", generateBackgroundImage(al));
   return (
     <div>
       {!lite && (
@@ -99,4 +97,4 @@ export default ({simulator, lite, viewscreen}) => {
       )}
     </div>
   );
-};
+}

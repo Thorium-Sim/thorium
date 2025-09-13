@@ -93,7 +93,7 @@ class PhaserChargingCore extends Component {
         {phasers.beams.map((b, i) => {
           return (
             <Row key={`${b.id}-${i}`}>
-              <Col sm={4}>{i}:</Col>
+              <Col sm={4}>{i + 1}:</Col>
               <Col sm={8}>
                 <InputField
                   prompt="What would you like to change the charge to?"

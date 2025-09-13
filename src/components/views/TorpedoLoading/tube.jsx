@@ -10,6 +10,7 @@ const TorpedoTube = ({
   fireTorpedo,
   enabled,
   targeting,
+  torpedoName,
 }) => {
   return (
     <div>
@@ -21,7 +22,7 @@ const TorpedoTube = ({
             disabled={!enabled}
             onClick={() => updateScreen("TorpedoPick")}
           >
-            Load Torpedo
+            Load {torpedoName}
           </Button>
         ) : (
           <div>

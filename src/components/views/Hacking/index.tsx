@@ -8,6 +8,7 @@ import {
   useHackingTransferToLongRangeMutation,
   useHackingCopyFileMutation,
   useHackingUpdateFilesMutation,
+  useHackingSetFrequencyMutation,
 } from "generated/graphql";
 import "./style.scss";
 import useMeasure from "helpers/hooks/useMeasure";
@@ -786,9 +787,8 @@ const Scanning: React.FC<{hacking: HackingI}> = ({hacking}) => {
 const FrequencyScan: React.FC<{hacking: HackingI}> = ({hacking}) => {
   const [measureRef, dimensions] = useMeasure<HTMLDivElement>();
   const [measureRef2, dimensions2] = useMeasure<HTMLDivElement>();
-  const [freq, setFreq] = React.useState(
-    hacking.hackingPortScanFrequency || 0.5,
-  );
+
+  const freq = hacking.hackingPortScanFrequency ?? 0.5;
   const mouseDown = () => {
     document.addEventListener("mousemove", mouseMove);
     document.addEventListener("mouseup", mouseUp);
@@ -804,7 +804,8 @@ const FrequencyScan: React.FC<{hacking: HackingI}> = ({hacking}) => {
       y = e.touches ? e.touches[0].pageY : 0;
     }
     const value = Math.max(Math.min((y - top) / height, 1), 0);
-    setFreq(value);
+    hacking.id && setFrequency({variables: {id: hacking.id, frequency: value}});
+    // setFreq(value);
   };
   const mouseUp = () => {
     document.removeEventListener("mousemove", mouseMove);
@@ -813,13 +814,16 @@ const FrequencyScan: React.FC<{hacking: HackingI}> = ({hacking}) => {
     document.removeEventListener("touchend", mouseUp);
   };
   const [setState] = useHackingAllowHackingMutation();
+  const [setFrequency] = useHackingSetFrequencyMutation();
 
   return (
     <>
       <div className="frequency-section">
         <Card style={{padding: "1rem 3rem"}}>
           <h1>Frequency</h1>
-          <h3>{Math.round(freq * 37700 + 37700) / 100} MHz</h3>
+          <h3 style={{fontVariantNumeric: "tabular-nums"}}>
+            {Math.round(freq * 37700 + 37700) / 100} MHz
+          </h3>
         </Card>
         <Button
           className="scan-button"

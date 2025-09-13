@@ -91,94 +91,106 @@ class SignalJammerCore extends Component {
             </OutputField>
           )}
         </Mutation>
-        <div style={{display: "flex"}}>
-          Comm{" "}
-          <InputField
-            prompt="What would you like to set this signal to?"
-            onClick={value => this.setSignal("comm", parseInt(value, 10))}
-            style={{width: "40px"}}
-          >
-            {signalJammer.signals.filter(s => s.type === "comm").length}
-          </InputField>
-          <Button
-            size="sm"
-            color="success"
-            onClick={() =>
-              this.setSignal(
-                "comm",
-                signalJammer.signals.filter(s => s.type === "comm").length + 1,
-              )
-            }
-          >
-            Add
-          </Button>
-          <Button
-            size="sm"
-            color="danger"
-            onClick={() => this.setSignal("comm", 0)}
-          >
-            Clear
-          </Button>
+        <div style={{display: "grid", gridTemplateColumns: "repeat(4, 1fr)"}}>
+          <div>
+            Comm{" "}
+            <InputField
+              prompt="What would you like to set this signal to?"
+              onClick={value => this.setSignal("comm", parseInt(value, 10))}
+              style={{width: "40px"}}
+            >
+              {signalJammer.signals.filter(s => s.type === "comm").length}
+            </InputField>
+            <Button
+              size="sm"
+              color="success"
+              onClick={() =>
+                this.setSignal(
+                  "comm",
+                  signalJammer.signals.filter(s => s.type === "comm").length +
+                    1,
+                )
+              }
+            >
+              Add
+            </Button>
+            <Button
+              size="sm"
+              color="danger"
+              onClick={() => this.setSignal("comm", 0)}
+            >
+              Clear
+            </Button>
+          </div>
+          <div>
+            Tact{" "}
+            <InputField
+              prompt="What would you like to set this signal to?"
+              onClick={value => this.setSignal("tactical", parseInt(value, 10))}
+              style={{width: "40px"}}
+            >
+              {signalJammer.signals.filter(s => s.type === "tactical").length}
+            </InputField>
+            <Button
+              size="sm"
+              color="success"
+              onClick={() =>
+                this.setSignal(
+                  "tactical",
+                  signalJammer.signals.filter(s => s.type === "tactical")
+                    .length + 1,
+                )
+              }
+            >
+              Add
+            </Button>
+            <Button
+              size="sm"
+              color="danger"
+              onClick={() => this.setSignal("tactical", 0)}
+            >
+              Clear
+            </Button>
+          </div>
+          <div>
+            Sens{" "}
+            <InputField
+              prompt="What would you like to set this signal to?"
+              onClick={value => this.setSignal("sensors", parseInt(value, 10))}
+              style={{width: "40px"}}
+            >
+              {signalJammer.signals.filter(s => s.type === "sensors").length}
+            </InputField>
+            <Button
+              size="sm"
+              color="success"
+              onClick={() =>
+                this.setSignal(
+                  "sensors",
+                  signalJammer.signals.filter(s => s.type === "sensors")
+                    .length + 1,
+                )
+              }
+            >
+              Add
+            </Button>
+            <Button
+              size="sm"
+              color="danger"
+              onClick={() => this.setSignal("sensors", 0)}
+            >
+              Clear
+            </Button>
+          </div>
         </div>
-        <div style={{display: "flex"}}>
-          Tact{" "}
-          <InputField
-            prompt="What would you like to set this signal to?"
-            onClick={value => this.setSignal("tactical", parseInt(value, 10))}
-            style={{width: "40px"}}
-          >
-            {signalJammer.signals.filter(s => s.type === "tactical").length}
-          </InputField>
-          <Button
-            size="sm"
-            color="success"
-            onClick={() =>
-              this.setSignal(
-                "tactical",
-                signalJammer.signals.filter(s => s.type === "tactical").length +
-                  1,
-              )
-            }
-          >
-            Add
-          </Button>
-          <Button
-            size="sm"
-            color="danger"
-            onClick={() => this.setSignal("tactical", 0)}
-          >
-            Clear
-          </Button>
+        <div>
+          Frequency:{" "}
+          <OutputField>
+            {Math.round(signalJammer.level * 37700 + 37700) / 100} MHz
+          </OutputField>
         </div>
-        <div style={{display: "flex"}}>
-          Sens{" "}
-          <InputField
-            prompt="What would you like to set this signal to?"
-            onClick={value => this.setSignal("sensors", parseInt(value, 10))}
-            style={{width: "40px"}}
-          >
-            {signalJammer.signals.filter(s => s.type === "sensors").length}
-          </InputField>
-          <Button
-            size="sm"
-            color="success"
-            onClick={() =>
-              this.setSignal(
-                "sensors",
-                signalJammer.signals.filter(s => s.type === "sensors").length +
-                  1,
-              )
-            }
-          >
-            Add
-          </Button>
-          <Button
-            size="sm"
-            color="danger"
-            onClick={() => this.setSignal("sensors", 0)}
-          >
-            Clear
-          </Button>
+        <div>
+          Power: <OutputField>{signalJammer.strength * 100}%</OutputField>
         </div>
       </div>
     );

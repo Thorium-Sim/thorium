@@ -214,7 +214,7 @@ export class FirebaseManager {
             FlightHours: this.selectedMission.FlightHours,
             ClassHours: this.selectedMission.ClassHours,
             Simulator: this.selectedSimulator.id,
-            Mission: this.selectedMission.id,
+            Mission: this.selectedMission.Name,
             Awards: this.awards,
             OfficerLogs: officerLogMap
         };
@@ -267,7 +267,7 @@ export class FirebaseConnector {
      */
     private makeId(length: number) {
         let result = '';
-        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        const characters = 'ABCDEFGHIJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz123456789';
         const charactersLength = characters.length;
         let counter = 0;
         while (counter < length) {
