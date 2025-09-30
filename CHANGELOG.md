@@ -1,3 +1,18 @@
+## [4.1.5](https://github.com/Thorium-Sim/thorium/compare/4.1.4...4.1.5) (2025-09-13)
+
+
+### Bug Fixes
+
+* Display the current frequency at all times on the Hacking core ([303c6d7](https://github.com/Thorium-Sim/thorium/commit/303c6d7c7067ed23810b0a737353fc3514d22e60))
+* Improved styling for using the scanning card on a handheld mobile device using the Epsilon theme. ([b6b08da](https://github.com/Thorium-Sim/thorium/commit/b6b08da03091a47511a4c380a6ec4c146ed68c1b))
+* Phaser bank numbers now start from 1 on the phaser charging core ([3a49401](https://github.com/Thorium-Sim/thorium/commit/3a4940130e9dc49405aa996e05d105b1f8260860))
+* Show frequency and power on the Signal Jammer core ([e76b0ca](https://github.com/Thorium-Sim/thorium/commit/e76b0caafe51d3a0c73da938bf9dd7a9638fc0b6))
+* Show the proper Phasers system name on the damage overlay ([abdf161](https://github.com/Thorium-Sim/thorium/commit/abdf1616606971f46e78023a10e35c5b000317da))
+* Show the proper Torpedo system name on the "Load Torpedo" buttons ([cfa1bf4](https://github.com/Thorium-Sim/thorium/commit/cfa1bf4e92a520075816bf92fa6623e217000919))
+* update firebase manager to give display name instead of id ([6213741](https://github.com/Thorium-Sim/thorium/commit/6213741d11ec56fee5077a1ac78fa8783999e592))
+* update hacking preset to use a deep copy instead of the actual values ([602a631](https://github.com/Thorium-Sim/thorium/commit/602a63130409d62438af99c22bbb11105ca34605))
+* Use more interesting Play font for LayoutBlack ([c938d0e](https://github.com/Thorium-Sim/thorium/commit/c938d0e19c535a294f5798dad7951de9e46b6907))
+
 ## [4.1.5](https://github.com/Thorium-Sim/thorium/compare/4.1.4...4.1.5) (2025-07-30)
 
 
