@@ -73,6 +73,26 @@ const FlowTaskConfig = () => {
         station.
       </small>
       <label>
+        <input
+          type="checkbox"
+          checked={task.private || false}
+          onChange={e =>
+            edit({
+              variables: {
+                id: flowId || "",
+                stepId: stepId || "",
+                taskId: taskId || "",
+                task: {
+                  ...task,
+                  private: e.currentTarget.checked,
+                },
+              },
+            })
+          }
+        />{" "}
+        Private (only visible to assigned station)
+      </label>
+      <label>
         <strong>Values</strong>
       </label>
 

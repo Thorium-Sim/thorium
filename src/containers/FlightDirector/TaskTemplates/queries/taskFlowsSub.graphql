@@ -12,6 +12,7 @@ subscription TaskFlowsConfig {
         stationTags
         definition
         values
+        private
         macros {
           id
           event

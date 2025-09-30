@@ -9392,6 +9392,7 @@ export type QueryTaskReportArgs = {
 export type QueryTasksArgs = {
   simulatorId: Scalars['ID'];
   station?: Maybe<Scalars['String']>;
+  isCore?: Maybe<Scalars['Boolean']>;
   definitions?: Maybe<Array<Scalars['String']>>;
 };
 
@@ -10864,6 +10865,7 @@ export type SubscriptionTaskReportUpdateArgs = {
 export type SubscriptionTasksUpdateArgs = {
   simulatorId: Scalars['ID'];
   station?: Maybe<Scalars['String']>;
+  isCore?: Maybe<Scalars['Boolean']>;
   definitions?: Maybe<Array<Scalars['String']>>;
 };
 
@@ -11268,6 +11270,7 @@ export type Task = {
   simulatorId?: Maybe<Scalars['ID']>;
   stationTags?: Maybe<Array<Scalars['String']>>;
   station?: Maybe<Scalars['String']>;
+  private?: Maybe<Scalars['Boolean']>;
   systemId?: Maybe<Scalars['ID']>;
   deck?: Maybe<Deck>;
   room?: Maybe<Room>;
@@ -11323,6 +11326,7 @@ export type TaskInput = {
   values?: Maybe<Scalars['JSON']>;
   stationTags?: Maybe<Array<Scalars['String']>>;
   station?: Maybe<Scalars['String']>;
+  private?: Maybe<Scalars['Boolean']>;
   macros?: Maybe<Array<Maybe<ActionInput>>>;
   preMacros?: Maybe<Array<Maybe<ActionInput>>>;
 };
@@ -15692,7 +15696,7 @@ export type TaskFlowsConfigSubscription = (
       & Pick<TaskFlowStep, 'id' | 'name' | 'delay' | 'completeAll'>
       & { tasks: Array<(
         { __typename?: 'Task' }
-        & Pick<Task, 'id' | 'station' | 'stationTags' | 'definition' | 'values'>
+        & Pick<Task, 'id' | 'station' | 'stationTags' | 'definition' | 'values' | 'private'>
         & { macros?: Maybe<Array<(
           { __typename?: 'MacroAction' }
           & Pick<MacroAction, 'id' | 'event' | 'args' | 'delay'>
@@ -20323,6 +20327,7 @@ export const TaskFlowsConfigDocument = gql`
         stationTags
         definition
         values
+        private
         macros {
           id
           event
