@@ -164,7 +164,7 @@ const resolver = {
         App.systems.filter(s => s.type === "TractorBeam"),
       );
     },
-    removeTractorTarget: (rootValue, {id, simulatorId, beam, label}) => {
+    removeTractorTarget: (rootValue, {id, simulatorId, beam}) => {
       let sys: TractorBeam;
       if (id) {
         sys = App.systems.find(s => s.id === id);
@@ -176,7 +176,6 @@ const resolver = {
       if (!sys) return;
       const beamId = beam || sys.beams[0].id;
 
-      sys.setTargetLabel(beamId, label);
       sys.setTarget(beamId, false);
       pubsub.publish(
         "tractorBeamUpdate",
