@@ -331,7 +331,7 @@
     "typescript": "^5.1.6",
     "typescript-eslint": "^8.25.0",
     "typescript-plugin-tw-template": "^2.0.1",
-    "vite": "^5.4.6",
+    "vite": "^5.4.20",
     "vite-plugin-babel-macros": "^1.0.6",
     "vite-plugin-commonjs": "^0.10.4",
     "vite-plugin-svgr": "^4.2.0",
