@@ -1,3 +1,14 @@
+## [4.1.6](https://github.com/Thorium-Sim/thorium/compare/4.1.5...4.1.6) (2025-09-30)
+
+
+### Bug Fixes
+
+* Add a new GraphQL subscription for listening for specific events. ([ab5e944](https://github.com/Thorium-Sim/thorium/commit/ab5e944c668d5da21fb09aa652e15e92b6389e27))
+* Make it possible in the Add Task timeline action to assign generic tasks to a specific station by name. ([8009cb0](https://github.com/Thorium-Sim/thorium/commit/8009cb052b739b501f99970265dde0e0f9eca04e))
+* Make it possible to mark tasks as Private, which makes them only visible on the assigned station, not on Executive or Viewscreen tasks screens. ([229cdfc](https://github.com/Thorium-Sim/thorium/commit/229cdfce371017baeb934cf9131c90e294dc8df7))
+* Removes sorting objectives by completion status. ([aa1ef40](https://github.com/Thorium-Sim/thorium/commit/aa1ef40573ddfc9f58ef84cb7255ed966bb0067a))
+* Tractor Beam macro no longer deletes the tractor beam system. ([2d27761](https://github.com/Thorium-Sim/thorium/commit/2d27761027dd524d9623c0b624661ca3f85a410d))
+
 ## [4.1.5](https://github.com/Thorium-Sim/thorium/compare/4.1.4...4.1.5) (2025-09-13)
 
 
