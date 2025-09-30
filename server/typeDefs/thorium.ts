@@ -11,7 +11,7 @@ import heap from "../helpers/heap";
 import tokenGenerator from "../helpers/tokenGenerator";
 import {getTemplates} from "../helpers/baseTaskTemplates.js";
 
-import pkg from '../../package.json'
+import pkg from "../../package.json";
 const version = pkg.version;
 
 const issuesUrl =
@@ -117,6 +117,7 @@ const schema = gql`
   extend type Subscription {
     thoriumUpdate: Thorium
     clockSync(clientId: ID!): String
+    events(includeEvents: [String!], omitEvents: [String!]): JSON
   }
 `;
 
@@ -200,7 +201,7 @@ const resolver = {
     importTaskTemplates: () => {
       if (App.addedTaskTemplates) return;
       App.addedTaskTemplates = true;
-      const templates = getTemplates()
+      const templates = getTemplates();
       App.taskTemplates = App.taskTemplates.concat(templates as any);
       pubsub.publish("taskTemplatesUpdate", App.taskTemplates);
     },
@@ -375,6 +376,21 @@ const resolver = {
       subscribe: withFilter(
         () => pubsub.asyncIterator("clockSync"),
         (rootValue, {clientId}) => rootValue.clientId === clientId,
+      ),
+    },
+    events: {
+      resolve(rootValue) {
+        return rootValue;
+      },
+      subscribe: withFilter(
+        () => pubsub.asyncIterator("events"),
+        (rootValue, {includeEvents, omitEvents = []}) => {
+          if (omitEvents.includes(rootValue.event)) return false;
+          if (Array.isArray(includeEvents)) {
+            if (!includeEvents.includes(rootValue.event)) return false;
+          }
+          return true;
+        },
       ),
     },
   },
