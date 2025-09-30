@@ -135,7 +135,7 @@ class MacrosCore extends Component {
             variables={{
               simulatorId: simulator.id,
               macros: actions
-                .filter(({event}) => localMacrosList.includes(event))
+                .filter(({event}) => !localMacrosList.includes(event))
                 .map(({id, ...rest}) => rest),
             }}
           >

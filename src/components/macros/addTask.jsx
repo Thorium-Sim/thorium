@@ -5,6 +5,7 @@ import gql from "graphql-tag.macro";
 import ValueInput from "../views/Tasks/core/ValueInput";
 import ConfigureMacro from "../views/Tasks/core/ConfigureMacro";
 import {ConfigureMacro as ConfigMacro} from "containers/FlightDirector/TaskTemplates/taskConfig";
+import {TagInput} from "containers/FlightDirector/DMX/fixtures";
 /*
 input TaskInput {
   simulatorId: ID
@@ -70,6 +71,7 @@ class TasksCore extends Component {
     const {
       definition: selectedDefinition,
       values: requiredValues = {},
+      stationTags = [],
       macros = [],
       preMacros = [],
     } = taskInput;
@@ -127,6 +129,15 @@ class TasksCore extends Component {
                 >
                   Definitions
                   <ListGroup>
+                    <ListGroupItem>
+                      <strong>Generic</strong>
+                    </ListGroupItem>
+                    <ListGroupItem
+                      active={"Generic" === selectedDefinition}
+                      onClick={() => this.updateTask({definition: "Generic"})}
+                    >
+                      Generic
+                    </ListGroupItem>
                     {Object.entries(definitionGroups).map(([key, value]) => (
                       <Fragment key={key}>
                         <ListGroupItem>
@@ -204,6 +215,24 @@ class TasksCore extends Component {
                     }}
                   >
                     <div>
+                      {definition.id === "Generic" ? (
+                        <label>
+                          Station
+                          <TagInput
+                            tags={stationTags}
+                            onAdd={t =>
+                              this.updateTask({
+                                stationTags: stationTags.concat(t),
+                              })
+                            }
+                            onRemove={t =>
+                              this.updateTask({
+                                stationTags: stationTags.filter(tt => tt !== t),
+                              })
+                            }
+                          />
+                        </label>
+                      ) : null}
                       {Object.keys(definition.valuesInput).map(v => (
                         <ValueInput
                           key={v}
