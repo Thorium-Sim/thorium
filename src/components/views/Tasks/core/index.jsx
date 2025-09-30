@@ -15,6 +15,7 @@ const fragments = {
       dismissed
       instructions
       station
+      private
       definition
       verifyRequested
       startTime
@@ -45,7 +46,7 @@ const fragments = {
 
 export const TASK_CORE_QUERY = gql`
   query Tasks($simulatorId: ID!) {
-    tasks(simulatorId: $simulatorId) {
+    tasks(simulatorId: $simulatorId, isCore: true) {
       ...TaskCoreData
     }
     taskTemplates {
@@ -57,7 +58,7 @@ export const TASK_CORE_QUERY = gql`
 `;
 export const TASK_CORE_SUB = gql`
   subscription TasksUpdate($simulatorId: ID!) {
-    tasksUpdate(simulatorId: $simulatorId) {
+    tasksUpdate(simulatorId: $simulatorId, isCore: true) {
       ...TaskCoreData
     }
   }

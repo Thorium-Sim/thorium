@@ -25,6 +25,7 @@ class TasksCore extends Component {
   state = {
     selectedDefinition: "nothing",
     station: "nothing",
+    isPrivate: false,
     requiredValues: {},
     macros: [],
     preMacros: [],
@@ -45,6 +46,7 @@ class TasksCore extends Component {
       selectedDefinition,
       requiredValues,
       station,
+      isPrivate,
       macros,
       preMacros,
       configureMacroId,
@@ -99,6 +101,7 @@ class TasksCore extends Component {
             station={station}
             requiredValues={requiredValues}
             simulator={simulator}
+            isPrivate={isPrivate}
             macros={macros}
             preMacros={preMacros}
             updateSelectedDefinition={d =>
@@ -106,6 +109,7 @@ class TasksCore extends Component {
             }
             updateRequiredValues={val => this.setState({requiredValues: val})}
             updateStation={stat => this.setState({station: stat})}
+            updatePrivate={isPrivate => this.setState({isPrivate: isPrivate})}
             updateMacros={mac => this.setState({macros: mac})}
             updatePreMacros={mac => this.setState({preMacros: mac})}
             configureMacro={id => this.setState({configureMacroId: id})}
@@ -129,6 +133,7 @@ class TasksCore extends Component {
                   ...(definition ? definition.valuesValue : {}),
                   ...requiredValues,
                 },
+                private: isPrivate,
                 station,
                 macros: macros.map(({id, ...m}) => m),
                 preMacros: preMacros.map(({id, ...m}) => m),

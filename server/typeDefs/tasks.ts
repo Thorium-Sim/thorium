@@ -14,6 +14,7 @@ const schema = gql`
     simulatorId: ID
     stationTags: [String!]
     station: String
+    private: Boolean
     systemId: ID
     deck: Deck
     room: Room
@@ -37,6 +38,7 @@ const schema = gql`
     values: JSON
     stationTags: [String!]
     station: String
+    private: Boolean
     macros: [ActionInput]
     preMacros: [ActionInput]
   }
@@ -61,7 +63,12 @@ const schema = gql`
     valuesValue: JSON!
   }
   extend type Query {
-    tasks(simulatorId: ID!, station: String, definitions: [String!]): [Task]
+    tasks(
+      simulatorId: ID!
+      station: String
+      isCore: Boolean
+      definitions: [String!]
+    ): [Task]
     taskTemplates: [TaskTemplate!]!
     taskDefinitions(simulatorId: ID): [TaskDefinition!]!
     taskInstructions(
@@ -94,6 +101,7 @@ const schema = gql`
     tasksUpdate(
       simulatorId: ID!
       station: String
+      isCore: Boolean
       definitions: [String!]
     ): [Task]
     taskTemplatesUpdate: [TaskTemplate!]!
@@ -172,11 +180,13 @@ const resolver = {
     },
   },
   Query: {
-    tasks(_, {simulatorId, station, definitions}) {
+    tasks(_, {simulatorId, station, isCore, definitions}) {
       let tasks = App.tasks.filter(s => s.simulatorId === simulatorId);
       if (station) tasks = tasks.filter(s => s.station === station);
+      else if (!isCore) tasks = tasks.filter(s => !s.private);
       if (definitions)
         tasks = tasks.filter(s => definitions.indexOf(s.definition) > -1);
+
       return tasks;
     },
     taskTemplates() {
@@ -194,21 +204,24 @@ const resolver = {
   Mutation: mutationHelper(schema),
   Subscription: {
     tasksUpdate: {
-      resolve(rootValue, {simulatorId, station, definitions}) {
+      resolve(rootValue, {simulatorId, station, isCore, definitions}) {
         let tasks = rootValue.filter(s => s.simulatorId === simulatorId);
         if (station) tasks = tasks.filter(s => s.station === station);
+        else if (!isCore) tasks = tasks.filter(s => !s.private);
         if (definitions)
           tasks = tasks.filter(s => definitions.indexOf(s.definition) > -1);
         return tasks;
       },
       subscribe: withFilter(
         () => pubsub.asyncIterator("tasksUpdate"),
-        (rootValue, {simulatorId, station}) => {
+        (rootValue, {simulatorId, isCore, station}) => {
           let simTasks = App.tasks.filter(s => s.simulatorId === simulatorId);
           if (station) simTasks = simTasks.filter(s => s.station === station);
+          else if (!isCore) simTasks = simTasks.filter(s => !s.private);
           if (rootValue.length === 0 && simTasks.length === 0) return true;
           let rootTasks = rootValue.filter(s => s.simulatorId === simulatorId);
           if (station) rootTasks = rootTasks.filter(s => s.station === station);
+          else if (!isCore) rootTasks = rootTasks.filter(s => !s.private);
           if (rootTasks.length > 0) return true;
           return false;
         },

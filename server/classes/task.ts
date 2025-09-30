@@ -79,6 +79,8 @@ export default class Task {
   startTime: Date;
   endTime: Date;
   timeElapsedInMS: number;
+  /** Private tasks only appear on the station they are assigned to */
+  private: boolean;
   macros: Macro[];
   preMacros: Macro[];
   assigned: boolean | string;
@@ -127,6 +129,7 @@ export default class Task {
     }
 
     this.taskTemplate = params.taskTemplate || "";
+    this.private = params.private || false;
 
     // For damage reports
     this.systemId = params.systemId || "";

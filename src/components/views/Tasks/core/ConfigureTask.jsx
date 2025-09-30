@@ -15,6 +15,7 @@ const ConfigureTask = ({
   taskTemplates,
   definition,
   station,
+  isPrivate,
   requiredValues,
   simulator,
   macros,
@@ -23,6 +24,7 @@ const ConfigureTask = ({
   updateRequiredValues,
   updateStation,
   updateMacros,
+  updatePrivate,
   updatePreMacros,
   configureMacro,
 }) => {
@@ -145,6 +147,14 @@ const ConfigureTask = ({
                         ))}
                     </optgroup>
                   </Input>
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={isPrivate}
+                    onChange={e => updatePrivate(e.currentTarget.checked)}
+                  />{" "}
+                  Private (only visible to assigned station)
                 </label>
                 {Object.keys(definition.valuesInput).map(v => (
                   <ValueInput

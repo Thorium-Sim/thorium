@@ -72,6 +72,7 @@ class TasksCore extends Component {
       definition: selectedDefinition,
       values: requiredValues = {},
       stationTags = [],
+      private: isPrivate,
       macros = [],
       preMacros = [],
     } = taskInput;
@@ -233,6 +234,18 @@ class TasksCore extends Component {
                           />
                         </label>
                       ) : null}
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={isPrivate}
+                          onChange={e =>
+                            this.updateTask({
+                              private: e.target.checked,
+                            })
+                          }
+                        />{" "}
+                        Private (only visible to assigned station)
+                      </label>
                       {Object.keys(definition.valuesInput).map(v => (
                         <ValueInput
                           key={v}

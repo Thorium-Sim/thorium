@@ -120,6 +120,9 @@ class TasksManager extends Component {
                   <strong>Verified:</strong> {task.verified ? "Yes" : "No"}
                 </p>
                 <p>
+                  <strong>Private:</strong> {task.private ? "Yes" : "No"}
+                </p>
+                <p>
                   <strong>Time Elapsed:</strong> <Timer {...task} />{" "}
                 </p>
                 <p>
