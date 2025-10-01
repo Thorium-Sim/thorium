@@ -64,7 +64,11 @@ const StepConfig = () => {
             defaultValue={step.name}
             onChange={e =>
               rename({
-                variables: {id: flowId || "", stepId: stepId || "", name: e.target.value || ""},
+                variables: {
+                  id: flowId || "",
+                  stepId: stepId || "",
+                  name: e.target.value || "",
+                },
               })
             }
           />
@@ -74,6 +78,7 @@ const StepConfig = () => {
           <Input
             type="number"
             min={0}
+            defaultValue={step.delay}
             onChange={e =>
               setDelay({
                 variables: {
@@ -97,7 +102,11 @@ const StepConfig = () => {
             defaultChecked={step.completeAll}
             onChange={e =>
               setCompleteAll({
-                variables: {id: flowId || "", stepId: stepId || "", completeAll: e.target.checked},
+                variables: {
+                  id: flowId || "",
+                  stepId: stepId || "",
+                  completeAll: e.target.checked,
+                },
               })
             }
           />
@@ -167,7 +176,13 @@ const StepConfig = () => {
                   "Are you sure you want to remove this task flow step task?",
                 )
               ) {
-                remove({variables: {id: flowId || "", stepId: stepId || "", taskId: taskId || ""}});
+                remove({
+                  variables: {
+                    id: flowId || "",
+                    stepId: stepId || "",
+                    taskId: taskId || "",
+                  },
+                });
                 navigate(".");
               }
             }}
