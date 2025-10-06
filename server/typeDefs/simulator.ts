@@ -133,6 +133,9 @@ const schema = gql`
     changeSimulatorBridgeCrew(simulatorId: ID!, crew: Int!): String
     changeSimulatorExtraPeople(simulatorId: ID!, crew: Int!): String
     changeSimulatorRadiation(simulatorId: ID!, radiation: Float!): String
+    setSimulatorHelium(simulatorId: ID!, helium: Float!): String
+    setSimulatorHeliumRate(simulatorId: ID!, heliumRate: Float!): String
+    setSimulatorShowHelium(simulatorId: ID!, showHelium: Boolean!): String
     setSimulatorTimelineStep(
       simulatorId: ID!
       timelineId: ID

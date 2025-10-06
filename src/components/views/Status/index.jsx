@@ -16,6 +16,7 @@ import {
 import Tour from "helpers/tourHelper";
 
 import "./style.scss";
+import Helium from "./components/helium";
 
 const trainingSteps = [
   {
@@ -40,6 +41,7 @@ const Status = props => {
           <Targeted {...props} />
           <Population {...props} />
           <Radiation {...props} />
+          <Helium {...props} />
           {/*<Label>Water</Label>
           <Dots level={0.5} color={"rgb(0,128,255)"} />*/}
           <Battery {...props} />

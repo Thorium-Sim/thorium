@@ -212,9 +212,9 @@ export default class Simulator {
       : [card];
   }
   removeStationAssignedCard(cardName: string) {
-    const stationEntry = Object.entries(
-      this.stationAssignedCards,
-    ).find(([key, value]) => value.find(c => c.name === cardName));
+    const stationEntry = Object.entries(this.stationAssignedCards).find(
+      ([key, value]) => value.find(c => c.name === cardName),
+    );
     const station = stationEntry?.[0];
     if (!station) return;
 

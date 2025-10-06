@@ -105,6 +105,27 @@ App.on("changeSimulatorRadiation", ({simulatorId, radiation}) => {
   }
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
+App.on("setSimulatorHelium", ({simulatorId, helium}) => {
+  const simulator = App.simulators.find(s => s.id === simulatorId);
+  if (simulator) {
+    simulator.ship.helium = helium;
+  }
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
+App.on("setSimulatorHeliumRate", ({simulatorId, heliumRate}) => {
+  const simulator = App.simulators.find(s => s.id === simulatorId);
+  if (simulator) {
+    simulator.ship.heliumRate = heliumRate;
+  }
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
+App.on("setSimulatorShowHelium", ({simulatorId, showHelium}) => {
+  const simulator = App.simulators.find(s => s.id === simulatorId);
+  if (simulator) {
+    simulator.ship.showHelium = showHelium;
+  }
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
 App.on("setSimulatorTimelineStep", ({simulatorId, timelineId, step}) => {
   const simulator = App.simulators.find(s => s.id === simulatorId);
   if (simulator) {

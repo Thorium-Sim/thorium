@@ -15,6 +15,9 @@ const schema = gql`
     bridgeCrew: Int
     extraPeople: Int
     radiation: Float
+    helium: Float
+    heliumRate: Float
+    showHelium: Float
     velocity: Float
     remoteAccessCodes: [RemoteAccessCode]
     selfDestructTime: Float

@@ -9,6 +9,9 @@ export default class Ship {
   bridgeCrew: number;
   extraPeople: number;
   radiation: number;
+  helium: number;
+  heliumRate: number;
+  showHelium: boolean;
   speed: number;
   selfDestructTime: number | null;
   selfDestructCode: string | null;
@@ -27,6 +30,10 @@ export default class Ship {
     this.bridgeCrew = params.bridgeCrew || 14;
     this.extraPeople = params.extraPeople || 0;
     this.radiation = params.radiation || 0.1;
+    this.helium = params.helium ?? 1;
+    // Helium decrease per minute
+    this.heliumRate = params.heliumRate ?? -0.1;
+    this.showHelium = params.showHelium || false;
     this.speed = params.speed || 0;
     this.selfDestructTime = params.selfDestructTime || null;
     this.selfDestructCode = params.selfDestructCode || null;

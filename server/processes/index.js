@@ -17,4 +17,5 @@ import "./crm";
 import "./countermeasures";
 import "./clientPing";
 import "./systems";
-import "./advanced-nav"
+import "./advanced-nav";
+import "./helium";

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import gql from "graphql-tag.macro";
 import {withApollo} from "react-apollo";
 import {InputField, OutputField} from "../../generic/core";
@@ -25,6 +25,9 @@ const fragment = gql`
       bridgeCrew
       extraPeople
       radiation
+      helium
+      heliumRate
+      showHelium
     }
   }
 `;
@@ -60,6 +63,21 @@ const updateRadiation = debounce((radiation, simulator, client) => {
   const variables = {
     simulatorId: simulator.id,
     radiation,
+  };
+  client.mutate({
+    mutation,
+    variables,
+  });
+}, 500);
+const updateHelium = debounce((helium, simulator, client) => {
+  const mutation = gql`
+    mutation SetHelium($simulatorId: ID!, $helium: Float!) {
+      setSimulatorHelium(simulatorId: $simulatorId, helium: $helium)
+    }
+  `;
+  const variables = {
+    simulatorId: simulator.id,
+    helium,
   };
   client.mutate({
     mutation,
@@ -206,6 +224,42 @@ const ShipCore = ({simulator, client}) => {
       variables,
     });
   };
+  const updateShowHelium = e => {
+    const mutation = gql`
+      mutation SetShowHelium($simulatorId: ID!, $showHelium: Boolean!) {
+        setSimulatorShowHelium(
+          simulatorId: $simulatorId
+          showHelium: $showHelium
+        )
+      }
+    `;
+    const variables = {
+      simulatorId: simulator.id,
+      showHelium: e.target.checked,
+    };
+    client.mutate({
+      mutation,
+      variables,
+    });
+  };
+  const updateHeliumRate = heliumRate => {
+    const mutation = gql`
+      mutation SetShowHelium($simulatorId: ID!, $heliumRate: Float!) {
+        setSimulatorHeliumRate(
+          simulatorId: $simulatorId
+          heliumRate: $heliumRate
+        )
+      }
+    `;
+    const variables = {
+      simulatorId: simulator.id,
+      heliumRate: heliumRate / 100,
+    };
+    client.mutate({
+      mutation,
+      variables,
+    });
+  };
 
   const [flipSimulator] = useMutation(gql`
     mutation FlipSimulator($simulatorId: ID!, $flip: Boolean!) {
@@ -238,6 +292,7 @@ const ShipCore = ({simulator, client}) => {
     [simulator.id],
   );
   useSubscribeToMore(subscribeToMore, POP_SUB, popConfig);
+  const [heliumValue, setHeliumValue] = useState(null);
 
   if (loading || !data.simulators) return null;
   if (!data.simulators[0]) return;
@@ -253,7 +308,8 @@ const ShipCore = ({simulator, client}) => {
     flipped,
   } = data.simulators[0];
   const {crewCount} = data;
-  const {bridgeCrew, extraPeople, radiation} = ship;
+  const {bridgeCrew, extraPeople, radiation, helium, showHelium, heliumRate} =
+    ship;
 
   return (
     <div className="core-ship">
@@ -396,6 +452,50 @@ const ShipCore = ({simulator, client}) => {
           updateRadiation(parseFloat(evt.target.value), simulator, client)
         }
       />
+      <div>
+        <label>
+          <input
+            type="checkbox"
+            checked={showHelium}
+            onChange={updateShowHelium}
+          />{" "}
+          Show Helium
+        </label>
+        {showHelium ? (
+          <>
+            <p>Helium: </p>
+            <input
+              type="range"
+              value={typeof heliumValue === "number" ? heliumValue : helium}
+              min={0}
+              max={1}
+              step={0.001}
+              onPointerDown={() => {
+                document.addEventListener(
+                  "pointerup",
+                  () => {
+                    setHeliumValue(null);
+                  },
+                  {once: true},
+                );
+              }}
+              onChange={evt => {
+                updateHelium(parseFloat(evt.target.value), simulator, client);
+                setHeliumValue(parseFloat(evt.target.value));
+              }}
+            />
+            <p>Helium Rate:</p>
+            <InputField
+              prompt={
+                "What would you like to change the helium rate to? Helium will change by this percent every minute."
+              }
+              onClick={updateHeliumRate}
+            >
+              {heliumRate * 100}
+            </InputField>
+          </>
+        ) : null}
+      </div>
       <Button
         size="sm"
         color="warning"
