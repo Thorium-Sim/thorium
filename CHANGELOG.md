@@ -1,3 +1,15 @@
+# [4.2.0](https://github.com/Thorium-Sim/thorium/compare/4.1.6...4.2.0) (2025-10-06)
+
+
+### Bug Fixes
+
+* Task flow step delays ([21812e7](https://github.com/Thorium-Sim/thorium/commit/21812e7625564df05c3f5a2ac09fa3210b9e6a98))
+
+
+### Features
+
+* Helium Status Display ([2c2cf68](https://github.com/Thorium-Sim/thorium/commit/2c2cf687078d006db2a9829e9ebcce5ecf7e073c))
+
 ## [4.1.6](https://github.com/Thorium-Sim/thorium/compare/4.1.5...4.1.6) (2025-09-30)
 
 
