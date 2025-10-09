@@ -51,6 +51,10 @@
   }
   .menu-button {
     margin: 0 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
   }
   .navLink {
     border-bottom: solid 1px #e7e7e7;

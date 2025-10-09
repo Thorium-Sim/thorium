@@ -1,27 +1,32 @@
 import React, {Component, Fragment} from "react";
-import {Button, ButtonGroup} from "helpers/reactstrap";
+import {Button, ButtonGroup, Input} from "helpers/reactstrap";
 import {publish} from "helpers/pubsub";
 import NotificationConfig from "./notificationConfig";
 import SidebarConfig from "./sidebarConfig";
 
 class NotifyConfig extends Component {
   state = {};
+
   render() {
     const {notifications, speech, setNotifications, setSpeech} = this.props;
     const {config, sidebarConfig} = this.state;
+
     return (
       <Fragment>
-        <label>
-          Notifications{" "}
-          <input
+        <label className="checkbox-inline">
+          <Input
             type="checkbox"
             checked={notifications}
             onChange={setNotifications}
           />
+          <span>Notifications</span>
         </label>
-        <label>
-          Speech <input type="checkbox" checked={speech} onChange={setSpeech} />
+
+        <label className="checkbox-inline" style={{marginLeft: "10px"}}>
+          <Input type="checkbox" checked={speech} onChange={setSpeech} />
+          <span>Speech</span>
         </label>
+
         <ButtonGroup style={{float: "right", marginRight: "25px"}}>
           <Button
             onClick={() => publish("clearNotifications")}
@@ -45,6 +50,7 @@ class NotifyConfig extends Component {
             Sidebar
           </Button>
         </ButtonGroup>
+
         <NotificationConfig
           modal={config}
           toggle={() => this.setState({config: false})}
@@ -57,4 +63,5 @@ class NotifyConfig extends Component {
     );
   }
 }
+
 export default NotifyConfig;

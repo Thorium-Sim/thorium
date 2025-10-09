@@ -150,60 +150,72 @@ class Timer extends Component {
       minutes: parseInt(minutes),
       seconds: parseInt(seconds),
     }).normalize();
-    const data = `Estimated time to arrival calculated: Approximately ${
-      dur.hours > 0 ? `${dur.hours} hour${dur.hours === 1 ? "" : "s"}, ` : ""
-    }${
-      dur.minutes > 0
-        ? `${dur.minutes} minute${dur.minutes === 1 ? "" : "s"}, `
-        : ""
-    }${dur.seconds} second${dur.seconds === 1 ? "" : "s"} at current speed.`;
+
+    const parts = [];
+    if (dur.hours > 0)
+      parts.push(`${dur.hours} hour${dur.hours === 1 ? "" : "s"}`);
+    if (dur.minutes > 0)
+      parts.push(`${dur.minutes} minute${dur.minutes === 1 ? "" : "s"}`);
+    parts.push(`${dur.seconds} second${dur.seconds === 1 ? "" : "s"}`);
+
+    const data = `At current speed this vessel will reach its destination in ${parts.join(
+      ", ",
+    )}.`;
+
     publish("sensorData", data);
   };
   render() {
-    const {timer, stopped} = this.state;
+    const {timer, stopped, sync} = this.state;
+
     return (
-      <div className="core-timer" style={{display: "flex"}}>
+      <div
+        className="core-timer"
+        style={{display: "flex", alignItems: "center", gap: "4px"}}
+      >
         <div
           style={{
             color: "black",
-            float: "left",
             flex: 1,
             backgroundColor: "rgb(251, 254, 61)",
             border: "1px solid rgb(210, 203, 67)",
             height: "16px",
             whiteSpace: "pre",
             textAlign: "center",
+            cursor: "pointer",
           }}
           onClick={this.setTimer}
         >
           {timer}
         </div>
+
         <Button
           color={stopped ? "primary" : "danger"}
           size="sm"
-          style={{height: "16px", float: "left", lineHeight: "12px"}}
+          style={{height: "16px", lineHeight: "12px"}}
           onClick={this.toggleTimer}
         >
           {stopped ? "Start" : "Stop"}
         </Button>
+
         <Button
-          color={"success"}
+          color="success"
           size="sm"
           style={{height: "16px", lineHeight: "12px"}}
           onClick={this.sendToSensors}
         >
           Send to Sensors
         </Button>
-        <label>
+
+        <label className="checkbox-inline" style={{margin: 0}}>
           <input
             type="checkbox"
-            checked={this.state.sync}
+            checked={sync}
             onChange={e => {
               this.setState({sync: e.target.checked});
               window.localStorage.setItem("thorium_syncTime", e.target.checked);
             }}
           />
-          Sync Cores
+          <span>Sync Cores</span>
         </label>
       </div>
     );

@@ -75,6 +75,7 @@
   }
   .flex-container {
     display: flex;
+    align-items: center;
   }
   select.form-control:not([size]):not([multiple]),
   input[type="text"] {
