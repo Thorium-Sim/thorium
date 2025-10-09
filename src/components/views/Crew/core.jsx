@@ -222,20 +222,10 @@ class CrewCore extends Component {
         />
         <Row>
           <Col sm={3}>
-            <Row style={{height: "31px", overflow: "hidden"}}>
+            <Row style={{height: "20px", overflow: "hidden"}}>
               <Col sm={6}>
-                <Button
-                  size="sm"
-                  block
-                  color="primary"
-                  onClick={this._exportCrewCSV}
-                >
-                  Export
-                </Button>
-              </Col>
-              <Col sm={6}>
-                <label>
-                  <div className="btn btn-sm btn-info btn-block">Import</div>
+                <label className="crew-import">
+                  <div className="btn btn-sm btn-info btn-block ">Import</div>
                   <input
                     type="file"
                     accept="text/csv"
@@ -244,6 +234,17 @@ class CrewCore extends Component {
                     onChange={this._importCrew}
                   />
                 </label>
+              </Col>
+              <Col sm={6}>
+                <Button
+                  size="sm"
+                  block
+                  color="primary"
+                  onClick={this._exportCrewCSV}
+                  class="crew-export"
+                >
+                  Export
+                </Button>
               </Col>
             </Row>
             <TypingField

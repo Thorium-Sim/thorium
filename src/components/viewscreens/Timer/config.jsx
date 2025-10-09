@@ -107,6 +107,7 @@ export default withApollo(
     render() {
       const {data = "{}"} = this.props;
       const {timer, stopped, sync, title} = JSON.parse(data);
+
       return (
         <div>
           <input
@@ -115,17 +116,17 @@ export default withApollo(
             defaultValue={title}
             onChange={e => this.updateData({title: e.target.value})}
           />
-          <div style={{display: "flex"}}>
+          <div style={{display: "flex", alignItems: "center", gap: "4px"}}>
             <div
               style={{
                 color: "black",
-                float: "left",
                 flex: 1,
                 backgroundColor: "rgb(251, 254, 61)",
                 border: "1px solid rgb(210, 203, 67)",
                 height: "16px",
                 whiteSpace: "pre",
                 textAlign: "center",
+                cursor: "pointer",
               }}
               onClick={this.setTimer}
             >
@@ -134,18 +135,19 @@ export default withApollo(
             <Button
               color={stopped ? "primary" : "danger"}
               size="sm"
-              style={{height: "16px", float: "left", lineHeight: "12px"}}
+              style={{height: "16px", lineHeight: "12px"}}
               onClick={this.toggleTimer}
             >
               {stopped ? "Start" : "Stop"}
             </Button>
-            <label>
+
+            <label className="checkbox-inline" style={{margin: 0}}>
               <input
                 type="checkbox"
                 checked={sync}
                 onChange={e => this.updateData({sync: e.target.checked})}
               />
-              Sync Cores
+              <span>Sync Cores</span>
             </label>
           </div>
         </div>
