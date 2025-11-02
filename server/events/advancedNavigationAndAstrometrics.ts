@@ -86,6 +86,12 @@ App.on('removeFlightSet', ({ id }) => {
     sendUpdate();
 });
 
+// Alias to support GraphQL mutation name
+App.on('deleteFlightSet', ({ id }) => {
+    App.flightSets = App.flightSets.filter(f => f.id !== id)
+    sendUpdate();
+});
+
 App.on('createFlightSet', ({ flightSet }) => {
     const newFlightSet = { ...flightSet, id: uuid.v4() }
     newFlightSet.borders = newFlightSet.borders.map(border => {

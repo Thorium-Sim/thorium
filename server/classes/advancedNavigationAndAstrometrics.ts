@@ -164,7 +164,10 @@ export default class AdvancedNavigationAndAstrometrics extends System {
                 if (timeElapsed >= this.currentFlightPath.startOption.secondsForStartup) {
                     const flightPathCoords = generateFlightPathCoordinates(this.currentLocation, this.currentFlightPath, this.getLocationIdMap(), this.getBorderIdMap(), this.currentFlightSet.imageMaxX, this.currentFlightSet.imageMaxY);
                     this.flightPathCoords = flightPathCoords;
-                    const totalFlightTime = calculateTotalTime(flightPathCoords, this.currentFlightSet?.pixelsPerSecond || 1);
+                    const totalFlightTime = calculateTotalTime(
+                        flightPathCoords,
+                        (this.currentFlightSet?.pixelsPerSecond || 1) * (this.currentFlightPath?.speedOption?.speedModifier || 1)
+                    );
                     this.remainingEta = totalFlightTime;
                     this.totalEta = totalFlightTime;
                     if (this.currentFlightPath.speedOption.requiresMaxEngines) {
@@ -346,6 +349,31 @@ export default class AdvancedNavigationAndAstrometrics extends System {
     }
     handleUpdateCurrentFlightPath(flightPath: NavigationRoute) {
         this.currentFlightPath = flightPath;
+        if (this.currentFlightSet) {
+            // Recalculate the path coordinates from the current location with the new speed option
+            const newCoords = generateFlightPathCoordinates(
+                this.currentLocation,
+                flightPath,
+                this.getLocationIdMap(),
+                this.getBorderIdMap(),
+                this.currentFlightSet.imageMaxX,
+                this.currentFlightSet.imageMaxY,
+            );
+            this.flightPathCoords = newCoords;
+            const totalFlightTime = calculateTotalTime(
+                newCoords,
+                (this.currentFlightSet?.pixelsPerSecond || 1) * (flightPath?.speedOption?.speedModifier || 1)
+            );
+            // Since the path starts from the current location, totalFlightTime is the new ETA
+            this.remainingEta = totalFlightTime;
+            this.totalEta = totalFlightTime;
+            // Adjust engine mode if the new speed requires or releases max engines, but only while moving
+            if (this.engineStatus === EngineStatus.ENGAGED && flightPath.speedOption?.requiresMaxEngines) {
+                this.engineStatus = EngineStatus.FULL_POWER;
+            } else if (this.engineStatus === EngineStatus.FULL_POWER && !flightPath.speedOption?.requiresMaxEngines) {
+                this.engineStatus = EngineStatus.ENGAGED;
+            }
+        }
     }
     handleOverrideLocation(location: BasicCoordinate, currentLocationUrl?: string, currentLocationName?: string) {
         this.currentLocation = location;
