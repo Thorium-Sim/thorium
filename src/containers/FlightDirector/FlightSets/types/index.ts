@@ -136,6 +136,7 @@ export type FlightSet = {
     probeLaunchRangeRadius: number;
     addOnTraining?: boolean;
     pixelDistanceModifier?: number;
+    probeSpeedModifier?: number;
 }
 
 export type BasicCoordinate = {

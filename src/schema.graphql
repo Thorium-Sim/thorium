@@ -1112,6 +1112,7 @@ type FlightSet {
   probeLaunchRangeRadius: Float!
   addOnTraining: Boolean
   pixelDistanceModifier: Float
+  probeSpeedModifier: Float
 }
 
 input FlightSetInput {
@@ -1131,6 +1132,7 @@ input FlightSetInput {
   probeLaunchRangeRadius: Float!
   addOnTraining: Boolean
   pixelDistanceModifier: Float
+  probeSpeedModifier: Float
 }
 
 type FlightType {
@@ -2796,6 +2798,9 @@ type Mutation {
   changeSimulatorBridgeCrew(simulatorId: ID!, crew: Int!): String
   changeSimulatorExtraPeople(simulatorId: ID!, crew: Int!): String
   changeSimulatorRadiation(simulatorId: ID!, radiation: Float!): String
+  setSimulatorHelium(simulatorId: ID!, helium: Float!): String
+  setSimulatorHeliumRate(simulatorId: ID!, heliumRate: Float!): String
+  setSimulatorShowHelium(simulatorId: ID!, showHelium: Boolean!): String
   setSimulatorTimelineStep(simulatorId: ID!, timelineId: ID, step: Int!): String
 
   """Macro: Timeline: Change Timeline Mission or Step"""
@@ -3892,7 +3897,7 @@ type Query {
   tacticalMap(id: ID!): TacticalMap
   targeting(id: ID, simulatorId: ID): [Targeting]
   taskReport(simulatorId: ID, type: String, cleared: Boolean): [TaskReport]
-  tasks(simulatorId: ID!, station: String, definitions: [String!]): [Task]
+  tasks(simulatorId: ID!, station: String, isCore: Boolean, definitions: [String!]): [Task]
   taskTemplates: [TaskTemplate!]!
   taskDefinitions(simulatorId: ID): [TaskDefinition!]!
   taskInstructions(simulatorId: ID, definition: String!, requiredValues: JSON!, task: TaskInput): String
@@ -4318,6 +4323,9 @@ type Ship {
   bridgeCrew: Int
   extraPeople: Int
   radiation: Float
+  helium: Float
+  heliumRate: Float
+  showHelium: Float
   velocity: Float
   remoteAccessCodes: [RemoteAccessCode]
   selfDestructTime: Float
@@ -4753,12 +4761,13 @@ type Subscription {
   tacticalMapUpdate(id: ID!, lowInterval: Boolean): TacticalMap
   targetingUpdate(simulatorId: ID): [Targeting]
   taskReportUpdate(simulatorId: ID, type: String, cleared: Boolean): [TaskReport]
-  tasksUpdate(simulatorId: ID!, station: String, definitions: [String!]): [Task]
+  tasksUpdate(simulatorId: ID!, station: String, isCore: Boolean, definitions: [String!]): [Task]
   taskTemplatesUpdate: [TaskTemplate!]!
   teamsUpdate(simulatorId: ID, type: String, cleared: Boolean): [Team]
   _templateUpdate(simulatorId: ID): Template
   thoriumUpdate: Thorium
   clockSync(clientId: ID!): String
+  events(includeEvents: [String!], omitEvents: [String!]): JSON
   rotationChange(simulatorId: ID): Thruster
   thxUpdate(simulatorId: ID): [Thx]
   torpedosUpdate(simulatorId: ID): [Torpedo]
@@ -5057,6 +5066,7 @@ type Task {
   simulatorId: ID
   stationTags: [String!]
   station: String
+  private: Boolean
   systemId: ID
   deck: Deck
   room: Room
@@ -5109,6 +5119,7 @@ input TaskInput {
   values: JSON
   stationTags: [String!]
   station: String
+  private: Boolean
   macros: [ActionInput]
   preMacros: [ActionInput]
 }

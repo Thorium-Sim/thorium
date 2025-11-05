@@ -48,6 +48,8 @@ export function formatGraphqlQueryToTypescript(query: GetAllFlightSetsQuery): Fl
             pointsOfInterest: pointsOfInterest || [],
             addOnTraining: flightSet?.addOnTraining || false,
             pixelDistanceModifier: flightSet?.pixelDistanceModifier || 1,
+            // New optional field; use undefined when not provided (server defaults preserve behavior)
+            probeSpeedModifier: (flightSet as any)?.probeSpeedModifier,
         }
     })
     return newFlightSets;

@@ -105,8 +105,8 @@ export const FlightSetCreationDefaultSpeed: React.FC<CreateFlightSetStepProps<Fl
                             }} />
                     </div>
 
-                    <div className="step-content-row" style={{ gap: '8px', alignItems: 'center' }}>
-                        <div className="step-content-column" style={{}}>
+                    <div className="step-content-row" style={{ gap: '8px', alignItems: 'center', flex: "1" }}>
+                        <div className="step-content-column" style={{ flex: "1"}}>
                             <div className="step-content-row" style={{ gap: '10px', alignItems: 'center' }}>
                                 <span>Primary Location:</span>
                                 <span>{primaryLocation ? `(${primaryLocation.x.toFixed(0)}, ${primaryLocation.y.toFixed(0)})` : 'Select a location on the map'}</span>
@@ -128,10 +128,36 @@ export const FlightSetCreationDefaultSpeed: React.FC<CreateFlightSetStepProps<Fl
                                 <span>{(primaryLocation && secondaryLocation) ? (getDistanceBetweenCoordinates(primaryLocation, secondaryLocation) * (state.pixelDistanceModifier || 1)).toFixed(2) + ' yl' : "Please select a primary and secondary location"}</span>
                                 {(primaryLocation && secondaryLocation) && <Button onClick={handleDistanceChange}>Change</Button>}
                             </div>
-                            {(primaryLocation && secondaryLocation) && <div className="step-content-row" style={{ gap: '10px', alignItems: 'center' }}>
+                            {(primaryLocation && secondaryLocation) && <div className="step-content-row" style={{ gap: '10px', alignItems: 'center', padding: ".5rem" }}>
                                 <span>Star speed: </span>
                                 <span>Based on the values you've entered, the base speed without speedups would create: {calculateStarSpeeds()}</span>
                             </div>}
+                            <div className="step-content-row" style={{ gap: '10px', alignItems: 'center', padding: ".5rem"}}>
+                                <span>Default Probe Speed Modifier (optional):</span>
+                                <input
+                                    style={{ width: '8rem' }}
+                                    type="number"
+                                    step="0.05"
+                                    min="0"
+                                    value={state.probeSpeedModifier === undefined ? '' : state.probeSpeedModifier}
+                                    placeholder="e.g. 0.5"
+                                    onChange={(e) => {
+                                        console.log("probeSpeedModifier", e.target.value);
+                                        const val = e.target.value;
+                                        if (val === '') {
+                                            setState({ ...state, probeSpeedModifier: undefined });
+                                        } else {
+                                            const num = Number(val);
+                                            if (!isNaN(num)) {
+                                                setState({ ...state, probeSpeedModifier: num });
+                                            }
+                                        }
+                                    }}
+                                />
+                                <span style={{ opacity: 0.8 }}>
+                                    Leave blank to keep legacy behavior (half of ship speed).
+                                </span>
+                            </div>
                         </div>
 
                     </div>

@@ -236,6 +236,8 @@ type FlightSet {
   probeLaunchRangeRadius: Float!
   addOnTraining: Boolean
   pixelDistanceModifier: Float
+  # Optional default speed modifier for probes in this flight set
+  probeSpeedModifier: Float
 }
 
 type BasicCoordinate {
@@ -444,6 +446,7 @@ input FlightSetInput {
   probeLaunchRangeRadius: Float!
   addOnTraining: Boolean
   pixelDistanceModifier: Float
+  probeSpeedModifier: Float
 }
 
 input BasicCoordinateInput {

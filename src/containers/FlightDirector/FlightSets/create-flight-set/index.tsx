@@ -94,7 +94,8 @@ export const CreateFlightSet: React.FC<CreateFlightSetProps> = (props) => {
         pixelsPerSecond: props.editingFlightSet ? props.editingFlightSet.pixelsPerSecond : 4,
         probeLaunchRangeRadius: props.editingFlightSet?.probeLaunchRangeRadius || 100,
         pixelDistanceModifier: props.editingFlightSet?.pixelDistanceModifier || 1,
-        addOnTraining: props.editingFlightSet?.addOnTraining || false
+        addOnTraining: props.editingFlightSet?.addOnTraining || false,
+        probeSpeedModifier: props.editingFlightSet?.probeSpeedModifier,
     });
     const colorRef = useAdjustTextColorBasedOnBackground();
     useEffect(() => {
@@ -113,7 +114,8 @@ export const CreateFlightSet: React.FC<CreateFlightSetProps> = (props) => {
                 imageMaxX: props.editingFlightSet.imageMaxX,
                 imageMaxY: props.editingFlightSet.imageMaxY,
                 pixelsPerSecond: props.editingFlightSet.pixelsPerSecond,
-                probeLaunchRangeRadius: props.editingFlightSet.probeLaunchRangeRadius
+                probeLaunchRangeRadius: props.editingFlightSet.probeLaunchRangeRadius,
+                probeSpeedModifier: props.editingFlightSet.probeSpeedModifier,
             });
         }
     }, [props.editingFlightSet]);

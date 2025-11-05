@@ -1218,6 +1218,7 @@ export type FlightSet = {
   probeLaunchRangeRadius: Scalars['Float'];
   addOnTraining?: Maybe<Scalars['Boolean']>;
   pixelDistanceModifier?: Maybe<Scalars['Float']>;
+  probeSpeedModifier?: Maybe<Scalars['Float']>;
 };
 
 export type FlightSetInput = {
@@ -1237,6 +1238,7 @@ export type FlightSetInput = {
   probeLaunchRangeRadius: Scalars['Float'];
   addOnTraining?: Maybe<Scalars['Boolean']>;
   pixelDistanceModifier?: Maybe<Scalars['Float']>;
+  probeSpeedModifier?: Maybe<Scalars['Float']>;
 };
 
 export type FlightType = {
@@ -2828,6 +2830,9 @@ export type Mutation = {
   changeSimulatorBridgeCrew?: Maybe<Scalars['String']>;
   changeSimulatorExtraPeople?: Maybe<Scalars['String']>;
   changeSimulatorRadiation?: Maybe<Scalars['String']>;
+  setSimulatorHelium?: Maybe<Scalars['String']>;
+  setSimulatorHeliumRate?: Maybe<Scalars['String']>;
+  setSimulatorShowHelium?: Maybe<Scalars['String']>;
   setSimulatorTimelineStep?: Maybe<Scalars['String']>;
   /** Macro: Timeline: Change Timeline Mission or Step */
   setSimulatorMission?: Maybe<Scalars['String']>;
@@ -6434,6 +6439,24 @@ export type MutationChangeSimulatorRadiationArgs = {
 };
 
 
+export type MutationSetSimulatorHeliumArgs = {
+  simulatorId: Scalars['ID'];
+  helium: Scalars['Float'];
+};
+
+
+export type MutationSetSimulatorHeliumRateArgs = {
+  simulatorId: Scalars['ID'];
+  heliumRate: Scalars['Float'];
+};
+
+
+export type MutationSetSimulatorShowHeliumArgs = {
+  simulatorId: Scalars['ID'];
+  showHelium: Scalars['Boolean'];
+};
+
+
 export type MutationSetSimulatorTimelineStepArgs = {
   simulatorId: Scalars['ID'];
   timelineId?: Maybe<Scalars['ID']>;
@@ -9919,6 +9942,9 @@ export type Ship = {
   bridgeCrew?: Maybe<Scalars['Int']>;
   extraPeople?: Maybe<Scalars['Int']>;
   radiation?: Maybe<Scalars['Float']>;
+  helium?: Maybe<Scalars['Float']>;
+  heliumRate?: Maybe<Scalars['Float']>;
+  showHelium?: Maybe<Scalars['Float']>;
   velocity?: Maybe<Scalars['Float']>;
   remoteAccessCodes?: Maybe<Array<Maybe<RemoteAccessCode>>>;
   selfDestructTime?: Maybe<Scalars['Float']>;
@@ -10388,6 +10414,7 @@ export type Subscription = {
   _templateUpdate?: Maybe<Template>;
   thoriumUpdate?: Maybe<Thorium>;
   clockSync?: Maybe<Scalars['String']>;
+  events?: Maybe<Scalars['JSON']>;
   rotationChange?: Maybe<Thruster>;
   thxUpdate?: Maybe<Array<Maybe<Thx>>>;
   torpedosUpdate?: Maybe<Array<Maybe<Torpedo>>>;
@@ -10884,6 +10911,12 @@ export type Subscription_TemplateUpdateArgs = {
 
 export type SubscriptionClockSyncArgs = {
   clientId: Scalars['ID'];
+};
+
+
+export type SubscriptionEventsArgs = {
+  includeEvents?: Maybe<Array<Scalars['String']>>;
+  omitEvents?: Maybe<Array<Scalars['String']>>;
 };
 
 
@@ -14571,7 +14604,7 @@ export type GetAllFlightSetsQuery = (
   { __typename?: 'Query' }
   & { getAllFlightSets: Array<Maybe<(
     { __typename?: 'FlightSet' }
-    & Pick<FlightSet, 'id' | 'name' | 'backgroundImg' | 'imageMaxX' | 'imageMaxY' | 'pixelsPerSecond' | 'label' | 'probeLaunchRangeRadius' | 'addOnTraining' | 'pixelDistanceModifier'>
+    & Pick<FlightSet, 'id' | 'name' | 'backgroundImg' | 'imageMaxX' | 'imageMaxY' | 'pixelsPerSecond' | 'label' | 'probeLaunchRangeRadius' | 'addOnTraining' | 'pixelDistanceModifier' | 'probeSpeedModifier'>
     & { startOptions: Array<(
       { __typename?: 'NavigationStartOptions' }
       & Pick<NavigationStartOptions, 'id' | 'name' | 'riskModifier' | 'imgUrl' | 'secondsForStartup'>
@@ -19151,6 +19184,7 @@ export const GetAllFlightSetsDocument = gql`
     probeLaunchRangeRadius
     addOnTraining
     pixelDistanceModifier
+    probeSpeedModifier
   }
 }
     `;

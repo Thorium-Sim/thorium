@@ -393,7 +393,16 @@ export default class AdvancedNavigationAndAstrometrics extends System {
             const probe = this.getAvailableProbes().find(probe => probe.id === probeId);
             if (POI && probe) {
                 const flightPathCoords = [getProbeCurrentLocation(this.currentLocation, probe, newProbeAssignments[this.currentFlightSet.id]), { ...POI.location }];
-                const totalFlightTime = calculateTotalTime(flightPathCoords.map((each) => { return { ...each, speed: 1, color: 'white' } }), (this.currentFlightSet.pixelsPerSecond / 2));
+                // Base probe speed factor for this flight set. If not provided, preserve existing behavior (half of ship speed)
+                const baseProbeModifier = (this.currentFlightSet?.probeSpeedModifier ?? 0.5);
+                // Calculate equipment-based speed boost: each 'speed-matrix-accelerator' increases speed by 25%
+                const speedBoostCount = probe.equipment.find(e => e.id === 'speed-matrix-accelerator')?.count || 0;
+                const equipmentSpeedMultiplier = 1 + 0.25 * speedBoostCount;
+                const effectivePixelsPerSecond = (this.currentFlightSet.pixelsPerSecond) * baseProbeModifier * equipmentSpeedMultiplier;
+                const totalFlightTime = calculateTotalTime(
+                    flightPathCoords.map((each) => { return { ...each, speed: 1, color: 'white' } }),
+                    effectivePixelsPerSecond
+                );
                 const allPreviousAssignments = newProbeAssignments[this.currentFlightSet.id].filter((each) => each.probeId === probeId);
                 const allOtherAssignments = newProbeAssignments[this.currentFlightSet.id].filter((each) => each.probeId !== probeId);
                 newProbeAssignments[this.currentFlightSet.id] = allOtherAssignments;

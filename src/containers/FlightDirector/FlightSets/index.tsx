@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import React from "react"
 import { CreateFlightSet } from "./create-flight-set"
 import { FlightSet } from "./types";
@@ -44,6 +45,8 @@ export default () => {
         onCompleted: (data) => {
             setToastText("Flight Set Updated");
             setShowToast(true);
+            // Close the modal after a successful update to mirror create behavior
+            toggle();
         },
         onError: (error) => {
             setError(error.message);

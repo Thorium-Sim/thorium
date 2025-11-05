@@ -15,6 +15,9 @@ export class FlightSet {
     probeLaunchRangeRadius: number;
     addOnTraining?: boolean;
     pixelDistanceModifier?: number;
+    // Optional default probe speed modifier for this flight set
+    // If undefined, existing behavior should be preserved in consumers
+    probeSpeedModifier?: number;
     class: string
     constructor(flightSet: FlightSet) {
         this.class = "FlightSet";
@@ -35,6 +38,7 @@ export class FlightSet {
         this.pointsOfInterest = flightSet?.pointsOfInterest || [];
         this.addOnTraining = flightSet?.addOnTraining || false;
         this.pixelDistanceModifier = flightSet?.pixelDistanceModifier || 1;
+        this.probeSpeedModifier = flightSet?.probeSpeedModifier;
     }
 }
 
