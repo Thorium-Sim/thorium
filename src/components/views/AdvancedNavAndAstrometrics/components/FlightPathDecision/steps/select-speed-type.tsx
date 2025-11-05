@@ -13,6 +13,13 @@ export type SelectSpeedTypeProps = {
 
 
 export const SelectSpeedType: React.FC<SelectSpeedTypeProps> = (props) => {
+    const uniqueByName = React.useMemo(() => {
+        const map: Record<string, NavigationSpeedOptions> = {};
+        props.navigationSpeedOptions.forEach(o => {
+            if (!map[o.name]) map[o.name] = o;
+        });
+        return Object.values(map);
+    }, [props.navigationSpeedOptions]);
     return (
         <div className="step-parent">
             <div className="step-sub-parent">
@@ -28,7 +35,7 @@ export const SelectSpeedType: React.FC<SelectSpeedTypeProps> = (props) => {
             </div>
             <SelectableListView
                 selectedOption={props.selectedOption}
-                options={props.navigationSpeedOptions.map((each) => {
+                options={uniqueByName.map((each) => {
                     return {
                         id: each.name,
                         title: each.name,
