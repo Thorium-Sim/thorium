@@ -47,7 +47,15 @@ extend type Mutation {
     """
       Macro: Advanced Navigation: Select current flight set
     """
-    selectCurrentFlightSet(simulatorId: ID!, flightSetId: String!): String
+    selectCurrentFlightSet(simulatorId: ID!, flightSetId: String!, show: Boolean): String
+    """
+      Macro: Advanced Navigation: Show POI on current flight set
+    """
+    showPoiOnCurrentFlightSet(simulatorId: ID!, flightSetId: ID!, poiId: ID!, showName: Boolean): String
+    """
+      Macro: Advanced Navigation: Show POI information on current flight set
+    """
+    showPoiInformationOnCurrentFlightSet(simulatorId: ID!, poiId: ID!, infoType: String!): String
 }
 
 extend type Subscription {

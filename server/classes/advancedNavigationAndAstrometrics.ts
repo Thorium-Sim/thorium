@@ -198,6 +198,8 @@ export default class AdvancedNavigationAndAstrometrics extends System {
                     this.currentLocationName = this.currentFlightPath.isBorder ? this.getBorderIdMap()[this.currentFlightPath.targetLocationId].name : this.getLocationIdMap()[this.currentFlightPath.targetLocationId].name;
                     this.currentFlightPath = undefined;
                     notifyEvent(this.simulatorId, 'info', 'Advanced Navigation', 'Arrival at ' + this.currentLocationName, 'Crew has arrived at ' + this.currentLocationName, 'info');
+                    // Emit triggerable arrival event
+                    App.handleEvent({ simulatorId: this.simulatorId, destinationName: this.currentLocationName }, 'advancedNavArrival');
                 }
             }
         }
@@ -245,7 +247,9 @@ export default class AdvancedNavigationAndAstrometrics extends System {
         const oldFlightPaths = [...this.flightPaths];
         const locationMap = { ...this.locationMap };
         const setMap = { ...this.flightSetPathMap };
-        this.currentFlightSet && (setMap[this.currentFlightSet.id] = oldFlightPaths);
+        if (this.currentFlightSet) {
+            setMap[this.currentFlightSet.id] = oldFlightPaths;
+        }
         const newFlightPaths = setMap[flightSet.id] || [];
         this.showEta = false;
         locationMap[this.currentFlightSet?.id || ''] = { ...this.currentLocation };
@@ -348,6 +352,7 @@ export default class AdvancedNavigationAndAstrometrics extends System {
         this.heat = level;
     }
     handleUpdateCurrentFlightPath(flightPath: NavigationRoute) {
+        const previousSpeedId = this.currentFlightPath?.speedOption?.id;
         this.currentFlightPath = flightPath;
         if (this.currentFlightSet) {
             // Recalculate the path coordinates from the current location with the new speed option
@@ -372,6 +377,11 @@ export default class AdvancedNavigationAndAstrometrics extends System {
                 this.engineStatus = EngineStatus.FULL_POWER;
             } else if (this.engineStatus === EngineStatus.FULL_POWER && !flightPath.speedOption?.requiresMaxEngines) {
                 this.engineStatus = EngineStatus.ENGAGED;
+            }
+            notifyEvent(this.simulatorId, 'Advanced Navigation', 'AdvancedNavigationCore', 'Flight Path Updated', 'Flight Path has been updated', 'info');
+            // Emit triggerable speed change if changed
+            if (previousSpeedId && flightPath.speedOption?.id !== previousSpeedId) {
+                App.handleEvent({ simulatorId: this.simulatorId, speedName: flightPath.speedOption?.name }, 'advancedNavSpeedChange');
             }
         }
     }
@@ -457,6 +467,64 @@ export default class AdvancedNavigationAndAstrometrics extends System {
         const newFlightPaths = [...this.flightPaths];
         newFlightPaths.push(flightPath);
         this.flightPaths = newFlightPaths;
+    }
+    handleShowPoi(poiId: string, showName?: boolean) {
+        if (!this.currentFlightSet) { 
+            return; 
+        }
+        const newFlightSet = { ...this.currentFlightSet } as FlightSet;
+        const pois = [...newFlightSet.pointsOfInterest];
+        const poiIndex = pois.findIndex(p => p.id === poiId);
+        if (poiIndex === -1) {
+            return 
+        }
+        const poi = { ...pois[poiIndex] } as PointOfInterest;
+        poi.isVisible = true;
+        if (typeof showName === 'boolean') {
+            poi.showName = showName;
+        }
+        pois[poiIndex] = poi;
+        newFlightSet.pointsOfInterest = pois as any;
+        this.currentFlightSet = newFlightSet;
+        // Also update the copy inside flightSets if present
+        const fsIndex = this.flightSets.findIndex(fs => fs.id === newFlightSet.id);
+        if (fsIndex > -1) {
+            const newFlightSets = [...this.flightSets];
+            newFlightSets[fsIndex] = newFlightSet;
+            this.flightSets = newFlightSets;
+        }
+    }
+    handleShowPoiInformation(poiId: string, infoType: 'BASIC'|'DETAILED'|'SECRET') {
+        if (!this.currentFlightSet) return;
+        const newFlightSet = { ...this.currentFlightSet } as FlightSet;
+        const pois = [...newFlightSet.pointsOfInterest];
+        const poiIndex = pois.findIndex(p => p.id === poiId);
+        if (poiIndex === -1) return;
+        const poi = { ...pois[poiIndex] } as PointOfInterest;
+        const information = { ...poi.information } as PointOfInterest['information'];
+        switch (infoType) {
+            case 'BASIC':
+                information.hasBasicInformation = true;
+                break;
+            case 'DETAILED':
+                information.hasDetailedInformation = true;
+                break;
+            case 'SECRET':
+                information.hasSecretInformation = true;
+                break;
+            default:
+                break;
+        }
+        poi.information = information;
+        pois[poiIndex] = poi;
+        newFlightSet.pointsOfInterest = pois as any;
+        this.currentFlightSet = newFlightSet;
+        const fsIndex = this.flightSets.findIndex(fs => fs.id === newFlightSet.id);
+        if (fsIndex > -1) {
+            const newFlightSets = [...this.flightSets];
+            newFlightSets[fsIndex] = newFlightSet;
+            this.flightSets = newFlightSets;
+        }
     }
     resyncProbes() {
         const probes = App.systems.find(sys => sys.simulatorId === this.simulatorId && sys.class === 'Probes')?.probes || [];

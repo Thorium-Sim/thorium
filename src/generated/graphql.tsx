@@ -2316,6 +2316,10 @@ export type Mutation = {
   handleUpdateProbeAssignments: Scalars['String'];
   /** Macro: Advanced Navigation: Select current flight set */
   selectCurrentFlightSet?: Maybe<Scalars['String']>;
+  /** Macro: Advanced Navigation: Show POI on current flight set */
+  showPoiOnCurrentFlightSet?: Maybe<Scalars['String']>;
+  /** Macro: Advanced Navigation: Show POI information on current flight set */
+  showPoiInformationOnCurrentFlightSet?: Maybe<Scalars['String']>;
   googleSheetsAuthorize?: Maybe<Scalars['String']>;
   googleSheetsCompleteAuthorize?: Maybe<Scalars['String']>;
   googleSheetsRevoke?: Maybe<Scalars['String']>;
@@ -4399,6 +4403,22 @@ export type MutationHandleUpdateProbeAssignmentsArgs = {
 export type MutationSelectCurrentFlightSetArgs = {
   simulatorId: Scalars['ID'];
   flightSetId: Scalars['String'];
+  show?: Maybe<Scalars['Boolean']>;
+};
+
+
+export type MutationShowPoiOnCurrentFlightSetArgs = {
+  simulatorId: Scalars['ID'];
+  flightSetId: Scalars['ID'];
+  poiId: Scalars['ID'];
+  showName?: Maybe<Scalars['Boolean']>;
+};
+
+
+export type MutationShowPoiInformationOnCurrentFlightSetArgs = {
+  simulatorId: Scalars['ID'];
+  poiId: Scalars['ID'];
+  infoType: Scalars['String'];
 };
 
 

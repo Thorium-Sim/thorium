@@ -59,9 +59,12 @@ App.on('addFlightSetToNavigation', ({ simulatorId, flightSetId }) => {
     sendUpdate();
 })
 
-App.on('selectCurrentFlightSet', ({ simulatorId, flightSetId }) => {
+App.on('selectCurrentFlightSet', ({ simulatorId, flightSetId, show }) => {
     const system: AdvancedNavigationAndAstrometrics = App.systems.find(s => s.simulatorId === simulatorId && s.class === 'AdvancedNavigationAndAstrometrics');
     system && system.updateCurrentlySelectedFlightSet(flightSetId);
+    if (system && typeof show === 'boolean') {
+        system.handleShowFlightSet(show);
+    }
     sendUpdate();
 });
 
@@ -180,7 +183,18 @@ App.on('handleSetHeatLevel', ({ id, level }) => {
 App.on('handleUpdateCurrentFlightPath', ({ id, route }) => {
     const system = App.systems.find(s => s.id === id)
     system && system.handleUpdateCurrentFlightPath(route)
-    system && notifyEvent(system.simulatorId, 'Advanced Navigation', 'AdvancedNavigationCore', 'Flight Path Updated', 'Flight Path has been updated', 'info');
+    if (system) {
+        const fs = system.currentFlightSet;
+        const destinationName = route.isBorder
+            ? fs?.borders?.find(b => b.id === route.targetLocationId)?.name
+            : fs?.pointsOfInterest?.find(p => p.id === route.targetLocationId)?.name;
+        const speedName = route?.speedOption?.name;
+        const title = destinationName ? `Flight Path Updated: ${destinationName}` : 'Flight Path Updated';
+        const body = destinationName || speedName
+            ? `New destination: ${destinationName || 'Unknown'}${speedName ? ` | Speed: ${speedName}` : ''}`
+            : 'Flight Path has been updated';
+        notifyEvent(system.simulatorId, 'Advanced Navigation', 'AdvancedNavigationCore', title, body, 'info');
+    }
     sendUpdate()
 });
 
@@ -200,7 +214,18 @@ App.on('handleAddProbeAssignment', ({ id, probeId, poiId }) => {
 App.on('handleEngageFlightPath', ({ id, path }) => {
     const system: AdvancedNavigationAndAstrometrics = App.systems.find(s => s.id === id)
     system && system.handleEngageFlightPath(path)
-    system && notifyEvent(system.simulatorId, 'Advanced Navigation', 'AdvancedNavigationCore', 'Flight Path Engaged', 'Flight Path has been engaged', 'info');
+    if (system) {
+        const fs = system.currentFlightSet;
+        const destinationName = path.isBorder
+            ? fs?.borders?.find(b => b.id === path.targetLocationId)?.name
+            : fs?.pointsOfInterest?.find(p => p.id === path.targetLocationId)?.name;
+        const speedName = path?.speedOption?.name;
+        const title = destinationName ? `Flight Path Engaged: ${destinationName}` : 'Flight Path Engaged';
+        const body = destinationName || speedName
+            ? `Destination: ${destinationName || 'Unknown'}${speedName ? ` | Speed: ${speedName}` : ''}`
+            : 'Flight Path has been engaged';
+        notifyEvent(system.simulatorId, 'Advanced Navigation', 'AdvancedNavigationCore', title, body, 'info');
+    }
     sendUpdate()
 });
 
@@ -235,3 +260,17 @@ App.on("handleUpdateProbeAssignments", ({ id, probeAssignments }) => {
     system && system.overrideProbeAssignments(JSON.parse(probeAssignments));
     sendUpdate();
 })
+
+// Macros: Show POI visibility/name on current flight set
+App.on('showPoiOnCurrentFlightSet', ({ simulatorId, flightSetId, poiId, showName }) => {
+    const system: AdvancedNavigationAndAstrometrics = App.systems.find(s => s.simulatorId === simulatorId && s.class === 'AdvancedNavigationAndAstrometrics');
+    system && system.handleShowPoi(poiId, showName);
+    sendUpdate();
+});
+
+// Macros: Show POI information (unlock)
+App.on('showPoiInformationOnCurrentFlightSet', ({ simulatorId, poiId, infoType }) => {
+    const system: AdvancedNavigationAndAstrometrics = App.systems.find(s => s.simulatorId === simulatorId && s.class === 'AdvancedNavigationAndAstrometrics');
+    system && system.handleShowPoiInformation(poiId, infoType);
+    sendUpdate();
+});
