@@ -1,3 +1,5 @@
+import { Macro } from "../generic";
+
 export class FlightSet {
     backgroundImg: string;
     startOptions: NavigationStartOptions[];
@@ -59,6 +61,9 @@ export type PointOfInterest = {
     fullImageUrl: string;
     transitOptions?: SecondaryStopTransitOption[];
     showName?: boolean;
+    arrivalMacros?: Macro[];
+    leaveMacros?: Macro[];
+    transitMacros?: Macro[];
 }
 
 

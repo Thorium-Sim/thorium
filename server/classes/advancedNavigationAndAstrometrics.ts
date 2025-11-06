@@ -32,6 +32,7 @@ export default class AdvancedNavigationAndAstrometrics extends System {
     locationMap: Record<string, BasicCoordinate>
     name: string;
     heat: number;
+    lastTransitIndex: number;
 
     constructor(params: Partial<AdvancedNavigationAndAstrometrics>) {
         super(params);
@@ -65,6 +66,7 @@ export default class AdvancedNavigationAndAstrometrics extends System {
         this.cooling = params.cooling || false;
         this.locationMap = {}
         this.resyncProbes();
+        this.lastTransitIndex = 0;
     }
 
 
@@ -191,15 +193,49 @@ export default class AdvancedNavigationAndAstrometrics extends System {
                 this.remainingEta = this.remainingEta - 1;
                 const currentLocation = getPositionAtTime(this.totalEta - this.remainingEta, this.flightPathCoords, this.totalEta);
                 this.currentLocation = currentLocation;
+                // Transit triggers for secondary stops (no pause)
+                if (this.currentFlightPath && this.flightPathCoords && this.flightPathCoords.length > 2) {
+                    const elapsed = this.totalEta - this.remainingEta;
+                    const lastCoord = getLastVisitedCoordinate(elapsed, this.flightPathCoords, this.totalEta);
+                    const idx = this.flightPathCoords.findIndex(c => c.x === lastCoord.x && c.y === lastCoord.y);
+                    if (idx > this.lastTransitIndex) {
+                        // 0 = start, 1..len-2 = secondary stops, len-1 = final
+                        for (let step = this.lastTransitIndex + 1; step <= idx; step++) {
+                            const isIntermediate = step >= 1 && step < this.flightPathCoords.length - 1;
+                            if (!isIntermediate) continue;
+                            const optionIndex = step - 1;
+                            const secondary = this.currentFlightPath.secondaryRouteOptions[optionIndex];
+                            if (!secondary) continue;
+                            const poi = this.getLocationIdMap()[secondary.targetLocationId];
+                            const transitMacros = (poi as any)?.transitMacros;
+                            if (Array.isArray(transitMacros) && transitMacros.length > 0) {
+                                App.handleEvent({ simulatorId: this.simulatorId, macros: transitMacros }, 'triggerMacros');
+                            }
+                        }
+                        this.lastTransitIndex = idx;
+                    }
+                }
                 if (this.remainingEta <= 0) {
+                    const finishedPath = this.currentFlightPath;
                     this.remainingEta = 0;
                     this.engineStatus = EngineStatus.STOPPED;
                     this.currentLocationUrl = this.currentFlightPath.isBorder ? this.getBorderIdMap()[this.currentFlightPath.targetLocationId].iconUrl : this.getLocationIdMap()[this.currentFlightPath.targetLocationId].iconUrl;
                     this.currentLocationName = this.currentFlightPath.isBorder ? this.getBorderIdMap()[this.currentFlightPath.targetLocationId].name : this.getLocationIdMap()[this.currentFlightPath.targetLocationId].name;
                     this.currentFlightPath = undefined;
+                    this.lastTransitIndex = 0;
                     notifyEvent(this.simulatorId, 'info', 'Advanced Navigation', 'Arrival at ' + this.currentLocationName, 'Crew has arrived at ' + this.currentLocationName, 'info');
                     // Emit triggerable arrival event
                     App.handleEvent({ simulatorId: this.simulatorId, destinationName: this.currentLocationName }, 'advancedNavArrival');
+                    // Trigger POI-bound arrival macros when arriving at a final POI (non-border)
+                    if (finishedPath && !finishedPath.isBorder) {
+                        const targetPoiId = finishedPath.targetLocationId;
+                        const fs = this.currentFlightSet;
+                        const poi = fs?.pointsOfInterest?.find(p => p.id === targetPoiId);
+                        const arrivalMacros = (poi as any)?.arrivalMacros;
+                        if (Array.isArray(arrivalMacros) && arrivalMacros.length > 0) {
+                            App.handleEvent({ simulatorId: this.simulatorId, macros: arrivalMacros }, 'triggerMacros');
+                        }
+                    }
                 }
             }
         }
@@ -458,6 +494,16 @@ export default class AdvancedNavigationAndAstrometrics extends System {
     }
 
     handleEngageFlightPath(flightPath: NavigationRoute) {
+        // Trigger leave macros if we are currently at a POI with configured leaveMacros
+        if (this.currentFlightSet) {
+            const here = this.currentLocation;
+            const atPoi = this.currentFlightSet.pointsOfInterest.find(p => p.location.x === here.x && p.location.y === here.y);
+            const leaveMacros = (atPoi as any)?.leaveMacros;
+            if (Array.isArray(leaveMacros) && leaveMacros.length > 0) {
+                App.handleEvent({ simulatorId: this.simulatorId, macros: leaveMacros }, 'triggerMacros');
+            }
+        }
+        this.lastTransitIndex = 0;
         this.currentFlightPath = flightPath;
         this.engineStatus = EngineStatus.STARTUP;
         this.startingStartupTime = generateCurrentUnixTimestamp();

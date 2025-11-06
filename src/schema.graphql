@@ -3590,6 +3590,9 @@ type PointOfInterest {
   fullImageUrl: String!
   transitOptions: [SecondaryStopTransitOption!]
   showName: Boolean
+  arrivalMacros: [MacroAction!]
+  leaveMacros: [MacroAction!]
+  transitMacros: [MacroAction!]
 }
 
 type PointOfInterestInformation {
@@ -3624,6 +3627,9 @@ input PointOfInterestInput {
   fullImageUrl: String!
   transitOptions: [SecondaryStopTransitOptionInput]
   showName: Boolean
+  arrivalMacros: [ActionInput]
+  leaveMacros: [ActionInput]
+  transitMacros: [ActionInput]
 }
 
 type PointOfInterestObject {

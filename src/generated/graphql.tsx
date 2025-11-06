@@ -8605,6 +8605,9 @@ export type PointOfInterest = {
   fullImageUrl: Scalars['String'];
   transitOptions?: Maybe<Array<SecondaryStopTransitOption>>;
   showName?: Maybe<Scalars['Boolean']>;
+  arrivalMacros?: Maybe<Array<MacroAction>>;
+  leaveMacros?: Maybe<Array<MacroAction>>;
+  transitMacros?: Maybe<Array<MacroAction>>;
 };
 
 export type PointOfInterestInformation = {
@@ -8640,6 +8643,9 @@ export type PointOfInterestInput = {
   fullImageUrl: Scalars['String'];
   transitOptions?: Maybe<Array<Maybe<SecondaryStopTransitOptionInput>>>;
   showName?: Maybe<Scalars['Boolean']>;
+  arrivalMacros?: Maybe<Array<Maybe<ActionInput>>>;
+  leaveMacros?: Maybe<Array<Maybe<ActionInput>>>;
+  transitMacros?: Maybe<Array<Maybe<ActionInput>>>;
 };
 
 export type PointOfInterestObject = {
@@ -14649,6 +14655,15 @@ export type GetAllFlightSetsQuery = (
       ), transitOptions?: Maybe<Array<(
         { __typename?: 'SecondaryStopTransitOption' }
         & Pick<SecondaryStopTransitOption, 'name' | 'timeModifier' | 'riskModifier' | 'iconUrl'>
+      )>>, arrivalMacros?: Maybe<Array<(
+        { __typename?: 'MacroAction' }
+        & Pick<MacroAction, 'id' | 'event' | 'args' | 'delay' | 'noCancelOnReset' | 'needsConfig'>
+      )>>, leaveMacros?: Maybe<Array<(
+        { __typename?: 'MacroAction' }
+        & Pick<MacroAction, 'id' | 'event' | 'args' | 'delay' | 'noCancelOnReset' | 'needsConfig'>
+      )>>, transitMacros?: Maybe<Array<(
+        { __typename?: 'MacroAction' }
+        & Pick<MacroAction, 'id' | 'event' | 'args' | 'delay' | 'noCancelOnReset' | 'needsConfig'>
       )>> }
     )>, defaultStartingLocation: (
       { __typename?: 'BasicCoordinate' }
@@ -19183,6 +19198,30 @@ export const GetAllFlightSetsDocument = gql`
         iconUrl
       }
       showName
+      arrivalMacros {
+        id
+        event
+        args
+        delay
+        noCancelOnReset
+        needsConfig
+      }
+      leaveMacros {
+        id
+        event
+        args
+        delay
+        noCancelOnReset
+        needsConfig
+      }
+      transitMacros {
+        id
+        event
+        args
+        delay
+        noCancelOnReset
+        needsConfig
+      }
     }
     defaultStartingLocation {
       x

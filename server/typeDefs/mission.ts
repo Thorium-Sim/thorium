@@ -242,7 +242,7 @@ const resolver = {
       const field = schema.getMutationType().getFields()[event];
 
       return Boolean(
-        field?.args?.find(a => a.description.indexOf("Dynamic") > -1),
+        field?.args?.find(a => a.description?.indexOf("Dynamic") > -1),
       );
     },
   },

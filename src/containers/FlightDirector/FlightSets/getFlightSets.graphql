@@ -57,6 +57,9 @@ query GetAllFlightSets {
         iconUrl
       }
       showName
+      arrivalMacros { id event args delay noCancelOnReset needsConfig }
+      leaveMacros { id event args delay noCancelOnReset needsConfig }
+      transitMacros { id event args delay noCancelOnReset needsConfig }
     }
     defaultStartingLocation {
       x

@@ -26,7 +26,10 @@ export function formatGraphqlQueryToTypescript(query: GetAllFlightSetsQuery): Fl
             }
             return {
                 ...point,
-                transitOptions: secondaryStopTransitOptions as SecondaryStopTransitOption[]
+                transitOptions: secondaryStopTransitOptions as SecondaryStopTransitOption[],
+                arrivalMacros: (point as any).arrivalMacros || [],
+                leaveMacros: (point as any).leaveMacros || [],
+                transitMacros: (point as any).transitMacros || [],
             }
         })
         return {
