@@ -85,3 +85,13 @@ This document summarizes the Advanced Navigation & Astrometrics system’s layou
 - Speed changes emit a triggerable event (`advancedNavSpeedChange`) with `{ simulatorId, speedName }` and publish a user-facing notification.
 - Use `advancedNavStarsUpdate` to reflect speed/state changes in visuals without polling full system state.
 - Admin/testing can quickly reposition using `handleOverrideLocation` which also stops engines and updates current location metadata.
+
+## Flight Set import/export (.flst)
+
+- Export a Flight Set from the Flight Director > Flight Sets page using "Export Selected". This downloads a `.flst` zip containing:
+  - `flightSet/flightSet.json` (entire set – includes POI macro actions)
+  - `flightSet/assets/...` (all referenced images)
+- Import a Flight Set using the "Import" button on the same page. Behavior:
+  - If a set with the same id or the same name (case-insensitive) already exists, it is not added again.
+  - Referenced assets are copied if missing; existing files are left untouched.
+  - Macro actions on POIs are preserved as-is.
