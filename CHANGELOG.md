@@ -1,3 +1,16 @@
+# [4.3.0](https://github.com/Thorium-Sim/thorium/compare/4.2.0...4.3.0) (2025-11-08)
+
+
+### Bug Fixes
+
+* align UI elements and improve crew core responsiveness ([3d814f1](https://github.com/Thorium-Sim/thorium/commit/3d814f130439e76f59a1535d4412c71d2de1c0ab))
+* set font-family to a font that has casing for the edventures app code ([473c1ed](https://github.com/Thorium-Sim/thorium/commit/473c1ed332ba308fc4fe115067cc84029df6ae56))
+
+
+### Features
+
+* Added ability to change speed on a current flight set ([3cccf36](https://github.com/Thorium-Sim/thorium/commit/3cccf36e0e26a952cb5768e305386537793319a0))
+
 # [4.2.0](https://github.com/Thorium-Sim/thorium/compare/4.1.6...4.2.0) (2025-10-06)
 
 
