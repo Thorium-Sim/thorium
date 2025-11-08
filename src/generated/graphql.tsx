@@ -1218,6 +1218,7 @@ export type FlightSet = {
   probeLaunchRangeRadius: Scalars['Float'];
   addOnTraining?: Maybe<Scalars['Boolean']>;
   pixelDistanceModifier?: Maybe<Scalars['Float']>;
+  probeSpeedModifier?: Maybe<Scalars['Float']>;
 };
 
 export type FlightSetInput = {
@@ -1237,6 +1238,7 @@ export type FlightSetInput = {
   probeLaunchRangeRadius: Scalars['Float'];
   addOnTraining?: Maybe<Scalars['Boolean']>;
   pixelDistanceModifier?: Maybe<Scalars['Float']>;
+  probeSpeedModifier?: Maybe<Scalars['Float']>;
 };
 
 export type FlightType = {
@@ -2314,6 +2316,10 @@ export type Mutation = {
   handleUpdateProbeAssignments: Scalars['String'];
   /** Macro: Advanced Navigation: Select current flight set */
   selectCurrentFlightSet?: Maybe<Scalars['String']>;
+  /** Macro: Advanced Navigation: Show POI on current flight set */
+  showPoiOnCurrentFlightSet?: Maybe<Scalars['String']>;
+  /** Macro: Advanced Navigation: Show POI information on current flight set */
+  showPoiInformationOnCurrentFlightSet?: Maybe<Scalars['String']>;
   googleSheetsAuthorize?: Maybe<Scalars['String']>;
   googleSheetsCompleteAuthorize?: Maybe<Scalars['String']>;
   googleSheetsRevoke?: Maybe<Scalars['String']>;
@@ -2828,6 +2834,9 @@ export type Mutation = {
   changeSimulatorBridgeCrew?: Maybe<Scalars['String']>;
   changeSimulatorExtraPeople?: Maybe<Scalars['String']>;
   changeSimulatorRadiation?: Maybe<Scalars['String']>;
+  setSimulatorHelium?: Maybe<Scalars['String']>;
+  setSimulatorHeliumRate?: Maybe<Scalars['String']>;
+  setSimulatorShowHelium?: Maybe<Scalars['String']>;
   setSimulatorTimelineStep?: Maybe<Scalars['String']>;
   /** Macro: Timeline: Change Timeline Mission or Step */
   setSimulatorMission?: Maybe<Scalars['String']>;
@@ -4394,6 +4403,22 @@ export type MutationHandleUpdateProbeAssignmentsArgs = {
 export type MutationSelectCurrentFlightSetArgs = {
   simulatorId: Scalars['ID'];
   flightSetId: Scalars['String'];
+  show?: Maybe<Scalars['Boolean']>;
+};
+
+
+export type MutationShowPoiOnCurrentFlightSetArgs = {
+  simulatorId: Scalars['ID'];
+  flightSetId: Scalars['ID'];
+  poiId: Scalars['ID'];
+  showName?: Maybe<Scalars['Boolean']>;
+};
+
+
+export type MutationShowPoiInformationOnCurrentFlightSetArgs = {
+  simulatorId: Scalars['ID'];
+  poiId: Scalars['ID'];
+  infoType: Scalars['String'];
 };
 
 
@@ -6431,6 +6456,24 @@ export type MutationChangeSimulatorExtraPeopleArgs = {
 export type MutationChangeSimulatorRadiationArgs = {
   simulatorId: Scalars['ID'];
   radiation: Scalars['Float'];
+};
+
+
+export type MutationSetSimulatorHeliumArgs = {
+  simulatorId: Scalars['ID'];
+  helium: Scalars['Float'];
+};
+
+
+export type MutationSetSimulatorHeliumRateArgs = {
+  simulatorId: Scalars['ID'];
+  heliumRate: Scalars['Float'];
+};
+
+
+export type MutationSetSimulatorShowHeliumArgs = {
+  simulatorId: Scalars['ID'];
+  showHelium: Scalars['Boolean'];
 };
 
 
@@ -8562,6 +8605,9 @@ export type PointOfInterest = {
   fullImageUrl: Scalars['String'];
   transitOptions?: Maybe<Array<SecondaryStopTransitOption>>;
   showName?: Maybe<Scalars['Boolean']>;
+  arrivalMacros?: Maybe<Array<MacroAction>>;
+  leaveMacros?: Maybe<Array<MacroAction>>;
+  transitMacros?: Maybe<Array<MacroAction>>;
 };
 
 export type PointOfInterestInformation = {
@@ -8597,6 +8643,9 @@ export type PointOfInterestInput = {
   fullImageUrl: Scalars['String'];
   transitOptions?: Maybe<Array<Maybe<SecondaryStopTransitOptionInput>>>;
   showName?: Maybe<Scalars['Boolean']>;
+  arrivalMacros?: Maybe<Array<Maybe<ActionInput>>>;
+  leaveMacros?: Maybe<Array<Maybe<ActionInput>>>;
+  transitMacros?: Maybe<Array<Maybe<ActionInput>>>;
 };
 
 export type PointOfInterestObject = {
@@ -9919,6 +9968,9 @@ export type Ship = {
   bridgeCrew?: Maybe<Scalars['Int']>;
   extraPeople?: Maybe<Scalars['Int']>;
   radiation?: Maybe<Scalars['Float']>;
+  helium?: Maybe<Scalars['Float']>;
+  heliumRate?: Maybe<Scalars['Float']>;
+  showHelium?: Maybe<Scalars['Float']>;
   velocity?: Maybe<Scalars['Float']>;
   remoteAccessCodes?: Maybe<Array<Maybe<RemoteAccessCode>>>;
   selfDestructTime?: Maybe<Scalars['Float']>;
@@ -10388,6 +10440,7 @@ export type Subscription = {
   _templateUpdate?: Maybe<Template>;
   thoriumUpdate?: Maybe<Thorium>;
   clockSync?: Maybe<Scalars['String']>;
+  events?: Maybe<Scalars['JSON']>;
   rotationChange?: Maybe<Thruster>;
   thxUpdate?: Maybe<Array<Maybe<Thx>>>;
   torpedosUpdate?: Maybe<Array<Maybe<Torpedo>>>;
@@ -10884,6 +10937,12 @@ export type Subscription_TemplateUpdateArgs = {
 
 export type SubscriptionClockSyncArgs = {
   clientId: Scalars['ID'];
+};
+
+
+export type SubscriptionEventsArgs = {
+  includeEvents?: Maybe<Array<Scalars['String']>>;
+  omitEvents?: Maybe<Array<Scalars['String']>>;
 };
 
 
@@ -14571,7 +14630,7 @@ export type GetAllFlightSetsQuery = (
   { __typename?: 'Query' }
   & { getAllFlightSets: Array<Maybe<(
     { __typename?: 'FlightSet' }
-    & Pick<FlightSet, 'id' | 'name' | 'backgroundImg' | 'imageMaxX' | 'imageMaxY' | 'pixelsPerSecond' | 'label' | 'probeLaunchRangeRadius' | 'addOnTraining' | 'pixelDistanceModifier'>
+    & Pick<FlightSet, 'id' | 'name' | 'backgroundImg' | 'imageMaxX' | 'imageMaxY' | 'pixelsPerSecond' | 'label' | 'probeLaunchRangeRadius' | 'addOnTraining' | 'pixelDistanceModifier' | 'probeSpeedModifier'>
     & { startOptions: Array<(
       { __typename?: 'NavigationStartOptions' }
       & Pick<NavigationStartOptions, 'id' | 'name' | 'riskModifier' | 'imgUrl' | 'secondsForStartup'>
@@ -14596,6 +14655,15 @@ export type GetAllFlightSetsQuery = (
       ), transitOptions?: Maybe<Array<(
         { __typename?: 'SecondaryStopTransitOption' }
         & Pick<SecondaryStopTransitOption, 'name' | 'timeModifier' | 'riskModifier' | 'iconUrl'>
+      )>>, arrivalMacros?: Maybe<Array<(
+        { __typename?: 'MacroAction' }
+        & Pick<MacroAction, 'id' | 'event' | 'args' | 'delay' | 'noCancelOnReset' | 'needsConfig'>
+      )>>, leaveMacros?: Maybe<Array<(
+        { __typename?: 'MacroAction' }
+        & Pick<MacroAction, 'id' | 'event' | 'args' | 'delay' | 'noCancelOnReset' | 'needsConfig'>
+      )>>, transitMacros?: Maybe<Array<(
+        { __typename?: 'MacroAction' }
+        & Pick<MacroAction, 'id' | 'event' | 'args' | 'delay' | 'noCancelOnReset' | 'needsConfig'>
       )>> }
     )>, defaultStartingLocation: (
       { __typename?: 'BasicCoordinate' }
@@ -19130,6 +19198,30 @@ export const GetAllFlightSetsDocument = gql`
         iconUrl
       }
       showName
+      arrivalMacros {
+        id
+        event
+        args
+        delay
+        noCancelOnReset
+        needsConfig
+      }
+      leaveMacros {
+        id
+        event
+        args
+        delay
+        noCancelOnReset
+        needsConfig
+      }
+      transitMacros {
+        id
+        event
+        args
+        delay
+        noCancelOnReset
+        needsConfig
+      }
     }
     defaultStartingLocation {
       x
@@ -19151,6 +19243,7 @@ export const GetAllFlightSetsDocument = gql`
     probeLaunchRangeRadius
     addOnTraining
     pixelDistanceModifier
+    probeSpeedModifier
   }
 }
     `;

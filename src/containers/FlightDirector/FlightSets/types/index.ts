@@ -1,3 +1,5 @@
+import { ActionInput } from "generated/graphql";
+
 export type PointOfInterest = {
     id: string;
     name: string;
@@ -15,6 +17,9 @@ export type PointOfInterest = {
     fullImageUrl: string;
     transitOptions?: SecondaryStopTransitOption[] | null;
     showName?: boolean | null;
+    arrivalMacros?: ActionInput[] | null;
+    leaveMacros?: ActionInput[] | null;
+    transitMacros?: ActionInput[] | null;
 }
 
 
@@ -136,6 +141,7 @@ export type FlightSet = {
     probeLaunchRangeRadius: number;
     addOnTraining?: boolean;
     pixelDistanceModifier?: number;
+    probeSpeedModifier?: number;
 }
 
 export type BasicCoordinate = {

@@ -11,6 +11,11 @@ export type SelectStartTypeProps = {
 } & BasicStepProps
 
 export const SelectStartType: React.FC<SelectStartTypeProps> = (props) => {
+    const uniqueByName = React.useMemo(() => {
+        const map: Record<string, NavigationStartOptions> = {};
+        props.navigationStartOptions.forEach(o => { if (!map[o.name]) map[o.name] = o; });
+        return Object.values(map);
+    }, [props.navigationStartOptions]);
     return (
         <div className="step-parent" >
             <div className="step-sub-parent">
@@ -26,7 +31,7 @@ export const SelectStartType: React.FC<SelectStartTypeProps> = (props) => {
             </div>
             <SelectableListView
                 selectedOption={props.selectedOption}
-                options={props.navigationStartOptions.map((each) => {
+                options={uniqueByName.map((each) => {
                     return {
                         id: each.name,
                         title: each.name,

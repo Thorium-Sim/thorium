@@ -104,22 +104,24 @@ class CoreComponents extends Component {
         style={{backgroundColor: "#333", color: "white"}}
         className="core-container"
       >
-        <Menubar
-          flight={flight}
-          simulators={simulators}
-          simulator={simulator}
-          pickSimulator={this.pickSimulator}
-          pickLayout={this.pickLayout}
-          layout={layout}
-          mosaic={mosaic}
-          setMosaic={this.updateMosaic}
-          editable={editable}
-          setEdit={e => this.setState({editable: e})}
-          notifications={notifications}
-          speech={speech}
-          setNotifications={this.setNotifications}
-          setSpeech={this.setSpeech}
-        />
+        <div className="menubar">
+          <Menubar
+            flight={flight}
+            simulators={simulators}
+            simulator={simulator}
+            pickSimulator={this.pickSimulator}
+            pickLayout={this.pickLayout}
+            layout={layout}
+            mosaic={mosaic}
+            setMosaic={this.updateMosaic}
+            editable={editable}
+            setEdit={e => this.setState({editable: e})}
+            notifications={notifications}
+            speech={speech}
+            setNotifications={this.setNotifications}
+            setSpeech={this.setSpeech}
+          />
+        </div>
         <div
           id="core-layout"
           className={!editable ? "non-editing" : ""}

@@ -11,6 +11,7 @@ export type OverviewSidebarProps = {
     onAddFlightPath: () => void;
     onEmergencyStop: () => void;
     onResumeFlightPath: () => void;
+    onChangeSpeed?: () => void;
     onCoolantFlush: () => void;
     coolantLevel: number;
     heatLevel: number;
@@ -111,6 +112,7 @@ export const OverviewSidebar: React.FC<OverviewSidebarProps> = (props) => {
                 <Button style={{ width: '100%' }} onClick={props.onAddFlightPath}>{"Add flight path"}</Button>
                 {props.engineStatus !== EngineStatus.STOPPED && props.currentFlightPath && <Button style={{ width: '100%' }} onClick={props.onEmergencyStop}>Emergency Stop</Button>}
                 {props.engineStatus === EngineStatus.STOPPED && props.currentFlightPath !== undefined && <Button style={{ width: '100%' }} onClick={props.onResumeFlightPath}>Resume flight path</Button>}
+                {props.engineStatus !== EngineStatus.STOPPED && props.currentFlightPath && <Button style={{ width: '100%' }} onClick={props.onChangeSpeed}>Change Speed</Button>}
 
             </div>
 

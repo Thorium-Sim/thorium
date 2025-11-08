@@ -11,20 +11,22 @@ export type FlightSetCreationFlightOptionsProps = {
     allStartOptions: NavigationStartOptions[];
     allSpeedOptions: NavigationSpeedOptions[];
     allExitOptions: NavigationExitOptions[];
+    onUpsertDraftStartOption?: (opt: NavigationStartOptions) => void;
+    onUpsertDraftSpeedOption?: (opt: NavigationSpeedOptions) => void;
+    onUpsertDraftExitOption?: (opt: NavigationExitOptions) => void;
 } & CreateFlightSetStepProps<FlightSet>
 
 
 const generateOptionsArray = (allOptions: (NavigationStartOptions | NavigationSpeedOptions | NavigationExitOptions)[], selectedOptions: (NavigationStartOptions | NavigationSpeedOptions | NavigationExitOptions)[]) => {
-    let optionsArray = [...allOptions];
-    selectedOptions.forEach(option => {
-        if (!optionsArray.some(each => each.id === option.id)) {
-            optionsArray.push(option);
-        }
+    // Merge, keeping unique by name
+    const byName: Record<string, NavigationStartOptions | NavigationSpeedOptions | NavigationExitOptions> = {};
+    [...allOptions, ...selectedOptions].forEach(opt => {
+        byName[opt.name] = opt;
     });
-    return optionsArray;
+    return Object.values(byName);
 };
 
-export const FlightSetCreationFlightOptions: React.FC<FlightSetCreationFlightOptionsProps> = ({ onBack, onNext, canNext, nextLabel, backLabel, state, setState, allStartOptions, allExitOptions, allSpeedOptions }) => {
+export const FlightSetCreationFlightOptions: React.FC<FlightSetCreationFlightOptionsProps> = ({ onBack, onNext, canNext, nextLabel, backLabel, state, setState, allStartOptions, allExitOptions, allSpeedOptions, onUpsertDraftStartOption, onUpsertDraftSpeedOption, onUpsertDraftExitOption }) => {
     const [optionArray, setOptionArray] = React.useState<NavigationStartOptions[]>(generateOptionsArray(allStartOptions, state.startOptions) as NavigationStartOptions[]);
     const [speedOptionsArray, setSpeedOptionsArray] = React.useState<NavigationSpeedOptions[]>(generateOptionsArray(allSpeedOptions, state.speedOptions) as NavigationSpeedOptions[]);
     const [exitOptionsArray, setExitOptionsArray] = React.useState<NavigationExitOptions[]>(generateOptionsArray(allExitOptions, state.exitOptions) as NavigationExitOptions[]);
@@ -62,12 +64,12 @@ export const FlightSetCreationFlightOptions: React.FC<FlightSetCreationFlightOpt
                             </thead>
                             <tbody>
                                 {optionArray.map(startOption => <tr>
-                                    <td><input type="checkbox" checked={state.startOptions.includes(startOption)} onChange={(event) => {
+                                    <td><input type="checkbox" checked={state.startOptions.some(o => o.id === startOption.id)} onChange={(event) => {
                                         const include = event.target.checked;
                                         if (include) {
                                             setState({
                                                 ...state,
-                                                startOptions: [...state.startOptions, startOption]
+                                                startOptions: [...state.startOptions.filter(o => o.name !== startOption.name), startOption]
                                             });
                                         }
                                         else {
@@ -90,17 +92,19 @@ export const FlightSetCreationFlightOptions: React.FC<FlightSetCreationFlightOpt
                                                 <CreateStartOptionForm
                                                     defaultStartOption={selectedOption}
                                                     onCreateOption={(option) => {
-                                                        const indexOfOption = optionArray.findIndex(each => each.id === option.id);
-                                                        const newOptionArray = [...optionArray];
-                                                        newOptionArray[indexOfOption] = option;
-                                                        setOptionArray(newOptionArray);
-                                                        if (selectedOption && state.startOptions.includes(selectedOption)) {
-                                                            const indexOfOption = state.startOptions.findIndex(each => each.id === selectedOption.id);
-                                                            const newOptionArray = [...state.startOptions];
-                                                            newOptionArray[indexOfOption] = option;
+                                                        // Replace by name in chooser list
+                                                        const updated = [...optionArray.filter(o => o.name !== option.name), option];
+                                                        setOptionArray(updated);
+                                                        onUpsertDraftStartOption && onUpsertDraftStartOption(option as NavigationStartOptions);
+                                                        // Update included list by id if present
+                                                        if (selectedOption) {
+                                                            const included = state.startOptions.some(o => o.id === selectedOption.id);
+                                                            const newIncluded = included
+                                                                ? state.startOptions.map(o => o.id === selectedOption.id ? (option as NavigationStartOptions) : o)
+                                                                : state.startOptions;
                                                             setState({
                                                                 ...state,
-                                                                startOptions: newOptionArray
+                                                                startOptions: newIncluded,
                                                             });
                                                         }
                                                         setEditOptionDialogOpen(false);
@@ -116,7 +120,10 @@ export const FlightSetCreationFlightOptions: React.FC<FlightSetCreationFlightOpt
                             <ModalBody style={{ backgroundColor: '#F5F5F5', borderRadius: '5px' }}>
                                 <CreateStartOptionForm
                                     onCreateOption={(option) => {
-                                        setOptionArray([...optionArray, option]);
+                                        // Insert/replace by name
+                                        const updated = [...optionArray.filter(o => o.name !== option.name), option];
+                                        setOptionArray(updated);
+                                        onUpsertDraftStartOption && onUpsertDraftStartOption(option as NavigationStartOptions);
                                         setAddOptionDialogOpen(false);
                                     }} />
                             </ModalBody>
@@ -137,12 +144,12 @@ export const FlightSetCreationFlightOptions: React.FC<FlightSetCreationFlightOpt
                             </thead>
                             <tbody>
                                 {speedOptionsArray.map(speedOption => <tr>
-                                    <td><input type="checkbox" checked={state.speedOptions.includes(speedOption)} onChange={(event) => {
+                                    <td><input type="checkbox" checked={state.speedOptions.some(o => o.id === speedOption.id)} onChange={(event) => {
                                         const include = event.target.checked;
                                         if (include) {
                                             setState({
                                                 ...state,
-                                                speedOptions: [...state.speedOptions, speedOption]
+                                                speedOptions: [...state.speedOptions.filter(o => o.name !== speedOption.name), speedOption]
                                             });
                                         }
                                         else {
@@ -166,10 +173,19 @@ export const FlightSetCreationFlightOptions: React.FC<FlightSetCreationFlightOpt
                                                 <CreateSpeedOptionForm
                                                     defaultSpeedOption={selectedSpeedOption}
                                                     onCreateOption={(option) => {
-                                                        const indexOfOption = speedOptionsArray.findIndex(each => each.id === option.id);
-                                                        const newOptionArray = [...speedOptionsArray];
-                                                        newOptionArray[indexOfOption] = option;
-                                                        setSpeedOptionsArray(newOptionArray);
+                                                        const updated = [...speedOptionsArray.filter(o => o.name !== option.name), option];
+                                                        setSpeedOptionsArray(updated);
+                                                        onUpsertDraftSpeedOption && onUpsertDraftSpeedOption(option as NavigationSpeedOptions);
+                                                        if (selectedSpeedOption) {
+                                                            const included = state.speedOptions.some(o => o.id === selectedSpeedOption.id);
+                                                            const newIncluded = included
+                                                                ? state.speedOptions.map(o => o.id === selectedSpeedOption.id ? (option as NavigationSpeedOptions) : o)
+                                                                : state.speedOptions;
+                                                            setState({
+                                                                ...state,
+                                                                speedOptions: newIncluded,
+                                                            });
+                                                        }
                                                         setEditSpeedOptionDialogOpen(false);
                                                     }} />
                                             </ModalBody>
@@ -183,7 +199,9 @@ export const FlightSetCreationFlightOptions: React.FC<FlightSetCreationFlightOpt
                             <ModalBody style={{ backgroundColor: '#F5F5F5', borderRadius: '5px' }}>
                                 <CreateSpeedOptionForm
                                     onCreateOption={(option) => {
-                                        setSpeedOptionsArray([...speedOptionsArray, option]);
+                                        const updated = [...speedOptionsArray.filter(o => o.name !== option.name), option];
+                                        setSpeedOptionsArray(updated);
+                                        onUpsertDraftSpeedOption && onUpsertDraftSpeedOption(option as NavigationSpeedOptions);
                                         setAddSpeedOptionDialogOpen(false);
                                     }} />
                             </ModalBody>
@@ -203,12 +221,12 @@ export const FlightSetCreationFlightOptions: React.FC<FlightSetCreationFlightOpt
                             </thead>
                             <tbody>
                                 {exitOptionsArray.map(exitOption => <tr>
-                                    <td><input type="checkbox" checked={state.exitOptions.includes(exitOption)} onChange={(event) => {
+                                    <td><input type="checkbox" checked={state.exitOptions.some(o => o.id === exitOption.id)} onChange={(event) => {
                                         const include = event.target.checked;
                                         if (include) {
                                             setState({
                                                 ...state,
-                                                exitOptions: [...state.exitOptions, exitOption]
+                                                exitOptions: [...state.exitOptions.filter(o => o.name !== exitOption.name), exitOption]
                                             });
                                         }
                                         else {
@@ -231,10 +249,19 @@ export const FlightSetCreationFlightOptions: React.FC<FlightSetCreationFlightOpt
                                                 <CreateExitOptionForm
                                                     defaultExitOption={selectedExitOption}
                                                     onCreateOption={(option) => {
-                                                        const indexOfOption = exitOptionsArray.findIndex(each => each.id === option.id);
-                                                        const newOptionArray = [...exitOptionsArray];
-                                                        newOptionArray[indexOfOption] = option;
-                                                        setExitOptionsArray(newOptionArray);
+                                                        const updated = [...exitOptionsArray.filter(o => o.name !== option.name), option];
+                                                        setExitOptionsArray(updated);
+                                                        onUpsertDraftExitOption && onUpsertDraftExitOption(option as NavigationExitOptions);
+                                                        if (selectedExitOption) {
+                                                            const included = state.exitOptions.some(o => o.id === selectedExitOption.id);
+                                                            const newIncluded = included
+                                                                ? state.exitOptions.map(o => o.id === selectedExitOption.id ? (option as NavigationExitOptions) : o)
+                                                                : state.exitOptions;
+                                                            setState({
+                                                                ...state,
+                                                                exitOptions: newIncluded,
+                                                            });
+                                                        }
                                                         setEditExitOptionDialogOpen(false);
                                                     }} />
                                             </ModalBody>
@@ -248,7 +275,9 @@ export const FlightSetCreationFlightOptions: React.FC<FlightSetCreationFlightOpt
                             <ModalBody style={{ backgroundColor: '#F5F5F5', borderRadius: '5px' }}>
                                 <CreateExitOptionForm
                                     onCreateOption={(option) => {
-                                        setExitOptionsArray([...exitOptionsArray, option]);
+                                        const updated = [...exitOptionsArray.filter(o => o.name !== option.name), option];
+                                        setExitOptionsArray(updated);
+                                        onUpsertDraftExitOption && onUpsertDraftExitOption(option as NavigationExitOptions);
                                         setAddExitOptionDialogOpen(false);
                                     }} />
                             </ModalBody>

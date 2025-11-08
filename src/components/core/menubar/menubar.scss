@@ -1,0 +1,24 @@
+.checkbox-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  vertical-align: middle;
+
+  input[type="checkbox"] {
+    margin: 0;
+    vertical-align: middle;
+    position: relative;
+    top: 0px;
+  }
+
+  span {
+    line-height: 1;
+    vertical-align: middle;
+  }
+}
+
+.menubar a.btn {
+  display: inline;
+}

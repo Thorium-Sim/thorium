@@ -7,6 +7,7 @@ import MosaicPicker from "./mosaicPicker";
 import RunningCheck from "./runningCheck";
 import NotifyConfig from "./notifyConfig";
 import FeedbackModal from "./feedbackModal";
+import "./menubar.scss";
 
 const Menubar = ({
   flight,

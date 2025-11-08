@@ -13,6 +13,11 @@ export type SelectEndTypeProps = {
 
 
 export const SelectEndType: React.FC<SelectEndTypeProps> = (props) => {
+    const uniqueByName = React.useMemo(() => {
+        const map: Record<string, NavigationExitOptions> = {};
+        props.navigationExitOptions.forEach(o => { if (!map[o.name]) map[o.name] = o; });
+        return Object.values(map);
+    }, [props.navigationExitOptions]);
     return (
         <div className="step-parent">
             <div className="step-sub-parent">
@@ -29,7 +34,7 @@ export const SelectEndType: React.FC<SelectEndTypeProps> = (props) => {
             </div>
             <SelectableListView
                 selectedOption={props.selectedOption}
-                options={props.navigationExitOptions.map((each) => {
+                options={uniqueByName.map((each) => {
                     return {
                         id: each.name,
                         title: each.name,

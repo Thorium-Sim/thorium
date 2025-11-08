@@ -5,6 +5,7 @@ import {
   useHandleResumePathMutation,
   useHandleSaveFlightPathMutation,
   useHandleEngageFlightPathMutation,
+  useHandleUpdateCurrentFlightPathMutation,
   useHandleAdvancedNavCoolantFlushMutation,
   useHandleEmergencyStopMutation,
 } from "generated/graphql";
@@ -59,6 +60,7 @@ const AdvancedNavigationCard: React.FC<AdvancedNavigationCardProps> = ({
   const [EngageFlightPath] = useHandleEngageFlightPathMutation();
   const [SaveFlightPath] = useHandleSaveFlightPathMutation();
   const [ResumePath] = useHandleResumePathMutation();
+  const [UpdateCurrentFlightPath] = useHandleUpdateCurrentFlightPathMutation();
   let parsedData = undefined;
   const {assets} = simulator;
 
@@ -156,6 +158,14 @@ const AdvancedNavigationCard: React.FC<AdvancedNavigationCardProps> = ({
             variables: {
               id: advancedNav.id || "",
               path: flightPath,
+            },
+          });
+        }}
+        onUpdateCurrentFlightPath={(route) => {
+          UpdateCurrentFlightPath({
+            variables: {
+              id: advancedNav.id || "",
+              route,
             },
           });
         }}

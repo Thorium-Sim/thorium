@@ -1,7 +1,9 @@
+/* eslint-disable react-refresh/only-export-components */
 import React from "react"
 import { CreateFlightSet } from "./create-flight-set"
 import { FlightSet } from "./types";
 import { Alert, Button, ButtonGroup, Modal, Spinner } from "reactstrap";
+import { Label, Input } from "helpers/reactstrap";
 import "./styles.css"
 import { useCreateNewFlightSetMutation, useDeleteFlightSetMutation, useGetAllFlightSetsQuery, useUpdateFlightSetMutation } from "generated/graphql";
 import { formatGraphqlQueryToTypescript } from "./formatters";
@@ -44,6 +46,8 @@ export default () => {
         onCompleted: (data) => {
             setToastText("Flight Set Updated");
             setShowToast(true);
+            // Close the modal after a successful update to mirror create behavior
+            toggle();
         },
         onError: (error) => {
             setError(error.message);
@@ -96,6 +100,21 @@ export default () => {
         });
     }
 
+    const importFlightSet = (evt: React.ChangeEvent<HTMLInputElement>) => {
+        if (evt.target.files?.[0]) {
+            const data = new FormData();
+            Array.from(evt.target.files).forEach((f, index) =>
+                data.append(`files[${index}]`, f),
+            );
+            fetch(`/importFlightSet`, {
+                method: "POST",
+                body: data,
+            }).then(() => {
+                window.location.reload();
+            });
+        }
+    };
+
     return (
         <div style={{ padding: '5rem', overflowY: 'auto', height: '100%' }}>
             {showToast && <Alert toggle={() => { setShowToast(false) }} isOpen={showToast} color="info">
@@ -114,6 +133,22 @@ export default () => {
                             setSelectedFlightSet(undefined);
                             toggle();
                         }}>Create Flight Set</Button>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                            <Button
+                                disabled={!selectedFlightSet}
+                                onClick={() => {
+                                    if (selectedFlightSet) {
+                                        window.location.href = `/exportFlightSet/${selectedFlightSet.id}`
+                                    }
+                                }}
+                            >
+                                Export Selected
+                            </Button>
+                            <Label style={{ margin: 0 }}>
+                                <div className="btn btn-secondary">Import</div>
+                                <Input hidden type="file" accept=".flst" onChange={importFlightSet} />
+                            </Label>
+                        </div>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                             {Object.keys(filteredFlightSets).map(label => {
                                 return (
