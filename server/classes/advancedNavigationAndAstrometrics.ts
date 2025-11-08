@@ -32,6 +32,7 @@ export default class AdvancedNavigationAndAstrometrics extends System {
     locationMap: Record<string, BasicCoordinate>
     name: string;
     heat: number;
+    lastTransitIndex: number;
 
     constructor(params: Partial<AdvancedNavigationAndAstrometrics>) {
         super(params);
@@ -65,6 +66,7 @@ export default class AdvancedNavigationAndAstrometrics extends System {
         this.cooling = params.cooling || false;
         this.locationMap = {}
         this.resyncProbes();
+        this.lastTransitIndex = 0;
     }
 
 
@@ -164,7 +166,10 @@ export default class AdvancedNavigationAndAstrometrics extends System {
                 if (timeElapsed >= this.currentFlightPath.startOption.secondsForStartup) {
                     const flightPathCoords = generateFlightPathCoordinates(this.currentLocation, this.currentFlightPath, this.getLocationIdMap(), this.getBorderIdMap(), this.currentFlightSet.imageMaxX, this.currentFlightSet.imageMaxY);
                     this.flightPathCoords = flightPathCoords;
-                    const totalFlightTime = calculateTotalTime(flightPathCoords, this.currentFlightSet?.pixelsPerSecond || 1);
+                    const totalFlightTime = calculateTotalTime(
+                        flightPathCoords,
+                        (this.currentFlightSet?.pixelsPerSecond || 1) * (this.currentFlightPath?.speedOption?.speedModifier || 1)
+                    );
                     this.remainingEta = totalFlightTime;
                     this.totalEta = totalFlightTime;
                     if (this.currentFlightPath.speedOption.requiresMaxEngines) {
@@ -188,13 +193,49 @@ export default class AdvancedNavigationAndAstrometrics extends System {
                 this.remainingEta = this.remainingEta - 1;
                 const currentLocation = getPositionAtTime(this.totalEta - this.remainingEta, this.flightPathCoords, this.totalEta);
                 this.currentLocation = currentLocation;
+                // Transit triggers for secondary stops (no pause)
+                if (this.currentFlightPath && this.flightPathCoords && this.flightPathCoords.length > 2) {
+                    const elapsed = this.totalEta - this.remainingEta;
+                    const lastCoord = getLastVisitedCoordinate(elapsed, this.flightPathCoords, this.totalEta);
+                    const idx = this.flightPathCoords.findIndex(c => c.x === lastCoord.x && c.y === lastCoord.y);
+                    if (idx > this.lastTransitIndex) {
+                        // 0 = start, 1..len-2 = secondary stops, len-1 = final
+                        for (let step = this.lastTransitIndex + 1; step <= idx; step++) {
+                            const isIntermediate = step >= 1 && step < this.flightPathCoords.length - 1;
+                            if (!isIntermediate) continue;
+                            const optionIndex = step - 1;
+                            const secondary = this.currentFlightPath.secondaryRouteOptions[optionIndex];
+                            if (!secondary) continue;
+                            const poi = this.getLocationIdMap()[secondary.targetLocationId];
+                            const transitMacros = (poi as any)?.transitMacros;
+                            if (Array.isArray(transitMacros) && transitMacros.length > 0) {
+                                App.handleEvent({ simulatorId: this.simulatorId, macros: transitMacros }, 'triggerMacros');
+                            }
+                        }
+                        this.lastTransitIndex = idx;
+                    }
+                }
                 if (this.remainingEta <= 0) {
+                    const finishedPath = this.currentFlightPath;
                     this.remainingEta = 0;
                     this.engineStatus = EngineStatus.STOPPED;
                     this.currentLocationUrl = this.currentFlightPath.isBorder ? this.getBorderIdMap()[this.currentFlightPath.targetLocationId].iconUrl : this.getLocationIdMap()[this.currentFlightPath.targetLocationId].iconUrl;
                     this.currentLocationName = this.currentFlightPath.isBorder ? this.getBorderIdMap()[this.currentFlightPath.targetLocationId].name : this.getLocationIdMap()[this.currentFlightPath.targetLocationId].name;
                     this.currentFlightPath = undefined;
+                    this.lastTransitIndex = 0;
                     notifyEvent(this.simulatorId, 'info', 'Advanced Navigation', 'Arrival at ' + this.currentLocationName, 'Crew has arrived at ' + this.currentLocationName, 'info');
+                    // Emit triggerable arrival event
+                    App.handleEvent({ simulatorId: this.simulatorId, destinationName: this.currentLocationName }, 'advancedNavArrival');
+                    // Trigger POI-bound arrival macros when arriving at a final POI (non-border)
+                    if (finishedPath && !finishedPath.isBorder) {
+                        const targetPoiId = finishedPath.targetLocationId;
+                        const fs = this.currentFlightSet;
+                        const poi = fs?.pointsOfInterest?.find(p => p.id === targetPoiId);
+                        const arrivalMacros = (poi as any)?.arrivalMacros;
+                        if (Array.isArray(arrivalMacros) && arrivalMacros.length > 0) {
+                            App.handleEvent({ simulatorId: this.simulatorId, macros: arrivalMacros }, 'triggerMacros');
+                        }
+                    }
                 }
             }
         }
@@ -242,7 +283,9 @@ export default class AdvancedNavigationAndAstrometrics extends System {
         const oldFlightPaths = [...this.flightPaths];
         const locationMap = { ...this.locationMap };
         const setMap = { ...this.flightSetPathMap };
-        this.currentFlightSet && (setMap[this.currentFlightSet.id] = oldFlightPaths);
+        if (this.currentFlightSet) {
+            setMap[this.currentFlightSet.id] = oldFlightPaths;
+        }
         const newFlightPaths = setMap[flightSet.id] || [];
         this.showEta = false;
         locationMap[this.currentFlightSet?.id || ''] = { ...this.currentLocation };
@@ -345,7 +388,38 @@ export default class AdvancedNavigationAndAstrometrics extends System {
         this.heat = level;
     }
     handleUpdateCurrentFlightPath(flightPath: NavigationRoute) {
+        const previousSpeedId = this.currentFlightPath?.speedOption?.id;
         this.currentFlightPath = flightPath;
+        if (this.currentFlightSet) {
+            // Recalculate the path coordinates from the current location with the new speed option
+            const newCoords = generateFlightPathCoordinates(
+                this.currentLocation,
+                flightPath,
+                this.getLocationIdMap(),
+                this.getBorderIdMap(),
+                this.currentFlightSet.imageMaxX,
+                this.currentFlightSet.imageMaxY,
+            );
+            this.flightPathCoords = newCoords;
+            const totalFlightTime = calculateTotalTime(
+                newCoords,
+                (this.currentFlightSet?.pixelsPerSecond || 1) * (flightPath?.speedOption?.speedModifier || 1)
+            );
+            // Since the path starts from the current location, totalFlightTime is the new ETA
+            this.remainingEta = totalFlightTime;
+            this.totalEta = totalFlightTime;
+            // Adjust engine mode if the new speed requires or releases max engines, but only while moving
+            if (this.engineStatus === EngineStatus.ENGAGED && flightPath.speedOption?.requiresMaxEngines) {
+                this.engineStatus = EngineStatus.FULL_POWER;
+            } else if (this.engineStatus === EngineStatus.FULL_POWER && !flightPath.speedOption?.requiresMaxEngines) {
+                this.engineStatus = EngineStatus.ENGAGED;
+            }
+            notifyEvent(this.simulatorId, 'Advanced Navigation', 'AdvancedNavigationCore', 'Flight Path Updated', 'Flight Path has been updated', 'info');
+            // Emit triggerable speed change if changed
+            if (previousSpeedId && flightPath.speedOption?.id !== previousSpeedId) {
+                App.handleEvent({ simulatorId: this.simulatorId, speedName: flightPath.speedOption?.name }, 'advancedNavSpeedChange');
+            }
+        }
     }
     handleOverrideLocation(location: BasicCoordinate, currentLocationUrl?: string, currentLocationName?: string) {
         this.currentLocation = location;
@@ -365,7 +439,16 @@ export default class AdvancedNavigationAndAstrometrics extends System {
             const probe = this.getAvailableProbes().find(probe => probe.id === probeId);
             if (POI && probe) {
                 const flightPathCoords = [getProbeCurrentLocation(this.currentLocation, probe, newProbeAssignments[this.currentFlightSet.id]), { ...POI.location }];
-                const totalFlightTime = calculateTotalTime(flightPathCoords.map((each) => { return { ...each, speed: 1, color: 'white' } }), (this.currentFlightSet.pixelsPerSecond / 2));
+                // Base probe speed factor for this flight set. If not provided, preserve existing behavior (half of ship speed)
+                const baseProbeModifier = (this.currentFlightSet?.probeSpeedModifier ?? 0.5);
+                // Calculate equipment-based speed boost: each 'speed-matrix-accelerator' increases speed by 25%
+                const speedBoostCount = probe.equipment.find(e => e.id === 'speed-matrix-accelerator')?.count || 0;
+                const equipmentSpeedMultiplier = 1 + 0.25 * speedBoostCount;
+                const effectivePixelsPerSecond = (this.currentFlightSet.pixelsPerSecond) * baseProbeModifier * equipmentSpeedMultiplier;
+                const totalFlightTime = calculateTotalTime(
+                    flightPathCoords.map((each) => { return { ...each, speed: 1, color: 'white' } }),
+                    effectivePixelsPerSecond
+                );
                 const allPreviousAssignments = newProbeAssignments[this.currentFlightSet.id].filter((each) => each.probeId === probeId);
                 const allOtherAssignments = newProbeAssignments[this.currentFlightSet.id].filter((each) => each.probeId !== probeId);
                 newProbeAssignments[this.currentFlightSet.id] = allOtherAssignments;
@@ -411,6 +494,16 @@ export default class AdvancedNavigationAndAstrometrics extends System {
     }
 
     handleEngageFlightPath(flightPath: NavigationRoute) {
+        // Trigger leave macros if we are currently at a POI with configured leaveMacros
+        if (this.currentFlightSet) {
+            const here = this.currentLocation;
+            const atPoi = this.currentFlightSet.pointsOfInterest.find(p => p.location.x === here.x && p.location.y === here.y);
+            const leaveMacros = (atPoi as any)?.leaveMacros;
+            if (Array.isArray(leaveMacros) && leaveMacros.length > 0) {
+                App.handleEvent({ simulatorId: this.simulatorId, macros: leaveMacros }, 'triggerMacros');
+            }
+        }
+        this.lastTransitIndex = 0;
         this.currentFlightPath = flightPath;
         this.engineStatus = EngineStatus.STARTUP;
         this.startingStartupTime = generateCurrentUnixTimestamp();
@@ -420,6 +513,64 @@ export default class AdvancedNavigationAndAstrometrics extends System {
         const newFlightPaths = [...this.flightPaths];
         newFlightPaths.push(flightPath);
         this.flightPaths = newFlightPaths;
+    }
+    handleShowPoi(poiId: string, showName?: boolean) {
+        if (!this.currentFlightSet) { 
+            return; 
+        }
+        const newFlightSet = { ...this.currentFlightSet } as FlightSet;
+        const pois = [...newFlightSet.pointsOfInterest];
+        const poiIndex = pois.findIndex(p => p.id === poiId);
+        if (poiIndex === -1) {
+            return 
+        }
+        const poi = { ...pois[poiIndex] } as PointOfInterest;
+        poi.isVisible = true;
+        if (typeof showName === 'boolean') {
+            poi.showName = showName;
+        }
+        pois[poiIndex] = poi;
+        newFlightSet.pointsOfInterest = pois as any;
+        this.currentFlightSet = newFlightSet;
+        // Also update the copy inside flightSets if present
+        const fsIndex = this.flightSets.findIndex(fs => fs.id === newFlightSet.id);
+        if (fsIndex > -1) {
+            const newFlightSets = [...this.flightSets];
+            newFlightSets[fsIndex] = newFlightSet;
+            this.flightSets = newFlightSets;
+        }
+    }
+    handleShowPoiInformation(poiId: string, infoType: 'BASIC'|'DETAILED'|'SECRET') {
+        if (!this.currentFlightSet) return;
+        const newFlightSet = { ...this.currentFlightSet } as FlightSet;
+        const pois = [...newFlightSet.pointsOfInterest];
+        const poiIndex = pois.findIndex(p => p.id === poiId);
+        if (poiIndex === -1) return;
+        const poi = { ...pois[poiIndex] } as PointOfInterest;
+        const information = { ...poi.information } as PointOfInterest['information'];
+        switch (infoType) {
+            case 'BASIC':
+                information.hasBasicInformation = true;
+                break;
+            case 'DETAILED':
+                information.hasDetailedInformation = true;
+                break;
+            case 'SECRET':
+                information.hasSecretInformation = true;
+                break;
+            default:
+                break;
+        }
+        poi.information = information;
+        pois[poiIndex] = poi;
+        newFlightSet.pointsOfInterest = pois as any;
+        this.currentFlightSet = newFlightSet;
+        const fsIndex = this.flightSets.findIndex(fs => fs.id === newFlightSet.id);
+        if (fsIndex > -1) {
+            const newFlightSets = [...this.flightSets];
+            newFlightSets[fsIndex] = newFlightSet;
+            this.flightSets = newFlightSets;
+        }
     }
     resyncProbes() {
         const probes = App.systems.find(sys => sys.simulatorId === this.simulatorId && sys.class === 'Probes')?.probes || [];

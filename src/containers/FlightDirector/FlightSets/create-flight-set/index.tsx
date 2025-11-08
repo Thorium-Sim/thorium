@@ -94,7 +94,8 @@ export const CreateFlightSet: React.FC<CreateFlightSetProps> = (props) => {
         pixelsPerSecond: props.editingFlightSet ? props.editingFlightSet.pixelsPerSecond : 4,
         probeLaunchRangeRadius: props.editingFlightSet?.probeLaunchRangeRadius || 100,
         pixelDistanceModifier: props.editingFlightSet?.pixelDistanceModifier || 1,
-        addOnTraining: props.editingFlightSet?.addOnTraining || false
+        addOnTraining: props.editingFlightSet?.addOnTraining || false,
+        probeSpeedModifier: props.editingFlightSet?.probeSpeedModifier,
     });
     const colorRef = useAdjustTextColorBasedOnBackground();
     useEffect(() => {
@@ -113,51 +114,82 @@ export const CreateFlightSet: React.FC<CreateFlightSetProps> = (props) => {
                 imageMaxX: props.editingFlightSet.imageMaxX,
                 imageMaxY: props.editingFlightSet.imageMaxY,
                 pixelsPerSecond: props.editingFlightSet.pixelsPerSecond,
-                probeLaunchRangeRadius: props.editingFlightSet.probeLaunchRangeRadius
+                probeLaunchRangeRadius: props.editingFlightSet.probeLaunchRangeRadius,
+                probeSpeedModifier: props.editingFlightSet.probeSpeedModifier,
             });
         }
     }, [props.editingFlightSet]);
 
     const [formState, setFormState] = React.useState<number>(0);
+    // Draft options created/edited during this wizard session that may not be included yet
+    const [draftStartOptions, setDraftStartOptions] = React.useState<NavigationStartOptions[]>([]);
+    const [draftSpeedOptions, setDraftSpeedOptions] = React.useState<NavigationSpeedOptions[]>([]);
+    const [draftExitOptions, setDraftExitOptions] = React.useState<NavigationExitOptions[]>([]);
+    const upsertByName = <T extends { name: string }>(arr: T[], item: T): T[] => {
+        const map: Record<string, T> = {};
+        arr.forEach(o => { map[o.name] = o; });
+        map[item.name] = item;
+        return Object.values(map);
+    };
     const allStartOptions = React.useMemo(() => {
-        const startOptions: NavigationStartOptions[] = [];
-        const startOptionsMap: Record<string, boolean> = {};
+        const uniqueByName: Record<string, NavigationStartOptions> = {};
         props.flightSets.forEach(flightSet => {
             flightSet.startOptions.forEach(option => {
-                if (!startOptionsMap[option.id]) {
-                    startOptionsMap[option.id] = true;
-                    startOptions.push(option);
+                if (!uniqueByName[option.name]) {
+                    uniqueByName[option.name] = option;
                 }
             });
         });
-        return startOptions;
-    }, [props.flightSets]);
+        // Include currently edited flight set's included options
+        flightSetState.startOptions.forEach(option => {
+            if (!uniqueByName[option.name]) {
+                uniqueByName[option.name] = option;
+            }
+        });
+        // Include drafts created during this session (not necessarily included yet)
+        draftStartOptions.forEach(option => {
+            uniqueByName[option.name] = option;
+        });
+        return Object.values(uniqueByName);
+    }, [props.flightSets, flightSetState.startOptions, draftStartOptions]);
     const allSpeedOptions = React.useMemo(() => {
-        const speedOptions: NavigationSpeedOptions[] = [];
-        const speedOptionsMap: Record<string, boolean> = {};
+        const uniqueByName: Record<string, NavigationSpeedOptions> = {};
         props.flightSets.forEach(flightSet => {
             flightSet.speedOptions.forEach(option => {
-                if (!speedOptionsMap[option.id]) {
-                    speedOptionsMap[option.id] = true;
-                    speedOptions.push(option);
+                if (!uniqueByName[option.name]) {
+                    uniqueByName[option.name] = option;
                 }
             });
         });
-        return speedOptions;
-    }, [props.flightSets]);
+        flightSetState.speedOptions.forEach(option => {
+            if (!uniqueByName[option.name]) {
+                uniqueByName[option.name] = option;
+            }
+        });
+        draftSpeedOptions.forEach(option => {
+            uniqueByName[option.name] = option;
+        });
+        return Object.values(uniqueByName);
+    }, [props.flightSets, flightSetState.speedOptions, draftSpeedOptions]);
     const allExitOptions = React.useMemo(() => {
-        const stopOptions: NavigationExitOptions[] = [];
-        const stopOptionsMap: Record<string, boolean> = {};
+        const uniqueByName: Record<string, NavigationExitOptions> = {};
         props.flightSets.forEach(flightSet => {
             flightSet.exitOptions.forEach(option => {
-                if (!stopOptionsMap[option.id]) {
-                    stopOptionsMap[option.id] = true;
-                    stopOptions.push(option);
+                if (!uniqueByName[option.name]) {
+                    uniqueByName[option.name] = option;
                 }
             });
         });
-        return stopOptions;
-    }, [props.flightSets]);
+        flightSetState.exitOptions.forEach(option => {
+            if (!uniqueByName[option.name]) {
+                uniqueByName[option.name] = option;
+            }
+        });
+        draftExitOptions.forEach(option => {
+            uniqueByName[option.name] = option;
+        });
+        return Object.values(uniqueByName);
+    }, [props.flightSets, flightSetState.exitOptions, draftExitOptions]);
 
     return (
         <div ref={colorRef} style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -229,6 +261,15 @@ export const CreateFlightSet: React.FC<CreateFlightSetProps> = (props) => {
                     allExitOptions={allExitOptions}
                     allSpeedOptions={allSpeedOptions}
                     allStartOptions={allStartOptions}
+                    onUpsertDraftStartOption={(opt: NavigationStartOptions) => {
+                        setDraftStartOptions(prev => upsertByName(prev, opt));
+                    }}
+                    onUpsertDraftSpeedOption={(opt: NavigationSpeedOptions) => {
+                        setDraftSpeedOptions(prev => upsertByName(prev, opt));
+                    }}
+                    onUpsertDraftExitOption={(opt: NavigationExitOptions) => {
+                        setDraftExitOptions(prev => upsertByName(prev, opt));
+                    }}
                 />
             }
             {formState === 4 &&

@@ -26,7 +26,10 @@ export function formatGraphqlQueryToTypescript(query: GetAllFlightSetsQuery): Fl
             }
             return {
                 ...point,
-                transitOptions: secondaryStopTransitOptions as SecondaryStopTransitOption[]
+                transitOptions: secondaryStopTransitOptions as SecondaryStopTransitOption[],
+                arrivalMacros: (point as any).arrivalMacros || [],
+                leaveMacros: (point as any).leaveMacros || [],
+                transitMacros: (point as any).transitMacros || [],
             }
         })
         return {
@@ -48,6 +51,8 @@ export function formatGraphqlQueryToTypescript(query: GetAllFlightSetsQuery): Fl
             pointsOfInterest: pointsOfInterest || [],
             addOnTraining: flightSet?.addOnTraining || false,
             pixelDistanceModifier: flightSet?.pixelDistanceModifier || 1,
+            // New optional field; use undefined when not provided (server defaults preserve behavior)
+            probeSpeedModifier: (flightSet as any)?.probeSpeedModifier,
         }
     })
     return newFlightSets;

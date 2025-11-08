@@ -30,6 +30,10 @@ export const FlightSetCreationSummary: React.FC<CreateFlightSetStepProps<FlightS
                             <label htmlFor="add-on-training">Add on Training: </label>
                             <span>{state.addOnTraining ? ' Yes' : ' No'}</span>
                         </div>
+                        <div className="step-content-row">
+                            <label htmlFor="probe-speed-modifier">Default Probe Speed Modifier: </label>
+                            <span>{state.probeSpeedModifier !== undefined ? state.probeSpeedModifier : 'Default (0.5)'}</span>
+                        </div>
                     </div>
                     <div className="step-content-row" style={{ height: '13rem', flexGrow: 1 }}>
                         <SelectablePositionMap

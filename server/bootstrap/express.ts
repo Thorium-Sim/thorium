@@ -29,6 +29,8 @@ import importTrigger from "../imports/triggers/import";
 // import importSurvey from "../imports/surveys/import";
 import exportCoreLayout from "../imports/coreLayout/export";
 import importCoreLayout from "../imports/coreLayout/import";
+import exportFlightSet from "../imports/flightSets/export";
+import importFlightSet from "../imports/flightSets/import";
 
 import App from "../app";
 import yazl from "yazl";
@@ -62,6 +64,7 @@ const exportsHandlers = {
   exportTrigger,
   // exportSurvey,
   exportCoreLayout,
+  exportFlightSet,
 };
 
 const importsHandlers = {
@@ -75,6 +78,7 @@ const importsHandlers = {
   importTrigger,
   // importSurvey,
   importCoreLayout,
+  importFlightSet,
 };
 
 const tmpDir = os.tmpdir();

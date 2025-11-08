@@ -47,7 +47,15 @@ extend type Mutation {
     """
       Macro: Advanced Navigation: Select current flight set
     """
-    selectCurrentFlightSet(simulatorId: ID!, flightSetId: String!): String
+    selectCurrentFlightSet(simulatorId: ID!, flightSetId: String!, show: Boolean): String
+    """
+      Macro: Advanced Navigation: Show POI on current flight set
+    """
+    showPoiOnCurrentFlightSet(simulatorId: ID!, flightSetId: ID!, poiId: ID!, showName: Boolean): String
+    """
+      Macro: Advanced Navigation: Show POI information on current flight set
+    """
+    showPoiInformationOnCurrentFlightSet(simulatorId: ID!, poiId: ID!, infoType: String!): String
 }
 
 extend type Subscription {
@@ -106,6 +114,9 @@ type PointOfInterest {
     fullImageUrl: String!
     transitOptions: [SecondaryStopTransitOption!]
     showName: Boolean
+    arrivalMacros: [MacroAction!]
+    leaveMacros: [MacroAction!]
+    transitMacros: [MacroAction!]
 }
 
 type SecondaryStopTransitOption {
@@ -236,6 +247,8 @@ type FlightSet {
   probeLaunchRangeRadius: Float!
   addOnTraining: Boolean
   pixelDistanceModifier: Float
+  # Optional default speed modifier for probes in this flight set
+  probeSpeedModifier: Float
 }
 
 type BasicCoordinate {
@@ -319,6 +332,9 @@ input PointOfInterestInput {
   fullImageUrl: String!
   transitOptions: [SecondaryStopTransitOptionInput]
   showName: Boolean
+  arrivalMacros: [ActionInput]
+  leaveMacros: [ActionInput]
+  transitMacros: [ActionInput]
 }
 
 input LocationInput {
@@ -444,6 +460,7 @@ input FlightSetInput {
   probeLaunchRangeRadius: Float!
   addOnTraining: Boolean
   pixelDistanceModifier: Float
+  probeSpeedModifier: Float
 }
 
 input BasicCoordinateInput {

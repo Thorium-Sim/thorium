@@ -375,6 +375,14 @@ export const probesEquipment = [
     availableProbes: [],
   },
   {
+    id: 'speed-matrix-accelerator',
+    name: "Speed Matrix Accelerator",
+    description: "Increases the normal speed of the probe by 25%.",
+    size: 2,
+    count: 50,
+    availableProbes: [],
+  },
+  {
     id: "sensor-array",
     name: "Sensor Array",
     description: "The Sensor Array gives the probe general scanning abilities.",

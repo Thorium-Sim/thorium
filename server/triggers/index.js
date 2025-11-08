@@ -2,6 +2,7 @@ export * from "./torpedos";
 export * from "./phasers";
 export * from "./longRangeComm";
 export * from "./navigation";
+export * from "./advancedNavigation";
 export * from "./probes";
 export * from "./shields";
 export * from "./shortRangeComm";

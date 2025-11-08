@@ -3,6 +3,10 @@ import { PositionMap } from "containers/FlightDirector/FlightSets/Map";
 import { FlightSet, PointOfInterest } from "containers/FlightDirector/FlightSets/types";
 import { Input, Label, FormGroup, Button } from "reactstrap";
 import FilePickerHelper from "../../file-picker-helper";
+import EventPicker from "containers/FlightDirector/MissionConfig/EventPicker";
+import MacroWrapper from "containers/FlightDirector/MissionConfig/MacroConfig";
+import { ActionInput } from "generated/graphql";
+import { v4 as uuidv4 } from "uuid";
 
 
 export type CoreAdvancedNavigationAddPoiProps = {
@@ -25,6 +29,40 @@ export const CoreAdvancedNavigationAddPoi: React.FC<CoreAdvancedNavigationAddPoi
     const [hasDetailedInformation, setHasDetailedInformation] = React.useState<boolean>(props.defaultStartingData?.information.hasDetailedInformation || false);
     const [secretInformation, setSecretInformation] = React.useState<string>(props.defaultStartingData?.information.secretInformation || '');
     const [hasSecretInformation, setHasSecretInformation] = React.useState<boolean>(props.defaultStartingData?.information.hasSecretInformation || false);
+
+    // Local macro action state for POI events
+    const [arrivalMacros, setArrivalMacros] = React.useState<ActionInput[]>(props.defaultStartingData?.arrivalMacros || []);
+    const [leaveMacros, setLeaveMacros] = React.useState<ActionInput[]>(props.defaultStartingData?.leaveMacros || []);
+    const [transitMacros, setTransitMacros] = React.useState<ActionInput[]>(props.defaultStartingData?.transitMacros || []);
+    const [selectedList, setSelectedList] = React.useState<"arrival" | "leave" | "transit">("arrival");
+    const [selectedActionId, setSelectedActionId] = React.useState<string | null>(null);
+
+    const getActions = () => selectedList === "arrival" ? arrivalMacros : selectedList === "leave" ? leaveMacros : transitMacros;
+    const getActionsFor = (cat: "arrival" | "leave" | "transit") => cat === "arrival" ? arrivalMacros : cat === "leave" ? leaveMacros : transitMacros;
+    const setActionsFor = (cat: "arrival" | "leave" | "transit", arr: ActionInput[]) => {
+        if (cat === "arrival") setArrivalMacros(arr);
+        else if (cat === "leave") setLeaveMacros(arr);
+        else setTransitMacros(arr);
+    };
+    const setActions = (arr: ActionInput[]) => setActionsFor(selectedList, arr);
+    const addAction = (cat: "arrival" | "leave" | "transit", eventName: string) => {
+        const newAction: ActionInput = { id: uuidv4(), event: eventName, args: "{}", delay: 0, noCancelOnReset: false };
+        const current = getActionsFor(cat);
+        const next = [...current, newAction];
+        setActionsFor(cat, next);
+        setSelectedList(cat);
+        setSelectedActionId(newAction.id || null);
+    };
+    const removeAction = (id: string) => {
+        const next = getActions().filter(a => a.id !== id);
+        setActions(next);
+        if (selectedActionId === id) setSelectedActionId(null);
+    };
+    const updateSelectedAction = (key: keyof ActionInput, value: any) => {
+        const next = getActions().map(a => a.id === selectedActionId ? { ...a, [key]: value } : a);
+        setActions(next);
+    };
+    const selectedAction = React.useMemo(() => getActions().find(a => a.id === selectedActionId), [selectedActionId, arrivalMacros, leaveMacros, transitMacros, selectedList]);
 
     const canAddPoi = React.useMemo(() => {
         return name && location && speedIndex && (basicInformation || detailedInformation || secretInformation) && iconUrl && fullImageUrl;
@@ -150,6 +188,88 @@ export const CoreAdvancedNavigationAddPoi: React.FC<CoreAdvancedNavigationAddPoi
                 }} />
             </FormGroup>
 
+            <div style={{ display: 'flex', gap: '1.5rem', marginTop: '1rem' }}>
+                <div style={{ flex: 1 }}>
+                    <h5>On Arrival</h5>
+                    <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                        <EventPicker className={"btn btn-sm btn-success"} handleChange={(e) => { addAction("arrival", e.target.value); }} />
+                    </div>
+                    <ul className="list-group" style={{ maxHeight: '22rem', overflowY: 'auto' }}>
+                        {arrivalMacros?.map(a => (
+                            <li key={a.id || uuidv4()} className={`list-group-item ${selectedList === 'arrival' && selectedActionId === a.id ? 'active' : ''}`} onClick={() => { setSelectedList('arrival'); setSelectedActionId(a.id || null); }}>
+                                <span>{a.event}</span>
+                                <Button size="sm" color="danger" style={{ float: 'right' }} onClick={(e) => { e.stopPropagation(); setSelectedList('arrival'); removeAction(a.id as string); }}>Remove</Button>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+                <div style={{ flex: 1 }}>
+                    <h5>On Leave</h5>
+                    <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                        <EventPicker className={"btn btn-sm btn-success"} handleChange={(e) => { addAction("leave", e.target.value); }} />
+                    </div>
+                    <ul className="list-group" style={{ maxHeight: '22rem', overflowY: 'auto' }}>
+                        {leaveMacros?.map(a => (
+                            <li key={a.id || uuidv4()} className={`list-group-item ${selectedList === 'leave' && selectedActionId === a.id ? 'active' : ''}`} onClick={() => { setSelectedList('leave'); setSelectedActionId(a.id || null); }}>
+                                <span>{a.event}</span>
+                                <Button size="sm" color="danger" style={{ float: 'right' }} onClick={(e) => { e.stopPropagation(); setSelectedList('leave'); removeAction(a.id as string); }}>Remove</Button>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+                <div style={{ flex: 1 }}>
+                    <h5>On Transit</h5>
+                    <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                        <EventPicker className={"btn btn-sm btn-success"} handleChange={(e) => { addAction("transit", e.target.value); }} />
+                    </div>
+                    <ul className="list-group" style={{ maxHeight: '22rem', overflowY: 'auto' }}>
+                        {transitMacros?.map(a => (
+                            <li key={a.id || uuidv4()} className={`list-group-item ${selectedList === 'transit' && selectedActionId === a.id ? 'active' : ''}`} onClick={() => { setSelectedList('transit'); setSelectedActionId(a.id || null); }}>
+                                <span>{a.event}</span>
+                                <Button size="sm" color="danger" style={{ float: 'right' }} onClick={(e) => { e.stopPropagation(); setSelectedList('transit'); removeAction(a.id as string); }}>Remove</Button>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+                <div style={{ flex: 1 }}>
+                    <h5>Configure Selected Action</h5>
+                    {selectedAction && (
+                        <>
+                            <FormGroup>
+                                <Label>Item Delay (in milliseconds)</Label>
+                                <Input
+                                    type="number"
+                                    value={selectedAction.delay || 0}
+                                    onChange={(e) => updateSelectedAction('delay', parseInt(e.target.value || '0'))}
+                                />
+                            </FormGroup>
+                            <FormGroup style={{ marginLeft: '5ch' }}>
+                                <Label>
+                                    <Input
+                                        type="checkbox"
+                                        checked={!!selectedAction.noCancelOnReset}
+                                        onChange={(e) => updateSelectedAction('noCancelOnReset', e.target.checked)}
+                                    />
+                                    Don't Cancel Delay on Flight Reset
+                                </Label>
+                            </FormGroup>
+                            <MacroWrapper
+                                id={selectedAction.id}
+                                delay={selectedAction.delay || 0}
+                                noCancelOnReset={!!selectedAction.noCancelOnReset}
+                                event={selectedAction.event || ""}
+                                args={selectedAction.args || "{}"}
+                                updateMacro={(key: string, val: any) => {
+                                    if (key === 'args' || key === 'delay' || key === 'noCancelOnReset' || key === 'event') {
+                                        updateSelectedAction(key as keyof ActionInput, val);
+                                    }
+                                }}
+                            />
+                        </>
+                    )}
+                </div>
+            </div>
+
             <Button disabled={!canAddPoi} onClick={() => {
                 props.onAddPOI({
                     location,
@@ -173,7 +293,10 @@ export const CoreAdvancedNavigationAddPoi: React.FC<CoreAdvancedNavigationAddPoi
                     },
                     iconUrl,
                     fullImageUrl,
-                    showName: showName
+                    showName: showName,
+                    arrivalMacros,
+                    leaveMacros,
+                    transitMacros,
                 });
             }}>{props.defaultStartingData ? "Save POI" : "Add POI"}</Button>
         </div>

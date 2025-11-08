@@ -6,6 +6,7 @@ import { LocationSidebar } from './components/Sidebars/Location';
 import { EngineStatus } from './types';
 import { BasicCoordinate, FlightSet, NamedNavigationRoute, NavigationRoute, PointOfInterest } from 'containers/FlightDirector/FlightSets/types';
 import { FlightPathDecision } from './components/FlightPathDecision';
+import { SelectSpeedPage } from './components/SelectSpeedPage';
 import { SelectablePositionMap } from 'containers/FlightDirector/FlightSets/Map';
 import "./styles.css"
 export type AdvancedNavigationProps = {
@@ -29,6 +30,7 @@ export type AdvancedNavigationProps = {
     onEngageFlightPath: (flightPath: NavigationRoute) => void;
     onResumeFlightPath: () => void;
     onSaveFlightPath: (flightPath: NamedNavigationRoute) => void;
+    onUpdateCurrentFlightPath?: (route: NavigationRoute) => void;
 }
 
 export type AdvancedNavigationState = {
@@ -39,7 +41,8 @@ export type AdvancedNavigationState = {
 
 export enum PageState {
     OVERVIEW,
-    CREATE_PATH
+    CREATE_PATH,
+    SELECT_SPEED
 }
 
 
@@ -48,6 +51,7 @@ export class AdvancedNavigation extends React.Component<AdvancedNavigationProps,
         pageState: PageState.OVERVIEW,
         saving: false,
     };
+    selectedSpeedName?: string;
 
     render() {
         return <div className={this.props.engineStatus !== EngineStatus.STOPPED && 'ripple-pulse' || ''} style={{ height: '100%', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
@@ -127,6 +131,7 @@ export class AdvancedNavigation extends React.Component<AdvancedNavigationProps,
                                     onCoolantFlush={this.props.onCoolantFlush}
                                     onEngageFlightPath={() => { this.setState({ pageState: PageState.CREATE_PATH, saving: false }) }}
                                     onResumeFlightPath={this.props.onResumeFlightPath}
+                                    onChangeSpeed={() => { this.setState({ pageState: PageState.SELECT_SPEED }); this.selectedSpeedName = this.props.currentFlightPath?.speedOption?.name }}
                                     coolantLevel={this.props.coolantLevel}
                                     heatLevel={this.props.heatLevel}
                                     currentFlightPath={this.props.currentFlightPath}
@@ -146,6 +151,32 @@ export class AdvancedNavigation extends React.Component<AdvancedNavigationProps,
                 :
                 <React.Fragment />
             }
+            {this.state.pageState === PageState.SELECT_SPEED && this.props.currentFlightSet && this.props.currentFlightPath && (
+                <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <div style={{ width: '100%', height: '100%' }}>
+                        <SelectSpeedPage
+                            navigationSpeedOptions={this.props.currentFlightSet.speedOptions}
+                            selectedOption={this.selectedSpeedName || this.props.currentFlightPath.speedOption?.name}
+                            onSelect={(name) => { this.selectedSpeedName = name; this.forceUpdate(); }}
+                            onBack={() => { this.setState({ pageState: PageState.OVERVIEW }); }}
+                            onSubmit={() => {
+                                const speed = this.props.currentFlightSet?.speedOptions.find(s => s.name === (this.selectedSpeedName || this.props.currentFlightPath?.speedOption?.name));
+                                if (!speed) { this.setState({ pageState: PageState.OVERVIEW }); return; }
+                                const newRoute: NavigationRoute = {
+                                    targetLocationId: this.props.currentFlightPath!.targetLocationId,
+                                    secondaryRouteOptions: this.props.currentFlightPath!.secondaryRouteOptions || [],
+                                    isBorder: this.props.currentFlightPath!.isBorder,
+                                    startOption: this.props.currentFlightPath!.startOption,
+                                    speedOption: speed,
+                                    exitOption: this.props.currentFlightPath!.exitOption,
+                                } as any;
+                                this.props.onUpdateCurrentFlightPath && this.props.onUpdateCurrentFlightPath(newRoute);
+                                this.setState({ pageState: PageState.OVERVIEW });
+                            }}
+                        />
+                    </div>
+                </div>
+            )}
             <img alt='' className='flux-image' style={{ width: "100%", height: '100%', zIndex: 0, position: 'absolute', top: 0, left: 0 }} src={CircuitBackground} />
             <img className='flux-image' style={{ width: "100%", height: '100%', zIndex: 0, position: 'absolute', top: 0, left: 0 }} src={CircuitBackground} alt='' />
 
