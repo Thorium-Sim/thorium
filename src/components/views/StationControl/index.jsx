@@ -88,6 +88,15 @@ const StationControl = props => {
   const clientList = clients
     .map((client, i, arr) => {
       if (!client.station) return null;
+      if (
+        client.station.cards.some(
+          f =>
+            f.name === "Viewscreen" ||
+            f.name === "SoundPlayer" ||
+            f.name === "Keyboard",
+        )
+      )
+        return null;
       const count = stationNameCount?.[client.station.name] + 1 || 1;
       stationNameCount[client.station.name] = count;
       let showCount = count > 1;
