@@ -1,3 +1,16 @@
+# [4.4.0](https://github.com/Thorium-Sim/thorium/compare/4.3.0...4.4.0) (2025-11-26)
+
+
+### Bug Fixes
+
+* Improve positioning of railgun target indicator ([459295e](https://github.com/Thorium-Sim/thorium/commit/459295e82d22755d2232cbbd82766d2678a2e285))
+* Messaging core correctly scrolls to the bottom. ([47ebc0f](https://github.com/Thorium-Sim/thorium/commit/47ebc0fc88c0c3a8bf29c9621ae48daa59b01741))
+
+
+### Features
+
+* Set Targeting macro allows setting target count. ([07bb0e7](https://github.com/Thorium-Sim/thorium/commit/07bb0e760c0bc823eaa3d6c6078d18437c5fb797))
+
 # [4.3.0](https://github.com/Thorium-Sim/thorium/compare/4.2.0...4.3.0) (2025-11-08)
 
 
