@@ -23,23 +23,28 @@ class Railgun extends Component {
   static trainingSteps = [
     {
       selector: ".nothing",
-content: "The railgun is a point-defense weapon designed to destroy incoming projectiles. You can use it to defend your ship from attackers.",
+      content:
+        "The railgun is a point-defense weapon designed to destroy incoming projectiles. You can use it to defend your ship from attackers.",
     },
     {
       selector: ".sensors-holder",
-content: "This basic sensors grid shows the location of any incoming projectiles relative to this ship, shown at the center of the grid.",
+      content:
+        "This basic sensors grid shows the location of any incoming projectiles relative to this ship, shown at the center of the grid.",
     },
     {
       selector: ".sensors-holder",
-content: "To fire the railgun, click with your mouse on the sensor grid. A red dot will indicate where the railgun bolt will hit. You must fire very close to an incoming projectile for the bolt to hit its target.",
+      content:
+        "To fire the railgun, click with your mouse on the sensor grid. A red dot will indicate where the railgun bolt will hit. You must fire very close to an incoming projectile for the bolt to hit its target.",
     },
     {
       selector: ".sensors-holder",
-content: "Once an incoming projectile has been destroyed, you will see it explode and disappear.",
+      content:
+        "Once an incoming projectile has been destroyed, you will see it explode and disappear.",
     },
     {
       selector: ".railgun-controls",
-content: "Here you can see the number of bolts loaded. Make sure you don't run out of railgun bolts!",
+      content:
+        "Here you can see the number of bolts loaded. Make sure you don't run out of railgun bolts!",
     },
   ];
   state = {ammo: 25};
@@ -80,11 +85,8 @@ content: "Here you can see the number of bolts loaded. Make sure you don't run o
   };
   mouseMove = e => {
     const locations = this.locations;
-    const {
-      left,
-      top,
-      width,
-    } = this.sensorGridRef.current.getBoundingClientRect();
+    const {left, top, width} =
+      this.sensorGridRef.current.getBoundingClientRect();
     const location = {
       x: ((e.clientX - left - width / 2) / width) * 2,
       y: ((e.clientY - top - width / 2) / width) * 2,
@@ -94,13 +96,13 @@ content: "Here you can see the number of bolts loaded. Make sure you don't run o
         l =>
           !l.destroyed &&
           distance(l.position.x, l.position.y + 0.05, location.x, location.y) <=
-            0.05,
+            0.1,
       )
       .map(l => l.id);
     this.currentContact = distances[0];
     this.mouse = {
-      x: e.clientX - left + 10,
-      y: e.clientY - top - 5,
+      x: e.clientX - left,
+      y: e.clientY - top,
     };
   };
   loop = () => {
@@ -117,22 +119,30 @@ content: "Here you can see the number of bolts loaded. Make sure you don't run o
     const damaged =
       (power && power.powerLevels && power.power < power.powerLevels[0]) ||
       (damage && damage.damaged);
+
     return (
       <Container fluid className="card-railgun">
-        {mouse && (
-          <div
-            className="pointer"
-            style={{
-              transform: `translate(${mouse.x}px, ${mouse.y}px)`,
-            }}
-          />
-        )}
         <Row>
-          <Col sm={6}>
+          <Col
+            sm={6}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             <div
               ref={this.sensorGridRef}
-              style={{width: "100%", height: "100%"}}
+              style={{width: "100%", aspectRatio: "1", position: "relative"}}
             >
+              {mouse && (
+                <div
+                  className="pointer"
+                  style={{
+                    transform: `translate(${mouse.x}px, ${mouse.y}px)`,
+                  }}
+                />
+              )}
               <SensorGrid
                 renderLines={() => (
                   <svg
