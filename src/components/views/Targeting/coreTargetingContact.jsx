@@ -100,7 +100,6 @@ class TargetingContact extends Component {
       removeClass,
       updateClass,
     } = this.props;
-    console.log(this.props);
     const contactCount =
       typeof count === "undefined"
         ? contacts.filter(c => c.class === id && !c.destroyed).length

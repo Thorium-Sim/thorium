@@ -98,7 +98,7 @@ const Conversations = props => {
   const scrollElement = () => {
     const el = messageHolder.current;
     if (el) {
-      scrollTo(el, el.scrollHeight, 600);
+      el.scrollTo({top: el.scrollHeight});
     }
   };
 
@@ -175,7 +175,7 @@ const Conversations = props => {
             <Card
               className="full flex-max auto-scroll"
               style={{flexDirection: "column-reverse"}}
-              ref={messageHolder}
+              innerRef={messageHolder}
             >
               {messages
                 .filter(
