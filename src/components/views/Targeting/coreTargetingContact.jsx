@@ -6,7 +6,7 @@ import {Mutation} from "react-apollo";
 import FileExplorer from "../TacticalMap/fileExplorer";
 import {FaBan} from "react-icons/fa";
 
-const TargetCount = ({targetingId, id, contactCount}) => (
+const TargetCount = ({targetingId, id, contactCount, updateClass}) => (
   <Mutation
     mutation={gql`
       mutation SetTargetClassCount($id: ID!, $classId: ID!, $count: Int!) {
@@ -19,13 +19,15 @@ const TargetCount = ({targetingId, id, contactCount}) => (
         <Col sm={3}>
           <Button
             onClick={() =>
-              action({
-                variables: {
-                  id: targetingId,
-                  classId: id,
-                  count: contactCount - 1,
-                },
-              })
+              updateClass
+                ? updateClass(id, "count", contactCount - 1)
+                : action({
+                    variables: {
+                      id: targetingId,
+                      classId: id,
+                      count: contactCount - 1,
+                    },
+                  })
             }
             size="sm"
             color="secondary"
@@ -42,13 +44,15 @@ const TargetCount = ({targetingId, id, contactCount}) => (
             }}
             prompt={"How many targets?"}
             onClick={count =>
-              action({
-                variables: {
-                  id: targetingId,
-                  classId: id,
-                  count: parseInt(count, 10),
-                },
-              })
+              updateClass
+                ? updateClass(id, "count", parseInt(count, 10))
+                : action({
+                    variables: {
+                      id: targetingId,
+                      classId: id,
+                      count: parseInt(count, 10),
+                    },
+                  })
             }
           >
             {contactCount}
@@ -57,13 +61,15 @@ const TargetCount = ({targetingId, id, contactCount}) => (
         <Col sm={3}>
           <Button
             onClick={() =>
-              action({
-                variables: {
-                  id: targetingId,
-                  classId: id,
-                  count: contactCount + 1,
-                },
-              })
+              updateClass
+                ? updateClass(id, "count", contactCount + 1)
+                : action({
+                    variables: {
+                      id: targetingId,
+                      classId: id,
+                      count: contactCount + 1,
+                    },
+                  })
             }
             size="sm"
             color="secondary"
@@ -89,13 +95,15 @@ class TargetingContact extends Component {
       clickToTarget,
       targetingId,
       contacts,
-      macro,
+      count,
       contactClass,
       removeClass,
       updateClass,
     } = this.props;
-    const contactCount = contacts.filter(c => c.class === id && !c.destroyed)
-      .length;
+    const contactCount =
+      typeof count === "undefined"
+        ? contacts.filter(c => c.class === id && !c.destroyed).length
+        : count;
     return (
       <Mutation
         mutation={gql`
@@ -129,9 +137,8 @@ class TargetingContact extends Component {
                             id: targetingId,
                             classInput: {
                               id,
-                              [iconEdit
-                                ? "icon"
-                                : "picture"]: container.fullPath,
+                              [iconEdit ? "icon" : "picture"]:
+                                container.fullPath,
                             },
                           },
                         });
@@ -140,15 +147,14 @@ class TargetingContact extends Component {
               </div>
             )}
             <Row>
-              {!macro && (
-                <Col sm={4}>
-                  <TargetCount
-                    targetingId={targetingId}
-                    id={id}
-                    contactCount={contactCount}
-                  />
-                </Col>
-              )}
+              <Col sm={4}>
+                <TargetCount
+                  targetingId={targetingId}
+                  id={id}
+                  contactCount={contactCount}
+                  updateClass={updateClass}
+                />
+              </Col>
               <Col sm={1}>
                 <img
                   alt="pic"

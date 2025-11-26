@@ -5,14 +5,15 @@
     height: 100%;
   }
   .pointer {
-    position: fixed;
-    left: 0;
-    top: 0;
+    position: absolute;
+    left: -5px;
+    top: -5px;
     background-color: red;
     width: 10px;
     height: 10px;
     border-radius: 50%;
     z-index: 100;
+
   }
 }
 .railgun-loader {
