@@ -24,7 +24,6 @@ class TargetClass {
     quadrant,
     moving,
     clickToTarget,
-    count,
   }) {
     if (name) this.name = name;
     if (size) this.size = size;
@@ -142,7 +141,11 @@ export default class Targeting extends System {
   addTargetClass(classInput) {
     // no duplicate classes
     if (!classInput.id || !this.classes.find(c => c.id === classInput.id)) {
-      this.classes.push(new TargetClass(classInput, this.id));
+      const targetClass = new TargetClass(classInput, this.id);
+      this.classes.push(targetClass);
+      if (classInput.count) {
+        this.setTargetClassCount(targetClass.id, classInput.count);
+      }
     }
   }
   removeTargetClass(classId) {
