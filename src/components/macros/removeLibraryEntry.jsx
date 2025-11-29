@@ -1,7 +1,7 @@
 import React from "react";
 import {FormGroup, Label, Input} from "helpers/reactstrap";
 
-export default ({updateArgs, args: {entry = {}}, client}) => {
+export default ({updateArgs, args: {slug = ""}}) => {
   return (
     <FormGroup className="macro-addLibraryEntry">
       <Label>
@@ -9,11 +9,11 @@ export default ({updateArgs, args: {entry = {}}, client}) => {
       </Label>
       <Input
         type="text"
-        defaultValue={entry.slug}
+        defaultValue={slug}
         onBlur={evt =>
           updateArgs(
-            "entry",
-            Object.assign({}, entry, {slug: evt.target.value}),
+            "slug",
+            evt.target.value ? evt.target.value : "",
           )
         }
       />
