@@ -20,6 +20,7 @@ const schema = gql`
     damage: Damage
     stealthFactor: Float
     locations: [Room]
+    log: [String]
   }
   extend type Query {
     internalComm(simulatorId: ID!): [InternalComm]
