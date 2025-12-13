@@ -139,6 +139,7 @@ class CoreComponents extends Component {
               editMode={() => this.setState({editable: true})}
               mosaic={mosaic}
               updateMosaic={this.updateMosaic}
+              soundOn={speech}
               simulator={
                 simulators.find(s => s.id === simulator) || {
                   id: simulator,

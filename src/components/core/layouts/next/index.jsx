@@ -4,6 +4,9 @@ import {Cores} from "components/views";
 import Lighting from "components/views/Lighting";
 import CoreError from "../coreError";
 import "./next.scss";
+import {Flash} from "components/generic/useFlash";
+import Timer from "components/views/CoreExtras/timer";
+import Dice from "components/views/CoreExtras/dice";
 
 class Next extends Component {
   render() {
@@ -19,14 +22,19 @@ class Next extends Component {
           <CoreError>
             <Cores.ActionsCore {...props} />
           </CoreError>
-          <div className="core-extra-grid">
-            <CoreError>
-              <Cores.ExtrasCore {...props} />
-            </CoreError>
-            <CoreError>
-              <Cores.AlertConditionCore {...props} />
-            </CoreError>
-          </div>
+          <Flash>
+            {({flash, doFlash}) => (
+              <div className={`core-extra-grid ${flash ? "flash" : ""}`}>
+                <CoreError>
+                  <Timer {...props} doFlash={doFlash} />
+                  <Dice />
+                </CoreError>
+                <CoreError>
+                  <Cores.AlertConditionCore {...props} />
+                </CoreError>
+              </div>
+            )}
+          </Flash>
         </div>
         <CoreError>
           <div className="lighting-container">

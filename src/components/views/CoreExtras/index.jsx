@@ -1,12 +1,17 @@
 import React from "react";
 import Dice from "./dice";
 import Timer from "./timer";
+import {Flash} from "components/generic/useFlash";
 const ExtrasCore = props => {
   return (
-    <>
-      <Timer {...props} />
-      <Dice />
-    </>
+    <Flash>
+      {({flash, doFlash}) => (
+        <div className={flash ? "flash" : ""}>
+          <Timer {...props} doFlash={doFlash} />
+          <Dice />
+        </div>
+      )}
+    </Flash>
   );
 };
 

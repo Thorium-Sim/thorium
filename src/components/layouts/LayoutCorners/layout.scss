@@ -28,7 +28,10 @@ body {
     }
   }
 }
-
+.flash {
+   backdrop-filter: brightness(5) contrast(1.5) saturate(2);
+   filter: brightness(2) contrast(1.5) saturate(2);
+  }
 .actionsContainer {
   position: fixed;
   left: 0;
