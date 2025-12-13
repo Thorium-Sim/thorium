@@ -38,7 +38,7 @@ $alertp: #7a24cf;
 
 @mixin card-variant($background) {
   $background: lighten(desaturate($background, 20%), 10%);
-  background: rgba($background, 0.1);
+  background: rgba($background, 0.15);
   border: solid 1px $background;
   box-shadow: inset 0px 0px 20px -5px rgba(saturate($background, 10%), 0.5),
     0px 0px 15px -2px rgba(saturate($background, 10%), 1);
@@ -47,7 +47,7 @@ $alertp: #7a24cf;
 @mixin input-variant($background) {
   color: white;
   $background: lighten(desaturate($background, 20%), 10%);
-  background: rgba(desaturate($background, 20%), 0.1);
+  background: rgba(desaturate($background, 20%), 0.15);
   border: solid 1px desaturate($background, 20%);
   box-shadow: inset 0px 0px 20px -5px rgba(desaturate($background, 20%), 0.5),
     0px 0px 15px -2px rgba(desaturate($background, 20%), 1);
@@ -110,6 +110,7 @@ $alertp: #7a24cf;
 .layout-cautiontape {
   background-color: black;
   color: white;
+  font-family: "Saira", sans-serif;
 
   .card-switcher-holder {
     z-index: 100;
@@ -255,11 +256,11 @@ $alertp: #7a24cf;
     height: 100%;
   }
   .card-area {
-    top: 84px;
-    left: 100px;
-    right: 40px;
-    width: calc(100% - 110px);
-    height: calc(100% - 180px);
+    top: 100px;
+    left: 108px;
+    right: 48px;
+    width: calc(100% - 126px);
+    height: calc(100% - 196px);
     position: relative;
   }
   &.viewscreen {

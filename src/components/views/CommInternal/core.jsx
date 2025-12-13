@@ -15,6 +15,7 @@ export const INTERNAL_COMM_CORE_SUB = gql`
       state
       outgoing
       incoming
+      log
     }
   }
 `;
@@ -259,6 +260,13 @@ class InternalCommCore extends Component {
                 </Col>
               </Row>
             )}
+            <Row style={{overflowY: "auto", flex: "0 1 auto"}}>
+              <Col sm={12}>
+                {internalComm.log.map((l, i) => (
+                  <p key={i}>{l}</p>
+                ))}
+              </Col>
+            </Row>
           </Container>
         ) : (
           "No Internal Comm"
@@ -276,6 +284,7 @@ export const INTERNAL_COMM_CORE_QUERY = gql`
       state
       outgoing
       incoming
+      log
     }
     decks(simulatorId: $simulatorId) {
       id

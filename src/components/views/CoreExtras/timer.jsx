@@ -4,6 +4,7 @@ import gql from "graphql-tag.macro";
 import {withApollo} from "react-apollo";
 import {Duration} from "luxon";
 import {publish} from "helpers/pubsub";
+import {playSound} from "components/generic/SoundPlayer";
 
 export const TIMESYNC_SUB = gql`
   subscription SyncTime($simulatorId: ID!) {
@@ -48,6 +49,19 @@ class Timer extends Component {
     clearTimeout(this.timer);
   }
   updateTimer = () => {
+    if (!this.state.stopped && this.state.timer === "00:00:00") {
+      this.setState({stopped: true});
+      this.props.doFlash();
+      if (this.props.soundOn) {
+        playSound({url: require("./timer.ogg")});
+        setTimeout(() => {
+          playSound({url: require("./timer.ogg")});
+        }, 200);
+        setTimeout(() => {
+          playSound({url: require("./timer.ogg")});
+        }, 400);
+      }
+    }
     if (
       this.state.stopped ||
       this.state.timer === "00:00:00" ||

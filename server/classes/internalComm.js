@@ -14,6 +14,7 @@ export default class InternalComm extends System {
     this.state = params.state || "idle"; //One of 'idle', 'connected'
     this.outgoing = params.outgoing || null;
     this.incoming = params.incoming || null;
+    this.log = params.log || [];
   }
   break(report, destroyed, which) {
     this.state = "idle";
@@ -22,10 +23,16 @@ export default class InternalComm extends System {
   connectOutgoing() {
     this.state = "connected";
     this.incoming = this.outgoing;
+    this.log.unshift(
+      `${new Date().toLocaleTimeString()} - Outgoing - ${this.outgoing}`,
+    );
   }
   connectIncoming() {
     this.state = "connected";
     this.outgoing = this.incoming;
+    this.log.unshift(
+      `${new Date().toLocaleTimeString()} - Incoming - ${this.incoming}`,
+    );
   }
   callIncoming(incoming) {
     this.incoming = incoming;

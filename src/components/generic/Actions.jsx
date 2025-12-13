@@ -3,6 +3,7 @@ import uuid from "uuid";
 import gql from "graphql-tag.macro";
 import Spark from "components/views/Actions/spark";
 import {useApolloClient} from "@apollo/client";
+import {useFlash} from "./useFlash";
 const synth = window.speechSynthesis;
 
 const ACTIONS_SUB = gql`
@@ -15,22 +16,6 @@ const ACTIONS_SUB = gql`
     }
   }
 `;
-
-const useFlash = () => {
-  const [flash, setFlash] = useState(false);
-  const timeoutRef = useRef(null);
-  const doFlash = React.useCallback(duration => {
-    clearTimeout(timeoutRef.current);
-    duration = duration || duration === 0 ? duration : 10;
-    if (duration <= 0) {
-      return setFlash(false);
-    }
-    setFlash(oldFlash => !oldFlash);
-    timeoutRef.current = setTimeout(() => doFlash(duration - 1), 150);
-  }, []);
-  useEffect(() => () => clearTimeout(timeoutRef.current), []);
-  return {flash, doFlash};
-};
 
 const useSpark = () => {
   const [sparks, setSparks] = useState([]);
