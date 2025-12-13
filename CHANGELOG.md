@@ -1,3 +1,12 @@
+# [4.5.0](https://github.com/Thorium-Sim/thorium/compare/4.4.0...4.5.0) (2025-12-13)
+
+
+### Features
+
+* Add a flash and sound notification when a core timer completes ([3262c73](https://github.com/Thorium-Sim/thorium/commit/3262c734ea3675d9972bb2590fc404cbfeb45f81))
+* Added requested caution tape css fixes ([141063e](https://github.com/Thorium-Sim/thorium/commit/141063ed79086df65097f0d321f335a55a70e1ad))
+* Internal comm log on core. ([9b6fc32](https://github.com/Thorium-Sim/thorium/commit/9b6fc32ac86b47119fc4429e2face1d5d3a06edf))
+
 # [4.4.0](https://github.com/Thorium-Sim/thorium/compare/4.3.0...4.4.0) (2025-11-26)
 
 

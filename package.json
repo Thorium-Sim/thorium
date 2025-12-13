@@ -1,6 +1,6 @@
 {
   "name": "thorium",
-  "version": "4.4.0",
+  "version": "4.5.0",
   "description": "Starship Simulator Controls",
   "private": true,
   "type": "commonjs",
