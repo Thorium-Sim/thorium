@@ -11,7 +11,7 @@ const ComputerCoreAddHacker: React.FC<MacroConfigProps> = ({
       <Label>
         Name
         <Input
-          defaultValue={args.name}
+          value={args.name || ""}
           onChange={e => updateArgs("name", e.target.value)}
         />
         <small>Leave blank for random hacker name</small>
