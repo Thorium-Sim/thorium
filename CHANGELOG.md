@@ -1,3 +1,15 @@
+# [4.6.0](https://github.com/Thorium-Sim/thorium/compare/4.5.0...4.6.0) (2026-02-10)
+
+
+### Bug Fixes
+
+* Correct computer core macro ignoring hacker name ([46b258d](https://github.com/Thorium-Sim/thorium/commit/46b258dfcefefe31223f2ad55aa5cd23d674dcfc))
+
+
+### Features
+
+* Keep a running backup of restore snapshots which is created whenever a new flight is created. Regular snapshots are unaffected. ([5fb5102](https://github.com/Thorium-Sim/thorium/commit/5fb510253b9034e37135452bfcbbc703476816da))
+
 # [4.5.0](https://github.com/Thorium-Sim/thorium/compare/4.4.0...4.5.0) (2025-12-13)
 
 
