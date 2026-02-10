@@ -417,6 +417,8 @@ const resolver = {
     startFlight(rootQuery, {id = uuid.v4(), name, simulators, flightType}) {
       const simIds = simulators.map(
         (s: {simulatorId: string; missionId?: string; stationSet: string}) => {
+          // Create a snapshot restore before the flight is created
+          App.saveRestore();
           const template = cloneDeep(
             App.simulators.find(sim => sim.id === s.simulatorId),
           );
@@ -452,7 +454,7 @@ const resolver = {
       pubsub.publish("interfaceUpdate", App.interfaces);
 
       pubsub.publish("flightsUpdate", App.flights);
-      
+
       return id;
     },
     deleteFlight(rootQuery, {flightId}) {

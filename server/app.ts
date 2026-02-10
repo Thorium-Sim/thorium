@@ -200,6 +200,11 @@ class Events extends EventEmitter {
     const snap = this.trimSnapshot({...this});
     store.set(snap, null);
   }
+  saveRestore() {
+    this.snapshotVersion = this.version;
+    const snap = this.trimSnapshot({...this});
+    store.writeRestore(snap);
+  }
   trimSnapshot({
     eventsToEmit = null,
     newEvents = null,
