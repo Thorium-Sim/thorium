@@ -68,13 +68,13 @@ const hackerNames = [
 
 App.on(
   "computerCoreAddHacker",
-  ({id, simulatorId, level = Math.round(Math.random() * 9 + 1), cb}) => {
+  ({id, simulatorId, name, level = Math.round(Math.random() * 9 + 1), cb}) => {
     const computerCore = App.systems.find(
       s => s.class === "ComputerCore" && s.simulatorId === simulatorId,
     );
     if (!computerCore) return;
     computerCore.addUser({
-      name: randomFromList(hackerNames),
+      name: name || randomFromList(hackerNames),
       level,
       hacker: true,
     });

@@ -1,10 +1,17 @@
 // From jonschlinkert/data-store
 // Extracted to replace debounce with throttle
 
-import { writeFile as _writeFile, readFileSync, existsSync, mkdirSync, unlinkSync } from "fs";
-import { homedir } from "os";
-import { join, dirname as _dirname, relative, sep } from "path";
-import { strictEqual } from "assert";
+import {
+  writeFile as _writeFile,
+  readFileSync,
+  readdirSync,
+  existsSync,
+  mkdirSync,
+  unlinkSync,
+} from "fs";
+import {homedir} from "os";
+import path, {join, dirname as _dirname, relative, sep} from "path";
+import {strictEqual} from "assert";
 const XDG_CONFIG_HOME = process.env.XDG_CONFIG_HOME;
 import throttle from "./throttle";
 const flatten = (...args) => [].concat.apply([], args);
@@ -252,7 +259,7 @@ class Store {
    * @api public
    */
 
-  json(replacer = null, space = this.indent) {
+  json(data, replacer = null, space = this.indent) {
     function stringify(obj, replacer, spaces, cycleReplacer) {
       return JSON.stringify(obj, serializer(replacer, cycleReplacer), spaces);
     }
@@ -281,7 +288,7 @@ class Store {
         return replacer == null ? value : replacer.call(this, key, value);
       };
     }
-    return stringify(this.data, replacer, space);
+    return stringify(data, replacer, space);
   }
 
   /**
@@ -317,21 +324,46 @@ class Store {
 
   writeFile() {
     mkdir(_dirname(this.path), this.options.mkdir);
-    const jsonData = this.json();
+    const jsonData = this.json(this.data);
+
+    _writeFile(this.path, jsonData, {mode: 0o0600}, err => {
+      if (err) {
+        console.error(err);
+      }
+    });
+  }
+
+  writeRestore(data) {
+    mkdir(_dirname(this.path), this.options.mkdir);
+    const jsonData = this.json(data);
+
+    // Get all of the restore files and keep the oldest 10
+    const filePath = _dirname(this.path);
+    readdirSync(filePath)
+      .filter(f => f.includes("-restore-"))
+      .sort((a, b) => {
+        const timestampA = Number(
+          a.slice(a.indexOf("-restore-") + 9),
+          a.indexOf(".json"),
+        );
+        const timestampB = Number(
+          b.slice(b.indexOf("-restore-") + 9),
+          b.indexOf(".json"),
+        );
+
+        return timestampB - timestampA;
+      })
+      .slice(10)
+      .forEach(filename => unlinkSync(join(filePath, filename)));
+
     _writeFile(
-      this.path.replace(".json", "-restore.json"),
+      this.path.replace(".json", `-restore-${Date.now()}.json`),
       jsonData,
       {mode: 0o0600},
       err => {
         if (err) {
           console.error(err);
         }
-
-        _writeFile(this.path, jsonData, {mode: 0o0600}, err => {
-          if (err) {
-            console.error(err);
-          }
-        });
       },
     );
   }
