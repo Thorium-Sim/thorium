@@ -22,7 +22,7 @@ const StationPicker: React.FC<StationPickerProps> = ({stationSet}) => {
     if (!prop) {
       navigate("../");
     }
-    navigate(`${selectedStation ? "../" : ""}${prop}`);
+    navigate(`${selectedStation ? "../Stations/" + stationSet.id + "/" : ""}${prop}`);
   }
 
   const [addStationMutation] = useAddStationMutation();
