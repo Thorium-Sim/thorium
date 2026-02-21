@@ -5,7 +5,7 @@ import {graphql, withApollo} from "react-apollo";
 import Tour from "helpers/tourHelper";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
-//import DamageOverlay from '../helpers/DamageOverlay';
+import DamageOverlay from '../helpers/DamageOverlay';
 import "./style.scss";
 export {default as PhaserFire} from "./phaserFire";
 
@@ -159,6 +159,7 @@ class PhaserCharging extends Component {
             })
           }
         />
+        <DamageOverlay system={phasers} message={`${phasers.name} Offline`} />
         <Row>
           <Col sm="2">
             <p>{name} Banks</p>
