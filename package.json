@@ -190,7 +190,7 @@
     "simplex-noise": "^2.4.0",
     "subscriptions-transport-ws": "^0.9.16",
     "three": "^0.116.1",
-    "uuid": "^3.3.3",
+    "uuid": "^14.0.0",
     "winston": "^3.8.1",
     "yauzl": "^2.10.0",
     "yazl": "^2.5.1",
