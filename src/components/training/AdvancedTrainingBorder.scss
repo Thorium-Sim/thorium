@@ -1,0 +1,291 @@
+// ── Isolation boundary (portal into document.body) ──
+.advanced-training-isolation {
+  all: initial;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10000001;
+  pointer-events: none;
+  isolation: isolate;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #e0f7fa;
+  box-sizing: border-box;
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+}
+
+.advanced-training-overlay {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  border: 2px solid rgba(0, 188, 212, 0.5);
+  border-radius: 2px;
+  box-shadow: 0 0 10px rgba(0, 188, 212, 0.3), inset 0 0 10px rgba(0, 188, 212, 0.05);
+}
+
+// ── Top bar ──
+.advanced-training-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  height: 36px;
+  background: linear-gradient(180deg, rgba(0, 188, 212, 0.85), rgba(0, 188, 212, 0.4));
+  border-bottom: 1px solid rgba(0, 188, 212, 0.6);
+  padding: 0 8px;
+  pointer-events: all;
+}
+
+.advanced-training-controls {
+  display: flex;
+  gap: 4px;
+}
+
+.advanced-training-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 188, 212, 0.15);
+  border: 1px solid rgba(0, 188, 212, 0.4);
+  border-radius: 4px;
+  color: #b2ebf2;
+  cursor: pointer;
+  padding: 4px 8px;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  transition: all 0.2s;
+
+  &:hover {
+    background: rgba(0, 188, 212, 0.3);
+    color: #e0f7fa;
+  }
+
+  &.active {
+    background: rgba(0, 188, 212, 0.4);
+    color: #ffffff;
+    border-color: #00bcd4;
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+}
+
+.advanced-training-close {
+  margin-left: auto;
+  background: rgba(244, 67, 54, 0.15);
+  border-color: rgba(244, 67, 54, 0.4);
+  color: #ef9a9a;
+
+  &:hover {
+    background: rgba(244, 67, 54, 0.3);
+    color: #ffcdd2;
+  }
+}
+
+// ── Status area (chapter name + progress bar) ──
+.advanced-training-status {
+  flex: 1;
+  text-align: center;
+  color: #b2ebf2;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 0 12px;
+}
+
+.advanced-training-chapter-name {
+  color: #e0f7fa;
+}
+
+// ── Feature 4: Progress bar ──
+.advanced-training-progress-bar {
+  width: 100%;
+  max-width: 200px;
+  height: 4px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.advanced-training-progress-fill {
+  height: 100%;
+  background: #b2ebf2;
+  border-radius: 2px;
+  transition: width 0.4s ease;
+
+  &.complete {
+    background: #4caf50;
+  }
+}
+
+// ── Feature 1: Hint bar ──
+.advanced-training-hint-bar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 5px 12px;
+  background: rgba(0, 0, 0, 0.6);
+  border-bottom: 1px solid rgba(0, 188, 212, 0.2);
+  pointer-events: all;
+  min-height: 28px;
+
+  .hint-task-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: #80deea;
+    white-space: nowrap;
+    flex-shrink: 0;
+
+    &::after {
+      content: "—";
+      margin-left: 10px;
+      color: rgba(0, 188, 212, 0.3);
+    }
+  }
+
+  .hint-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .hint-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    padding: 1px 6px;
+    border-radius: 3px;
+
+    svg {
+      flex-shrink: 0;
+    }
+
+    &.pending {
+      color: #e0f7fa;
+      background: rgba(0, 188, 212, 0.1);
+      border: 1px solid rgba(0, 188, 212, 0.25);
+
+      svg {
+        color: rgba(0, 188, 212, 0.5);
+      }
+    }
+
+    &.done {
+      color: #81c784;
+      background: rgba(76, 175, 80, 0.1);
+      border: 1px solid rgba(76, 175, 80, 0.2);
+      text-decoration: line-through;
+      opacity: 0.7;
+    }
+  }
+}
+
+// ── Body ──
+.advanced-training-overlay-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.advanced-training-sidebar {
+  width: 0;
+  overflow: hidden;
+  flex-shrink: 0;
+  transition: width 0.25s ease;
+  pointer-events: all;
+
+  &.open {
+    width: 300px;
+  }
+}
+
+.advanced-training-passthrough {
+  flex: 1;
+  pointer-events: none;
+}
+
+// ── Features 2 & 3: Toast notifications ──
+.advanced-training-toasts {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+  z-index: 4000;
+}
+
+.training-toast {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  animation: toastIn 0.3s ease-out;
+  pointer-events: none;
+
+  // Action confirmed (small, subtle)
+  &.action {
+    background: rgba(76, 175, 80, 0.85);
+    color: #fff;
+    padding: 6px 12px;
+    font-size: 12px;
+    box-shadow: 0 2px 12px rgba(76, 175, 80, 0.4);
+  }
+
+  // Sub-chapter complete (medium)
+  &.subChapter {
+    background: rgba(0, 188, 212, 0.9);
+    color: #fff;
+    font-size: 14px;
+    box-shadow: 0 2px 16px rgba(0, 188, 212, 0.5);
+  }
+
+  // Chapter complete (large, celebratory)
+  &.chapter {
+    background: linear-gradient(135deg, rgba(255, 193, 7, 0.95), rgba(255, 152, 0, 0.95));
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 10px 20px;
+    box-shadow: 0 4px 24px rgba(255, 152, 0, 0.5);
+    letter-spacing: 0.5px;
+  }
+}
+
+@keyframes toastIn {
+  0% {
+    opacity: 0;
+    transform: translateY(16px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

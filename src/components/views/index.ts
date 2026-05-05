@@ -230,6 +230,7 @@ const HullPlatingCore = React.lazy(() => import("./HullPlating/core"));
 const EdVenturesAppCore = React.lazy(() => import("./EdVenturesApp/core"));
 const AdvancedNavigationCore = React.lazy(() => import("./AdvancedNavAndAstrometrics/CoreAdvancedNavigation"));
 const AstrometricsCore = React.lazy(() => import("./AdvancedNavAndAstrometrics/CoreAstrometrics"));
+const AdvancedTrainingCore = React.lazy(() => import("./AdvancedTraining/core"));
 // Widgets
 const ComposerWidget = React.lazy(() => import("./LongRangeComm/Composer"));
 const CalculatorWidget = React.lazy(() => import("./Widgets/calculator"));
@@ -543,7 +544,8 @@ export const Cores = {
   HullPlatingCore,
   EdVenturesAppCore,
   AdvancedNavigationCore,
-  AstrometricsCore
+  AstrometricsCore,
+  AdvancedTrainingCore
 };
 
 export default Views;

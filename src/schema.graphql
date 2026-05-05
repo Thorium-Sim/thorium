@@ -61,6 +61,86 @@ type AdvancedNavStarsData {
   activating: Boolean!
 }
 
+type AdvancedTrainingChapter {
+  id: ID!
+  name: String!
+  cardComponent: String!
+  mediaAsset: String
+  autoOpenMedia: Boolean!
+  autoAdvance: Boolean!
+  cardSwitchBehavior: String!
+  mediaSize: String!
+  mediaPosition: String!
+  subChapters: [AdvancedTrainingSubChapter!]!
+}
+
+input AdvancedTrainingChapterInput {
+  id: ID
+  name: String!
+  cardComponent: String!
+  mediaAsset: String
+  autoOpenMedia: Boolean
+  autoAdvance: Boolean
+  cardSwitchBehavior: String
+  mediaSize: String
+  mediaPosition: String
+  subChapters: [AdvancedTrainingSubChapterInput!]
+}
+
+type AdvancedTrainingConfig {
+  enabled: Boolean!
+  sequentialChapters: Boolean!
+  chapters: [AdvancedTrainingChapter!]!
+  loginChapter: AdvancedTrainingChapter
+  completionChapter: AdvancedTrainingChapter
+}
+
+input AdvancedTrainingConfigInput {
+  enabled: Boolean
+  sequentialChapters: Boolean
+  chapters: [AdvancedTrainingChapterInput!]
+  loginChapter: AdvancedTrainingChapterInput
+  completionChapter: AdvancedTrainingChapterInput
+}
+
+type AdvancedTrainingProgress {
+  id: ID!
+  clientId: ID!
+  simulatorId: ID!
+  stationName: String!
+  activeChapterId: ID
+  activeSubChapterId: ID
+  completedChapterIds: [ID!]!
+  completedSubChapterIds: [ID!]!
+  observedActions: JSON
+  mediaViewerOpen: Boolean!
+  chapterListOpen: Boolean!
+}
+
+type AdvancedTrainingRequiredAction {
+  id: ID!
+  eventName: String!
+  args: JSON
+}
+
+input AdvancedTrainingRequiredActionInput {
+  id: ID
+  eventName: String!
+  args: JSON
+}
+
+type AdvancedTrainingSubChapter {
+  id: ID!
+  name: String!
+  requiredActions: [AdvancedTrainingRequiredAction!]!
+}
+
+input AdvancedTrainingSubChapterInput {
+  id: ID
+  name: String!
+  requiredActions: [AdvancedTrainingRequiredActionInput!]
+}
+
 type Ambiance {
   id: ID!
   name: String!
@@ -222,6 +302,7 @@ type Client {
   mobile: Boolean
   cards: [String]
   keypad: Keypad
+  advancedTrainingProgress: AdvancedTrainingProgress
 }
 
 type ColoredCoordinate {
@@ -1372,6 +1453,7 @@ type InternalComm implements SystemInterface {
   damage: Damage
   stealthFactor: Float
   locations: [Room]
+  log: [String]
 }
 
 input InventoryCount {
@@ -3203,6 +3285,42 @@ type Mutation {
   """Macro: Tasks: Activate Task Flow"""
   taskFlowActivate(id: ID!, simulatorId: ID!): String
   taskFlowAdvance(simulatorId: ID!): String
+
+  """Save the full advanced training configuration for a station."""
+  setStationAdvancedTraining(stationSetID: ID!, stationName: String!, config: AdvancedTrainingConfigInput!): String
+
+  """Toggle advanced training mode on a station set."""
+  toggleAdvancedTrainingMode(stationSetID: ID!, stationName: String!, enabled: Boolean!): String
+
+  """
+  Start an advanced training session for a client.
+  Sets up progress tracking and activates the first chapter.
+  """
+  clientStartAdvancedTraining(clientId: ID!): String
+
+  """Stop advanced training for a client."""
+  clientStopAdvancedTraining(clientId: ID!): String
+
+  """
+  Record a crew action during advanced training.
+  Checks against required actions and may trigger sub-chapter/chapter completion.
+  """
+  clientAdvancedTrainingAction(clientId: ID!, eventName: String!, args: JSON): String
+
+  """Set the active chapter for a client (crew navigation or FD override)."""
+  advancedTrainingSetActiveChapter(clientId: ID!, chapterId: ID!): String
+
+  """FD force-complete a sub-chapter for a client."""
+  fdCompleteTrainingSubChapter(clientId: ID!, subChapterId: ID!): String
+
+  """FD reset all training progress for a client."""
+  fdResetTrainingProgress(clientId: ID!): String
+
+  """Toggle the media viewer open/close for a client."""
+  advancedTrainingToggleMediaViewer(clientId: ID!, open: Boolean!): String
+
+  """Toggle the chapter list open/close for a client."""
+  advancedTrainingToggleChapterList(clientId: ID!, open: Boolean!): String
   entitySetAppearance(id: ID, color: String, meshType: MeshTypeEnum, modelAsset: String, materialMapAsset: String, ringMapAsset: String, cloudMapAsset: String, emissiveColor: String, emissiveIntensity: Float, scale: Float): String
   entityRemoveAppearance(id: ID!): String
   entitySetBehavior(id: ID!, behavior: Behaviors!, targetId: ID, destination: EntityCoordinatesInput): String
@@ -3938,6 +4056,7 @@ type Query {
   dmxConfig(id: ID!): DMXConfig
   dmxConfigs: [DMXConfig!]!
   taskFlows(simulatorId: ID): [TaskFlow!]!
+  advancedTrainingProgress(clientId: ID, simulatorId: ID): [AdvancedTrainingProgress!]!
 }
 
 type Railgun implements SystemInterface {
@@ -4630,6 +4749,7 @@ type Station {
   widgets: [String]
   cards(showHidden: Boolean): [Card!]
   ambiance: String
+  advancedTraining: AdvancedTrainingConfig
 }
 
 type StationSet {
@@ -4797,6 +4917,8 @@ type Subscription {
   dmxFixtures(simulatorId: ID, clientId: ID): [DMXFixture!]!
   dmxConfigs: [DMXConfig!]!
   taskFlows(simulatorId: ID): [TaskFlow!]!
+  advancedTrainingProgressUpdate(simulatorId: ID): [AdvancedTrainingProgress!]!
+  advancedTrainingConfigUpdate(stationSetID: ID): [StationSet!]!
 }
 
 type SubspaceField implements SystemInterface {

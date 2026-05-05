@@ -35,5 +35,69 @@ fragment SimulatorData on Simulator {
       assigned
       newStation
     }
+    advancedTraining {
+      enabled
+      sequentialChapters
+      chapters {
+        id
+        name
+        cardComponent
+        mediaAsset
+        autoOpenMedia
+        autoAdvance
+        cardSwitchBehavior
+        mediaSize
+        mediaPosition
+        subChapters {
+          id
+          name
+          requiredActions {
+            id
+            eventName
+            args
+          }
+        }
+      }
+      loginChapter {
+        id
+        name
+        cardComponent
+        mediaAsset
+        autoOpenMedia
+        autoAdvance
+        cardSwitchBehavior
+        mediaSize
+        mediaPosition
+        subChapters {
+          id
+          name
+          requiredActions {
+            id
+            eventName
+            args
+          }
+        }
+      }
+      completionChapter {
+        id
+        name
+        cardComponent
+        mediaAsset
+        autoOpenMedia
+        autoAdvance
+        cardSwitchBehavior
+        mediaSize
+        mediaPosition
+        subChapters {
+          id
+          name
+          requiredActions {
+            id
+            eventName
+            args
+          }
+        }
+      }
+    }
   }
 }

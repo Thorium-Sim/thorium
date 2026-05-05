@@ -1,0 +1,96 @@
+.advanced-training-media-viewer {
+  // Positioned relative to .advanced-training-overlay (position:relative),
+  // which is the full viewport. Sidebar open/close doesn't shift this.
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 240px;
+  z-index: 3000;
+  pointer-events: all;
+  background: rgba(0, 0, 0, 0.95);
+  border: 1px solid rgba(0, 188, 212, 0.4);
+  border-radius: 6px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+  cursor: grab;
+  user-select: none;
+  font-family: inherit;
+  color: #e0f7fa;
+
+  &:active {
+    cursor: grabbing;
+  }
+
+  .media-viewer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 10px;
+    border-bottom: 1px solid rgba(0, 188, 212, 0.2);
+    background: rgba(0, 188, 212, 0.08);
+  }
+
+  .media-viewer-title {
+    font-size: 11px;
+    color: #80deea;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .media-viewer-close {
+    background: none;
+    border: none;
+    color: #78909c;
+    cursor: pointer;
+    padding: 2px;
+    font-family: inherit;
+
+    &:hover {
+      color: #ef9a9a;
+    }
+  }
+
+  .media-viewer-body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .media-viewer-player {
+    width: 100%;
+    background: #000;
+    line-height: 0;
+
+    video {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  .media-viewer-controls {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 8px;
+    background: rgba(20, 20, 20, 0.95);
+
+    .media-control {
+      flex-shrink: 0;
+    }
+
+    .media-control--volume-range {
+      flex: 1;
+    }
+
+    .media-control--current-time,
+    .media-control--duration {
+      font-size: 10px;
+      color: #b0bec5;
+      min-width: 30px;
+      text-align: center;
+      font-family: inherit;
+    }
+
+    .media-control--volume {
+      width: 50px;
+    }
+  }
+}

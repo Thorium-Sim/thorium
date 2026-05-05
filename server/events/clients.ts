@@ -221,6 +221,26 @@ App.on("clientOfflineState", ({client, state}) => {
 });
 App.on("clientSetTraining", ({client, training}) => {
   const clientObj = App.clients.find(c => c.id === client);
+
+  // If the station has advanced training enabled, delegate to that system
+  if (training && clientObj?.simulatorId && clientObj?.station) {
+    const simulator = App.simulators.find(
+      (s: any) => s.id === clientObj.simulatorId,
+    );
+    const station = simulator?.stations?.find(
+      (s: any) => s.name === clientObj.station,
+    );
+    if (station?.advancedTraining?.enabled) {
+      App.handleEvent({clientId: client}, "clientStartAdvancedTraining");
+      return;
+    }
+  }
+
+  // If stopping training, also stop any advanced training session
+  if (!training) {
+    App.handleEvent({clientId: client}, "clientStopAdvancedTraining");
+  }
+
   clientObj.setTraining(training);
   pubsub.publish("clientChanged", App.clients);
 });
