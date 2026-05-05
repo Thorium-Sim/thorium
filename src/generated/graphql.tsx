@@ -1487,6 +1487,7 @@ export type InternalComm = SystemInterface & {
   damage?: Maybe<Damage>;
   stealthFactor?: Maybe<Scalars['Float']>;
   locations?: Maybe<Array<Maybe<Room>>>;
+  log?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
 export type InventoryCount = {

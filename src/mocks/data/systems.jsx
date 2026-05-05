@@ -3042,6 +3042,16 @@ query Reactors($simulatorId: ID!) {
       name: "Subspace Field",
       displayName: null,
       totalPower: 300,
+      power: {
+        power: 5,
+        powerLevels: [5],
+        __typename: "Power",
+      },
+      damage: {
+        damaged: false,
+        report: null,
+        __typename: "Damage",
+      },
       fore: {
         required: 50,
         value: 0,
