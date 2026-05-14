@@ -154,6 +154,7 @@ export interface AdvancedTrainingConfigParams {
   chapters?: ChapterParams[];
   loginChapter?: ChapterParams | null;
   completionChapter?: ChapterParams | null;
+  stripPosition?: "top" | "bottom";
 }
 
 export class AdvancedTrainingConfig {
@@ -162,6 +163,7 @@ export class AdvancedTrainingConfig {
   chapters: Chapter[];
   loginChapter: Chapter | null;
   completionChapter: Chapter | null;
+  stripPosition: "top" | "bottom";
 
   constructor(params: AdvancedTrainingConfigParams = {}) {
     this.enabled = params.enabled ?? false;
@@ -169,6 +171,7 @@ export class AdvancedTrainingConfig {
     this.chapters = (params.chapters || []).map(c => new Chapter(c));
     this.loginChapter = params.loginChapter ? new Chapter(params.loginChapter) : null;
     this.completionChapter = params.completionChapter ? new Chapter(params.completionChapter) : null;
+    this.stripPosition = params.stripPosition || "bottom";
   }
 
   setEnabled(enabled: boolean) {

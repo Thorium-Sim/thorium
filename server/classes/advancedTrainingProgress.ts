@@ -10,6 +10,7 @@ export interface AdvancedTrainingProgressParams {
   completedChapterIds?: string[];
   completedSubChapterIds?: string[];
   observedActions?: Record<string, string[]>;
+  globalObservedEvents?: string[];
   mediaViewerOpen?: boolean;
   chapterListOpen?: boolean;
 }
@@ -24,6 +25,7 @@ export class AdvancedTrainingProgress {
   completedChapterIds: string[];
   completedSubChapterIds: string[];
   observedActions: Record<string, string[]>;
+  globalObservedEvents: string[];
   mediaViewerOpen: boolean;
   chapterListOpen: boolean;
 
@@ -37,6 +39,7 @@ export class AdvancedTrainingProgress {
     this.completedChapterIds = params.completedChapterIds || [];
     this.completedSubChapterIds = params.completedSubChapterIds || [];
     this.observedActions = params.observedActions || {};
+    this.globalObservedEvents = params.globalObservedEvents || [];
     this.mediaViewerOpen = params.mediaViewerOpen ?? false;
     this.chapterListOpen = params.chapterListOpen ?? false;
   }
@@ -56,6 +59,12 @@ export class AdvancedTrainingProgress {
     }
     if (!this.observedActions[subChapterId].includes(eventName)) {
       this.observedActions[subChapterId].push(eventName);
+    }
+  }
+
+  observeEvent(eventName: string) {
+    if (!this.globalObservedEvents.includes(eventName)) {
+      this.globalObservedEvents.push(eventName);
     }
   }
 
@@ -93,6 +102,7 @@ export class AdvancedTrainingProgress {
     this.completedChapterIds = [];
     this.completedSubChapterIds = [];
     this.observedActions = {};
+    this.globalObservedEvents = [];
     this.mediaViewerOpen = false;
     this.chapterListOpen = false;
   }

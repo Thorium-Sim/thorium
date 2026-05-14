@@ -10,69 +10,227 @@
   pointer-events: none;
   isolation: isolate;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.4;
-  color: #e0f7fa;
+  color: #f5f5f5;
   box-sizing: border-box;
+
+  // Amber instructor-layer accent so training reads as a layer, not bridge UI
+  --training-accent: #ffb74d;
+  --training-accent-strong: #ffa726;
+  --training-accent-soft: rgba(255, 183, 77, 0.18);
+  --training-accent-edge: rgba(255, 183, 77, 0.45);
+  --training-surface: rgba(12, 14, 18, 0.88);
+  --training-text-dim: #b0bec5;
 
   *, *::before, *::after {
     box-sizing: border-box;
   }
 }
 
-.advanced-training-overlay {
-  position: relative;
+// ── Outside-click catcher for popovers (transparent, dismiss-only) ──
+.training-popover-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 64px; // exclude the bottom strip so strip buttons don't flicker on toggle
+  pointer-events: all;
+  background: transparent;
+  z-index: 1;
+
+  &--top {
+    top: 64px; // exclude the top strip instead
+    bottom: 0;
+  }
+}
+
+// ── Generic popover ──
+.training-popover {
+  position: fixed;
+  background: var(--training-surface);
+  border: 1px solid var(--training-accent-edge);
+  border-radius: 6px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  pointer-events: all;
+  z-index: 2;
+  backdrop-filter: blur(8px);
+  animation: trainingPopoverIn 0.18s ease-out;
+}
+
+.training-popover--chapters {
+  bottom: 80px;
+  left: 16px;
+  width: 340px;
+  max-height: 60vh;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 100%;
-  border: 2px solid rgba(0, 188, 212, 0.5);
-  border-radius: 2px;
-  box-shadow: 0 0 10px rgba(0, 188, 212, 0.3), inset 0 0 10px rgba(0, 188, 212, 0.05);
+
+  &-top {
+    bottom: auto;
+    top: 80px;
+  }
 }
 
-// ── Top bar ──
-.advanced-training-top-bar {
+@keyframes trainingPopoverIn {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ── Bottom strip (always visible during training) ──
+.training-strip {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  display: flex;
+  align-items: stretch;
+  background: var(--training-surface);
+  border-top: 1px solid var(--training-accent-edge);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.45);
+  pointer-events: all;
+  z-index: 3;
+  backdrop-filter: blur(8px);
+}
+
+.training-strip--top {
+  bottom: auto;
+  top: 0;
+  border-top: none;
+  border-bottom: 1px solid var(--training-accent-edge);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+
+  .training-strip__progress {
+    bottom: auto;
+    top: 0; // progress bar sits at the top edge of the top strip
+  }
+
+  .training-strip__main {
+    padding: 3px 16px 0 20px; // flip padding so it's above the progress bar
+  }
+}
+
+.training-strip__main {
+  flex: 1;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  flex-shrink: 0;
-  height: 36px;
-  background: linear-gradient(180deg, rgba(0, 188, 212, 0.85), rgba(0, 188, 212, 0.4));
-  border-bottom: 1px solid rgba(0, 188, 212, 0.6);
-  padding: 0 8px;
-  pointer-events: all;
+  gap: 16px;
+  padding: 0 16px 3px 20px; // bottom 3px reserves space for the progress bar
+  min-width: 0;
 }
 
-.advanced-training-controls {
+.training-strip__text {
   display: flex;
-  gap: 4px;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  flex-shrink: 0;
+  max-width: 40%;
 }
 
-.advanced-training-btn {
+.training-strip__eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--training-text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.training-strip__task {
+  font-size: 19px;
+  font-weight: 600;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: 0.2px;
+}
+
+.training-strip__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.training-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  padding: 3px 9px;
+  border-radius: 12px;
+  white-space: nowrap;
+  font-family: inherit;
+
+  svg {
+    flex-shrink: 0;
+  }
+
+  &.pending {
+    color: #fff3e0;
+    background: var(--training-accent-soft);
+    border: 1px solid var(--training-accent-edge);
+
+    svg {
+      color: var(--training-accent);
+    }
+  }
+
+  &.done {
+    color: #a5d6a7;
+    background: rgba(76, 175, 80, 0.12);
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    text-decoration: line-through;
+    opacity: 0.75;
+  }
+}
+
+.training-strip__controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 12px 3px 8px;
+  flex-shrink: 0;
+}
+
+.training-strip__btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 188, 212, 0.15);
-  border: 1px solid rgba(0, 188, 212, 0.4);
-  border-radius: 4px;
-  color: #b2ebf2;
+  background: transparent;
+  border: 1px solid var(--training-accent-edge);
+  border-radius: 6px;
+  color: var(--training-accent);
   cursor: pointer;
-  padding: 4px 8px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
   font-family: inherit;
-  font-size: inherit;
-  line-height: inherit;
-  transition: all 0.2s;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
 
-  &:hover {
-    background: rgba(0, 188, 212, 0.3);
-    color: #e0f7fa;
+  &:hover:not(:disabled) {
+    background: var(--training-accent-soft);
+    color: #fff3e0;
   }
 
   &.active {
-    background: rgba(0, 188, 212, 0.4);
-    color: #ffffff;
-    border-color: #00bcd4;
+    background: var(--training-accent-soft);
+    color: #fff3e0;
+    border-color: var(--training-accent);
   }
 
   &:disabled {
@@ -81,53 +239,31 @@
   }
 }
 
-.advanced-training-close {
-  margin-left: auto;
-  background: rgba(244, 67, 54, 0.15);
+.training-strip__btn--exit {
+  margin-left: 4px;
   border-color: rgba(244, 67, 54, 0.4);
   color: #ef9a9a;
 
-  &:hover {
-    background: rgba(244, 67, 54, 0.3);
+  &:hover:not(:disabled) {
+    background: rgba(244, 67, 54, 0.18);
     color: #ffcdd2;
   }
 }
 
-// ── Status area (chapter name + progress bar) ──
-.advanced-training-status {
-  flex: 1;
-  text-align: center;
-  color: #b2ebf2;
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  padding: 0 12px;
-}
-
-.advanced-training-chapter-name {
-  color: #e0f7fa;
-}
-
-// ── Feature 4: Progress bar ──
-.advanced-training-progress-bar {
-  width: 100%;
-  max-width: 200px;
-  height: 4px;
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 2px;
+// ── Progress bar (bottom edge of strip) ──
+.training-strip__progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: rgba(0, 0, 0, 0.45);
   overflow: hidden;
 }
 
-.advanced-training-progress-fill {
+.training-strip__progress-fill {
   height: 100%;
-  background: #b2ebf2;
-  border-radius: 2px;
+  background: var(--training-accent);
   transition: width 0.4s ease;
 
   &.complete {
@@ -135,107 +271,18 @@
   }
 }
 
-// ── Feature 1: Hint bar ──
-.advanced-training-hint-bar {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 5px 12px;
-  background: rgba(0, 0, 0, 0.6);
-  border-bottom: 1px solid rgba(0, 188, 212, 0.2);
-  pointer-events: all;
-  min-height: 28px;
-
-  .hint-task-name {
-    font-size: 12px;
-    font-weight: 600;
-    color: #80deea;
-    white-space: nowrap;
-    flex-shrink: 0;
-
-    &::after {
-      content: "—";
-      margin-left: 10px;
-      color: rgba(0, 188, 212, 0.3);
-    }
-  }
-
-  .hint-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    align-items: center;
-  }
-
-  .hint-action {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 12px;
-    padding: 1px 6px;
-    border-radius: 3px;
-
-    svg {
-      flex-shrink: 0;
-    }
-
-    &.pending {
-      color: #e0f7fa;
-      background: rgba(0, 188, 212, 0.1);
-      border: 1px solid rgba(0, 188, 212, 0.25);
-
-      svg {
-        color: rgba(0, 188, 212, 0.5);
-      }
-    }
-
-    &.done {
-      color: #81c784;
-      background: rgba(76, 175, 80, 0.1);
-      border: 1px solid rgba(76, 175, 80, 0.2);
-      text-decoration: line-through;
-      opacity: 0.7;
-    }
-  }
-}
-
-// ── Body ──
-.advanced-training-overlay-body {
-  display: flex;
-  flex: 1;
-  overflow: hidden;
-}
-
-.advanced-training-sidebar {
-  width: 0;
-  overflow: hidden;
-  flex-shrink: 0;
-  transition: width 0.25s ease;
-  pointer-events: all;
-
-  &.open {
-    width: 300px;
-  }
-}
-
-.advanced-training-passthrough {
-  flex: 1;
-  pointer-events: none;
-}
-
-// ── Features 2 & 3: Toast notifications ──
+// ── Toast notifications (moved to top to avoid colliding with strip) ──
 .advanced-training-toasts {
-  position: absolute;
-  bottom: 24px;
+  position: fixed;
+  top: 24px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   align-items: center;
   gap: 8px;
   pointer-events: none;
-  z-index: 4000;
+  z-index: 4;
 }
 
 .training-toast {
@@ -250,7 +297,6 @@
   animation: toastIn 0.3s ease-out;
   pointer-events: none;
 
-  // Action confirmed (small, subtle)
   &.action {
     background: rgba(76, 175, 80, 0.85);
     color: #fff;
@@ -259,22 +305,21 @@
     box-shadow: 0 2px 12px rgba(76, 175, 80, 0.4);
   }
 
-  // Sub-chapter complete (medium)
   &.subChapter {
-    background: rgba(0, 188, 212, 0.9);
-    color: #fff;
+    background: var(--training-accent-strong);
+    color: #1a1300;
     font-size: 14px;
-    box-shadow: 0 2px 16px rgba(0, 188, 212, 0.5);
+    font-weight: 600;
+    box-shadow: 0 2px 16px rgba(255, 167, 38, 0.5);
   }
 
-  // Chapter complete (large, celebratory)
   &.chapter {
-    background: linear-gradient(135deg, rgba(255, 193, 7, 0.95), rgba(255, 152, 0, 0.95));
-    color: #fff;
+    background: linear-gradient(135deg, var(--training-accent), var(--training-accent-strong));
+    color: #1a1300;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 700;
     padding: 10px 20px;
-    box-shadow: 0 4px 24px rgba(255, 152, 0, 0.5);
+    box-shadow: 0 4px 24px rgba(255, 152, 0, 0.55);
     letter-spacing: 0.5px;
   }
 }
@@ -282,7 +327,7 @@
 @keyframes toastIn {
   0% {
     opacity: 0;
-    transform: translateY(16px) scale(0.95);
+    transform: translateY(-12px) scale(0.95);
   }
   100% {
     opacity: 1;

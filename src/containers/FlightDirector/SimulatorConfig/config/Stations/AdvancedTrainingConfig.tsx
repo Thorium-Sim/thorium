@@ -23,7 +23,7 @@ import {
   SET_STATION_ADVANCED_TRAINING,
   TOGGLE_ADVANCED_TRAINING_MODE,
 } from "components/training/queries";
-import {getActionLabel} from "components/training/actionRegistry";
+import {getActionLabel, VIDEO_COMPLETE_EVENT} from "components/training/actionRegistry";
 import RecordActionsModal from "./RecordActionsModal";
 
 const MEDIA_POSITIONS = [
@@ -325,6 +325,38 @@ const ChapterEditor: React.FC<ChapterEditorProps> = ({
                     X
                   </Button>
                 </div>
+                {chapter.mediaAsset && (
+                  <div style={{paddingLeft: "28px"}}>
+                    <Label check style={{display: "flex", gap: "6px", fontSize: "12px", color: "#aaa"}}>
+                      <input
+                        type="checkbox"
+                        checked={(sub.requiredActions || []).some(
+                          (ra: any) => ra.eventName === VIDEO_COMPLETE_EVENT,
+                        )}
+                        onChange={e => {
+                          const current = sub.requiredActions || [];
+                          if (e.target.checked) {
+                            if (!current.some((ra: any) => ra.eventName === VIDEO_COMPLETE_EVENT)) {
+                              onUpdateSubChapter(sub.id, {
+                                requiredActions: [
+                                  ...current,
+                                  {id: `vc-${sub.id}`, eventName: VIDEO_COMPLETE_EVENT},
+                                ],
+                              });
+                            }
+                          } else {
+                            onUpdateSubChapter(sub.id, {
+                              requiredActions: current.filter(
+                                (ra: any) => ra.eventName !== VIDEO_COMPLETE_EVENT,
+                              ),
+                            });
+                          }
+                        }}
+                      />
+                      Require video to finish
+                    </Label>
+                  </div>
+                )}
                 {sub.requiredActions?.length > 0 && (
                   <div style={{paddingLeft: "28px", fontSize: "12px", color: "#aaa"}}>
                     Required:{" "}
@@ -370,6 +402,7 @@ const AdvancedTrainingConfig: React.FC = () => {
   // Local editing state
   const [editingChapters, setEditingChapters] = useState<any[] | null>(null);
   const [editingSequential, setEditingSequential] = useState<boolean | null>(null);
+  const [editingStripPosition, setEditingStripPosition] = useState<"top" | "bottom" | null>(null);
   const [editingLoginChapter, setEditingLoginChapter] = useState<any | null | undefined>(undefined);
   const [editingCompletionChapter, setEditingCompletionChapter] = useState<any | null | undefined>(undefined);
   const [expandedChapter, setExpandedChapter] = useState<string | null>(null);
@@ -401,6 +434,7 @@ const AdvancedTrainingConfig: React.FC = () => {
   const startEditing = () => {
     setEditingChapters(JSON.parse(JSON.stringify(chapters)));
     setEditingSequential(sequentialChapters);
+    setEditingStripPosition(advancedTraining?.stripPosition || "bottom");
     setEditingLoginChapter(
       advancedTraining?.loginChapter
         ? JSON.parse(JSON.stringify(advancedTraining.loginChapter))
@@ -416,6 +450,7 @@ const AdvancedTrainingConfig: React.FC = () => {
   const cancelEditing = () => {
     setEditingChapters(null);
     setEditingSequential(null);
+    setEditingStripPosition(null);
     setEditingLoginChapter(undefined);
     setEditingCompletionChapter(undefined);
     setExpandedChapter(null);
@@ -430,6 +465,7 @@ const AdvancedTrainingConfig: React.FC = () => {
         config: {
           enabled,
           sequentialChapters: editingSequential ?? sequentialChapters,
+          stripPosition: editingStripPosition ?? advancedTraining?.stripPosition ?? "bottom",
           chapters: editingChapters.map(serializeChapter),
           loginChapter: editingLogin ? serializeChapter(editingLogin) : null,
           completionChapter: editingCompletion
@@ -639,6 +675,8 @@ const AdvancedTrainingConfig: React.FC = () => {
             border: "1px solid rgba(0,188,212,0.3)",
             borderRadius: "4px",
             padding: "16px",
+            overflowY: "auto",
+            height: "85vh"
           }}
         >
           {!isEditing ? (
@@ -679,7 +717,7 @@ const AdvancedTrainingConfig: React.FC = () => {
             </>
           ) : (
             <>
-              <FormGroup style={{marginBottom: "12px"}}>
+              <FormGroup style={{marginBottom: "12px", display: "flex", gap: "24px", flexWrap: "wrap"}}>
                 <Label check style={{display: "flex", gap: "8px", fontWeight: 500}}>
                   <input
                     type="checkbox"
@@ -688,6 +726,25 @@ const AdvancedTrainingConfig: React.FC = () => {
                   />
                   Sequential chapters (lock until previous complete)
                 </Label>
+                <div style={{display: "flex", alignItems: "center", gap: "8px", fontWeight: 500}}>
+                  Training bar:
+                  <Label check style={{display: "flex", gap: "4px", marginBottom: 0, fontWeight: 400}}>
+                    <input
+                      type="radio"
+                      checked={(editingStripPosition ?? "bottom") === "bottom"}
+                      onChange={() => setEditingStripPosition("bottom")}
+                    />
+                    Bottom
+                  </Label>
+                  <Label check style={{display: "flex", gap: "4px", marginBottom: 0, fontWeight: 400}}>
+                    <input
+                      type="radio"
+                      checked={(editingStripPosition ?? "bottom") === "top"}
+                      onChange={() => setEditingStripPosition("top")}
+                    />
+                    Top
+                  </Label>
+                </div>
               </FormGroup>
 
               {/* Login chapter */}

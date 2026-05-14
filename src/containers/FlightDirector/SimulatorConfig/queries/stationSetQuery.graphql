@@ -24,6 +24,7 @@ subscription StationSetConfig {
       advancedTraining {
         enabled
         sequentialChapters
+        stripPosition
         chapters {
           id
           name

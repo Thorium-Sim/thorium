@@ -104,11 +104,13 @@ const SeekBar = withMediaProps(SeekBarComp);
 interface AdvancedTrainingMediaViewerProps {
   src: string;
   onClose: () => void;
+  onVideoEnd?: () => void;
   size?: "small" | "medium" | "large";
   position?: string;
 }
 
 const SIZE_WIDTHS = {small: 0.25, medium: 0.40, large: 0.60};
+const STRIP_HEIGHT = 64;
 
 function computeInitialPosition(
   position: string,
@@ -117,8 +119,8 @@ function computeInitialPosition(
   const viewerW = window.innerWidth * (SIZE_WIDTHS[size] || 0.25);
   const viewerH = 280;
   const margin = 16;
-  const contentH = window.innerHeight - 36;
   const contentW = window.innerWidth;
+  const contentH = window.innerHeight - STRIP_HEIGHT;
 
   const [vert, horiz] = position.split("-");
 
@@ -139,10 +141,12 @@ const VIDEO_EXTENSIONS = ["mov", "mp4", "ogv", "webm", "m4v"];
 
 const AdvancedTrainingMediaViewer: React.FC<
   AdvancedTrainingMediaViewerProps
-> = ({src, onClose, size = "small", position = "bottom-right"}) => {
+> = ({src, onClose, onVideoEnd, size = "small", position = "bottom-right"}) => {
   const [pos, setPos] = useState(() => computeInitialPosition(position, size));
   const [isDragging, setIsDragging] = useState(false);
   const dragStartRef = useRef({x: 0, y: 0, posX: 0, posY: 0});
+  const playerWrapperRef = useRef<HTMLDivElement>(null);
+  const videoEndFiredRef = useRef(false);
 
   const ext = (src.match(/\.([^.]+)$/)?.[1] || "").toLowerCase();
   const isVideo = VIDEO_EXTENSIONS.includes(ext);
@@ -163,6 +167,37 @@ const AdvancedTrainingMediaViewer: React.FC<
     },
     [pos],
   );
+
+  // Fire onVideoEnd once when the video's ended event fires
+  useEffect(() => {
+    if (!onVideoEnd || !isVideo) return;
+    const wrapper = playerWrapperRef.current;
+    if (!wrapper) return;
+
+    const attachListener = () => {
+      const video = wrapper.querySelector("video");
+      if (!video) return;
+      const handleEnded = () => {
+        if (!videoEndFiredRef.current) {
+          videoEndFiredRef.current = true;
+          onVideoEnd();
+        }
+      };
+      video.addEventListener("ended", handleEnded);
+      return () => video.removeEventListener("ended", handleEnded);
+    };
+
+    // The video element may not exist immediately; poll briefly
+    let cleanup: (() => void) | undefined;
+    const timer = setTimeout(() => {
+      cleanup = attachListener();
+    }, 200);
+
+    return () => {
+      clearTimeout(timer);
+      cleanup?.();
+    };
+  }, [onVideoEnd, isVideo]);
 
   useEffect(() => {
     if (!isDragging) return;
@@ -228,6 +263,7 @@ const AdvancedTrainingMediaViewer: React.FC<
         {({playPause}: {playPause: () => void}) => (
           <div className="media-viewer-body">
             <div
+              ref={playerWrapperRef}
               className="media-viewer-player"
               style={{display: isVideo ? "block" : "none"}}
             >

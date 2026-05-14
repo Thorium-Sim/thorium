@@ -40,6 +40,11 @@ const TOAST_DURATION: Record<Toast["type"], number> = {
   chapter: 3500,
 };
 
+// Selector matching every training-UI element so the document click capture
+// records crew interactions with the card, not clicks on training chrome.
+const TRAINING_UI_SELECTOR =
+  ".training-strip, .training-popover, .training-popover-backdrop, .advanced-training-toasts, .advanced-training-media-viewer";
+
 const AdvancedTrainingBorder: React.FC<AdvancedTrainingBorderProps> = ({
   clientId,
   simulatorId,
@@ -77,9 +82,8 @@ const AdvancedTrainingBorder: React.FC<AdvancedTrainingBorderProps> = ({
   const isActiveRef = useRef(isInAdvancedTraining);
   isActiveRef.current = isInAdvancedTraining;
 
-  // Capture clicks on card elements via the document (capture phase) so the
-  // overlay's pointer-events:none doesn't prevent recording. Clicks on training
-  // UI itself are skipped by checking the overlay root class.
+  // Capture clicks on card elements via the document (capture phase). Clicks
+  // on training UI itself are skipped via TRAINING_UI_SELECTOR.
   useEffect(() => {
     if (!isInAdvancedTraining) return;
 
@@ -87,8 +91,7 @@ const AdvancedTrainingBorder: React.FC<AdvancedTrainingBorderProps> = ({
       if (!isActiveRef.current) return;
       const target = e.target as HTMLElement;
 
-      // Skip clicks on training UI elements
-      if (target.closest(".advanced-training-overlay")) return;
+      if (target.closest(TRAINING_UI_SELECTOR)) return;
 
       const interactive = target.closest(
         "button, a, [role='button'], input, select, .btn",
@@ -124,22 +127,29 @@ const AdvancedTrainingBorder: React.FC<AdvancedTrainingBorderProps> = ({
     return () => document.removeEventListener("click", handleDocumentClick, true);
   }, [isInAdvancedTraining]);
 
-  // Auto-open chapter list briefly when the active chapter changes
+  // Toast briefly when the active chapter changes (replaces the old auto-open
+  // chapter list — strip already shows the chapter name).
   const prevChapterIdRef = useRef<string | null>(null);
   useEffect(() => {
-    if (!progress) return;
+    if (!progress || !config) return;
     const prevId = prevChapterIdRef.current;
     const currentId = progress.activeChapterId;
     prevChapterIdRef.current = currentId;
 
-    if (prevId && currentId && prevId !== currentId && !progress.chapterListOpen) {
-      toggleChapterList(true);
-      const timeout = setTimeout(() => toggleChapterList(false), 4000);
-      return () => clearTimeout(timeout);
+    if (prevId && currentId && prevId !== currentId) {
+      const ch =
+        config.chapters?.find((c: any) => c.id === currentId) ||
+        (config.loginChapter?.id === currentId ? config.loginChapter : null) ||
+        (config.completionChapter?.id === currentId
+          ? config.completionChapter
+          : null);
+      if (ch) {
+        addToast(`Chapter: ${ch.name}`, "subChapter");
+      }
     }
   }, [progress?.activeChapterId]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ── Feature 3: Detect new observed actions → toast ──
+  // Toast on each newly observed action
   const prevObservedRef = useRef<Record<string, string[]>>({});
   useEffect(() => {
     if (!progress) return;
@@ -159,18 +169,16 @@ const AdvancedTrainingBorder: React.FC<AdvancedTrainingBorderProps> = ({
     prevObservedRef.current = current;
   }, [progress?.observedActions]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ── Feature 2: Detect sub-chapter & chapter completions → toast ──
+  // Toast on sub-chapter and chapter completions
   const prevCompletedSubsRef = useRef<string[]>([]);
   const prevCompletedChaptersRef = useRef<string[]>([]);
   useEffect(() => {
     if (!progress || !config) return;
 
-    // Sub-chapter completions
     const prevSubs = prevCompletedSubsRef.current;
     const currentSubs = progress.completedSubChapterIds || [];
     for (const subId of currentSubs) {
       if (!prevSubs.includes(subId)) {
-        // Find sub-chapter name
         const allSubs = getAllSubChapters(config);
         const sub = allSubs.find((s: any) => s.id === subId);
         if (sub) {
@@ -180,7 +188,6 @@ const AdvancedTrainingBorder: React.FC<AdvancedTrainingBorderProps> = ({
     }
     prevCompletedSubsRef.current = currentSubs;
 
-    // Chapter completions
     const prevChapters = prevCompletedChaptersRef.current;
     const currentChapters = progress.completedChapterIds || [];
     for (const chId of currentChapters) {
@@ -212,7 +219,6 @@ const AdvancedTrainingBorder: React.FC<AdvancedTrainingBorderProps> = ({
       ? config.completionChapter
       : null);
 
-  // ── Feature 1: Hints — pending actions for the active sub-chapter ──
   const activeSubChapter = activeChapter?.subChapters?.find(
     (sc: any) => sc.id === progress.activeSubChapterId,
   );
@@ -225,11 +231,18 @@ const AdvancedTrainingBorder: React.FC<AdvancedTrainingBorderProps> = ({
     (ra: any) => observedForSub.includes(ra.eventName),
   );
 
-  // ── Feature 4: Overall progress ──
   const allSubChapters = getAllSubChapters(config);
   const totalSubs = allSubChapters.length;
   const completedSubs = (progress.completedSubChapterIds || []).length;
-  const progressPercent = totalSubs > 0 ? Math.round((completedSubs / totalSubs) * 100) : 0;
+  const progressPercent =
+    totalSubs > 0 ? Math.round((completedSubs / totalSubs) * 100) : 0;
+
+  const heroTaskName =
+    activeSubChapter?.name ??
+    (activeChapter ? "Chapter overview" : "Training complete");
+  const anyPopoverOpen =
+    progress.chapterListOpen ||
+    (progress.mediaViewerOpen && !!activeChapter?.mediaAsset);
 
   return (
     <>
@@ -237,149 +250,182 @@ const AdvancedTrainingBorder: React.FC<AdvancedTrainingBorderProps> = ({
 
       {createPortal(
         <div className="advanced-training-isolation">
-          <div className="advanced-training-overlay">
-            {/* ── Top bar ── */}
-            <div className="advanced-training-top-bar">
-              <div className="advanced-training-controls">
-                <button
-                  className={`advanced-training-btn ${
-                    progress.chapterListOpen ? "active" : ""
-                  }`}
-                  onClick={() => toggleChapterList(!progress.chapterListOpen)}
-                  title="Training Chapters"
-                >
-                  <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-                    <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z" />
-                  </svg>
-                </button>
-                <button
-                  className={`advanced-training-btn ${
-                    progress.mediaViewerOpen ? "active" : ""
-                  }`}
-                  onClick={() => toggleMediaViewer(!progress.mediaViewerOpen)}
-                  title="Media Viewer"
-                  disabled={!activeChapter?.mediaAsset}
-                >
-                  <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                </button>
-              </div>
+          {/* Outside-click catcher — only rendered when a popover is open */}
+          {anyPopoverOpen && (
+            <div
+              className={`training-popover-backdrop${config.stripPosition === "top" ? " training-popover-backdrop--top" : ""}`}
+              onClick={() => {
+                if (progress.chapterListOpen) toggleChapterList(false);
+              }}
+            />
+          )}
 
-              {/* Chapter name + progress bar */}
-              <div className="advanced-training-status">
-                {activeChapter ? (
-                  <span className="advanced-training-chapter-name">
+          {/* Chapter list popover */}
+          {progress.chapterListOpen && (
+            <div className={`training-popover training-popover--chapters${config.stripPosition === "top" ? " training-popover--chapters-top" : ""}`}>
+              <AdvancedTrainingChapterList
+                config={config}
+                progress={progress}
+                onSelectChapter={setActiveChapter}
+              />
+            </div>
+          )}
+
+          {/* Media viewer popover */}
+          {progress.mediaViewerOpen && activeChapter?.mediaAsset && (
+            <AdvancedTrainingMediaViewer
+              key={progress.activeChapterId || "media"}
+              src={`/assets${activeChapter.mediaAsset}`}
+              onClose={() => toggleMediaViewer(false)}
+              onVideoEnd={() => recordAction("__videoComplete__")}
+              size={activeChapter.mediaSize || "small"}
+              position={activeChapter.mediaPosition || "bottom-right"}
+            />
+          )}
+
+          {/* Training strip — position driven by config */}
+          <div className={`training-strip${config.stripPosition === "top" ? " training-strip--top" : ""}`}>
+            <div className="training-strip__main">
+              <div className="training-strip__text">
+                {activeChapter && (
+                  <span className="training-strip__eyebrow">
                     {activeChapter.name}
                   </span>
-                ) : (
-                  <span>Training Complete</span>
                 )}
-                {totalSubs > 0 && (
-                  <div className="advanced-training-progress-bar">
-                    <div
-                      className={`advanced-training-progress-fill${
-                        progressPercent >= 100 ? " complete" : ""
-                      }`}
-                      style={{width: `${progressPercent}%`}}
-                    />
-                  </div>
-                )}
+                <span className="training-strip__task">{heroTaskName}</span>
               </div>
 
-              <button
-                className="advanced-training-btn advanced-training-close"
-                onClick={stopTraining}
-                title="Exit Training"
-              >
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-                  <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
-                </svg>
-              </button>
-            </div>
-
-            {/* ── Hint bar — shows pending actions for the active sub-chapter ── */}
-            {activeSubChapter && (activeSubChapter.requiredActions?.length > 0) && (
-              <div className="advanced-training-hint-bar">
-                {activeSubChapter.name && (
-                  <span className="hint-task-name">{activeSubChapter.name}</span>
-                )}
-                <div className="hint-actions">
+              {(pendingActions.length > 0 || completedActions.length > 0) && (
+                <div className="training-strip__chips">
                   {completedActions.map((ra: any) => (
-                    <span key={ra.id} className="hint-action done">
-                      <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor">
+                    <span key={ra.id} className="training-chip done">
+                      <svg
+                        viewBox="0 0 24 24"
+                        width="12"
+                        height="12"
+                        fill="currentColor"
+                      >
                         <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
                       </svg>
                       {getActionLabel(ra.eventName, activeChapter?.cardComponent)}
                     </span>
                   ))}
                   {pendingActions.map((ra: any) => (
-                    <span key={ra.id} className="hint-action pending">
-                      <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor">
+                    <span key={ra.id} className="training-chip pending">
+                      <svg
+                        viewBox="0 0 24 24"
+                        width="12"
+                        height="12"
+                        fill="currentColor"
+                      >
                         <circle cx="12" cy="12" r="5" />
                       </svg>
                       {getActionLabel(ra.eventName, activeChapter?.cardComponent)}
                     </span>
                   ))}
                 </div>
-              </div>
-            )}
-
-            {/* ── Body: sidebar + passthrough ── */}
-            <div className="advanced-training-overlay-body">
-              <div
-                className={`advanced-training-sidebar${
-                  progress.chapterListOpen ? " open" : ""
-                }`}
-              >
-                <AdvancedTrainingChapterList
-                  config={config}
-                  progress={progress}
-                  onSelectChapter={setActiveChapter}
-                  onClose={() => toggleChapterList(false)}
-                />
-              </div>
-
-              <div className="advanced-training-passthrough" />
+              )}
             </div>
 
-            {/* ── Media viewer ── */}
-            {progress.mediaViewerOpen && activeChapter?.mediaAsset && (
-              <AdvancedTrainingMediaViewer
-                key={progress.activeChapterId || "media"}
-                src={`/assets${activeChapter.mediaAsset}`}
-                onClose={() => toggleMediaViewer(false)}
-                size={activeChapter.mediaSize || "small"}
-                position={activeChapter.mediaPosition || "bottom-right"}
-              />
-            )}
+            <div className="training-strip__controls">
+              <button
+                className={`training-strip__btn ${
+                  progress.chapterListOpen ? "active" : ""
+                }`}
+                onClick={() => toggleChapterList(!progress.chapterListOpen)}
+                title="Training Chapters"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  width="20"
+                  height="20"
+                  fill="currentColor"
+                >
+                  <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z" />
+                </svg>
+              </button>
+              <button
+                className={`training-strip__btn ${
+                  progress.mediaViewerOpen ? "active" : ""
+                }`}
+                onClick={() => toggleMediaViewer(!progress.mediaViewerOpen)}
+                title="Media Viewer"
+                disabled={!activeChapter?.mediaAsset}
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  width="20"
+                  height="20"
+                  fill="currentColor"
+                >
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </button>
+              <button
+                className="training-strip__btn training-strip__btn--exit"
+                onClick={stopTraining}
+                title="Exit Training"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  width="18"
+                  height="18"
+                  fill="currentColor"
+                >
+                  <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                </svg>
+              </button>
+            </div>
 
-            {/* ── Toast notifications ── */}
-            {toasts.length > 0 && (
-              <div className="advanced-training-toasts">
-                {toasts.map(toast => (
-                  <div key={toast.id} className={`training-toast ${toast.type}`}>
-                    {toast.type === "action" && (
-                      <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
-                      </svg>
-                    )}
-                    {toast.type === "subChapter" && (
-                      <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-                      </svg>
-                    )}
-                    {toast.type === "chapter" && (
-                      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-                        <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm3.23 15.39L12 15.45l-3.22 1.94.85-3.66-2.83-2.45 3.74-.32L12 7.82l1.46 3.14 3.74.32-2.83 2.45.85 3.66z" />
-                      </svg>
-                    )}
-                    <span>{toast.message}</span>
-                  </div>
-                ))}
-              </div>
-            )}
+            <div className="training-strip__progress">
+              <div
+                className={`training-strip__progress-fill${
+                  progressPercent >= 100 ? " complete" : ""
+                }`}
+                style={{width: `${progressPercent}%`}}
+              />
+            </div>
           </div>
+
+          {toasts.length > 0 && (
+            <div className="advanced-training-toasts">
+              {toasts.map(toast => (
+                <div key={toast.id} className={`training-toast ${toast.type}`}>
+                  {toast.type === "action" && (
+                    <svg
+                      viewBox="0 0 24 24"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                    >
+                      <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                    </svg>
+                  )}
+                  {toast.type === "subChapter" && (
+                    <svg
+                      viewBox="0 0 24 24"
+                      width="18"
+                      height="18"
+                      fill="currentColor"
+                    >
+                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                    </svg>
+                  )}
+                  {toast.type === "chapter" && (
+                    <svg
+                      viewBox="0 0 24 24"
+                      width="20"
+                      height="20"
+                      fill="currentColor"
+                    >
+                      <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm3.23 15.39L12 15.45l-3.22 1.94.85-3.66-2.83-2.45 3.74-.32L12 7.82l1.46 3.14 3.74.32-2.83 2.45.85 3.66z" />
+                    </svg>
+                  )}
+                  <span>{toast.message}</span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>,
         document.body,
       )}

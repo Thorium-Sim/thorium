@@ -2,6 +2,7 @@ import App from "../app";
 import {pubsub} from "../helpers/subscriptionManager";
 import {AdvancedTrainingConfig} from "../classes/advancedTraining";
 import {AdvancedTrainingProgress} from "../classes/advancedTrainingProgress";
+import {CARD_PREREQUISITES} from "../classes/trainingPrerequisites";
 
 // Ensure the array exists on App
 if (!App.advancedTrainingProgress) {
@@ -51,6 +52,42 @@ function publishClientChanged() {
   pubsub.publish("clientChanged", App.clients);
 }
 
+// Register global listeners for prerequisite events so FD-fired mutations
+// (not just crew actions) unlock chapters as expected.
+const allPrerequisiteEvents = new Set<string>(
+  Object.values(CARD_PREREQUISITES).flat(),
+);
+
+for (const eventName of allPrerequisiteEvents) {
+  App.on(eventName, (args: any) => {
+    const simulatorId =
+      args?.simulatorId ||
+      (args?.clientId
+        ? App.clients.find((c: any) => c.id === args.clientId)?.simulatorId
+        : null);
+    if (!simulatorId) return;
+
+    const affected = (App.advancedTrainingProgress || []).filter(
+      (p: any) => p.simulatorId === simulatorId,
+    );
+    if (affected.length === 0) return;
+
+    for (const prog of affected) {
+      prog.observeEvent(eventName);
+    }
+    publishProgress();
+  });
+}
+
+// Auto-complete a chapter that has no subchapters immediately upon activation.
+function autoCompleteIfEmpty(progress: AdvancedTrainingProgress, chapter: any) {
+  if ((chapter.subChapters || []).length === 0) {
+    progress.completeChapter(chapter.id);
+    return true;
+  }
+  return false;
+}
+
 // --- Configuration events ---
 // These are handled by explicit mutation resolvers in the typeDef.
 // The event handlers here are no-ops; they exist so App.emit doesn't
@@ -87,6 +124,9 @@ App.on("clientStartAdvancedTraining", ({clientId}: any) => {
 
   App.advancedTrainingProgress.push(progress);
 
+  // Auto-complete the starting chapter if it has no subchapters
+  if (startChapter) autoCompleteIfEmpty(progress, startChapter);
+
   // Also set the legacy training flag so the system knows
   client.setTraining(true);
 
@@ -116,6 +156,9 @@ App.on("clientAdvancedTrainingAction", ({clientId, eventName, args}: any) => {
   );
   if (!progress || !progress.activeChapterId) return;
 
+  // Track every event globally for prerequisite checking
+  progress.observeEvent(eventName);
+
   const config = getClientTrainingConfig(clientId);
   if (!config) return;
 
@@ -136,6 +179,8 @@ App.on("clientAdvancedTrainingAction", ({clientId, eventName, args}: any) => {
     // Match on eventName alone — args like simulatorId, clientId, etc. will
     // always differ between the recording session and a live flight, so
     // strict arg comparison would never match.
+    // __videoComplete__ is a synthetic event fired by the media viewer and
+    // can be added as a required action just like any other event.
     const matchingAction = subChapter.requiredActions.find(
       (ra: any) => ra.eventName === eventName,
     );
@@ -189,8 +234,11 @@ App.on("clientAdvancedTrainingAction", ({clientId, eventName, args}: any) => {
 
             if (nextChapter) {
               progress.setActiveChapter(nextChapter.id);
-              const firstSub = nextChapter.subChapters[0];
-              progress.setActiveSubChapter(firstSub?.id || null);
+              // Auto-complete if the next chapter has no subchapters
+              if (!autoCompleteIfEmpty(progress, nextChapter)) {
+                const firstSub = nextChapter.subChapters[0];
+                progress.setActiveSubChapter(firstSub?.id || null);
+              }
 
               // Auto-open media if configured
               if (nextChapter.autoOpenMedia && nextChapter.mediaAsset) {
@@ -265,13 +313,25 @@ App.on("advancedTrainingSetActiveChapter", ({clientId, chapterId}: any) => {
     }
   }
 
+  // Block navigation to chapters whose system prerequisites haven't fired
+  if (!isSpecialChapter) {
+    const prerequisites = CARD_PREREQUISITES[chapter.cardComponent] || [];
+    const unmet = prerequisites.filter(
+      (evt: string) => !progress.globalObservedEvents.includes(evt),
+    );
+    if (unmet.length > 0) return;
+  }
+
   progress.setActiveChapter(chapterId);
-  const firstIncompleteSub = chapter.subChapters.find(
-    (sc: any) => !progress.isSubChapterComplete(sc.id),
-  );
-  progress.setActiveSubChapter(
-    firstIncompleteSub?.id || chapter.subChapters[0]?.id || null,
-  );
+  // Auto-complete chapter if it has no subchapters; otherwise seek first incomplete
+  if (!autoCompleteIfEmpty(progress, chapter)) {
+    const firstIncompleteSub = chapter.subChapters.find(
+      (sc: any) => !progress.isSubChapterComplete(sc.id),
+    );
+    progress.setActiveSubChapter(
+      firstIncompleteSub?.id || chapter.subChapters[0]?.id || null,
+    );
+  }
 
   // Auto-open media if configured
   if (chapter.autoOpenMedia && chapter.mediaAsset) {

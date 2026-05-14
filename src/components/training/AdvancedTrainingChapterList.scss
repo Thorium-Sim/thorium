@@ -1,14 +1,11 @@
 .advanced-training-chapter-list {
-  width: 300px;
+  // Sized by the .training-popover wrapper now
+  width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(8px);
-  border-right: 2px solid rgba(0, 188, 212, 0.4);
-  z-index: 2000;
   display: flex;
   flex-direction: column;
-  color: #e0f7fa;
-  font-size: 13px;
+  color: #f5f5f5;
+  font-size: 14px;
   font-family: inherit;
 
   .chapter-list-header {
@@ -16,35 +13,22 @@
     align-items: center;
     justify-content: space-between;
     padding: 12px 16px;
-    border-bottom: 1px solid rgba(0, 188, 212, 0.3);
+    border-bottom: 1px solid var(--training-accent-edge);
 
     h4 {
       margin: 0;
       font-size: 14px;
       font-weight: 600;
-      color: #00bcd4;
+      color: var(--training-accent);
       text-transform: uppercase;
       letter-spacing: 1px;
       font-family: inherit;
       // Reset any layout h4 overrides
       background: none;
       -webkit-background-clip: initial;
-      -webkit-text-fill-color: #00bcd4;
+      -webkit-text-fill-color: var(--training-accent);
       -webkit-text-stroke: 0;
       text-shadow: none;
-    }
-  }
-
-  .chapter-list-close {
-    background: none;
-    border: none;
-    color: #80deea;
-    cursor: pointer;
-    padding: 4px;
-    font-family: inherit;
-
-    &:hover {
-      color: #ffffff;
     }
   }
 
@@ -58,11 +42,19 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 
     &.active > .chapter-row {
-      background: rgba(0, 188, 212, 0.1);
+      background: var(--training-accent-soft);
     }
 
     &.locked {
       opacity: 0.45;
+
+      > .chapter-row {
+        cursor: not-allowed;
+      }
+    }
+
+    &.prereq-locked {
+      opacity: 0.55;
 
       > .chapter-row {
         cursor: not-allowed;
@@ -98,7 +90,7 @@
     transition: background 0.15s;
 
     &:hover {
-      background: rgba(0, 188, 212, 0.08);
+      background: rgba(255, 183, 77, 0.08);
     }
   }
 
@@ -116,20 +108,24 @@
     }
 
     &.active {
-      color: #00bcd4;
+      color: var(--training-accent);
     }
 
     &.pending {
-      color: #546e7a;
+      color: #78909c;
     }
 
     &.locked {
       color: #78909c;
     }
+
+    &.prereq-locked {
+      color: #607d8b;
+    }
   }
 
   .chapter-number {
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 600;
     color: inherit;
   }
@@ -149,15 +145,15 @@
   }
 
   .chapter-card {
-    font-size: 11px;
-    color: #78909c;
+    font-size: 12px;
+    color: #90a4ae;
   }
 
   .chapter-play-btn {
     background: none;
-    border: 1px solid rgba(0, 188, 212, 0.3);
+    border: 1px solid var(--training-accent-edge);
     border-radius: 50%;
-    color: #80deea;
+    color: var(--training-accent);
     cursor: pointer;
     width: 24px;
     height: 24px;
@@ -170,14 +166,14 @@
     transition: all 0.2s;
 
     &:hover {
-      background: rgba(0, 188, 212, 0.2);
-      color: #e0f7fa;
+      background: var(--training-accent-soft);
+      color: #fff3e0;
     }
   }
 
   .chapter-expand {
     display: flex;
-    color: #546e7a;
+    color: #78909c;
     transition: transform 0.2s;
 
     &.expanded {
@@ -198,7 +194,7 @@
 
     &.complete {
       .sub-chapter-name {
-        color: #78909c;
+        color: #90a4ae;
       }
     }
   }
@@ -224,7 +220,7 @@
   }
 
   .sub-chapter-name {
-    font-size: 12px;
-    color: #b0bec5;
+    font-size: 13px;
+    color: #cfd8dc;
   }
 }

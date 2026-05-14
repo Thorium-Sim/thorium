@@ -39,6 +39,7 @@ const schema = gql`
   type AdvancedTrainingConfig {
     enabled: Boolean!
     sequentialChapters: Boolean!
+    stripPosition: String!
     chapters: [AdvancedTrainingChapter!]!
     loginChapter: AdvancedTrainingChapter
     completionChapter: AdvancedTrainingChapter
@@ -54,6 +55,7 @@ const schema = gql`
     completedChapterIds: [ID!]!
     completedSubChapterIds: [ID!]!
     observedActions: JSON
+    globalObservedEvents: [String!]!
     mediaViewerOpen: Boolean!
     chapterListOpen: Boolean!
   }
@@ -86,6 +88,7 @@ const schema = gql`
   input AdvancedTrainingConfigInput {
     enabled: Boolean
     sequentialChapters: Boolean
+    stripPosition: String
     chapters: [AdvancedTrainingChapterInput!]
     loginChapter: AdvancedTrainingChapterInput
     completionChapter: AdvancedTrainingChapterInput
@@ -232,7 +235,7 @@ const resolver = {
       }
       station.advancedTraining.setEnabled(enabled);
       pubsub.publish("stationSetUpdate", App.stationSets);
-      return "";
+      pubsub.publish("advancedTrainingConfigUpdate", App.stationSets);
     },
     clientStartAdvancedTraining(rootValue: any, {clientId}: any) {
       // Handled by event handler

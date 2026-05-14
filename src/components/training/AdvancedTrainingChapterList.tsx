@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef} from "react";
 import {getCardLabel} from "./actionRegistry";
+import {CARD_PREREQUISITES} from "./trainingPrerequisites";
 import "./AdvancedTrainingChapterList.scss";
 
 interface ChapterListProps {
@@ -11,16 +12,15 @@ interface ChapterListProps {
     activeChapterId: string | null;
     completedChapterIds: string[];
     completedSubChapterIds: string[];
+    globalObservedEvents?: string[];
   };
   onSelectChapter: (chapterId: string) => void;
-  onClose: () => void;
 }
 
 const AdvancedTrainingChapterList: React.FC<ChapterListProps> = ({
   config,
   progress,
   onSelectChapter,
-  onClose,
 }) => {
   const [expandedChapters, setExpandedChapters] = useState<
     Record<string, boolean>
@@ -74,6 +74,13 @@ const AdvancedTrainingChapterList: React.FC<ChapterListProps> = ({
     }));
   };
 
+  const isPrerequisiteLocked = (chapter: any) => {
+    const prerequisites = CARD_PREREQUISITES[chapter.cardComponent] || [];
+    if (prerequisites.length === 0) return false;
+    const observed = progress.globalObservedEvents || [];
+    return prerequisites.some((evt: string) => !observed.includes(evt));
+  };
+
   const getChapterStatus = (chapter: any) => {
     if (progress.completedChapterIds.includes(chapter.id)) return "complete";
     if (progress.activeChapterId === chapter.id) return "active";
@@ -97,34 +104,26 @@ const AdvancedTrainingChapterList: React.FC<ChapterListProps> = ({
     <div className="advanced-training-chapter-list">
       <div className="chapter-list-header">
         <h4>Training Chapters</h4>
-        <button className="chapter-list-close" onClick={onClose}>
-          <svg
-            viewBox="0 0 24 24"
-            width="18"
-            height="18"
-            fill="currentColor"
-          >
-            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
-          </svg>
-        </button>
       </div>
       <div className="chapter-list-body">
         {config.chapters.map((chapter: any, idx: number) => {
           const status = getChapterStatus(chapter);
           const isExpanded = expandedChapters[chapter.id] || false;
           const locked = isChapterLocked(idx);
+          const prereqLocked = !locked && status === "pending" && isPrerequisiteLocked(chapter);
+          const isBlocked = locked || prereqLocked;
           const justCompleted = recentlyCompleted.has(chapter.id);
 
           return (
             <div
               key={chapter.id}
-              className={`chapter-item ${status}${locked ? " locked" : ""}${justCompleted ? " just-completed" : ""}`}
+              className={`chapter-item ${status}${locked ? " locked" : ""}${prereqLocked ? " prereq-locked" : ""}${justCompleted ? " just-completed" : ""}`}
             >
               <div
                 className="chapter-row"
-                onClick={() => !locked && toggleExpand(chapter.id)}
+                onClick={() => !isBlocked && toggleExpand(chapter.id)}
               >
-                <span className={`chapter-status-icon ${status}${locked ? " locked" : ""}`}>
+                <span className={`chapter-status-icon ${status}${locked ? " locked" : ""}${prereqLocked ? " prereq-locked" : ""}`}>
                   {locked ? (
                     <svg
                       viewBox="0 0 24 24"
@@ -133,6 +132,15 @@ const AdvancedTrainingChapterList: React.FC<ChapterListProps> = ({
                       fill="currentColor"
                     >
                       <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z" />
+                    </svg>
+                  ) : prereqLocked ? (
+                    <svg
+                      viewBox="0 0 24 24"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                    >
+                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
                     </svg>
                   ) : status === "complete" ? (
                     <svg
@@ -162,7 +170,7 @@ const AdvancedTrainingChapterList: React.FC<ChapterListProps> = ({
                     {getCardLabel(chapter.cardComponent)}
                   </span>
                 </div>
-                {!locked && (
+                {!isBlocked && (
                   <button
                     className="chapter-play-btn"
                     onClick={e => {
@@ -181,7 +189,7 @@ const AdvancedTrainingChapterList: React.FC<ChapterListProps> = ({
                     </svg>
                   </button>
                 )}
-                {chapter.subChapters?.length > 0 && !locked && (
+                {chapter.subChapters?.length > 0 && !isBlocked && (
                   <span
                     className={`chapter-expand ${isExpanded ? "expanded" : ""}`}
                   >
@@ -196,7 +204,7 @@ const AdvancedTrainingChapterList: React.FC<ChapterListProps> = ({
                   </span>
                 )}
               </div>
-              {isExpanded && !locked && chapter.subChapters?.length > 0 && (
+              {isExpanded && !isBlocked && chapter.subChapters?.length > 0 && (
                 <div className="sub-chapter-list">
                   {chapter.subChapters.map((sub: any) => {
                     const subStatus = getSubChapterStatus(sub);

@@ -38,6 +38,7 @@ fragment SimulatorData on Simulator {
     advancedTraining {
       enabled
       sequentialChapters
+      stripPosition
       chapters {
         id
         name

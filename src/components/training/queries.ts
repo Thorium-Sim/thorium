@@ -13,6 +13,7 @@ export const ADVANCED_TRAINING_PROGRESS_FRAGMENT = gql`
     completedChapterIds
     completedSubChapterIds
     observedActions
+    globalObservedEvents
     mediaViewerOpen
     chapterListOpen
   }

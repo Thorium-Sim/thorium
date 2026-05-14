@@ -132,6 +132,13 @@ const actionRegistry: CardActions[] = [
 ];
 
 /**
+ * Synthetic event fired by the media viewer when a video reaches the end.
+ * Add this as a requiredAction on a subchapter to require the crew to watch
+ * the training video before the subchapter counts as complete.
+ */
+export const VIDEO_COMPLETE_EVENT = "__videoComplete__";
+
+/**
  * Check if an event name represents a click action (vs a GraphQL mutation).
  */
 export function isClickAction(eventName: string): boolean {
@@ -145,6 +152,9 @@ export function getActionLabel(
   eventName: string,
   cardComponent?: string,
 ): string {
+  // Handle the video completion sentinel
+  if (eventName === VIDEO_COMPLETE_EVENT) return "Video finishes";
+
   // Handle click-type actions
   if (isClickAction(eventName)) {
     const text = eventName.slice("click:".length);
