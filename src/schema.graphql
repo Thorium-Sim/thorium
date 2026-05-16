@@ -1372,6 +1372,7 @@ type InternalComm implements SystemInterface {
   damage: Damage
   stealthFactor: Float
   locations: [Room]
+  log: [String]
 }
 
 input InventoryCount {

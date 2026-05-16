@@ -72,6 +72,9 @@ query GetAdvancedNavAndAstrometrics($simulatorId: ID!) {
           iconUrl
         }
         showName
+        arrivalMacros { id event args delay noCancelOnReset needsConfig }
+        leaveMacros { id event args delay noCancelOnReset needsConfig }
+        transitMacros { id event args delay noCancelOnReset needsConfig }
       }
       defaultStartingLocation {
         x
@@ -200,6 +203,9 @@ query GetAdvancedNavAndAstrometrics($simulatorId: ID!) {
           iconUrl
         }
         showName
+        arrivalMacros { id event args delay noCancelOnReset needsConfig }
+        leaveMacros { id event args delay noCancelOnReset needsConfig }
+        transitMacros { id event args delay noCancelOnReset needsConfig }
       }
       defaultStartingLocation {
         x
