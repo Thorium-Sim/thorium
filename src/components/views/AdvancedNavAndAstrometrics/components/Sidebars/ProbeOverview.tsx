@@ -5,6 +5,7 @@ import { ProbeInfoChild } from './ProbeInfo';
 import { Probe, ProbeAssignment } from 'containers/FlightDirector/FlightSets/types';
 import { countProbeFuelCells, PROBE_TYPE_MAP } from '../../helpers';
 import { formatSecondsToTime } from 'containers/FlightDirector/FlightSets/Time';
+import { ScrollableList } from '../ScrollableList';
 
 
 export type ProbeOverviewSidebarProps = {
@@ -62,19 +63,21 @@ export const ProbeOverviewSidebar: React.FC<ProbeOverviewSidebarProps> = (props)
     }, [currentProbeAssignment, props])
 
     return <div className='sidebar-parent'>
-        <div className='group-parent height-animation' style={{ height: selectedProbe ? '45%' : 'auto' }}>
-            <div className='grouping' style={{ flexGrow: 1, overflow: 'auto' }}>
-                {props.availableProbes.length === 0 && <span>No available probes, please launch more probes</span>}
-                {props.availableProbes.length > 0 && props.availableProbes.map(probe => {
-                    return <ProbeInfoChild
-                        key={probe.id}
-                        probe={probe}
-                        onClick={() => probe === selectedProbe ? setSelectedProbe(undefined) : setSelectedProbe(probe)}
-                        selected={selectedProbe?.id === probe.id}
-                        probeAssignment={props.probeAssignments.find(assignment => assignment.probeId === probe.id)}
-                    />
+        <div className='group-parent height-animation' style={{ height: selectedProbe ? '45%' : 'auto', overflow: 'hidden' }}>
+            <div className='grouping' style={{ flexGrow: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+                <ScrollableList scrollAmount={120}>
+                    {props.availableProbes.length === 0 && <span>No available probes, please launch more probes</span>}
+                    {props.availableProbes.length > 0 && props.availableProbes.map(probe => {
+                        return <ProbeInfoChild
+                            key={probe.id}
+                            probe={probe}
+                            onClick={() => probe === selectedProbe ? setSelectedProbe(undefined) : setSelectedProbe(probe)}
+                            selected={selectedProbe?.id === probe.id}
+                            probeAssignment={props.probeAssignments.find(assignment => assignment.probeId === probe.id)}
+                        />
 
-                })}
+                    })}
+                </ScrollableList>
             </div>
         </div>
         {<div className='group-parent height-animation' style={{ height: selectedProbe ? '45%' : 'auto' }}>

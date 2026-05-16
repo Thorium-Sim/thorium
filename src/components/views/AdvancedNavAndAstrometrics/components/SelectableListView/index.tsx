@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { SelectableListViewItem } from './item';
+import { ScrollableList } from '../ScrollableList';
 
 export type SelectableListViewProps = {
     selectedOption?: string;
@@ -32,8 +33,11 @@ export const SelectableListView: React.FC<SelectableListViewProps> = (props) => 
         return items;
     }, [props])
     return (
-        <div style={{ display: 'flex', flexDirection: 'row', height: '100%', flexWrap: 'wrap', justifyContent: 'center', width: '100%', gap: "5px", overflow: "auto" }}>
+        <ScrollableList
+            style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', width: '100%', gap: '5px', alignContent: 'flex-start' }}
+            scrollAmount={270}
+        >
             {visualArray}
-        </div>
+        </ScrollableList>
     )
 }

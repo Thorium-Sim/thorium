@@ -12,7 +12,8 @@
     margin: 0 0 10px;
     text-align: left;
     background-color: #00000088;
-    gap: 0.5rem
+    gap: 0.5rem;
+    touch-action: pan-y;
 }
 
 .sidebar-parent {
