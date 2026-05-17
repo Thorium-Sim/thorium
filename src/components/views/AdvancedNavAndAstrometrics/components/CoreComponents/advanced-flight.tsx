@@ -129,7 +129,14 @@ export const CoreAdvancedNavigation: React.FC<CoreAdvancedNavigationProps> = (pr
                             {currentlySelectedFlightSet?.pointsOfInterest.map(poi => <tr>
                                 <td><img src={poi.iconUrl} height={"30px"} draggable={false} alt={poi.name} /></td>
                                 <td>{poi.name}</td>
-                                <td><input type="checkbox" disabled={poi.isVisible} checked={poi.isVisible} onChange={(event) => {
+                                <td><input type="checkbox" checked={poi.isVisible} onChange={(event) => {
+                                    if (!event.target.checked && currentlySelectedFlightSet.id === props.currentFlightSet?.id && props.currentFlightPath) {
+                                        const isActiveTarget = props.currentFlightPath.targetLocationId === poi.id ||
+                                            props.currentFlightPath.secondaryRouteOptions?.some(opt => opt.targetLocationId === poi.id);
+                                        if (isActiveTarget && !window.confirm(`The ship is currently en route to "${poi.name}". Hide it anyway?`)) {
+                                            return;
+                                        }
+                                    }
                                     const indexOfPointOfInterest = currentlySelectedFlightSet.pointsOfInterest.findIndex(each => each.id === poi.id);
                                     let newFlightSet = JSON.parse(JSON.stringify({ ...currentlySelectedFlightSet })) as FlightSet;
                                     newFlightSet.pointsOfInterest[indexOfPointOfInterest].isVisible = event.target.checked;

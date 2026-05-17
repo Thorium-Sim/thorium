@@ -13,6 +13,7 @@ export type SelectableListViewOption = {
     title: string;
     description: React.ReactNode;
     imageUrl: string;
+    isInvalid?: boolean;
 }
 
 export const SelectableListView: React.FC<SelectableListViewProps> = (props) => {
@@ -22,6 +23,7 @@ export const SelectableListView: React.FC<SelectableListViewProps> = (props) => 
             items.push(
                 <SelectableListViewItem
                     isSelected={props.selectedOption === each.id}
+                    isInvalid={each.isInvalid}
                     onClick={() => props.onOptionSelected(props.selectedOption === each.id ? "" : each.id)}
                     key={each.id}
                     imgUrl={each.imageUrl}
