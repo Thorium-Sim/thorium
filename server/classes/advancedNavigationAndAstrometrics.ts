@@ -136,8 +136,6 @@ export default class AdvancedNavigationAndAstrometrics extends System {
                         probeAssignment.remainingFuelCellCount -= 1;
                         probeAssignment.currentLocation = probeAssignment.flightPathCoords[probeAssignment.flightPathCoords.length - 1];
                         probeAssignment.completed = true;
-                        // Fire processedData trigger so any configured sounds play
-                        App.handleEvent({ simulatorId: this.simulatorId, data: `Probe data received from ${probeAssignment.targetLocationName || 'target location'}`, flash: false }, 'processedData');
                     }
                     else {
                         probeAssignment.currentEta -= 1;
