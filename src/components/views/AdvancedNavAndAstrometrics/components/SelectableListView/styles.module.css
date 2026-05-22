@@ -19,3 +19,8 @@
 .selectable-list-item.selected {
     outline: double 10px white;
 }
+
+.selectable-list-item.invalid {
+    opacity: 0.45;
+    cursor: not-allowed;
+}

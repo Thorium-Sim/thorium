@@ -12221,6 +12221,15 @@ export type GetAdvancedNavAndAstrometricsQuery = (
         ), transitOptions?: Maybe<Array<(
           { __typename?: 'SecondaryStopTransitOption' }
           & Pick<SecondaryStopTransitOption, 'name' | 'timeModifier' | 'riskModifier' | 'iconUrl'>
+        )>>, arrivalMacros?: Maybe<Array<(
+          { __typename?: 'MacroAction' }
+          & Pick<MacroAction, 'id' | 'event' | 'args' | 'delay' | 'noCancelOnReset' | 'needsConfig'>
+        )>>, leaveMacros?: Maybe<Array<(
+          { __typename?: 'MacroAction' }
+          & Pick<MacroAction, 'id' | 'event' | 'args' | 'delay' | 'noCancelOnReset' | 'needsConfig'>
+        )>>, transitMacros?: Maybe<Array<(
+          { __typename?: 'MacroAction' }
+          & Pick<MacroAction, 'id' | 'event' | 'args' | 'delay' | 'noCancelOnReset' | 'needsConfig'>
         )>> }
       )>, defaultStartingLocation: (
         { __typename?: 'BasicCoordinate' }
@@ -12282,6 +12291,15 @@ export type GetAdvancedNavAndAstrometricsQuery = (
         ), transitOptions?: Maybe<Array<(
           { __typename?: 'SecondaryStopTransitOption' }
           & Pick<SecondaryStopTransitOption, 'name' | 'timeModifier' | 'riskModifier' | 'iconUrl'>
+        )>>, arrivalMacros?: Maybe<Array<(
+          { __typename?: 'MacroAction' }
+          & Pick<MacroAction, 'id' | 'event' | 'args' | 'delay' | 'noCancelOnReset' | 'needsConfig'>
+        )>>, leaveMacros?: Maybe<Array<(
+          { __typename?: 'MacroAction' }
+          & Pick<MacroAction, 'id' | 'event' | 'args' | 'delay' | 'noCancelOnReset' | 'needsConfig'>
+        )>>, transitMacros?: Maybe<Array<(
+          { __typename?: 'MacroAction' }
+          & Pick<MacroAction, 'id' | 'event' | 'args' | 'delay' | 'noCancelOnReset' | 'needsConfig'>
         )>> }
       )>, defaultStartingLocation: (
         { __typename?: 'BasicCoordinate' }
@@ -16702,6 +16720,30 @@ export const GetAdvancedNavAndAstrometricsDocument = gql`
           iconUrl
         }
         showName
+        arrivalMacros {
+          id
+          event
+          args
+          delay
+          noCancelOnReset
+          needsConfig
+        }
+        leaveMacros {
+          id
+          event
+          args
+          delay
+          noCancelOnReset
+          needsConfig
+        }
+        transitMacros {
+          id
+          event
+          args
+          delay
+          noCancelOnReset
+          needsConfig
+        }
       }
       defaultStartingLocation {
         x
@@ -16830,6 +16872,30 @@ export const GetAdvancedNavAndAstrometricsDocument = gql`
           iconUrl
         }
         showName
+        arrivalMacros {
+          id
+          event
+          args
+          delay
+          noCancelOnReset
+          needsConfig
+        }
+        leaveMacros {
+          id
+          event
+          args
+          delay
+          noCancelOnReset
+          needsConfig
+        }
+        transitMacros {
+          id
+          event
+          args
+          delay
+          noCancelOnReset
+          needsConfig
+        }
       }
       defaultStartingLocation {
         x
