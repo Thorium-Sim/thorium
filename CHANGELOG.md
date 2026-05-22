@@ -1,3 +1,17 @@
+# [4.7.0](https://github.com/Thorium-Sim/thorium/compare/4.6.0...4.7.0) (2026-05-22)
+
+
+### Bug Fixes
+
+* add subspace field damage and power loss overlay ([a1a6461](https://github.com/Thorium-Sim/thorium/commit/a1a6461a7b0d88a5194059084836eda3ef31e6b4))
+* macros now work with events from advanced navigation ([6b46811](https://github.com/Thorium-Sim/thorium/commit/6b468113772ddc16ff65b7b31bd493a255bcef18))
+
+
+### Features
+
+* added scrollable list for longer lists that struggle to scroll. ([e407863](https://github.com/Thorium-Sim/thorium/commit/e4078631a46e59ed7ccbac048b81855dac8333ab))
+* Allow flight directors to hide points of interest ([5b7b9b9](https://github.com/Thorium-Sim/thorium/commit/5b7b9b90406a9f341d4a4d8b91798c74a81c17b2))
+
 # [4.6.0](https://github.com/Thorium-Sim/thorium/compare/4.5.0...4.6.0) (2026-02-10)
 
 
