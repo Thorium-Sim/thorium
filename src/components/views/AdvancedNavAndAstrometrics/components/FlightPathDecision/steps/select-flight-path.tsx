@@ -49,6 +49,11 @@ export const SelectPath: React.FC<SelectPathProps> = (props) => {
         }
     }
 
+    const isFlightPathInvalid = (path: NamedNavigationRoute): boolean => {
+        if (!path.isBorder && locationMap[path.targetLocationId]?.isVisible === false) return true;
+        return path.secondaryRouteOptions?.some(opt => locationMap[opt.targetLocationId]?.isVisible === false) ?? false;
+    };
+
     const selectableOptions = useMemo<NamedNavigationRoute[]>(() => {
         const newPathOption: any = { id: ADD_NEW_ID, name: "Create new flight path" };
         return [newPathOption, ...props.navigationPathOptions]
@@ -77,16 +82,18 @@ export const SelectPath: React.FC<SelectPathProps> = (props) => {
                             imageUrl: PlusIcon
                         }
                     }
-                    else {
-                        return {
-                            id: each.id,
-                            title: each.name,
-                            description: <div style={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'center' }}>
-                                <SpeedIndex width="10rem" rating={generateSpeedIndex(currentLocation, generateEndingCoords(each), each.secondaryRouteOptions?.map((each) => locationMap[each.targetLocationId]) || [], each.speedOption)} />
-                                <RiskIndex width="10rem" rating={generateRiskIndex(each.isBorder ? borderIdMap[each.targetLocationId] : locationMap[each.targetLocationId], each.secondaryRouteOptions?.map((each) => locationMap[each.targetLocationId]) || [])} />
-                            </div>,
-                            imageUrl: each.isBorder ? borderIdMap[each.targetLocationId].iconUrl : locationMap[each.targetLocationId].iconUrl
-                        }
+                    const invalid = isFlightPathInvalid(each);
+                    return {
+                        id: each.id,
+                        title: each.name,
+                        isInvalid: invalid,
+                        description: !invalid ? <div style={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'center' }}>
+                            <SpeedIndex width="10rem" rating={generateSpeedIndex(currentLocation, generateEndingCoords(each), each.secondaryRouteOptions?.map((each) => locationMap[each.targetLocationId]) || [], each.speedOption)} />
+                            <RiskIndex width="10rem" rating={generateRiskIndex(each.isBorder ? borderIdMap[each.targetLocationId] : locationMap[each.targetLocationId], each.secondaryRouteOptions?.map((each) => locationMap[each.targetLocationId]) || [])} />
+                        </div> : "",
+                        imageUrl: each.isBorder
+                            ? (borderIdMap[each.targetLocationId]?.iconUrl ?? "")
+                            : (locationMap[each.targetLocationId]?.iconUrl ?? "")
                     }
                 })}
                 onOptionSelected={(option) => {

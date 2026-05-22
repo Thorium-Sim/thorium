@@ -13,7 +13,7 @@ const SimulatorConfigView: React.FC<SimulatorConfigProps> = ({sim}) => {
   const {subPath1: selectedStationSet} = useParams();
   const navigate = useNavigate();
   function setStationSet(stationSet: string) {
-    navigate(`${selectedStationSet ? "../" : ""}${stationSet}`);
+    navigate(`${selectedStationSet ? "../Stations/" : ""}${stationSet}`);
   }
 
   const client = useApolloClient();

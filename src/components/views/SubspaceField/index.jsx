@@ -11,6 +11,14 @@ const fragment = gql`
     name
     displayName
     totalPower
+    power {
+      power
+      powerLevels
+    }
+    damage {
+      damaged
+      report
+    }
     fore {
       required
       value

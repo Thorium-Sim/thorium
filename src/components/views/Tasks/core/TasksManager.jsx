@@ -128,7 +128,7 @@ class TasksManager extends Component {
                 <p>
                   <strong>Instructions:</strong>
                 </p>
-                <Card style={{whiteSpace: "pre-wrap"}}>
+                <Card style={{whiteSpace: "pre-wrap", userSelect: "text"}}>
                   {task.instructions}
                 </Card>
                 {!task.verified && (

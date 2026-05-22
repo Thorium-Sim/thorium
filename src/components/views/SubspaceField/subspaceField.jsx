@@ -4,6 +4,7 @@ import {capitalCase} from "change-case";
 import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import Tour from "helpers/tourHelper";
+import DamageOverlay from "../helpers/DamageOverlay";
 
 const subspaceSectors = [
   "fore",
@@ -38,6 +39,8 @@ class SubspaceField extends React.Component {
       simulator: {assets},
       totalPower,
       id,
+      name,
+      displayName,
       clientObj,
     } = this.props;
     const diff = () => {
@@ -57,6 +60,10 @@ class SubspaceField extends React.Component {
     );
     return (
       <div className="card-subspaceField">
+        <DamageOverlay
+          system={this.props}
+          message={`${displayName || name} Offline`}
+        />
         {subspaceSectors.map(s => (
           <div key={`sector-${s}`} className={`subspace-charge ${s}`}>
             <Mutation

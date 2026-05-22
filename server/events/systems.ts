@@ -73,6 +73,11 @@ const sendUpdate = sys => {
       "stealthFieldUpdate",
       App.systems.filter(s => s.type === "StealthField"),
     );
+  if (sys.type === "SubspaceField")
+    pubsub.publish(
+      "subspaceFieldUpdate",
+      App.systems.filter(s => s.type === "SubspaceField"),
+    );
   if (sys.type === "Railgun")
     pubsub.publish(
       "railgunUpdate",
