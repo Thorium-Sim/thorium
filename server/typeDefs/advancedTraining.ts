@@ -30,6 +30,7 @@ const schema = gql`
     mediaAsset: String
     autoOpenMedia: Boolean!
     autoAdvance: Boolean!
+    autoLogin: String!
     cardSwitchBehavior: String!
     mediaSize: String!
     mediaPosition: String!
@@ -79,6 +80,7 @@ const schema = gql`
     mediaAsset: String
     autoOpenMedia: Boolean
     autoAdvance: Boolean
+    autoLogin: String
     cardSwitchBehavior: String
     mediaSize: String
     mediaPosition: String

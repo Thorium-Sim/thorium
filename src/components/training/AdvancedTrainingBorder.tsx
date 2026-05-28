@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useCallback, useEffect, useRef} from "react";
 import {createPortal} from "react-dom";
 import {useAdvancedTraining} from "./useAdvancedTraining";
 import AdvancedTrainingChapterList from "./AdvancedTrainingChapterList";
@@ -28,18 +28,6 @@ function getAllSubChapters(config: any): any[] {
   return subs;
 }
 
-interface Toast {
-  id: string;
-  message: string;
-  type: "action" | "subChapter" | "chapter";
-}
-
-const TOAST_DURATION: Record<Toast["type"], number> = {
-  action: 1500,
-  subChapter: 2500,
-  chapter: 3500,
-};
-
 // Selector matching every training-UI element so the document click capture
 // records crew interactions with the card, not clicks on training chrome.
 const TRAINING_UI_SELECTOR =
@@ -66,15 +54,10 @@ const AdvancedTrainingBorder: React.FC<AdvancedTrainingBorderProps> = ({
     advancedTrainingConfig,
   });
 
-  // ── Toast notification state ──
-  const [toasts, setToasts] = useState<Toast[]>([]);
-  const addToast = (message: string, type: Toast["type"]) => {
-    const id = `${Date.now()}-${Math.random()}`;
-    setToasts(prev => [...prev, {id, message, type}]);
-    setTimeout(() => {
-      setToasts(prev => prev.filter(t => t.id !== id));
-    }, TOAST_DURATION[type]);
-  };
+  const onVideoEnd = useCallback(
+    () => recordAction("__videoComplete__"),
+    [recordAction],
+  );
 
   // Stable refs so the document listener never needs to re-register
   const recordActionRef = useRef(recordAction);
@@ -127,84 +110,6 @@ const AdvancedTrainingBorder: React.FC<AdvancedTrainingBorderProps> = ({
     return () => document.removeEventListener("click", handleDocumentClick, true);
   }, [isInAdvancedTraining]);
 
-  // Toast briefly when the active chapter changes (replaces the old auto-open
-  // chapter list — strip already shows the chapter name).
-  const prevChapterIdRef = useRef<string | null>(null);
-  useEffect(() => {
-    if (!progress || !config) return;
-    const prevId = prevChapterIdRef.current;
-    const currentId = progress.activeChapterId;
-    prevChapterIdRef.current = currentId;
-
-    if (prevId && currentId && prevId !== currentId) {
-      const ch =
-        config.chapters?.find((c: any) => c.id === currentId) ||
-        (config.loginChapter?.id === currentId ? config.loginChapter : null) ||
-        (config.completionChapter?.id === currentId
-          ? config.completionChapter
-          : null);
-      if (ch) {
-        addToast(`Chapter: ${ch.name}`, "subChapter");
-      }
-    }
-  }, [progress?.activeChapterId]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Toast on each newly observed action
-  const prevObservedRef = useRef<Record<string, string[]>>({});
-  useEffect(() => {
-    if (!progress) return;
-    const prev = prevObservedRef.current;
-    const current = progress.observedActions || {};
-
-    for (const subId of Object.keys(current)) {
-      const prevActions = prev[subId] || [];
-      const currentActions = current[subId] || [];
-      for (const action of currentActions) {
-        if (!prevActions.includes(action)) {
-          addToast(getActionLabel(action), "action");
-        }
-      }
-    }
-
-    prevObservedRef.current = current;
-  }, [progress?.observedActions]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Toast on sub-chapter and chapter completions
-  const prevCompletedSubsRef = useRef<string[]>([]);
-  const prevCompletedChaptersRef = useRef<string[]>([]);
-  useEffect(() => {
-    if (!progress || !config) return;
-
-    const prevSubs = prevCompletedSubsRef.current;
-    const currentSubs = progress.completedSubChapterIds || [];
-    for (const subId of currentSubs) {
-      if (!prevSubs.includes(subId)) {
-        const allSubs = getAllSubChapters(config);
-        const sub = allSubs.find((s: any) => s.id === subId);
-        if (sub) {
-          addToast(`${sub.name}`, "subChapter");
-        }
-      }
-    }
-    prevCompletedSubsRef.current = currentSubs;
-
-    const prevChapters = prevCompletedChaptersRef.current;
-    const currentChapters = progress.completedChapterIds || [];
-    for (const chId of currentChapters) {
-      if (!prevChapters.includes(chId)) {
-        const ch =
-          config.chapters?.find((c: any) => c.id === chId) ||
-          (config.loginChapter?.id === chId ? config.loginChapter : null) ||
-          (config.completionChapter?.id === chId
-            ? config.completionChapter
-            : null);
-        if (ch) {
-          addToast(`Chapter Complete: ${ch.name}`, "chapter");
-        }
-      }
-    }
-    prevCompletedChaptersRef.current = currentChapters;
-  }, [progress?.completedSubChapterIds, progress?.completedChapterIds]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!isInAdvancedTraining || !config || !progress) {
     return <>{children}</>;
@@ -240,23 +145,18 @@ const AdvancedTrainingBorder: React.FC<AdvancedTrainingBorderProps> = ({
   const heroTaskName =
     activeSubChapter?.name ??
     (activeChapter ? "Chapter overview" : "Training complete");
-  const anyPopoverOpen =
-    progress.chapterListOpen ||
-    (progress.mediaViewerOpen && !!activeChapter?.mediaAsset);
-
   return (
     <>
       {children}
 
       {createPortal(
         <div className="advanced-training-isolation">
-          {/* Outside-click catcher — only rendered when a popover is open */}
-          {anyPopoverOpen && (
+          {/* Outside-click catcher — only rendered when the chapter list is open.
+              The media viewer is a draggable floating window and does not need a backdrop. */}
+          {progress.chapterListOpen && (
             <div
               className={`training-popover-backdrop${config.stripPosition === "top" ? " training-popover-backdrop--top" : ""}`}
-              onClick={() => {
-                if (progress.chapterListOpen) toggleChapterList(false);
-              }}
+              onClick={() => toggleChapterList(false)}
             />
           )}
 
@@ -277,9 +177,10 @@ const AdvancedTrainingBorder: React.FC<AdvancedTrainingBorderProps> = ({
               key={progress.activeChapterId || "media"}
               src={`/assets${activeChapter.mediaAsset}`}
               onClose={() => toggleMediaViewer(false)}
-              onVideoEnd={() => recordAction("__videoComplete__")}
+              onVideoEnd={onVideoEnd}
               size={activeChapter.mediaSize || "small"}
               position={activeChapter.mediaPosition || "bottom-right"}
+              stripPosition={(config.stripPosition || "bottom") as "top" | "bottom"}
             />
           )}
 
@@ -387,45 +288,6 @@ const AdvancedTrainingBorder: React.FC<AdvancedTrainingBorderProps> = ({
             </div>
           </div>
 
-          {toasts.length > 0 && (
-            <div className="advanced-training-toasts">
-              {toasts.map(toast => (
-                <div key={toast.id} className={`training-toast ${toast.type}`}>
-                  {toast.type === "action" && (
-                    <svg
-                      viewBox="0 0 24 24"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                    >
-                      <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
-                    </svg>
-                  )}
-                  {toast.type === "subChapter" && (
-                    <svg
-                      viewBox="0 0 24 24"
-                      width="18"
-                      height="18"
-                      fill="currentColor"
-                    >
-                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-                    </svg>
-                  )}
-                  {toast.type === "chapter" && (
-                    <svg
-                      viewBox="0 0 24 24"
-                      width="20"
-                      height="20"
-                      fill="currentColor"
-                    >
-                      <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm3.23 15.39L12 15.45l-3.22 1.94.85-3.66-2.83-2.45 3.74-.32L12 7.82l1.46 3.14 3.74.32-2.83 2.45.85 3.66z" />
-                    </svg>
-                  )}
-                  <span>{toast.message}</span>
-                </div>
-              ))}
-            </div>
-          )}
         </div>,
         document.body,
       )}

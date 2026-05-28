@@ -85,6 +85,7 @@ export type AdvancedTrainingChapter = {
   mediaAsset?: Maybe<Scalars['String']>;
   autoOpenMedia: Scalars['Boolean'];
   autoAdvance: Scalars['Boolean'];
+  autoLogin: Scalars['String'];
   cardSwitchBehavior: Scalars['String'];
   mediaSize: Scalars['String'];
   mediaPosition: Scalars['String'];
@@ -98,6 +99,7 @@ export type AdvancedTrainingChapterInput = {
   mediaAsset?: Maybe<Scalars['String']>;
   autoOpenMedia?: Maybe<Scalars['Boolean']>;
   autoAdvance?: Maybe<Scalars['Boolean']>;
+  autoLogin?: Maybe<Scalars['String']>;
   cardSwitchBehavior?: Maybe<Scalars['String']>;
   mediaSize?: Maybe<Scalars['String']>;
   mediaPosition?: Maybe<Scalars['String']>;
@@ -108,6 +110,7 @@ export type AdvancedTrainingConfig = {
   __typename?: 'AdvancedTrainingConfig';
   enabled: Scalars['Boolean'];
   sequentialChapters: Scalars['Boolean'];
+  stripPosition: Scalars['String'];
   chapters: Array<AdvancedTrainingChapter>;
   loginChapter?: Maybe<AdvancedTrainingChapter>;
   completionChapter?: Maybe<AdvancedTrainingChapter>;
@@ -116,6 +119,7 @@ export type AdvancedTrainingConfig = {
 export type AdvancedTrainingConfigInput = {
   enabled?: Maybe<Scalars['Boolean']>;
   sequentialChapters?: Maybe<Scalars['Boolean']>;
+  stripPosition?: Maybe<Scalars['String']>;
   chapters?: Maybe<Array<AdvancedTrainingChapterInput>>;
   loginChapter?: Maybe<AdvancedTrainingChapterInput>;
   completionChapter?: Maybe<AdvancedTrainingChapterInput>;
@@ -132,6 +136,7 @@ export type AdvancedTrainingProgress = {
   completedChapterIds: Array<Scalars['ID']>;
   completedSubChapterIds: Array<Scalars['ID']>;
   observedActions?: Maybe<Scalars['JSON']>;
+  globalObservedEvents: Array<Scalars['String']>;
   mediaViewerOpen: Scalars['Boolean'];
   chapterListOpen: Scalars['Boolean'];
 };
@@ -12274,10 +12279,10 @@ export type SimulatorDataFragment = (
       & Pick<Card, 'name' | 'component' | 'hidden' | 'assigned' | 'newStation'>
     )>>, advancedTraining?: Maybe<(
       { __typename?: 'AdvancedTrainingConfig' }
-      & Pick<AdvancedTrainingConfig, 'enabled' | 'sequentialChapters'>
+      & Pick<AdvancedTrainingConfig, 'enabled' | 'sequentialChapters' | 'stripPosition'>
       & { chapters: Array<(
         { __typename?: 'AdvancedTrainingChapter' }
-        & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
+        & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'autoLogin' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
         & { subChapters: Array<(
           { __typename?: 'AdvancedTrainingSubChapter' }
           & Pick<AdvancedTrainingSubChapter, 'id' | 'name'>
@@ -12288,7 +12293,7 @@ export type SimulatorDataFragment = (
         )> }
       )>, loginChapter?: Maybe<(
         { __typename?: 'AdvancedTrainingChapter' }
-        & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
+        & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'autoLogin' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
         & { subChapters: Array<(
           { __typename?: 'AdvancedTrainingSubChapter' }
           & Pick<AdvancedTrainingSubChapter, 'id' | 'name'>
@@ -12299,7 +12304,7 @@ export type SimulatorDataFragment = (
         )> }
       )>, completionChapter?: Maybe<(
         { __typename?: 'AdvancedTrainingChapter' }
-        & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
+        & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'autoLogin' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
         & { subChapters: Array<(
           { __typename?: 'AdvancedTrainingSubChapter' }
           & Pick<AdvancedTrainingSubChapter, 'id' | 'name'>
@@ -15712,10 +15717,10 @@ export type StationSetConfigSubscription = (
         & Pick<Card, 'name' | 'component'>
       )>>, advancedTraining?: Maybe<(
         { __typename?: 'AdvancedTrainingConfig' }
-        & Pick<AdvancedTrainingConfig, 'enabled' | 'sequentialChapters'>
+        & Pick<AdvancedTrainingConfig, 'enabled' | 'sequentialChapters' | 'stripPosition'>
         & { chapters: Array<(
           { __typename?: 'AdvancedTrainingChapter' }
-          & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
+          & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'autoLogin' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
           & { subChapters: Array<(
             { __typename?: 'AdvancedTrainingSubChapter' }
             & Pick<AdvancedTrainingSubChapter, 'id' | 'name'>
@@ -15726,7 +15731,7 @@ export type StationSetConfigSubscription = (
           )> }
         )>, loginChapter?: Maybe<(
           { __typename?: 'AdvancedTrainingChapter' }
-          & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
+          & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'autoLogin' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
           & { subChapters: Array<(
             { __typename?: 'AdvancedTrainingSubChapter' }
             & Pick<AdvancedTrainingSubChapter, 'id' | 'name'>
@@ -15737,7 +15742,7 @@ export type StationSetConfigSubscription = (
           )> }
         )>, completionChapter?: Maybe<(
           { __typename?: 'AdvancedTrainingChapter' }
-          & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
+          & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'autoLogin' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
           & { subChapters: Array<(
             { __typename?: 'AdvancedTrainingSubChapter' }
             & Pick<AdvancedTrainingSubChapter, 'id' | 'name'>
@@ -16579,6 +16584,7 @@ export const SimulatorDataFragmentDoc = gql`
     advancedTraining {
       enabled
       sequentialChapters
+      stripPosition
       chapters {
         id
         name
@@ -16586,7 +16592,52 @@ export const SimulatorDataFragmentDoc = gql`
         mediaAsset
         autoOpenMedia
         autoAdvance
+        autoLogin
         cardSwitchBehavior
+        mediaSize
+        mediaPosition
+        subChapters {
+          id
+          name
+          requiredActions {
+            id
+            eventName
+            args
+          }
+        }
+      }
+      loginChapter {
+        id
+        name
+        cardComponent
+        mediaAsset
+        autoOpenMedia
+        autoAdvance
+        autoLogin
+        cardSwitchBehavior
+        mediaSize
+        mediaPosition
+        subChapters {
+          id
+          name
+          requiredActions {
+            id
+            eventName
+            args
+          }
+        }
+      }
+      completionChapter {
+        id
+        name
+        cardComponent
+        mediaAsset
+        autoOpenMedia
+        autoAdvance
+        autoLogin
+        cardSwitchBehavior
+        mediaSize
+        mediaPosition
         subChapters {
           id
           name
@@ -20461,6 +20512,7 @@ export const StationSetConfigDocument = gql`
       advancedTraining {
         enabled
         sequentialChapters
+        stripPosition
         chapters {
           id
           name
@@ -20468,7 +20520,52 @@ export const StationSetConfigDocument = gql`
           mediaAsset
           autoOpenMedia
           autoAdvance
+          autoLogin
           cardSwitchBehavior
+          mediaSize
+          mediaPosition
+          subChapters {
+            id
+            name
+            requiredActions {
+              id
+              eventName
+              args
+            }
+          }
+        }
+        loginChapter {
+          id
+          name
+          cardComponent
+          mediaAsset
+          autoOpenMedia
+          autoAdvance
+          autoLogin
+          cardSwitchBehavior
+          mediaSize
+          mediaPosition
+          subChapters {
+            id
+            name
+            requiredActions {
+              id
+              eventName
+              args
+            }
+          }
+        }
+        completionChapter {
+          id
+          name
+          cardComponent
+          mediaAsset
+          autoOpenMedia
+          autoAdvance
+          autoLogin
+          cardSwitchBehavior
+          mediaSize
+          mediaPosition
           subChapters {
             id
             name

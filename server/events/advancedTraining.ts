@@ -88,6 +88,77 @@ function autoCompleteIfEmpty(progress: AdvancedTrainingProgress, chapter: any) {
   return false;
 }
 
+// Advance to the chapter that follows completedChapter, respecting autoAdvance,
+// autoOpenMedia, and cardSwitchBehavior. Resets mediaViewerOpen before opening.
+function advanceToNextChapter(
+  progress: AdvancedTrainingProgress,
+  config: any,
+  completedChapter: any,
+  clientId: string,
+) {
+  if (!completedChapter.autoAdvance) return;
+
+  let nextChapter: any = null;
+
+  if (config.loginChapter?.id === completedChapter.id) {
+    nextChapter = config.chapters[0] || null;
+  } else if (config.completionChapter?.id === completedChapter.id) {
+    nextChapter = null;
+  } else {
+    const chapterIdx = config.chapters.findIndex(
+      (c: any) => c.id === completedChapter.id,
+    );
+    if (chapterIdx === -1) return;
+    nextChapter = config.chapters[chapterIdx + 1] || null;
+    if (!nextChapter && config.completionChapter) {
+      nextChapter = config.completionChapter;
+    }
+  }
+
+  if (!nextChapter) return;
+
+  progress.setMediaViewerOpen(false);
+  progress.setActiveChapter(nextChapter.id);
+
+  if (!autoCompleteIfEmpty(progress, nextChapter)) {
+    const firstSub = nextChapter.subChapters[0];
+    progress.setActiveSubChapter(firstSub?.id || null);
+  } else {
+    // nextChapter had no sub-chapters and was immediately auto-completed.
+    // Chain forward so a sequence of empty autoAdvance chapters doesn't stall.
+    advanceToNextChapter(progress, config, nextChapter, clientId);
+    return;
+  }
+
+  if (nextChapter.autoOpenMedia && nextChapter.mediaAsset) {
+    progress.setMediaViewerOpen(true);
+  }
+
+  if (nextChapter.cardSwitchBehavior === "auto" && nextChapter.cardComponent) {
+    const client = App.clients.find((c: any) => c.id === clientId);
+    if (client) {
+      const simulator = App.simulators.find(
+        (s: any) => s.id === client.simulatorId,
+      );
+      if (simulator) {
+        const station = simulator.stations?.find(
+          (s: any) => s.name === client.station,
+        );
+        const targetCard = station?.cards?.find(
+          (c: any) => c.component === nextChapter.cardComponent,
+        );
+        if (targetCard) {
+          App.handleEvent(
+            {id: clientId, card: targetCard.name},
+            "clientSetCard",
+            {clientId},
+          );
+        }
+      }
+    }
+  }
+}
+
 // --- Configuration events ---
 // These are handled by explicit mutation resolvers in the typeDef.
 // The event handlers here are no-ops; they exist so App.emit doesn't
@@ -119,13 +190,28 @@ App.on("clientStartAdvancedTraining", ({clientId}: any) => {
     stationName: client.station,
     activeChapterId: startChapter?.id || null,
     activeSubChapterId: firstSubChapter?.id || null,
-    mediaViewerOpen: startChapter?.autoOpenMedia ?? false,
+    mediaViewerOpen: !!(startChapter?.autoOpenMedia && startChapter?.mediaAsset),
   });
 
   App.advancedTrainingProgress.push(progress);
 
-  // Auto-complete the starting chapter if it has no subchapters
-  if (startChapter) autoCompleteIfEmpty(progress, startChapter);
+  // Fire immediate auto-login before auto-complete so the clientLogin action is
+  // tracked against the loginChapter while it's still the active chapter.
+  // (If it fired after chaining, it would land on whatever chapter ended up active.)
+  if (config.loginChapter?.autoLogin === "immediate") {
+    App.emit("clientLogin", {client: clientId, loginName: client.station});
+    App.emit("clientAdvancedTrainingAction", {clientId, eventName: "clientLogin", args: null});
+  }
+
+  // Auto-complete the starting chapter if it has no sub-chapters, then chain
+  // forward if it also has autoAdvance. Guard on activeChapterId in case the
+  // clientAdvancedTrainingAction above already advanced the chapter (e.g. a
+  // clientLogin sub-chapter completed it).
+  if (startChapter && progress.activeChapterId === startChapter.id) {
+    if (autoCompleteIfEmpty(progress, startChapter)) {
+      advanceToNextChapter(progress, config, startChapter, clientId);
+    }
+  }
 
   // Also set the legacy training flag so the system knows
   client.setTraining(true);
@@ -210,70 +296,19 @@ App.on("clientAdvancedTrainingAction", ({clientId, eventName, args}: any) => {
         if (chapterDone) {
           progress.completeChapter(chapter.id);
 
-          // Auto-advance to next chapter if configured
-          if (chapter.autoAdvance) {
-            let nextChapter: any = null;
-
-            if (config.loginChapter?.id === chapter.id) {
-              // Login chapter complete → go to first regular chapter
-              nextChapter = config.chapters[0] || null;
-            } else if (config.completionChapter?.id === chapter.id) {
-              // Completion chapter is terminal, no further advance
-              nextChapter = null;
-            } else {
-              // Regular chapter — find the next one
-              const chapterIdx = config.chapters.findIndex(
-                (c: any) => c.id === chapter.id,
-              );
-              nextChapter = config.chapters[chapterIdx + 1] || null;
-              // If no next regular chapter, go to completion chapter if configured
-              if (!nextChapter && config.completionChapter) {
-                nextChapter = config.completionChapter;
-              }
-            }
-
-            if (nextChapter) {
-              progress.setActiveChapter(nextChapter.id);
-              // Auto-complete if the next chapter has no subchapters
-              if (!autoCompleteIfEmpty(progress, nextChapter)) {
-                const firstSub = nextChapter.subChapters[0];
-                progress.setActiveSubChapter(firstSub?.id || null);
-              }
-
-              // Auto-open media if configured
-              if (nextChapter.autoOpenMedia && nextChapter.mediaAsset) {
-                progress.setMediaViewerOpen(true);
-              }
-
-              // Handle card switching (only for regular chapters with a cardComponent)
-              if (nextChapter.cardSwitchBehavior === "auto" && nextChapter.cardComponent) {
-                const client = App.clients.find(
-                  (c: any) => c.id === clientId,
-                );
-                if (client) {
-                  // Find the card on the station that matches the next chapter's component
-                  const simulator = App.simulators.find(
-                    (s: any) => s.id === client.simulatorId,
-                  );
-                  if (simulator) {
-                    const station = simulator.stations?.find(
-                      (s: any) => s.name === client.station,
-                    );
-                    const targetCard = station?.cards?.find(
-                      (c: any) => c.component === nextChapter.cardComponent,
-                    );
-                    if (targetCard) {
-                      App.handleEvent(
-                        {id: clientId, card: targetCard.name},
-                        "clientSetCard",
-                        {clientId},
-                      );
-                    }
-                  }
-                }
-              }
+          // Auto-login on login chapter completion if configured
+          if (
+            config.loginChapter?.id === chapter.id &&
+            config.loginChapter?.autoLogin === "on-complete"
+          ) {
+            const clientObj = App.clients.find((c: any) => c.id === clientId);
+            if (clientObj) {
+              App.emit("clientLogin", {client: clientId, loginName: clientObj.station});
+              App.emit("clientAdvancedTrainingAction", {clientId, eventName: "clientLogin", args: null});
             }
           }
+
+          advanceToNextChapter(progress, config, chapter, clientId);
         }
       }
 
@@ -333,13 +368,10 @@ App.on("advancedTrainingSetActiveChapter", ({clientId, chapterId}: any) => {
     );
   }
 
-  // Auto-open media if configured
-  if (chapter.autoOpenMedia && chapter.mediaAsset) {
-    progress.setMediaViewerOpen(true);
-  }
+  progress.setMediaViewerOpen(!!(chapter.autoOpenMedia && chapter.mediaAsset));
 
   // Handle card switching
-  if (chapter.cardSwitchBehavior === "auto") {
+  if (chapter.cardSwitchBehavior === "auto" && chapter.cardComponent) {
     const client = App.clients.find((c: any) => c.id === clientId);
     if (client) {
       const simulator = App.simulators.find(
@@ -376,16 +408,32 @@ App.on("fdCompleteTrainingSubChapter", ({clientId, subChapterId}: any) => {
 
   progress.completeSubChapter(subChapterId);
 
-  // Check if this completes the chapter
   const config = getClientTrainingConfig(clientId);
   if (config && progress.activeChapterId) {
-    const chapter = config.getChapter(progress.activeChapterId);
+    const chapter = config.findChapter(progress.activeChapterId);
     if (chapter) {
+      const nextSubChapter = chapter.subChapters.find(
+        (sc: any) => !progress.isSubChapterComplete(sc.id),
+      );
+      progress.setActiveSubChapter(nextSubChapter?.id || null);
+
       const chapterDone = chapter.subChapters.every((sc: any) =>
         progress.isSubChapterComplete(sc.id),
       );
       if (chapterDone) {
         progress.completeChapter(chapter.id);
+
+        if (
+          config.loginChapter?.id === chapter.id &&
+          config.loginChapter?.autoLogin === "on-complete"
+        ) {
+          const clientObj = App.clients.find((c: any) => c.id === clientId);
+          if (clientObj) {
+            App.emit("clientLogin", {client: clientId, loginName: clientObj.station});
+          }
+        }
+
+        advanceToNextChapter(progress, config, chapter, clientId);
       }
     }
   }
@@ -407,7 +455,19 @@ App.on("fdResetTrainingProgress", ({clientId}: any) => {
     const startChapter = config.loginChapter || config.chapters[0] || null;
     if (startChapter) {
       progress.setActiveChapter(startChapter.id);
-      progress.setActiveSubChapter(startChapter.subChapters[0]?.id || null);
+      if (!autoCompleteIfEmpty(progress, startChapter)) {
+        progress.setActiveSubChapter(startChapter.subChapters[0]?.id || null);
+      } else {
+        advanceToNextChapter(progress, config, startChapter, clientId);
+      }
+    }
+
+    if (config.loginChapter?.autoLogin === "immediate") {
+      const client = App.clients.find((c: any) => c.id === clientId);
+      if (client) {
+        App.emit("clientLogin", {client: clientId, loginName: client.station});
+        App.emit("clientAdvancedTrainingAction", {clientId, eventName: "clientLogin", args: null});
+      }
     }
   }
 

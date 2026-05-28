@@ -23,7 +23,7 @@ import {
   SET_STATION_ADVANCED_TRAINING,
   TOGGLE_ADVANCED_TRAINING_MODE,
 } from "components/training/queries";
-import {getActionLabel, VIDEO_COMPLETE_EVENT} from "components/training/actionRegistry";
+import {getActionLabel, VIDEO_COMPLETE_EVENT, LOGIN_EVENT} from "components/training/actionRegistry";
 import RecordActionsModal from "./RecordActionsModal";
 
 const MEDIA_POSITIONS = [
@@ -46,6 +46,7 @@ function emptyChapter(id: string, name: string) {
     mediaAsset: null,
     autoOpenMedia: false,
     autoAdvance: false,
+    autoLogin: "none",
     cardSwitchBehavior: "manual",
     mediaSize: "small",
     mediaPosition: "bottom-right",
@@ -61,6 +62,7 @@ function serializeChapter(ch: any) {
     mediaAsset: ch.mediaAsset || null,
     autoOpenMedia: ch.autoOpenMedia ?? false,
     autoAdvance: ch.autoAdvance ?? false,
+    autoLogin: ch.autoLogin ?? "none",
     cardSwitchBehavior: ch.cardSwitchBehavior || "manual",
     mediaSize: ch.mediaSize || "small",
     mediaPosition: ch.mediaPosition || "bottom-right",
@@ -91,6 +93,7 @@ interface ChapterEditorProps {
   onStartRecording: (subId: string) => void;
   onSetMediaPicker: () => void;
   showCardSelector?: boolean;
+  isLoginChapter?: boolean;
 }
 
 const ChapterEditor: React.FC<ChapterEditorProps> = ({
@@ -108,6 +111,7 @@ const ChapterEditor: React.FC<ChapterEditorProps> = ({
   onStartRecording,
   onSetMediaPicker,
   showCardSelector = true,
+  isLoginChapter = false,
 }) => {
   return (
     <Card style={{marginBottom: "8px", background: "rgba(0,0,0,0.2)"}}>
@@ -353,7 +357,39 @@ const ChapterEditor: React.FC<ChapterEditorProps> = ({
                           }
                         }}
                       />
-                      Require video to finish
+                      Require media to finish
+                    </Label>
+                  </div>
+                )}
+                {isLoginChapter && (
+                  <div style={{paddingLeft: "28px"}}>
+                    <Label check style={{display: "flex", gap: "6px", fontSize: "12px", color: "#aaa"}}>
+                      <input
+                        type="checkbox"
+                        checked={(sub.requiredActions || []).some(
+                          (ra: any) => ra.eventName === LOGIN_EVENT,
+                        )}
+                        onChange={e => {
+                          const current = sub.requiredActions || [];
+                          if (e.target.checked) {
+                            if (!current.some((ra: any) => ra.eventName === LOGIN_EVENT)) {
+                              onUpdateSubChapter(sub.id, {
+                                requiredActions: [
+                                  ...current,
+                                  {id: `li-${sub.id}`, eventName: LOGIN_EVENT},
+                                ],
+                              });
+                            }
+                          } else {
+                            onUpdateSubChapter(sub.id, {
+                              requiredActions: current.filter(
+                                (ra: any) => ra.eventName !== LOGIN_EVENT,
+                              ),
+                            });
+                          }
+                        }}
+                      />
+                      Require login to proceed
                     </Label>
                   </div>
                 )}
@@ -765,29 +801,51 @@ const AdvancedTrainingConfig: React.FC = () => {
                   Login Chapter (shown on login screen before training starts)
                 </Label>
                 {editingLogin && (
-                  <ChapterEditor
-                    chapter={editingLogin}
-                    index={-1}
-                    label={`Login: ${editingLogin.name}`}
-                    stationCards={stationCards}
-                    isExpanded={expandedChapter === editingLogin.id}
-                    onToggleExpand={() =>
-                      setExpandedChapter(
-                        expandedChapter === editingLogin.id ? null : editingLogin.id,
-                      )
-                    }
-                    onUpdate={updates =>
-                      setEditingLoginChapter((prev: any) => ({...prev, ...updates}))
-                    }
-                    onAddSubChapter={() => addSubChapter(editingLogin.id, "login")}
-                    onRemoveSubChapter={subId => removeSubChapter(editingLogin.id, subId, "login")}
-                    onUpdateSubChapter={(subId, updates) =>
-                      updateSubChapter(editingLogin.id, subId, updates, "login")
-                    }
-                    onStartRecording={subId => startRecording(editingLogin.id, subId)}
-                    onSetMediaPicker={() => setMediaPickerChapter(`login:${editingLogin.id}`)}
-                    showCardSelector={false}
-                  />
+                  <>
+                    <div style={{paddingLeft: "24px", marginBottom: "8px", fontSize: "13px"}}>
+                      <div style={{fontWeight: 500, marginBottom: "4px"}}>Station Login</div>
+                      {(["none", "immediate", "on-complete"] as const).map(opt => (
+                        <Label key={opt} check style={{display: "flex", gap: "6px", marginBottom: "3px", fontWeight: 400}}>
+                          <input
+                            type="radio"
+                            name={`autoLogin-${editingLogin.id}`}
+                            value={opt}
+                            checked={(editingLogin.autoLogin ?? "none") === opt}
+                            onChange={() =>
+                              setEditingLoginChapter((prev: any) => ({...prev, autoLogin: opt}))
+                            }
+                          />
+                          {opt === "none" && "None (crew logs in manually)"}
+                          {opt === "immediate" && "Auto-login when training starts"}
+                          {opt === "on-complete" && "Auto-login after login chapter completes"}
+                        </Label>
+                      ))}
+                    </div>
+                    <ChapterEditor
+                      chapter={editingLogin}
+                      index={-1}
+                      label={`Login: ${editingLogin.name}`}
+                      stationCards={stationCards}
+                      isExpanded={expandedChapter === editingLogin.id}
+                      onToggleExpand={() =>
+                        setExpandedChapter(
+                          expandedChapter === editingLogin.id ? null : editingLogin.id,
+                        )
+                      }
+                      onUpdate={updates =>
+                        setEditingLoginChapter((prev: any) => ({...prev, ...updates}))
+                      }
+                      onAddSubChapter={() => addSubChapter(editingLogin.id, "login")}
+                      onRemoveSubChapter={subId => removeSubChapter(editingLogin.id, subId, "login")}
+                      onUpdateSubChapter={(subId, updates) =>
+                        updateSubChapter(editingLogin.id, subId, updates, "login")
+                      }
+                      onStartRecording={subId => startRecording(editingLogin.id, subId)}
+                      onSetMediaPicker={() => setMediaPickerChapter(`login:${editingLogin.id}`)}
+                      showCardSelector={false}
+                      isLoginChapter
+                    />
+                  </>
                 )}
               </div>
 

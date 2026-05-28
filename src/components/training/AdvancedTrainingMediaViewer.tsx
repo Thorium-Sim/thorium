@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect, useCallback} from "react";
+import React, {useRef, useState, useEffect, useCallback, CSSProperties} from "react";
 // @ts-ignore - react-media-player has no type declarations
 import {Media, Player, controls, withMediaProps} from "react-media-player";
 import "./AdvancedTrainingMediaViewer.scss";
@@ -107,87 +107,117 @@ interface AdvancedTrainingMediaViewerProps {
   onVideoEnd?: () => void;
   size?: "small" | "medium" | "large";
   position?: string;
+  stripPosition?: "top" | "bottom";
 }
 
 const SIZE_WIDTHS = {small: 0.25, medium: 0.40, large: 0.60};
 const STRIP_HEIGHT = 64;
+const MARGIN = 16;
 
-function computeInitialPosition(
+// Return CSS properties that accurately position the viewer using browser layout
+// rather than guessing the element height in JavaScript.
+function getPositionStyle(
   position: string,
   size: "small" | "medium" | "large",
-): {x: number; y: number} {
-  const viewerW = window.innerWidth * (SIZE_WIDTHS[size] || 0.25);
-  const viewerH = 280;
-  const margin = 16;
-  const contentW = window.innerWidth;
-  const contentH = window.innerHeight - STRIP_HEIGHT;
-
+  stripPosition: "top" | "bottom" = "bottom",
+): CSSProperties {
   const [vert, horiz] = position.split("-");
 
-  let x: number;
-  if (horiz === "left") x = margin;
-  else if (horiz === "right") x = contentW - viewerW - margin;
-  else x = (contentW - viewerW) / 2;
+  const style: CSSProperties = {};
 
-  let y: number;
-  if (vert === "top") y = margin;
-  else if (vert === "bottom") y = contentH - viewerH - margin;
-  else y = (contentH - viewerH) / 2;
+  if (horiz === "left") style.left = MARGIN;
+  else if (horiz === "right") style.right = MARGIN;
+  else style.left = "50%"; // center
 
-  return {x: Math.max(0, x), y: Math.max(0, y)};
+  if (vert === "top") style.top = stripPosition === "top" ? STRIP_HEIGHT + MARGIN : MARGIN;
+  else if (vert === "bottom") style.bottom = stripPosition === "bottom" ? STRIP_HEIGHT + MARGIN : MARGIN;
+  else style.top = "50%"; // middle
+
+  const tx = horiz === "center" ? "-50%" : "0px";
+  const ty = vert === "middle" ? "-50%" : "0px";
+  if (tx !== "0px" || ty !== "0px") {
+    style.transform = `translate(${tx}, ${ty})`;
+  }
+
+  // Width is still set via viewerWidth in the component
+  return style;
 }
 
 const VIDEO_EXTENSIONS = ["mov", "mp4", "ogv", "webm", "m4v"];
 
 const AdvancedTrainingMediaViewer: React.FC<
   AdvancedTrainingMediaViewerProps
-> = ({src, onClose, onVideoEnd, size = "small", position = "bottom-right"}) => {
-  const [pos, setPos] = useState(() => computeInitialPosition(position, size));
+> = ({src, onClose, onVideoEnd, size = "small", position = "bottom-right", stripPosition = "bottom"}) => {
+  // `dragPos` is only set once the user starts dragging. Before that, CSS
+  // handles placement accurately (no hardcoded height guessing needed).
+  const [dragPos, setDragPos] = useState<{x: number; y: number} | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const dragStartRef = useRef({x: 0, y: 0, posX: 0, posY: 0});
+  const viewerRef = useRef<HTMLDivElement>(null);
   const playerWrapperRef = useRef<HTMLDivElement>(null);
   const videoEndFiredRef = useRef(false);
+  // Keep a stable ref to onVideoEnd so the ended-listener effect never needs
+  // to re-run (and never detaches mid-playback) just because the prop's
+  // function identity changed due to a parent re-render.
+  const onVideoEndRef = useRef(onVideoEnd);
+  useEffect(() => { onVideoEndRef.current = onVideoEnd; });
 
   const ext = (src.match(/\.([^.]+)$/)?.[1] || "").toLowerCase();
   const isVideo = VIDEO_EXTENSIONS.includes(ext);
 
   const handleMouseDown = useCallback(
     (e: React.MouseEvent) => {
-      // Don't drag on interactive elements
       const tag = (e.target as HTMLElement).tagName;
       if (["INPUT", "BUTTON", "SVG", "CIRCLE", "POLYGON", "RECT", "PATH", "G"].includes(tag)) return;
+
+      // On first drag, capture the element's current pixel position so we can
+      // switch from CSS-based layout to transform-based drag coordinates.
+      let startPosX = dragPos?.x ?? 0;
+      let startPosY = dragPos?.y ?? 0;
+      if (!dragPos && viewerRef.current) {
+        const rect = viewerRef.current.getBoundingClientRect();
+        startPosX = rect.left;
+        startPosY = rect.top;
+        setDragPos({x: startPosX, y: startPosY});
+      }
 
       setIsDragging(true);
       dragStartRef.current = {
         x: e.clientX,
         y: e.clientY,
-        posX: pos.x,
-        posY: pos.y,
+        posX: startPosX,
+        posY: startPosY,
       };
     },
-    [pos],
+    [dragPos],
   );
 
-  // Fire onVideoEnd once when the video's ended event fires
+  // Fire onVideoEnd once when the media element's ended event fires.
+  // Works for both video and audio assets.
+  //
+  // Intentionally uses [] deps — the viewer is keyed on activeChapterId so it
+  // remounts on chapter change. Within a chapter this effect must never re-run,
+  // because tearing down and re-attaching the listener opens a window where the
+  // ended event can be missed. onVideoEndRef keeps the callback current without
+  // causing a re-run.
   useEffect(() => {
-    if (!onVideoEnd || !isVideo) return;
     const wrapper = playerWrapperRef.current;
     if (!wrapper) return;
 
     const attachListener = () => {
-      const video = wrapper.querySelector("video");
-      if (!video) return;
+      const mediaEl = wrapper.querySelector("video, audio");
+      if (!mediaEl) return;
       const handleEnded = () => {
         if (!videoEndFiredRef.current) {
           videoEndFiredRef.current = true;
-          onVideoEnd();
+          onVideoEndRef.current?.();
         }
       };
-      video.addEventListener("ended", handleEnded);
-      return () => video.removeEventListener("ended", handleEnded);
+      mediaEl.addEventListener("ended", handleEnded);
+      return () => mediaEl.removeEventListener("ended", handleEnded);
     };
 
-    // The video element may not exist immediately; poll briefly
+    // The media element may not exist immediately; poll briefly
     let cleanup: (() => void) | undefined;
     const timer = setTimeout(() => {
       cleanup = attachListener();
@@ -197,7 +227,7 @@ const AdvancedTrainingMediaViewer: React.FC<
       clearTimeout(timer);
       cleanup?.();
     };
-  }, [onVideoEnd, isVideo]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (!isDragging) return;
@@ -205,11 +235,11 @@ const AdvancedTrainingMediaViewer: React.FC<
     const handleMouseMove = (e: MouseEvent) => {
       const dx = e.clientX - dragStartRef.current.x;
       const dy = e.clientY - dragStartRef.current.y;
-      setPos({
+      setDragPos({
         x: Math.max(
           0,
           Math.min(
-            window.innerWidth * 0.75,
+            window.innerWidth * (1 - (SIZE_WIDTHS[size] || 0.25)),
             dragStartRef.current.posX + dx,
           ),
         ),
@@ -237,11 +267,18 @@ const AdvancedTrainingMediaViewer: React.FC<
 
   const viewerWidth = `${(SIZE_WIDTHS[size] || 0.25) * 100}vw`;
 
+  // Before the user drags: let CSS handle placement precisely.
+  // After dragging: switch to pixel-based transform coordinates.
+  const positionStyle: CSSProperties = dragPos
+    ? {left: 0, top: 0, right: "auto", bottom: "auto", transform: `translate(${dragPos.x}px, ${dragPos.y}px)`}
+    : getPositionStyle(position, size, stripPosition);
+
   return (
     <div
+      ref={viewerRef}
       className="advanced-training-media-viewer"
       style={{
-        transform: `translate(${pos.x}px, ${pos.y}px)`,
+        ...positionStyle,
         width: viewerWidth,
       }}
       onMouseDown={handleMouseDown}

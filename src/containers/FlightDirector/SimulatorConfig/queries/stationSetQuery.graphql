@@ -32,6 +32,7 @@ subscription StationSetConfig {
           mediaAsset
           autoOpenMedia
           autoAdvance
+          autoLogin
           cardSwitchBehavior
           mediaSize
           mediaPosition
@@ -52,6 +53,7 @@ subscription StationSetConfig {
           mediaAsset
           autoOpenMedia
           autoAdvance
+          autoLogin
           cardSwitchBehavior
           mediaSize
           mediaPosition
@@ -72,6 +74,7 @@ subscription StationSetConfig {
           mediaAsset
           autoOpenMedia
           autoAdvance
+          autoLogin
           cardSwitchBehavior
           mediaSize
           mediaPosition

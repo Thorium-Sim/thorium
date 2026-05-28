@@ -68,6 +68,7 @@ type AdvancedTrainingChapter {
   mediaAsset: String
   autoOpenMedia: Boolean!
   autoAdvance: Boolean!
+  autoLogin: String!
   cardSwitchBehavior: String!
   mediaSize: String!
   mediaPosition: String!
@@ -81,6 +82,7 @@ input AdvancedTrainingChapterInput {
   mediaAsset: String
   autoOpenMedia: Boolean
   autoAdvance: Boolean
+  autoLogin: String
   cardSwitchBehavior: String
   mediaSize: String
   mediaPosition: String

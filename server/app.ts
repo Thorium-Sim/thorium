@@ -216,6 +216,7 @@ class Events extends EventEmitter {
     events = null,
     flights = [],
     motus = [],
+    advancedTrainingProgress = [],
     ...snapshot
   }: Events) {
     const newFlights = flights.map(({timeouts, ...f}) => f);

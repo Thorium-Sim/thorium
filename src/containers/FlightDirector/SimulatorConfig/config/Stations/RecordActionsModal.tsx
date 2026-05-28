@@ -10,6 +10,7 @@ import {
 import Views from "components/views";
 import {
   getActionsForCard,
+  getGlobalActions,
   getActionLabel,
 } from "components/training/actionRegistry";
 import {
@@ -202,9 +203,10 @@ const RecordActionsModal: React.FC<RecordActionsModalProps> = ({
   }, [cleanupSandbox, onCancel]);
 
   const cardComponentName = chapter?.cardComponent;
-  const availableActions = cardComponentName
-    ? getActionsForCard(cardComponentName)
-    : [];
+  const availableActions = [
+    ...getGlobalActions(),
+    ...(cardComponentName ? getActionsForCard(cardComponentName) : []),
+  ];
 
   // Subscribe to ALL mutation-events to capture card interactions
   useEffect(() => {
@@ -391,7 +393,7 @@ const RecordActionsModal: React.FC<RecordActionsModalProps> = ({
               </div>
             )}
 
-            {!sandboxReady ? (
+            {!sandboxReady || !simulator ? (
               <div
                 style={{
                   display: "flex",

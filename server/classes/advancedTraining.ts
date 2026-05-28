@@ -61,6 +61,7 @@ export interface ChapterParams {
   mediaAsset?: string | null;
   autoOpenMedia?: boolean;
   autoAdvance?: boolean;
+  autoLogin?: "none" | "immediate" | "on-complete" | boolean;
   cardSwitchBehavior?: "auto" | "manual";
   mediaSize?: "small" | "medium" | "large";
   mediaPosition?: string;
@@ -74,6 +75,7 @@ export class Chapter {
   mediaAsset: string | null;
   autoOpenMedia: boolean;
   autoAdvance: boolean;
+  autoLogin: "none" | "immediate" | "on-complete";
   cardSwitchBehavior: "auto" | "manual";
   mediaSize: "small" | "medium" | "large";
   mediaPosition: string;
@@ -86,6 +88,14 @@ export class Chapter {
     this.mediaAsset = params.mediaAsset || null;
     this.autoOpenMedia = params.autoOpenMedia ?? false;
     this.autoAdvance = params.autoAdvance ?? false;
+    // Handle migration from boolean (false → "none", true → "immediate")
+    const rawLogin = params.autoLogin;
+    this.autoLogin =
+      rawLogin === true
+        ? "immediate"
+        : rawLogin === "immediate" || rawLogin === "on-complete"
+          ? rawLogin
+          : "none";
     this.cardSwitchBehavior = params.cardSwitchBehavior || "manual";
     this.mediaSize = params.mediaSize || "small";
     this.mediaPosition = params.mediaPosition || "bottom-right";
@@ -112,6 +122,10 @@ export class Chapter {
 
   setAutoAdvance(auto: boolean) {
     this.autoAdvance = auto;
+  }
+
+  setAutoLogin(value: "none" | "immediate" | "on-complete") {
+    this.autoLogin = value;
   }
 
   setCardSwitchBehavior(behavior: "auto" | "manual") {

@@ -132,11 +132,30 @@ const actionRegistry: CardActions[] = [
 ];
 
 /**
+ * Actions always available regardless of which card component is active.
+ * These cover simulator-wide events like login that aren't tied to a specific card.
+ */
+const GLOBAL_ACTIONS: ActionDefinition[] = [
+  {eventName: "clientLogin", label: "Log In to Station"},
+];
+
+export function getGlobalActions(): ActionDefinition[] {
+  return GLOBAL_ACTIONS;
+}
+
+/**
  * Synthetic event fired by the media viewer when a video reaches the end.
  * Add this as a requiredAction on a subchapter to require the crew to watch
  * the training video before the subchapter counts as complete.
  */
 export const VIDEO_COMPLETE_EVENT = "__videoComplete__";
+
+/**
+ * The GraphQL mutation event fired when a crew member logs in to their station.
+ * Add this as a requiredAction on a login-chapter subchapter to gate completion
+ * on the crew actually logging in.
+ */
+export const LOGIN_EVENT = "clientLogin";
 
 /**
  * Check if an event name represents a click action (vs a GraphQL mutation).
@@ -153,7 +172,7 @@ export function getActionLabel(
   cardComponent?: string,
 ): string {
   // Handle the video completion sentinel
-  if (eventName === VIDEO_COMPLETE_EVENT) return "Video finishes";
+  if (eventName === VIDEO_COMPLETE_EVENT) return "Media finishes";
 
   // Handle click-type actions
   if (isClickAction(eventName)) {

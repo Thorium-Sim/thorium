@@ -19,30 +19,6 @@ export const ADVANCED_TRAINING_PROGRESS_FRAGMENT = gql`
   }
 `;
 
-export const ADVANCED_TRAINING_CONFIG_FRAGMENT = gql`
-  fragment AdvancedTrainingConfigFragment on AdvancedTrainingConfig {
-    enabled
-    chapters {
-      id
-      name
-      cardComponent
-      mediaAsset
-      autoOpenMedia
-      autoAdvance
-      cardSwitchBehavior
-      subChapters {
-        id
-        name
-        requiredActions {
-          id
-          eventName
-          args
-        }
-      }
-    }
-  }
-`;
-
 // --- Mutations ---
 
 export const START_ADVANCED_TRAINING = gql`

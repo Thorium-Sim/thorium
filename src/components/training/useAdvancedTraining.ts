@@ -14,6 +14,8 @@ import {
 
 interface AdvancedTrainingConfig {
   enabled: boolean;
+  sequentialChapters?: boolean;
+  stripPosition?: string;
   chapters: any[];
   loginChapter?: any;
   completionChapter?: any;
@@ -51,14 +53,18 @@ export function useAdvancedTraining({
     variables: {simulatorId},
   });
 
-  // Find this client's progress
+  // Prefer subscription data only once it contains a non-empty list, so an
+  // early empty subscription event doesn't wipe valid initial query data.
   const progressList =
-    subData?.advancedTrainingProgressUpdate ||
-    queryData?.advancedTrainingProgress ||
+    (subData?.advancedTrainingProgressUpdate?.length
+      ? subData.advancedTrainingProgressUpdate
+      : null) ??
+    queryData?.advancedTrainingProgress ??
     [];
   const progress = progressList.find((p: any) => p.clientId === clientId);
+  const isInAdvancedTraining = !!progress;
 
-  isActive.current = !!progress;
+  isActive.current = isInAdvancedTraining;
 
   // Record an action (mutation or click) to the server
   const recordAction = useCallback(
@@ -77,7 +83,7 @@ export function useAdvancedTraining({
 
   // Observe mutations from the Apollo client middleware pub/sub
   useEffect(() => {
-    if (!progress || !advancedTrainingConfig?.enabled) return;
+    if (!isInAdvancedTraining || !advancedTrainingConfig?.enabled) return;
 
     // Ignore training system mutations to prevent infinite loops:
     // recordAction sends clientAdvancedTrainingAction, which would fire
@@ -105,7 +111,7 @@ export function useAdvancedTraining({
     );
 
     return unsubscribe;
-  }, [progress, advancedTrainingConfig?.enabled, recordAction]);
+  }, [isInAdvancedTraining, advancedTrainingConfig?.enabled, recordAction]);
 
   // Actions
   const startTraining = useCallback(() => {
@@ -140,7 +146,7 @@ export function useAdvancedTraining({
   return {
     progress,
     config: advancedTrainingConfig,
-    isInAdvancedTraining: !!progress,
+    isInAdvancedTraining,
     recordAction,
     startTraining,
     stopTraining,
