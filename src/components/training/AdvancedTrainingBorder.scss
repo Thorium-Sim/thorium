@@ -239,6 +239,30 @@
   }
 }
 
+.training-strip__btn--next {
+  width: auto;
+  padding: 0 12px;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  background: var(--training-accent-soft);
+  border-color: var(--training-accent);
+  color: var(--training-accent-strong);
+  animation: nextChapterPulse 2s ease-in-out infinite;
+
+  &:hover:not(:disabled) {
+    background: var(--training-accent);
+    color: #1a1300;
+    animation: none;
+  }
+}
+
+@keyframes nextChapterPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 183, 77, 0); }
+  50% { box-shadow: 0 0 0 5px rgba(255, 183, 77, 0.22); }
+}
+
 .training-strip__btn--exit {
   margin-left: 4px;
   border-color: rgba(244, 67, 54, 0.4);

@@ -302,7 +302,9 @@ const AdvancedTrainingMediaViewer: React.FC<
             <div
               ref={playerWrapperRef}
               className="media-viewer-player"
-              style={{display: isVideo ? "block" : "none"}}
+              style={isVideo
+                ? {display: "block"}
+                : {position: "absolute", width: 0, height: 0, overflow: "hidden"}}
             >
               <Player src={src} onClick={() => playPause()} />
             </div>

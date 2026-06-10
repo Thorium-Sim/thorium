@@ -13,6 +13,19 @@ interface AdvancedTrainingBorderProps {
   children: React.ReactNode;
 }
 
+function getNextChapter(config: any, activeChapterId: string | null): any | null {
+  if (!activeChapterId) return null;
+  if (config.loginChapter?.id === activeChapterId) {
+    return config.chapters[0] || config.completionChapter || null;
+  }
+  if (config.completionChapter?.id === activeChapterId) {
+    return null;
+  }
+  const idx = config.chapters.findIndex((c: any) => c.id === activeChapterId);
+  if (idx === -1) return null;
+  return config.chapters[idx + 1] || config.completionChapter || null;
+}
+
 // Collect every sub-chapter across all chapter types for progress calculation
 function getAllSubChapters(config: any): any[] {
   const subs: any[] = [];
@@ -142,9 +155,22 @@ const AdvancedTrainingBorder: React.FC<AdvancedTrainingBorderProps> = ({
   const progressPercent =
     totalSubs > 0 ? Math.round((completedSubs / totalSubs) * 100) : 0;
 
+  const chapterIsComplete = activeChapter
+    ? progress.completedChapterIds.includes(activeChapter.id)
+    : false;
+  const nextChapter = chapterIsComplete
+    ? getNextChapter(config, progress.activeChapterId)
+    : null;
+
   const heroTaskName =
     activeSubChapter?.name ??
-    (activeChapter ? "Chapter overview" : "Training complete");
+    (chapterIsComplete
+      ? nextChapter
+        ? "Chapter complete!"
+        : "All done — great work!"
+      : activeChapter
+      ? "Chapter overview"
+      : "Training complete");
   return (
     <>
       {children}
@@ -229,6 +255,18 @@ const AdvancedTrainingBorder: React.FC<AdvancedTrainingBorderProps> = ({
             </div>
 
             <div className="training-strip__controls">
+              {chapterIsComplete && nextChapter && (
+                <button
+                  className="training-strip__btn training-strip__btn--next"
+                  onClick={() => setActiveChapter(nextChapter.id)}
+                  title={`Next: ${nextChapter.name}`}
+                >
+                  Next
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </button>
+              )}
               <button
                 className={`training-strip__btn ${
                   progress.chapterListOpen ? "active" : ""
