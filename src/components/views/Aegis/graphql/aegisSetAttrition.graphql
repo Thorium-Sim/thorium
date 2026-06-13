@@ -1,0 +1,3 @@
+mutation AegisSetAttrition($id: ID!, $enabled: Boolean!) {
+  aegisSetAttrition(id: $id, enabled: $enabled)
+}

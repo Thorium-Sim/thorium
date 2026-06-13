@@ -1,0 +1,62 @@
+// Screen Focus pad: a round drag target sized to fill whatever height the
+// secondary panel has left over, capped so it stays a comfortable thumb-reach
+// circle on large screens.
+.focus-pad {
+  position: relative;
+  width: min(100%, 240px);
+  aspect-ratio: 1;
+  flex: 0 1 auto;
+  min-height: 130px;
+  max-height: 240px;
+  border-radius: 50%;
+  touch-action: none;
+  border: 2px solid rgba(92, 217, 255, 0.5);
+  background: radial-gradient(
+    circle at center,
+    rgba(20, 40, 60, 0.8) 0%,
+    rgba(5, 10, 20, 0.95) 100%
+  );
+
+  .focus-pad-label {
+    position: absolute;
+    font-size: 0.75em;
+    letter-spacing: 1px;
+    color: rgba(92, 217, 255, 0.7);
+    pointer-events: none;
+  }
+  .focus-pad-fore {
+    top: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .focus-pad-aft {
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .focus-pad-port {
+    left: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .focus-pad-starboard {
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .focus-pad-knob {
+    position: absolute;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #5cd9ff;
+    box-shadow: 0 0 10px rgba(92, 217, 255, 0.8);
+    transform: translate(-50%, -50%);
+    cursor: grab;
+
+    &:active {
+      cursor: grabbing;
+    }
+  }
+}

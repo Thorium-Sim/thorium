@@ -1,4 +1,5 @@
 import actionsTypeDefs from "./actions";
+import aegisTypeDefs from "./aegis";
 import ambianceTypeDefs from "./ambiance";
 import assetsTypeDefs from "./assets";
 import clientsTypeDefs from "./clients";
@@ -82,6 +83,7 @@ import flightSetsTypeDefs from "./flightSets";
 export * from "./universe/components";
 
 export const actions = actionsTypeDefs;
+export const aegis = aegisTypeDefs;
 export const ambiance = ambianceTypeDefs;
 export const assets = assetsTypeDefs;
 export const clients = clientsTypeDefs;

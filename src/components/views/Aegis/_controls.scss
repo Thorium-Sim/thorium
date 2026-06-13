@@ -1,0 +1,139 @@
+// Touch-first control column: every section has a fixed footprint and the
+// secondary control absorbs the leftover height, so nothing ever scrolls.
+.card-aegis {
+  .aegis-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+
+    .aegis-count {
+      text-align: center;
+
+      h1 {
+        font-size: 2.6em;
+        margin-bottom: 0;
+      }
+
+      h4 {
+        margin-bottom: 0;
+      }
+    }
+
+    .aegis-fabrication {
+      .progress {
+        height: 10px;
+      }
+
+      p {
+        margin: 4px 0 0;
+        text-align: center;
+        font-size: 0.85em;
+      }
+    }
+
+    .aegis-actions {
+      display: flex;
+      gap: 8px;
+
+      .btn,
+      .aegis-deploy {
+        flex: 1;
+      }
+
+      .btn {
+        min-height: 48px;
+        white-space: normal;
+      }
+    }
+
+    .aegis-modes {
+      h4 {
+        margin-bottom: 6px;
+      }
+
+      .aegis-mode-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+
+        .btn {
+          min-height: 52px;
+          white-space: normal;
+          font-weight: bold;
+        }
+      }
+
+      .aegis-mode-description {
+        margin: 6px 0 0;
+        min-height: 2.4em;
+        text-align: center;
+        font-size: 0.85em;
+        opacity: 0.8;
+      }
+    }
+
+    .aegis-secondary {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+
+      h4 {
+        margin-bottom: 0;
+      }
+
+      // Large touch slider for ECM intensity / repair effort
+      .aegis-slider {
+        width: 100%;
+        text-align: center;
+        font-size: 1.1em;
+
+        input[type="range"] {
+          width: 100%;
+          height: 44px;
+          -webkit-appearance: none;
+          appearance: none;
+          background: transparent;
+
+          &::-webkit-slider-runnable-track {
+            height: 12px;
+            border-radius: 6px;
+            background: rgba(92, 217, 255, 0.25);
+            border: 1px solid rgba(92, 217, 255, 0.5);
+          }
+
+          &::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 36px;
+            height: 36px;
+            margin-top: -13px;
+            border-radius: 50%;
+            background: #5cd9ff;
+            box-shadow: 0 0 12px rgba(92, 217, 255, 0.8);
+            cursor: grab;
+          }
+        }
+
+        small {
+          display: block;
+        }
+      }
+
+      .aegis-relay-target {
+        width: 100%;
+
+        .btn {
+          flex: 1;
+          min-height: 56px;
+        }
+      }
+    }
+  }
+}

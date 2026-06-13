@@ -61,6 +61,63 @@ type AdvancedNavStarsData {
   activating: Boolean!
 }
 
+type Aegis implements SystemInterface {
+  id: ID!
+  simulatorId: ID
+  class: String
+  type: String
+  name: String!
+  displayName: String!
+  upgradeName: String
+  upgraded: Boolean
+  damage: Damage!
+  power: Power!
+  stealthFactor: Float
+  locations: [Room]
+  maxDrones: Int!
+  droneCount: Int!
+  deployed: Boolean!
+  mode: AEGIS_MODE!
+  fabricating: Boolean!
+  fabricationPaused: Boolean!
+  fabricationProgress: Float!
+  attritionEnabled: Boolean!
+  structuralIntegrity: Float!
+  screenFocusX: Float!
+  screenFocusY: Float!
+  ecmIntensity: Float!
+  relayTarget: AEGIS_RELAY_TARGET!
+  repairEffort: Float!
+  log: [AegisLogEntry!]!
+}
+
+enum AEGIS_MODE {
+  screen
+  ecm
+  relay
+  repair
+}
+
+enum AEGIS_RELAY_TARGET {
+  sensors
+  balanced
+  comms
+}
+
+type AegisLogEntry {
+  id: ID!
+  timestamp: String!
+  type: String!
+  contents: String!
+}
+
+type AegisPing {
+  id: ID!
+  pingType: String!
+  strength: Float!
+  bearing: Float
+}
+
 type Ambiance {
   id: ID!
   name: String!
@@ -1924,6 +1981,23 @@ type Mutation {
     clientId: ID
     duration: Float
   ): String
+  aegisSetMode(id: ID!, mode: AEGIS_MODE!): String
+  aegisDeploy(id: ID!): String
+  aegisRecall(id: ID!): String
+  aegisStartFabrication(id: ID!): String
+  aegisStopFabrication(id: ID!): String
+  aegisPauseFabrication(id: ID!, paused: Boolean!): String
+  aegisSetAttrition(id: ID!, enabled: Boolean!): String
+  aegisDestroyDrone(id: ID!): String
+  aegisSetDroneCount(id: ID!, count: Int!): String
+  aegisSetMaxDrones(id: ID!, count: Int!): String
+  aegisSetScreenFocus(id: ID!, x: Float!, y: Float!): String
+  aegisSetEcmIntensity(id: ID!, intensity: Float!): String
+  aegisSetRelayTarget(id: ID!, target: AEGIS_RELAY_TARGET!): String
+  aegisSetRepairEffort(id: ID!, effort: Float!): String
+  aegisSetStructuralIntegrity(id: ID!, integrity: Float!): String
+  aegisHitStructure(id: ID!, amount: Float, bearing: Float): String
+  aegisClearLog(id: ID!): String
   addSimulatorAmbiance(id: ID!, name: String!): String
   updateSimulatorAmbiance(id: ID!, ambiance: AmbianceInput!): String
   removeSimulatorAmbiance(id: ID!, ambianceId: ID!): String
@@ -3803,6 +3877,7 @@ input QuaternionInput {
 type Query {
   _empty: String
   actions(stationId: ID, clientId: ID): Action
+  aegis(simulatorId: ID!): Aegis
   asset(assetKey: String!): Asset
   assets(assetKeys: [String!]!): [Asset]
   assetFolders(name: String, names: [String]): [AssetFolder]
@@ -4683,6 +4758,8 @@ input StringCoordinatesInput {
 type Subscription {
   _empty: String
   actionsUpdate(simulatorId: ID!, stationId: ID, clientId: ID): Action
+  aegisUpdate(simulatorId: ID!): Aegis
+  aegisPing(simulatorId: ID!): AegisPing
   assetFolderChange: [AssetFolder!]!
   clientChanged(all: Boolean, clientId: ID, simulatorId: ID, stationName: String, flightId: ID): [Client]
   clientPing(clientId: ID!): Boolean

@@ -1,0 +1,36 @@
+// Flight Director core panel: a dense control/readout list for the FD.
+.core-aegis {
+  .core-aegis-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+    margin-bottom: 2px;
+
+    .input-field {
+      flex: 1;
+    }
+  }
+
+  .btn {
+    margin-bottom: 2px;
+  }
+
+  .core-aegis-attrition {
+    display: block;
+    margin: 0;
+  }
+
+  .core-aegis-log-entries {
+    max-height: 110px;
+    overflow-y: auto;
+    font-size: 11px;
+
+    p {
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}

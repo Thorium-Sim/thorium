@@ -16,6 +16,7 @@ import * as Configs from "./systemsConfig";
 
 const systems = [
   "AdvancedNavigationAndAstrometrics",
+  "Aegis",
   "ComputerCore",
   "Coolant",
   "Countermeasures",
