@@ -33,6 +33,12 @@ export const STOP_ADVANCED_TRAINING = gql`
   }
 `;
 
+export const CLIENT_REQUEST_TRAINING_HELP = gql`
+  mutation ClientRequestTrainingHelp($clientId: ID!) {
+    clientRequestTrainingHelp(clientId: $clientId)
+  }
+`;
+
 export const ADVANCED_TRAINING_ACTION = gql`
   mutation ClientAdvancedTrainingAction(
     $clientId: ID!
@@ -75,7 +81,10 @@ export const FD_ADVANCE_CHAPTER = gql`
 
 export const FD_COMPLETE_SUBCHAPTER = gql`
   mutation FdCompleteTrainingSubChapter($clientId: ID!, $subChapterId: ID!) {
-    fdCompleteTrainingSubChapter(clientId: $clientId, subChapterId: $subChapterId)
+    fdCompleteTrainingSubChapter(
+      clientId: $clientId
+      subChapterId: $subChapterId
+    )
   }
 `;
 

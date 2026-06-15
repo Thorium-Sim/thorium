@@ -123,7 +123,10 @@ const actionRegistry: CardActions[] = [
     cardLabel: "Transporters",
     actions: [
       {eventName: "setTransportTarget", label: "Set Transport Target"},
-      {eventName: "setTransportDestination", label: "Set Transport Destination"},
+      {
+        eventName: "setTransportDestination",
+        label: "Set Transport Destination",
+      },
       {eventName: "setTransportCharge", label: "Charge Transporters"},
       {eventName: "beginTransportScan", label: "Begin Transport Scan"},
       {eventName: "cancelTransportScan", label: "Cancel Scan"},
@@ -172,7 +175,9 @@ export function getActionLabel(
   cardComponent?: string,
 ): string {
   // Handle the video completion sentinel
-  if (eventName === VIDEO_COMPLETE_EVENT) return "Media finishes";
+  if (eventName === VIDEO_COMPLETE_EVENT) {
+    return "Media finishes";
+  }
 
   // Handle click-type actions
   if (isClickAction(eventName)) {
@@ -183,12 +188,16 @@ export function getActionLabel(
   if (cardComponent) {
     const card = actionRegistry.find(c => c.cardComponent === cardComponent);
     const action = card?.actions.find(a => a.eventName === eventName);
-    if (action) return action.label;
+    if (action) {
+      return action.label;
+    }
   }
   // Fall back to searching all cards
   for (const card of actionRegistry) {
     const action = card.actions.find(a => a.eventName === eventName);
-    if (action) return action.label;
+    if (action) {
+      return action.label;
+    }
   }
   // Last resort: humanize the event name
   return eventName

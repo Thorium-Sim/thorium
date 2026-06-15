@@ -112,6 +112,7 @@ export type AdvancedTrainingConfig = {
   sequentialChapters: Scalars['Boolean'];
   stripPosition: Scalars['String'];
   chapters: Array<AdvancedTrainingChapter>;
+  inFlightChapters: Array<AdvancedTrainingChapter>;
   loginChapter?: Maybe<AdvancedTrainingChapter>;
   completionChapter?: Maybe<AdvancedTrainingChapter>;
 };
@@ -121,6 +122,7 @@ export type AdvancedTrainingConfigInput = {
   sequentialChapters?: Maybe<Scalars['Boolean']>;
   stripPosition?: Maybe<Scalars['String']>;
   chapters?: Maybe<Array<AdvancedTrainingChapterInput>>;
+  inFlightChapters?: Maybe<Array<AdvancedTrainingChapterInput>>;
   loginChapter?: Maybe<AdvancedTrainingChapterInput>;
   completionChapter?: Maybe<AdvancedTrainingChapterInput>;
 };
@@ -3270,6 +3272,12 @@ export type Mutation = {
   clientStartAdvancedTraining?: Maybe<Scalars['String']>;
   /** Stop advanced training for a client. */
   clientStopAdvancedTraining?: Maybe<Scalars['String']>;
+  /**
+   * Crew pressed the help/question-mark widget. Resolves the crew's current card
+   * and jumps to the in-flight help chapter for that card (or the regular chapter
+   * for it), falling back to the default begin-training behavior if neither exists.
+   */
+  clientRequestTrainingHelp?: Maybe<Scalars['String']>;
   /**
    * Record a crew action during advanced training.
    * Checks against required actions and may trigger sub-chapter/chapter completion.
@@ -8200,6 +8208,11 @@ export type MutationClientStopAdvancedTrainingArgs = {
 };
 
 
+export type MutationClientRequestTrainingHelpArgs = {
+  clientId: Scalars['ID'];
+};
+
+
 export type MutationClientAdvancedTrainingActionArgs = {
   clientId: Scalars['ID'];
   eventName: Scalars['String'];
@@ -12291,6 +12304,17 @@ export type SimulatorDataFragment = (
             & Pick<AdvancedTrainingRequiredAction, 'id' | 'eventName' | 'args'>
           )> }
         )> }
+      )>, inFlightChapters: Array<(
+        { __typename?: 'AdvancedTrainingChapter' }
+        & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'autoLogin' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
+        & { subChapters: Array<(
+          { __typename?: 'AdvancedTrainingSubChapter' }
+          & Pick<AdvancedTrainingSubChapter, 'id' | 'name'>
+          & { requiredActions: Array<(
+            { __typename?: 'AdvancedTrainingRequiredAction' }
+            & Pick<AdvancedTrainingRequiredAction, 'id' | 'eventName' | 'args'>
+          )> }
+        )> }
       )>, loginChapter?: Maybe<(
         { __typename?: 'AdvancedTrainingChapter' }
         & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'autoLogin' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
@@ -15729,6 +15753,17 @@ export type StationSetConfigSubscription = (
               & Pick<AdvancedTrainingRequiredAction, 'id' | 'eventName' | 'args'>
             )> }
           )> }
+        )>, inFlightChapters: Array<(
+          { __typename?: 'AdvancedTrainingChapter' }
+          & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'autoLogin' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
+          & { subChapters: Array<(
+            { __typename?: 'AdvancedTrainingSubChapter' }
+            & Pick<AdvancedTrainingSubChapter, 'id' | 'name'>
+            & { requiredActions: Array<(
+              { __typename?: 'AdvancedTrainingRequiredAction' }
+              & Pick<AdvancedTrainingRequiredAction, 'id' | 'eventName' | 'args'>
+            )> }
+          )> }
         )>, loginChapter?: Maybe<(
           { __typename?: 'AdvancedTrainingChapter' }
           & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'autoLogin' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
@@ -16586,6 +16621,27 @@ export const SimulatorDataFragmentDoc = gql`
       sequentialChapters
       stripPosition
       chapters {
+        id
+        name
+        cardComponent
+        mediaAsset
+        autoOpenMedia
+        autoAdvance
+        autoLogin
+        cardSwitchBehavior
+        mediaSize
+        mediaPosition
+        subChapters {
+          id
+          name
+          requiredActions {
+            id
+            eventName
+            args
+          }
+        }
+      }
+      inFlightChapters {
         id
         name
         cardComponent
@@ -20514,6 +20570,27 @@ export const StationSetConfigDocument = gql`
         sequentialChapters
         stripPosition
         chapters {
+          id
+          name
+          cardComponent
+          mediaAsset
+          autoOpenMedia
+          autoAdvance
+          autoLogin
+          cardSwitchBehavior
+          mediaSize
+          mediaPosition
+          subChapters {
+            id
+            name
+            requiredActions {
+              id
+              eventName
+              args
+            }
+          }
+        }
+        inFlightChapters {
           id
           name
           cardComponent

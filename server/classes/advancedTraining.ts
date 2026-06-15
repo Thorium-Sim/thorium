@@ -94,14 +94,12 @@ export class Chapter {
       rawLogin === true
         ? "immediate"
         : rawLogin === "immediate" || rawLogin === "on-complete"
-          ? rawLogin
-          : "none";
+        ? rawLogin
+        : "none";
     this.cardSwitchBehavior = params.cardSwitchBehavior || "manual";
     this.mediaSize = params.mediaSize || "small";
     this.mediaPosition = params.mediaPosition || "bottom-right";
-    this.subChapters = (params.subChapters || []).map(
-      s => new SubChapter(s),
-    );
+    this.subChapters = (params.subChapters || []).map(s => new SubChapter(s));
   }
 
   setName(name: string) {
@@ -152,7 +150,9 @@ export class Chapter {
 
   reorderSubChapters(subChapterId: string, newIndex: number) {
     const idx = this.subChapters.findIndex(s => s.id === subChapterId);
-    if (idx === -1) return;
+    if (idx === -1) {
+      return;
+    }
     const [item] = this.subChapters.splice(idx, 1);
     this.subChapters.splice(newIndex, 0, item);
   }
@@ -166,6 +166,7 @@ export interface AdvancedTrainingConfigParams {
   enabled?: boolean;
   sequentialChapters?: boolean;
   chapters?: ChapterParams[];
+  inFlightChapters?: ChapterParams[];
   loginChapter?: ChapterParams | null;
   completionChapter?: ChapterParams | null;
   stripPosition?: "top" | "bottom";
@@ -175,6 +176,9 @@ export class AdvancedTrainingConfig {
   enabled: boolean;
   sequentialChapters: boolean;
   chapters: Chapter[];
+  // Ad-hoc help chapters reachable mid-flight via the question-mark widget.
+  // Tied to a card component; kept out of the normal sequential progression.
+  inFlightChapters: Chapter[];
   loginChapter: Chapter | null;
   completionChapter: Chapter | null;
   stripPosition: "top" | "bottom";
@@ -183,8 +187,15 @@ export class AdvancedTrainingConfig {
     this.enabled = params.enabled ?? false;
     this.sequentialChapters = params.sequentialChapters ?? false;
     this.chapters = (params.chapters || []).map(c => new Chapter(c));
-    this.loginChapter = params.loginChapter ? new Chapter(params.loginChapter) : null;
-    this.completionChapter = params.completionChapter ? new Chapter(params.completionChapter) : null;
+    this.inFlightChapters = (params.inFlightChapters || []).map(
+      c => new Chapter(c),
+    );
+    this.loginChapter = params.loginChapter
+      ? new Chapter(params.loginChapter)
+      : null;
+    this.completionChapter = params.completionChapter
+      ? new Chapter(params.completionChapter)
+      : null;
     this.stripPosition = params.stripPosition || "bottom";
   }
 
@@ -216,7 +227,9 @@ export class AdvancedTrainingConfig {
 
   reorderChapters(chapterId: string, newIndex: number) {
     const idx = this.chapters.findIndex(c => c.id === chapterId);
-    if (idx === -1) return;
+    if (idx === -1) {
+      return;
+    }
     const [item] = this.chapters.splice(idx, 1);
     this.chapters.splice(newIndex, 0, item);
   }
@@ -225,10 +238,52 @@ export class AdvancedTrainingConfig {
     return this.chapters.find(c => c.id === chapterId);
   }
 
-  /** Find any chapter by ID, including loginChapter and completionChapter. */
+  addInFlightChapter(chapter?: ChapterParams) {
+    const ch = new Chapter(chapter);
+    this.inFlightChapters.push(ch);
+    return ch;
+  }
+
+  removeInFlightChapter(chapterId: string) {
+    this.inFlightChapters = this.inFlightChapters.filter(
+      c => c.id !== chapterId,
+    );
+  }
+
+  getInFlightChapter(chapterId: string): Chapter | undefined {
+    return this.inFlightChapters.find(c => c.id === chapterId);
+  }
+
+  /**
+   * Find the in-flight help chapter authored for a given card component, if any.
+   * Used when the crew presses the help widget while on that card.
+   */
+  findInFlightChapterByCard(cardComponent: string): Chapter | undefined {
+    if (!cardComponent) {
+      return undefined;
+    }
+    return this.inFlightChapters.find(c => c.cardComponent === cardComponent);
+  }
+
+  /** True if the given chapter ID belongs to the in-flight help chapters. */
+  isInFlightChapter(chapterId: string): boolean {
+    return this.inFlightChapters.some(c => c.id === chapterId);
+  }
+
+  /**
+   * Find any chapter by ID, including loginChapter, completionChapter, and
+   * in-flight help chapters.
+   */
   findChapter(chapterId: string): Chapter | undefined {
-    if (this.loginChapter?.id === chapterId) return this.loginChapter;
-    if (this.completionChapter?.id === chapterId) return this.completionChapter;
-    return this.chapters.find(c => c.id === chapterId);
+    if (this.loginChapter?.id === chapterId) {
+      return this.loginChapter;
+    }
+    if (this.completionChapter?.id === chapterId) {
+      return this.completionChapter;
+    }
+    return (
+      this.chapters.find(c => c.id === chapterId) ||
+      this.inFlightChapters.find(c => c.id === chapterId)
+    );
   }
 }

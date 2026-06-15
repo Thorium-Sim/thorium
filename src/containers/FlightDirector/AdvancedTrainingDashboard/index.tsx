@@ -87,28 +87,26 @@ const AdvancedTrainingDashboard: React.FC = () => {
   const [completeSubChapter] = useMutation(FD_COMPLETE_SUBCHAPTER);
   const [resetProgress] = useMutation(FD_RESET_PROGRESS);
 
-  const progressList =
-    progressData?.advancedTrainingProgressUpdate || [];
+  const progressList = progressData?.advancedTrainingProgressUpdate || [];
 
   const clients = clientsData?.clients || [];
 
   // Find clients that have advanced training configured
   const trainingClients = clients.filter((client: any) => {
-    if (!client.connected || !client.station || !client.simulatorId)
+    if (!client.connected || !client.station || !client.simulatorId) {
       return false;
-    const progress = progressList.find(
-      (p: any) => p.clientId === client.id,
-    );
+    }
+    const progress = progressList.find((p: any) => p.clientId === client.id);
     return !!progress;
   });
 
   const getClientConfig = (client: any) => {
     const sim = client.simulator;
-    if (!sim) return null;
+    if (!sim) {
+      return null;
+    }
     for (const ss of sim.stationSets || []) {
-      const station = ss.stations?.find(
-        (s: any) => s.name === client.station,
-      );
+      const station = ss.stations?.find((s: any) => s.name === client.station);
       if (station?.advancedTraining?.enabled) {
         return station.advancedTraining;
       }
@@ -136,7 +134,9 @@ const AdvancedTrainingDashboard: React.FC = () => {
             (p: any) => p.clientId === client.id,
           );
           const config = getClientConfig(client);
-          if (!progress || !config) return null;
+          if (!progress || !config) {
+            return null;
+          }
 
           const chapters = config.chapters || [];
           const activeChapter = chapters.find(
@@ -149,9 +149,10 @@ const AdvancedTrainingDashboard: React.FC = () => {
           );
           const completedSubChapters =
             progress.completedSubChapterIds?.length || 0;
-          const overallPercent = totalSubChapters > 0
-            ? Math.round((completedSubChapters / totalSubChapters) * 100)
-            : 0;
+          const overallPercent =
+            totalSubChapters > 0
+              ? Math.round((completedSubChapters / totalSubChapters) * 100)
+              : 0;
 
           return (
             <Col key={client.id} lg={6} xl={4} style={{marginBottom: "16px"}}>
@@ -200,8 +201,7 @@ const AdvancedTrainingDashboard: React.FC = () => {
                     {chapters.map((ch: any, idx: number) => {
                       const isCompleted =
                         progress.completedChapterIds?.includes(ch.id);
-                      const isActive =
-                        progress.activeChapterId === ch.id;
+                      const isActive = progress.activeChapterId === ch.id;
                       const chSubCount = ch.subChapters?.length || 0;
                       const chCompleted =
                         ch.subChapters?.filter((sc: any) =>
@@ -211,9 +211,9 @@ const AdvancedTrainingDashboard: React.FC = () => {
                       return (
                         <div
                           key={ch.id}
-                          className={`chapter-row ${
-                            isActive ? "active" : ""
-                          } ${isCompleted ? "completed" : ""}`}
+                          className={`chapter-row ${isActive ? "active" : ""} ${
+                            isCompleted ? "completed" : ""
+                          }`}
                         >
                           <span className="chapter-index">{idx + 1}</span>
                           <span className="chapter-name-text">{ch.name}</span>

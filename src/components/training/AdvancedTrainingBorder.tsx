@@ -13,8 +13,13 @@ interface AdvancedTrainingBorderProps {
   children: React.ReactNode;
 }
 
-function getNextChapter(config: any, activeChapterId: string | null): any | null {
-  if (!activeChapterId) return null;
+function getNextChapter(
+  config: any,
+  activeChapterId: string | null,
+): any | null {
+  if (!activeChapterId) {
+    return null;
+  }
   if (config.loginChapter?.id === activeChapterId) {
     return config.chapters[0] || config.completionChapter || null;
   }
@@ -22,7 +27,9 @@ function getNextChapter(config: any, activeChapterId: string | null): any | null
     return null;
   }
   const idx = config.chapters.findIndex((c: any) => c.id === activeChapterId);
-  if (idx === -1) return null;
+  if (idx === -1) {
+    return null;
+  }
   return config.chapters[idx + 1] || config.completionChapter || null;
 }
 
@@ -33,7 +40,9 @@ function getAllSubChapters(config: any): any[] {
     subs.push(...config.loginChapter.subChapters);
   }
   for (const ch of config.chapters || []) {
-    if (ch.subChapters) subs.push(...ch.subChapters);
+    if (ch.subChapters) {
+      subs.push(...ch.subChapters);
+    }
   }
   if (config.completionChapter?.subChapters) {
     subs.push(...config.completionChapter.subChapters);
@@ -81,13 +90,19 @@ const AdvancedTrainingBorder: React.FC<AdvancedTrainingBorderProps> = ({
   // Capture clicks on card elements via the document (capture phase). Clicks
   // on training UI itself are skipped via TRAINING_UI_SELECTOR.
   useEffect(() => {
-    if (!isInAdvancedTraining) return;
+    if (!isInAdvancedTraining) {
+      return;
+    }
 
     const handleDocumentClick = (e: MouseEvent) => {
-      if (!isActiveRef.current) return;
+      if (!isActiveRef.current) {
+        return;
+      }
       const target = e.target as HTMLElement;
 
-      if (target.closest(TRAINING_UI_SELECTOR)) return;
+      if (target.closest(TRAINING_UI_SELECTOR)) {
+        return;
+      }
 
       const interactive = target.closest(
         "button, a, [role='button'], input, select, .btn",
@@ -108,21 +123,27 @@ const AdvancedTrainingBorder: React.FC<AdvancedTrainingBorderProps> = ({
         el.getAttribute("title") ||
         "";
 
-      if (!text) return;
+      if (!text) {
+        return;
+      }
 
       recordActionRef.current(`click:${text}`, {
         text,
         tag,
         className: el.className
-          ? String(el.className).split(" ").filter(Boolean).slice(0, 3).join(" ")
+          ? String(el.className)
+              .split(" ")
+              .filter(Boolean)
+              .slice(0, 3)
+              .join(" ")
           : null,
       });
     };
 
     document.addEventListener("click", handleDocumentClick, true);
-    return () => document.removeEventListener("click", handleDocumentClick, true);
+    return () =>
+      document.removeEventListener("click", handleDocumentClick, true);
   }, [isInAdvancedTraining]);
-
 
   if (!isInAdvancedTraining || !config || !progress) {
     return <>{children}</>;
@@ -130,6 +151,9 @@ const AdvancedTrainingBorder: React.FC<AdvancedTrainingBorderProps> = ({
 
   const activeChapter =
     config.chapters.find((c: any) => c.id === progress.activeChapterId) ||
+    (config.inFlightChapters || []).find(
+      (c: any) => c.id === progress.activeChapterId,
+    ) ||
     (config.loginChapter?.id === progress.activeChapterId
       ? config.loginChapter
       : null) ||
@@ -181,14 +205,24 @@ const AdvancedTrainingBorder: React.FC<AdvancedTrainingBorderProps> = ({
               The media viewer is a draggable floating window and does not need a backdrop. */}
           {progress.chapterListOpen && (
             <div
-              className={`training-popover-backdrop${config.stripPosition === "top" ? " training-popover-backdrop--top" : ""}`}
+              className={`training-popover-backdrop${
+                config.stripPosition === "top"
+                  ? " training-popover-backdrop--top"
+                  : ""
+              }`}
               onClick={() => toggleChapterList(false)}
             />
           )}
 
           {/* Chapter list popover */}
           {progress.chapterListOpen && (
-            <div className={`training-popover training-popover--chapters${config.stripPosition === "top" ? " training-popover--chapters-top" : ""}`}>
+            <div
+              className={`training-popover training-popover--chapters${
+                config.stripPosition === "top"
+                  ? " training-popover--chapters-top"
+                  : ""
+              }`}
+            >
               <AdvancedTrainingChapterList
                 config={config}
                 progress={progress}
@@ -206,12 +240,18 @@ const AdvancedTrainingBorder: React.FC<AdvancedTrainingBorderProps> = ({
               onVideoEnd={onVideoEnd}
               size={activeChapter.mediaSize || "small"}
               position={activeChapter.mediaPosition || "bottom-right"}
-              stripPosition={(config.stripPosition || "bottom") as "top" | "bottom"}
+              stripPosition={
+                (config.stripPosition || "bottom") as "top" | "bottom"
+              }
             />
           )}
 
           {/* Training strip — position driven by config */}
-          <div className={`training-strip${config.stripPosition === "top" ? " training-strip--top" : ""}`}>
+          <div
+            className={`training-strip${
+              config.stripPosition === "top" ? " training-strip--top" : ""
+            }`}
+          >
             <div className="training-strip__main">
               <div className="training-strip__text">
                 {activeChapter && (
@@ -234,7 +274,10 @@ const AdvancedTrainingBorder: React.FC<AdvancedTrainingBorderProps> = ({
                       >
                         <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
                       </svg>
-                      {getActionLabel(ra.eventName, activeChapter?.cardComponent)}
+                      {getActionLabel(
+                        ra.eventName,
+                        activeChapter?.cardComponent,
+                      )}
                     </span>
                   ))}
                   {pendingActions.map((ra: any) => (
@@ -247,7 +290,10 @@ const AdvancedTrainingBorder: React.FC<AdvancedTrainingBorderProps> = ({
                       >
                         <circle cx="12" cy="12" r="5" />
                       </svg>
-                      {getActionLabel(ra.eventName, activeChapter?.cardComponent)}
+                      {getActionLabel(
+                        ra.eventName,
+                        activeChapter?.cardComponent,
+                      )}
                     </span>
                   ))}
                 </div>
@@ -262,7 +308,12 @@ const AdvancedTrainingBorder: React.FC<AdvancedTrainingBorderProps> = ({
                   title={`Next: ${nextChapter.name}`}
                 >
                   Next
-                  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                  >
                     <path d="M8 5v14l11-7z" />
                   </svg>
                 </button>
@@ -325,7 +376,6 @@ const AdvancedTrainingBorder: React.FC<AdvancedTrainingBorderProps> = ({
               />
             </div>
           </div>
-
         </div>,
         document.body,
       )}

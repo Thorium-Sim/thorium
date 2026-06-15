@@ -17,6 +17,7 @@ interface AdvancedTrainingConfig {
   sequentialChapters?: boolean;
   stripPosition?: string;
   chapters: any[];
+  inFlightChapters?: any[];
   loginChapter?: any;
   completionChapter?: any;
 }
@@ -69,7 +70,9 @@ export function useAdvancedTraining({
   // Record an action (mutation or click) to the server
   const recordAction = useCallback(
     (eventName: string, args?: any) => {
-      if (!isActive.current) return;
+      if (!isActive.current) {
+        return;
+      }
       recordActionMutation({
         variables: {
           clientId,
@@ -83,7 +86,9 @@ export function useAdvancedTraining({
 
   // Observe mutations from the Apollo client middleware pub/sub
   useEffect(() => {
-    if (!isInAdvancedTraining || !advancedTrainingConfig?.enabled) return;
+    if (!isInAdvancedTraining || !advancedTrainingConfig?.enabled) {
+      return;
+    }
 
     // Ignore training system mutations to prevent infinite loops:
     // recordAction sends clientAdvancedTrainingAction, which would fire
@@ -93,6 +98,7 @@ export function useAdvancedTraining({
       "clientAdvancedTrainingAction",
       "clientStartAdvancedTraining",
       "clientStopAdvancedTraining",
+      "clientRequestTrainingHelp",
       "advancedTrainingSetActiveChapter",
       "advancedTrainingToggleMediaViewer",
       "advancedTrainingToggleChapterList",
@@ -105,7 +111,9 @@ export function useAdvancedTraining({
     const unsubscribe = subscribe(
       "mutation-event",
       ({event, args}: {event: string; args: any}) => {
-        if (ignoredMutations.has(event)) return;
+        if (ignoredMutations.has(event)) {
+          return;
+        }
         recordAction(event, args);
       },
     );

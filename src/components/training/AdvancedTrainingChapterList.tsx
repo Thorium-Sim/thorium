@@ -76,26 +76,37 @@ const AdvancedTrainingChapterList: React.FC<ChapterListProps> = ({
 
   const isPrerequisiteLocked = (chapter: any) => {
     const prerequisites = CARD_PREREQUISITES[chapter.cardComponent] || [];
-    if (prerequisites.length === 0) return false;
+    if (prerequisites.length === 0) {
+      return false;
+    }
     const observed = progress.globalObservedEvents || [];
     return prerequisites.some((evt: string) => !observed.includes(evt));
   };
 
   const getChapterStatus = (chapter: any) => {
-    if (progress.completedChapterIds.includes(chapter.id)) return "complete";
-    if (progress.activeChapterId === chapter.id) return "active";
+    if (progress.completedChapterIds.includes(chapter.id)) {
+      return "complete";
+    }
+    if (progress.activeChapterId === chapter.id) {
+      return "active";
+    }
     return "pending";
   };
 
   const getSubChapterStatus = (subChapter: any) => {
-    if (progress.completedSubChapterIds.includes(subChapter.id))
+    if (progress.completedSubChapterIds.includes(subChapter.id)) {
       return "complete";
+    }
     return "pending";
   };
 
   const isChapterLocked = (idx: number) => {
-    if (!config.sequentialChapters) return false;
-    if (idx === 0) return false;
+    if (!config.sequentialChapters) {
+      return false;
+    }
+    if (idx === 0) {
+      return false;
+    }
     const prevChapter = config.chapters[idx - 1];
     return !progress.completedChapterIds.includes(prevChapter.id);
   };
@@ -110,20 +121,27 @@ const AdvancedTrainingChapterList: React.FC<ChapterListProps> = ({
           const status = getChapterStatus(chapter);
           const isExpanded = expandedChapters[chapter.id] || false;
           const locked = isChapterLocked(idx);
-          const prereqLocked = !locked && status === "pending" && isPrerequisiteLocked(chapter);
+          const prereqLocked =
+            !locked && status === "pending" && isPrerequisiteLocked(chapter);
           const isBlocked = locked || prereqLocked;
           const justCompleted = recentlyCompleted.has(chapter.id);
 
           return (
             <div
               key={chapter.id}
-              className={`chapter-item ${status}${locked ? " locked" : ""}${prereqLocked ? " prereq-locked" : ""}${justCompleted ? " just-completed" : ""}`}
+              className={`chapter-item ${status}${locked ? " locked" : ""}${
+                prereqLocked ? " prereq-locked" : ""
+              }${justCompleted ? " just-completed" : ""}`}
             >
               <div
                 className="chapter-row"
                 onClick={() => !isBlocked && toggleExpand(chapter.id)}
               >
-                <span className={`chapter-status-icon ${status}${locked ? " locked" : ""}${prereqLocked ? " prereq-locked" : ""}`}>
+                <span
+                  className={`chapter-status-icon ${status}${
+                    locked ? " locked" : ""
+                  }${prereqLocked ? " prereq-locked" : ""}`}
+                >
                   {locked ? (
                     <svg
                       viewBox="0 0 24 24"

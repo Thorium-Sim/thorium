@@ -92,7 +92,9 @@ input AdvancedTrainingChapterInput {
 type AdvancedTrainingConfig {
   enabled: Boolean!
   sequentialChapters: Boolean!
+  stripPosition: String!
   chapters: [AdvancedTrainingChapter!]!
+  inFlightChapters: [AdvancedTrainingChapter!]!
   loginChapter: AdvancedTrainingChapter
   completionChapter: AdvancedTrainingChapter
 }
@@ -100,7 +102,9 @@ type AdvancedTrainingConfig {
 input AdvancedTrainingConfigInput {
   enabled: Boolean
   sequentialChapters: Boolean
+  stripPosition: String
   chapters: [AdvancedTrainingChapterInput!]
+  inFlightChapters: [AdvancedTrainingChapterInput!]
   loginChapter: AdvancedTrainingChapterInput
   completionChapter: AdvancedTrainingChapterInput
 }
@@ -115,6 +119,7 @@ type AdvancedTrainingProgress {
   completedChapterIds: [ID!]!
   completedSubChapterIds: [ID!]!
   observedActions: JSON
+  globalObservedEvents: [String!]!
   mediaViewerOpen: Boolean!
   chapterListOpen: Boolean!
 }
@@ -3302,6 +3307,13 @@ type Mutation {
 
   """Stop advanced training for a client."""
   clientStopAdvancedTraining(clientId: ID!): String
+
+  """
+  Crew pressed the help/question-mark widget. Resolves the crew's current card
+  and jumps to the in-flight help chapter for that card (or the regular chapter
+  for it), falling back to the default begin-training behavior if neither exists.
+  """
+  clientRequestTrainingHelp(clientId: ID!): String
 
   """
   Record a crew action during advanced training.

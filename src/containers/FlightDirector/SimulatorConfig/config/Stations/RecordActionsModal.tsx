@@ -1,4 +1,4 @@
-import React, {useState, useCallback, Suspense, useEffect, useRef} from "react";
+import React, {useCallback, Suspense} from "react";
 import {
   Modal,
   ModalHeader,
@@ -13,15 +13,9 @@ import {
   getGlobalActions,
   getActionLabel,
 } from "components/training/actionRegistry";
-import {
-  START_SANDBOX_FLIGHT,
-  DELETE_SANDBOX_FLIGHT,
-  SANDBOX_FLIGHT_SIMULATORS,
-} from "components/training/queries";
-import {useSimulatorUpdateSubscription} from "generated/graphql";
-import {useMutation} from "react-apollo";
-import {useApolloClient} from "@apollo/client";
-import {subscribe} from "helpers/pubsub";
+import CardPreviewErrorBoundary from "./CardPreviewErrorBoundary";
+import {useSandboxFlight} from "./useSandboxFlight";
+import {useActionRecorder} from "./useActionRecorder";
 
 interface RecordActionsModalProps {
   isOpen: boolean;
@@ -34,45 +28,14 @@ interface RecordActionsModalProps {
   onCancel: () => void;
 }
 
-// Error boundary that shows the actual error for debugging
-class CardPreviewErrorBoundary extends React.Component<
-  {children: React.ReactNode; cardName: string},
-  {error: Error | null}
-> {
-  state = {error: null as Error | null};
-
-  static getDerivedStateFromError(error: Error) {
-    return {error};
-  }
-
-  render() {
-    if (this.state.error) {
-      return (
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            height: "100%",
-            color: "#f44336",
-            padding: "20px",
-            textAlign: "center",
-          }}
-        >
-          <p>Unable to render card preview for "{this.props.cardName}".</p>
-          <p style={{fontSize: "12px", color: "#888", marginTop: "8px"}}>
-            {this.state.error.message}
-          </p>
-          <p style={{fontSize: "12px", color: "#666", marginTop: "4px"}}>
-            You can still select actions from the list on the right.
-          </p>
-        </div>
-      );
-    }
-    return this.props.children;
-  }
-}
+// Shared style for the centered status messages inside the preview pane.
+const previewMessageStyle: React.CSSProperties = {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  height: "100%",
+  color: "#888",
+};
 
 const RecordActionsModal: React.FC<RecordActionsModalProps> = ({
   isOpen,
@@ -84,113 +47,16 @@ const RecordActionsModal: React.FC<RecordActionsModalProps> = ({
   onSave,
   onCancel,
 }) => {
-  const [recordedActions, setRecordedActions] = useState<any[]>(existingActions);
-  const [lastCaptured, setLastCaptured] = useState<string | null>(null);
-  const lastCapturedTimeout = useRef<ReturnType<typeof setTimeout> | null>(
-    null,
-  );
+  const {
+    sandboxFlightId,
+    sandboxSimulatorId,
+    sandboxReady,
+    simulator,
+    cleanupSandbox,
+  } = useSandboxFlight({isOpen, simulatorId, stationSetId});
 
-  // Sandbox flight state
-  const client = useApolloClient();
-  const [sandboxFlightId, setSandboxFlightId] = useState<string | null>(null);
-  const [sandboxSimulatorId, setSandboxSimulatorId] = useState<string | null>(
-    null,
-  );
-  const [sandboxReady, setSandboxReady] = useState(false);
-  const sandboxFlightIdRef = useRef<string | null>(null);
-
-  const [startFlightMutation] = useMutation(START_SANDBOX_FLIGHT);
-  const [deleteFlightMutation] = useMutation(DELETE_SANDBOX_FLIGHT);
-
-  // Subscribe to the sandbox simulator's data for the card preview
-  const {data: simData} = useSimulatorUpdateSubscription({
-    variables: {simulatorId: sandboxSimulatorId || ""},
-    skip: !sandboxSimulatorId,
-  });
-  const simulator = simData?.simulatorsUpdate?.[0];
-
-  // Create sandbox flight when modal opens
-  useEffect(() => {
-    if (!isOpen) return;
-
-    setRecordedActions(existingActions);
-    setLastCaptured(null);
-    setSandboxReady(false);
-
-    let cancelled = false;
-
-    startFlightMutation({
-      variables: {
-        name: `__sandbox_${Date.now()}`,
-        simulators: [{simulatorId, stationSet: stationSetId}],
-      },
-    })
-      .then(({data}: any) => {
-        if (cancelled) {
-          // Modal closed before flight was created — clean up
-          if (data?.startFlight) {
-            deleteFlightMutation({
-              variables: {flightId: data.startFlight},
-            });
-          }
-          return;
-        }
-        const flightId = data?.startFlight;
-        if (!flightId) return;
-        setSandboxFlightId(flightId);
-        sandboxFlightIdRef.current = flightId;
-
-        // Query for the sandbox simulator ID
-        return client.query({
-          query: SANDBOX_FLIGHT_SIMULATORS,
-          variables: {flightId},
-          fetchPolicy: "network-only",
-        });
-      })
-      .then((result: any) => {
-        if (cancelled || !result) return;
-        const simId = result.data?.flights?.[0]?.simulators?.[0]?.id;
-        if (simId) {
-          setSandboxSimulatorId(simId);
-          setSandboxReady(true);
-        }
-      })
-      .catch((err: any) => {
-        console.error("Failed to create sandbox flight:", err);
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [isOpen]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Cleanup sandbox on unmount (handles unexpected navigation)
-  useEffect(() => {
-    return () => {
-      const flightId = sandboxFlightIdRef.current;
-      if (flightId) {
-        deleteFlightMutation({
-          variables: {flightId},
-        }).catch(() => {});
-        sandboxFlightIdRef.current = null;
-      }
-    };
-  }, [deleteFlightMutation]);
-
-  const cleanupSandbox = useCallback(() => {
-    const flightId = sandboxFlightIdRef.current;
-    if (flightId) {
-      deleteFlightMutation({
-        variables: {flightId},
-      }).catch(err =>
-        console.error("Failed to delete sandbox flight:", err),
-      );
-      sandboxFlightIdRef.current = null;
-      setSandboxFlightId(null);
-      setSandboxSimulatorId(null);
-      setSandboxReady(false);
-    }
-  }, [deleteFlightMutation]);
+  const {recordedActions, lastCaptured, captureClick, addAction, removeAction} =
+    useActionRecorder({isOpen, existingActions});
 
   const handleSave = useCallback(() => {
     cleanupSandbox();
@@ -208,114 +74,18 @@ const RecordActionsModal: React.FC<RecordActionsModalProps> = ({
     ...(cardComponentName ? getActionsForCard(cardComponentName) : []),
   ];
 
-  // Subscribe to ALL mutation-events to capture card interactions
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const unsubscribe = subscribe(
-      "mutation-event",
-      ({event, args}: {event: string; args: any}) => {
-        if (event === "clockSync" || event === "startFlight" || event === "deleteFlight") return;
-        setRecordedActions(prev => {
-          if (prev.find((a: any) => a.eventName === event)) return prev;
-          return [
-            ...prev,
-            {id: `ra-${Date.now()}`, eventName: event, args: args || null},
-          ];
-        });
-
-        // Flash indicator
-        setLastCaptured(event);
-        if (lastCapturedTimeout.current) {
-          clearTimeout(lastCapturedTimeout.current);
-        }
-        lastCapturedTimeout.current = setTimeout(
-          () => setLastCaptured(null),
-          1500,
-        );
-      },
-    );
-
-    return () => {
-      unsubscribe();
-      if (lastCapturedTimeout.current) {
-        clearTimeout(lastCapturedTimeout.current);
-      }
-    };
-  }, [isOpen]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Click handler — captures click events as recordable actions
-  const handlePreviewClick = (e: React.MouseEvent) => {
-    const target = e.target as HTMLElement;
-
-    // Walk up to find the closest interactive element
-    const interactive = target.closest(
-      "button, a, [role='button'], input, select, .btn",
-    ) as HTMLElement | null;
-    const el = interactive || target;
-
-    const tag = el.tagName.toLowerCase();
-    // Ignore clicks on generic containers
-    if (["div", "span", "col", "row", "container", "section"].includes(tag) && !interactive) {
-      return;
-    }
-
-    const text =
-      el.textContent?.trim().replace(/\s+/g, " ").substring(0, 60) ||
-      el.getAttribute("aria-label") ||
-      el.getAttribute("title") ||
-      "";
-
-    if (!text) return;
-
-    // Build a stable identifier and args for this click target
-    const clickEventName = `click:${text}`;
-    const clickArgs = {
-      text,
-      tag,
-      className: el.className
-        ? String(el.className).split(" ").filter(Boolean).slice(0, 3).join(" ")
-        : null,
-    };
-
-    // Add to recorded actions (skip duplicates)
-    setRecordedActions(prev => {
-      if (prev.find((a: any) => a.eventName === clickEventName)) return prev;
-      return [
-        ...prev,
-        {id: `ra-${Date.now()}`, eventName: clickEventName, args: clickArgs},
-      ];
-    });
-
-    // Flash indicator
-    setLastCaptured(clickEventName);
-    if (lastCapturedTimeout.current) clearTimeout(lastCapturedTimeout.current);
-    lastCapturedTimeout.current = setTimeout(
-      () => setLastCaptured(null),
-      1500,
-    );
-  };
-
   const CardComponent = cardComponentName
     ? (Views as any)[cardComponentName]
     : null;
 
-  const addAction = (eventName: string) => {
-    if (recordedActions.find((a: any) => a.eventName === eventName)) return;
-    setRecordedActions(prev => [
-      ...prev,
-      {id: `ra-${Date.now()}`, eventName, args: null},
-    ]);
-  };
-
-  const removeAction = (actionId: string) => {
-    setRecordedActions(prev => prev.filter((a: any) => a.id !== actionId));
-  };
-
   // Build preview props using the sandbox simulator
   const effectiveSimId = sandboxSimulatorId || simulatorId;
   const previewProps = {
-    simulator: simulator || {id: effectiveSimId, name: "Preview", alertlevel: "5"},
+    simulator: simulator || {
+      id: effectiveSimId,
+      name: "Preview",
+      alertlevel: "5",
+    },
     station: {name: stationName, cards: []},
     flight: {id: sandboxFlightId || "preview"},
     clientObj: {
@@ -361,7 +131,7 @@ const RecordActionsModal: React.FC<RecordActionsModalProps> = ({
           {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
           <div
             className="record-card-preview"
-            onClick={handlePreviewClick}
+            onClick={captureClick}
             style={{
               flex: 2,
               border: "2px solid #f44336",
@@ -394,31 +164,13 @@ const RecordActionsModal: React.FC<RecordActionsModalProps> = ({
             )}
 
             {!sandboxReady || !simulator ? (
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  height: "100%",
-                  color: "#888",
-                }}
-              >
+              <div style={previewMessageStyle}>
                 Initializing sandbox environment...
               </div>
             ) : CardComponent ? (
               <Suspense
                 fallback={
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      height: "100%",
-                      color: "#888",
-                    }}
-                  >
-                    Loading card preview...
-                  </div>
+                  <div style={previewMessageStyle}>Loading card preview...</div>
                 }
               >
                 <CardPreviewErrorBoundary cardName={cardComponentName}>
@@ -435,15 +187,7 @@ const RecordActionsModal: React.FC<RecordActionsModalProps> = ({
                 </CardPreviewErrorBoundary>
               </Suspense>
             ) : (
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  height: "100%",
-                  color: "#888",
-                }}
-              >
+              <div style={previewMessageStyle}>
                 No card component selected for this chapter.
               </div>
             )}
@@ -467,9 +211,10 @@ const RecordActionsModal: React.FC<RecordActionsModalProps> = ({
                   </span>
                 )}
                 {availableActions.map(action => {
-                  const isSelected = recordedActions.some(
+                  const existing = recordedActions.find(
                     (ra: any) => ra.eventName === action.eventName,
                   );
+                  const isSelected = !!existing;
                   return (
                     <Button
                       key={action.eventName}
@@ -477,16 +222,11 @@ const RecordActionsModal: React.FC<RecordActionsModalProps> = ({
                       color={isSelected ? "info" : "secondary"}
                       outline={!isSelected}
                       style={{textAlign: "left"}}
-                      onClick={() => {
-                        if (isSelected) {
-                          const existing = recordedActions.find(
-                            (ra: any) => ra.eventName === action.eventName,
-                          );
-                          if (existing) removeAction(existing.id);
-                        } else {
-                          addAction(action.eventName);
-                        }
-                      }}
+                      onClick={() =>
+                        isSelected
+                          ? removeAction(existing.id)
+                          : addAction(action.eventName)
+                      }
                     >
                       {action.label}
                     </Button>

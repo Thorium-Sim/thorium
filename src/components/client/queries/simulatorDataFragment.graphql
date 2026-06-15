@@ -60,6 +60,27 @@ fragment SimulatorData on Simulator {
           }
         }
       }
+      inFlightChapters {
+        id
+        name
+        cardComponent
+        mediaAsset
+        autoOpenMedia
+        autoAdvance
+        autoLogin
+        cardSwitchBehavior
+        mediaSize
+        mediaPosition
+        subChapters {
+          id
+          name
+          requiredActions {
+            id
+            eventName
+            args
+          }
+        }
+      }
       loginChapter {
         id
         name

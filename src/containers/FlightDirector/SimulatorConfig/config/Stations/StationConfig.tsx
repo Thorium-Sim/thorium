@@ -158,7 +158,9 @@ const ConfigStation: React.FC<ConfigStationProps> = ({simulator, station}) => {
           <div style={{margin: "10px 0"}}>
             <Button
               tag={Link}
-              to={`/config/simulator/${simulator.id}/advancedTraining/${selectedStationSet}/${encodeURI(
+              to={`/config/simulator/${
+                simulator.id
+              }/advancedTraining/${selectedStationSet}/${encodeURI(
                 station.name || "",
               )}`}
               size="sm"

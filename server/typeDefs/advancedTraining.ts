@@ -6,7 +6,9 @@ import {AdvancedTrainingConfig} from "../classes/advancedTraining";
 
 function getStationConfig(stationSetID: string, stationName: string) {
   const stationSet = App.stationSets.find((s: any) => s.id === stationSetID);
-  if (!stationSet) return null;
+  if (!stationSet) {
+    return null;
+  }
   return stationSet.stations.find((s: any) => s.name === stationName);
 }
 
@@ -42,6 +44,7 @@ const schema = gql`
     sequentialChapters: Boolean!
     stripPosition: String!
     chapters: [AdvancedTrainingChapter!]!
+    inFlightChapters: [AdvancedTrainingChapter!]!
     loginChapter: AdvancedTrainingChapter
     completionChapter: AdvancedTrainingChapter
   }
@@ -92,6 +95,7 @@ const schema = gql`
     sequentialChapters: Boolean
     stripPosition: String
     chapters: [AdvancedTrainingChapterInput!]
+    inFlightChapters: [AdvancedTrainingChapterInput!]
     loginChapter: AdvancedTrainingChapterInput
     completionChapter: AdvancedTrainingChapterInput
   }
@@ -142,6 +146,13 @@ const schema = gql`
     clientStopAdvancedTraining(clientId: ID!): String
 
     """
+    Crew pressed the help/question-mark widget. Resolves the crew's current card
+    and jumps to the in-flight help chapter for that card (or the regular chapter
+    for it), falling back to the default begin-training behavior if neither exists.
+    """
+    clientRequestTrainingHelp(clientId: ID!): String
+
+    """
     Record a crew action during advanced training.
     Checks against required actions and may trigger sub-chapter/chapter completion.
     """
@@ -154,18 +165,12 @@ const schema = gql`
     """
     Set the active chapter for a client (crew navigation or FD override).
     """
-    advancedTrainingSetActiveChapter(
-      clientId: ID!
-      chapterId: ID!
-    ): String
+    advancedTrainingSetActiveChapter(clientId: ID!, chapterId: ID!): String
 
     """
     FD force-complete a sub-chapter for a client.
     """
-    fdCompleteTrainingSubChapter(
-      clientId: ID!
-      subChapterId: ID!
-    ): String
+    fdCompleteTrainingSubChapter(clientId: ID!, subChapterId: ID!): String
 
     """
     FD reset all training progress for a client.
@@ -175,22 +180,18 @@ const schema = gql`
     """
     Toggle the media viewer open/close for a client.
     """
-    advancedTrainingToggleMediaViewer(
-      clientId: ID!
-      open: Boolean!
-    ): String
+    advancedTrainingToggleMediaViewer(clientId: ID!, open: Boolean!): String
 
     """
     Toggle the chapter list open/close for a client.
     """
-    advancedTrainingToggleChapterList(
-      clientId: ID!
-      open: Boolean!
-    ): String
+    advancedTrainingToggleChapterList(clientId: ID!, open: Boolean!): String
   }
 
   extend type Subscription {
-    advancedTrainingProgressUpdate(simulatorId: ID): [AdvancedTrainingProgress!]!
+    advancedTrainingProgressUpdate(
+      simulatorId: ID
+    ): [AdvancedTrainingProgress!]!
     advancedTrainingConfigUpdate(stationSetID: ID): [StationSet!]!
   }
 `;
@@ -203,9 +204,11 @@ const resolver = {
   },
   Client: {
     advancedTrainingProgress(client: any) {
-      return App.advancedTrainingProgress?.find(
-        (p: any) => p.clientId === client.id,
-      ) || null;
+      return (
+        App.advancedTrainingProgress?.find(
+          (p: any) => p.clientId === client.id,
+        ) || null
+      );
     },
   },
   Query: {
@@ -221,17 +224,27 @@ const resolver = {
     },
   },
   Mutation: {
-    setStationAdvancedTraining(rootValue: any, {stationSetID, stationName, config}: any) {
+    setStationAdvancedTraining(
+      rootValue: any,
+      {stationSetID, stationName, config}: any,
+    ) {
       const station = getStationConfig(stationSetID, stationName);
-      if (!station) return "";
+      if (!station) {
+        return "";
+      }
       station.setAdvancedTraining(config);
       pubsub.publish("stationSetUpdate", App.stationSets);
       pubsub.publish("advancedTrainingConfigUpdate", App.stationSets);
       return "";
     },
-    toggleAdvancedTrainingMode(rootValue: any, {stationSetID, stationName, enabled}: any) {
+    toggleAdvancedTrainingMode(
+      rootValue: any,
+      {stationSetID, stationName, enabled}: any,
+    ) {
       const station = getStationConfig(stationSetID, stationName);
-      if (!station) return "";
+      if (!station) {
+        return "";
+      }
       if (!station.advancedTraining) {
         station.advancedTraining = new AdvancedTrainingConfig();
       }
@@ -246,13 +259,26 @@ const resolver = {
     clientStopAdvancedTraining(rootValue: any, {clientId}: any) {
       return "";
     },
-    clientAdvancedTrainingAction(rootValue: any, {clientId, eventName, args}: any) {
+    clientRequestTrainingHelp(rootValue: any, {clientId}: any) {
+      // Handled by event handler
       return "";
     },
-    advancedTrainingSetActiveChapter(rootValue: any, {clientId, chapterId}: any) {
+    clientAdvancedTrainingAction(
+      rootValue: any,
+      {clientId, eventName, args}: any,
+    ) {
       return "";
     },
-    fdCompleteTrainingSubChapter(rootValue: any, {clientId, subChapterId}: any) {
+    advancedTrainingSetActiveChapter(
+      rootValue: any,
+      {clientId, chapterId}: any,
+    ) {
+      return "";
+    },
+    fdCompleteTrainingSubChapter(
+      rootValue: any,
+      {clientId, subChapterId}: any,
+    ) {
       return "";
     },
     fdResetTrainingProgress(rootValue: any, {clientId}: any) {

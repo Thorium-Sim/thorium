@@ -93,13 +93,14 @@ const AdvancedTrainingCore: React.FC<AdvancedTrainingCoreProps> = ({
   const [completeSubChapter] = useMutation(FD_COMPLETE_SUBCHAPTER);
   const [resetProgress] = useMutation(FD_RESET_PROGRESS);
 
-  const progressList =
-    progressData?.advancedTrainingProgressUpdate || [];
+  const progressList = progressData?.advancedTrainingProgressUpdate || [];
   const clients = clientsData?.clients || [];
   const sim = simData?.simulators?.[0];
 
   const getStationConfig = (stationName: string) => {
-    if (!sim) return null;
+    if (!sim) {
+      return null;
+    }
     for (const ss of sim.stationSets || []) {
       const station = ss.stations?.find((s: any) => s.name === stationName);
       if (station?.advancedTraining?.enabled) {
@@ -110,7 +111,9 @@ const AdvancedTrainingCore: React.FC<AdvancedTrainingCoreProps> = ({
   };
 
   const trainingClients = clients.filter((client: any) => {
-    if (!client.connected || !client.station) return false;
+    if (!client.connected || !client.station) {
+      return false;
+    }
     return progressList.some((p: any) => p.clientId === client.id);
   });
 
@@ -128,10 +131,11 @@ const AdvancedTrainingCore: React.FC<AdvancedTrainingCoreProps> = ({
         const progress = progressList.find(
           (p: any) => p.clientId === client.id,
         );
-        const stationName =
-          client.station?.name || client.station || "";
+        const stationName = client.station?.name || client.station || "";
         const config = getStationConfig(stationName);
-        if (!progress || !config) return null;
+        if (!progress || !config) {
+          return null;
+        }
 
         const chapters = config.chapters || [];
         const activeChapter = chapters.find(
@@ -142,16 +146,14 @@ const AdvancedTrainingCore: React.FC<AdvancedTrainingCoreProps> = ({
           (sum: number, ch: any) => sum + (ch.subChapters?.length || 0),
           0,
         );
-        const completedSub =
-          progress.completedSubChapterIds?.length || 0;
-        const pct = totalSub > 0 ? Math.round((completedSub / totalSub) * 100) : 0;
+        const completedSub = progress.completedSubChapterIds?.length || 0;
+        const pct =
+          totalSub > 0 ? Math.round((completedSub / totalSub) * 100) : 0;
 
         return (
           <div key={client.id} className="client-block">
             <div className="client-header-row">
-              <span className="client-name">
-                {client.label || client.id}
-              </span>
+              <span className="client-name">{client.label || client.id}</span>
               <span className="client-station-name">{stationName}</span>
               <Badge color={pct === 100 ? "success" : "info"} pill>
                 {pct}%
@@ -175,8 +177,9 @@ const AdvancedTrainingCore: React.FC<AdvancedTrainingCoreProps> = ({
 
             <div className="chapters-compact">
               {chapters.map((ch: any, idx: number) => {
-                const isCompleted =
-                  progress.completedChapterIds?.includes(ch.id);
+                const isCompleted = progress.completedChapterIds?.includes(
+                  ch.id,
+                );
                 const isActive = progress.activeChapterId === ch.id;
                 const chSubCount = ch.subChapters?.length || 0;
                 const chCompleted =

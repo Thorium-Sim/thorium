@@ -1,4 +1,10 @@
-import React, {useRef, useState, useEffect, useCallback, CSSProperties} from "react";
+import React, {
+  useRef,
+  useState,
+  useEffect,
+  useCallback,
+  CSSProperties,
+} from "react";
 // @ts-ignore - react-media-player has no type declarations
 import {Media, Player, controls, withMediaProps} from "react-media-player";
 import "./AdvancedTrainingMediaViewer.scss";
@@ -86,15 +92,16 @@ const SeekBarComp: React.FC<{media: any; className?: string}> = ({
       }}
       onMouseUp={(e: any) => {
         media.seekTo(+e.target.value);
-        if (isPlayingRef.current) media.play();
+        if (isPlayingRef.current) {
+          media.play();
+        }
       }}
       onChange={(e: any) => {
         setSeekValue(+e.target.value);
       }}
       className={className}
       style={{
-        backgroundSize:
-          (seekValue * 100) / (media.duration || 1) + "% 100%",
+        backgroundSize: (seekValue * 100) / (media.duration || 1) + "% 100%",
       }}
     />
   );
@@ -110,7 +117,7 @@ interface AdvancedTrainingMediaViewerProps {
   stripPosition?: "top" | "bottom";
 }
 
-const SIZE_WIDTHS = {small: 0.25, medium: 0.40, large: 0.60};
+const SIZE_WIDTHS = {small: 0.25, medium: 0.4, large: 0.6};
 const STRIP_HEIGHT = 64;
 const MARGIN = 16;
 
@@ -125,13 +132,21 @@ function getPositionStyle(
 
   const style: CSSProperties = {};
 
-  if (horiz === "left") style.left = MARGIN;
-  else if (horiz === "right") style.right = MARGIN;
-  else style.left = "50%"; // center
+  if (horiz === "left") {
+    style.left = MARGIN;
+  } else if (horiz === "right") {
+    style.right = MARGIN;
+  } else {
+    style.left = "50%";
+  } // center
 
-  if (vert === "top") style.top = stripPosition === "top" ? STRIP_HEIGHT + MARGIN : MARGIN;
-  else if (vert === "bottom") style.bottom = stripPosition === "bottom" ? STRIP_HEIGHT + MARGIN : MARGIN;
-  else style.top = "50%"; // middle
+  if (vert === "top") {
+    style.top = stripPosition === "top" ? STRIP_HEIGHT + MARGIN : MARGIN;
+  } else if (vert === "bottom") {
+    style.bottom = stripPosition === "bottom" ? STRIP_HEIGHT + MARGIN : MARGIN;
+  } else {
+    style.top = "50%";
+  } // middle
 
   const tx = horiz === "center" ? "-50%" : "0px";
   const ty = vert === "middle" ? "-50%" : "0px";
@@ -147,7 +162,14 @@ const VIDEO_EXTENSIONS = ["mov", "mp4", "ogv", "webm", "m4v"];
 
 const AdvancedTrainingMediaViewer: React.FC<
   AdvancedTrainingMediaViewerProps
-> = ({src, onClose, onVideoEnd, size = "small", position = "bottom-right", stripPosition = "bottom"}) => {
+> = ({
+  src,
+  onClose,
+  onVideoEnd,
+  size = "small",
+  position = "bottom-right",
+  stripPosition = "bottom",
+}) => {
   // `dragPos` is only set once the user starts dragging. Before that, CSS
   // handles placement accurately (no hardcoded height guessing needed).
   const [dragPos, setDragPos] = useState<{x: number; y: number} | null>(null);
@@ -160,7 +182,9 @@ const AdvancedTrainingMediaViewer: React.FC<
   // to re-run (and never detaches mid-playback) just because the prop's
   // function identity changed due to a parent re-render.
   const onVideoEndRef = useRef(onVideoEnd);
-  useEffect(() => { onVideoEndRef.current = onVideoEnd; });
+  useEffect(() => {
+    onVideoEndRef.current = onVideoEnd;
+  });
 
   const ext = (src.match(/\.([^.]+)$/)?.[1] || "").toLowerCase();
   const isVideo = VIDEO_EXTENSIONS.includes(ext);
@@ -168,7 +192,20 @@ const AdvancedTrainingMediaViewer: React.FC<
   const handleMouseDown = useCallback(
     (e: React.MouseEvent) => {
       const tag = (e.target as HTMLElement).tagName;
-      if (["INPUT", "BUTTON", "SVG", "CIRCLE", "POLYGON", "RECT", "PATH", "G"].includes(tag)) return;
+      if (
+        [
+          "INPUT",
+          "BUTTON",
+          "SVG",
+          "CIRCLE",
+          "POLYGON",
+          "RECT",
+          "PATH",
+          "G",
+        ].includes(tag)
+      ) {
+        return;
+      }
 
       // On first drag, capture the element's current pixel position so we can
       // switch from CSS-based layout to transform-based drag coordinates.
@@ -202,11 +239,15 @@ const AdvancedTrainingMediaViewer: React.FC<
   // causing a re-run.
   useEffect(() => {
     const wrapper = playerWrapperRef.current;
-    if (!wrapper) return;
+    if (!wrapper) {
+      return;
+    }
 
     const attachListener = () => {
       const mediaEl = wrapper.querySelector("video, audio");
-      if (!mediaEl) return;
+      if (!mediaEl) {
+        return;
+      }
       const handleEnded = () => {
         if (!videoEndFiredRef.current) {
           videoEndFiredRef.current = true;
@@ -230,7 +271,9 @@ const AdvancedTrainingMediaViewer: React.FC<
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    if (!isDragging) return;
+    if (!isDragging) {
+      return;
+    }
 
     const handleMouseMove = (e: MouseEvent) => {
       const dx = e.clientX - dragStartRef.current.x;
@@ -245,10 +288,7 @@ const AdvancedTrainingMediaViewer: React.FC<
         ),
         y: Math.max(
           0,
-          Math.min(
-            window.innerHeight * 0.75,
-            dragStartRef.current.posY + dy,
-          ),
+          Math.min(window.innerHeight * 0.75, dragStartRef.current.posY + dy),
         ),
       });
     };
@@ -270,7 +310,13 @@ const AdvancedTrainingMediaViewer: React.FC<
   // Before the user drags: let CSS handle placement precisely.
   // After dragging: switch to pixel-based transform coordinates.
   const positionStyle: CSSProperties = dragPos
-    ? {left: 0, top: 0, right: "auto", bottom: "auto", transform: `translate(${dragPos.x}px, ${dragPos.y}px)`}
+    ? {
+        left: 0,
+        top: 0,
+        right: "auto",
+        bottom: "auto",
+        transform: `translate(${dragPos.x}px, ${dragPos.y}px)`,
+      }
     : getPositionStyle(position, size, stripPosition);
 
   return (
@@ -286,12 +332,7 @@ const AdvancedTrainingMediaViewer: React.FC<
       <div className="media-viewer-header">
         <span className="media-viewer-title">Training Media</span>
         <button className="media-viewer-close" onClick={onClose}>
-          <svg
-            viewBox="0 0 24 24"
-            width="14"
-            height="14"
-            fill="currentColor"
-          >
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
             <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
           </svg>
         </button>
@@ -302,9 +343,16 @@ const AdvancedTrainingMediaViewer: React.FC<
             <div
               ref={playerWrapperRef}
               className="media-viewer-player"
-              style={isVideo
-                ? {display: "block"}
-                : {position: "absolute", width: 0, height: 0, overflow: "hidden"}}
+              style={
+                isVideo
+                  ? {display: "block"}
+                  : {
+                      position: "absolute",
+                      width: 0,
+                      height: 0,
+                      overflow: "hidden",
+                    }
+              }
             >
               <Player src={src} onClick={() => playPause()} />
             </div>

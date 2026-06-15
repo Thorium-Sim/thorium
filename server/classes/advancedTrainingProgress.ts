@@ -13,6 +13,8 @@ export interface AdvancedTrainingProgressParams {
   globalObservedEvents?: string[];
   mediaViewerOpen?: boolean;
   chapterListOpen?: boolean;
+  inFlightHelp?: boolean;
+  inFlightHelpCard?: string | null;
 }
 
 export class AdvancedTrainingProgress {
@@ -28,6 +30,15 @@ export class AdvancedTrainingProgress {
   globalObservedEvents: string[];
   mediaViewerOpen: boolean;
   chapterListOpen: boolean;
+  // True when this session was launched as ad-hoc in-flight help (the crew
+  // clicked the help button mid-flight) rather than as a full training run.
+  // In-flight help never auto-advances into the main sequence and never
+  // auto-closes on chapter completion — it stays until the crew dismisses it.
+  inFlightHelp: boolean;
+  // When set, the card component this in-flight help was launched on. Used for
+  // help shown on a card without a dedicated in-flight chapter: navigating to a
+  // different card auto-closes the help. Null means no card binding.
+  inFlightHelpCard: string | null;
 
   constructor(params: AdvancedTrainingProgressParams = {}) {
     this.id = params.id || uuid.v4();
@@ -42,6 +53,8 @@ export class AdvancedTrainingProgress {
     this.globalObservedEvents = params.globalObservedEvents || [];
     this.mediaViewerOpen = params.mediaViewerOpen ?? false;
     this.chapterListOpen = params.chapterListOpen ?? false;
+    this.inFlightHelp = params.inFlightHelp ?? false;
+    this.inFlightHelpCard = params.inFlightHelpCard ?? null;
   }
 
   setActiveChapter(chapterId: string | null) {
@@ -105,5 +118,7 @@ export class AdvancedTrainingProgress {
     this.globalObservedEvents = [];
     this.mediaViewerOpen = false;
     this.chapterListOpen = false;
+    this.inFlightHelp = false;
+    this.inFlightHelpCard = null;
   }
 }

@@ -1,7 +1,10 @@
 import uuid from "uuid";
 import App from "../app";
 import {pascalCase} from "change-case";
-import {AdvancedTrainingConfig, AdvancedTrainingConfigParams} from "./advancedTraining";
+import {
+  AdvancedTrainingConfig,
+  AdvancedTrainingConfigParams,
+} from "./advancedTraining";
 
 export class StationSet {
   id: string;
@@ -130,7 +133,12 @@ export class Station {
     ambiance,
     layout,
     advancedTraining,
-  }: Partial<Station> & {advancedTraining?: AdvancedTrainingConfigParams | AdvancedTrainingConfig | null}) {
+  }: Partial<Station> & {
+    advancedTraining?:
+      | AdvancedTrainingConfigParams
+      | AdvancedTrainingConfig
+      | null;
+  }) {
     this.class = "Station";
     this.name = name || "Station";
     this.description = description || "";
