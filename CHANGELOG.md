@@ -1,3 +1,10 @@
+## [4.7.1](https://github.com/Thorium-Sim/thorium/compare/4.7.0...4.7.1) (2026-06-19)
+
+
+### Bug Fixes
+
+* Triggers that don't match their switch shouldn't block the event that triggered them. ([56ad403](https://github.com/Thorium-Sim/thorium/commit/56ad4036b9257b2d5b5a48967ec1e501b632bc6d))
+
 # [4.7.0](https://github.com/Thorium-Sim/thorium/compare/4.6.0...4.7.0) (2026-05-22)
 
 
