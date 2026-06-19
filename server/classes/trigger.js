@@ -1,5 +1,5 @@
 import uuid from "uuid";
-import {camelCase} from "change-case";
+import { camelCase } from "change-case";
 import Fuzz from "fuse.js";
 
 export default class Trigger {
@@ -21,7 +21,7 @@ export default class Trigger {
   rename(name) {
     this.name = name;
   }
-  update({components, connections, values, config}) {
+  update({ components, connections, values, config }) {
     if (components) this.components = components;
     if (connections) this.connections = connections;
     if (values) this.values = values;
@@ -35,7 +35,7 @@ export default class Trigger {
       .filter(c => this.processName(c.component.name) === eventName)
       .map(c => ({
         ...c,
-        values: {...this.values[c.id], ...args},
+        values: { ...this.values[c.id], ...args },
         config: this.config[c.id] || {},
       }))
       .map(comp => {
@@ -67,6 +67,7 @@ export default class Trigger {
                   values: this.values[comp.id],
                 };
               }
+              console.log(o.from.id, c.id, o.from.nodeId, o.to.id, c.id, o.to.nodeId)
               return null;
             })
             .filter(Boolean)
@@ -79,7 +80,7 @@ export default class Trigger {
                     (c.to.id === o.id && c.to.nodeId === "check"),
                 );
 
-                if (!checkInput) return null;
+                if (!checkInput) return prev;
                 const checkValue = o.config && o.config.check;
                 const compId =
                   checkInput.from.id === o.id
@@ -98,7 +99,7 @@ export default class Trigger {
                   return prev.concat(processConnections(o));
                 } else {
                   try {
-                    const matcher = new Fuzz([checkValue], {threshold: 0.2});
+                    const matcher = new Fuzz([checkValue], { threshold: 0.2 });
                     if (matcher.search(checkValues[checkKey]).length > 0) {
                       return prev.concat(processConnections(o));
                     }
@@ -114,10 +115,10 @@ export default class Trigger {
         const macros = processConnections(comp).map(c => ({
           id: c.id,
           event: c.name.replace("macro-", ""),
-          args: {...c.config, ...c.values},
+          args: { ...c.config, ...c.values },
           delay: c.config && c.config.delay ? c.config.delay : 0,
         }));
-        return {...comp, macros};
+        return { ...comp, macros };
       });
   }
 }
