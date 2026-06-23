@@ -128,6 +128,7 @@ const HullPlating = React.lazy(() => import("./HullPlating"));
 const EdVenturesApp = React.lazy(() => import("./EdVenturesApp"));
 const AdvancedNavigation = React.lazy(() => import("./AdvancedNavAndAstrometrics/AdvancedNavigationCard"));
 const Astrometrics = React.lazy(() => import("./AdvancedNavAndAstrometrics/AstrometricsCard"));
+const Aegis = React.lazy(() => import("./Aegis"));
 // Cores
 const EngineControlCore = React.lazy(() => import("./EngineControl/core"));
 const TransporterCore = React.lazy(() => import("./Transporters/core"));
@@ -230,6 +231,7 @@ const HullPlatingCore = React.lazy(() => import("./HullPlating/core"));
 const EdVenturesAppCore = React.lazy(() => import("./EdVenturesApp/core"));
 const AdvancedNavigationCore = React.lazy(() => import("./AdvancedNavAndAstrometrics/CoreAdvancedNavigation"));
 const AstrometricsCore = React.lazy(() => import("./AdvancedNavAndAstrometrics/CoreAstrometrics"));
+const AegisCore = React.lazy(() => import("./Aegis/core"));
 const AdvancedTrainingCore = React.lazy(() => import("./AdvancedTraining/core"));
 // Widgets
 const ComposerWidget = React.lazy(() => import("./LongRangeComm/Composer"));
@@ -341,7 +343,8 @@ const Views = {
   HullPlating,
   EdVenturesApp,
   AdvancedNavigation,
-  Astrometrics
+  Astrometrics,
+  Aegis,
 };
 
 export const Widgets = {
@@ -545,6 +548,7 @@ export const Cores = {
   EdVenturesAppCore,
   AdvancedNavigationCore,
   AstrometricsCore,
+  AegisCore,
   AdvancedTrainingCore
 };
 

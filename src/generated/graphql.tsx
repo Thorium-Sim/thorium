@@ -17,6 +17,19 @@ export type Scalars = {
   JSON: {[key: string]: any};
 };
 
+export enum Aegis_Mode {
+  Screen = 'screen',
+  Ecm = 'ecm',
+  Relay = 'relay',
+  Repair = 'repair'
+}
+
+export enum Aegis_Relay_Target {
+  Sensors = 'sensors',
+  Balanced = 'balanced',
+  Comms = 'comms'
+}
+
 export type Action = {
   __typename?: 'Action';
   action?: Maybe<Scalars['String']>;
@@ -167,6 +180,53 @@ export type AdvancedTrainingSubChapterInput = {
   id?: Maybe<Scalars['ID']>;
   name: Scalars['String'];
   requiredActions?: Maybe<Array<AdvancedTrainingRequiredActionInput>>;
+};
+
+export type Aegis = SystemInterface & {
+  __typename?: 'Aegis';
+  id: Scalars['ID'];
+  simulatorId?: Maybe<Scalars['ID']>;
+  class?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  displayName: Scalars['String'];
+  upgradeName?: Maybe<Scalars['String']>;
+  upgraded?: Maybe<Scalars['Boolean']>;
+  damage: Damage;
+  power: Power;
+  stealthFactor?: Maybe<Scalars['Float']>;
+  locations?: Maybe<Array<Maybe<Room>>>;
+  maxDrones: Scalars['Int'];
+  droneCount: Scalars['Int'];
+  deployed: Scalars['Boolean'];
+  mode: Aegis_Mode;
+  fabricating: Scalars['Boolean'];
+  fabricationPaused: Scalars['Boolean'];
+  fabricationProgress: Scalars['Float'];
+  attritionEnabled: Scalars['Boolean'];
+  structuralIntegrity: Scalars['Float'];
+  screenFocusX: Scalars['Float'];
+  screenFocusY: Scalars['Float'];
+  ecmIntensity: Scalars['Float'];
+  relayTarget: Aegis_Relay_Target;
+  repairEffort: Scalars['Float'];
+  log: Array<AegisLogEntry>;
+};
+
+export type AegisLogEntry = {
+  __typename?: 'AegisLogEntry';
+  id: Scalars['ID'];
+  timestamp: Scalars['String'];
+  type: Scalars['String'];
+  contents: Scalars['String'];
+};
+
+export type AegisPing = {
+  __typename?: 'AegisPing';
+  id: Scalars['ID'];
+  pingType: Scalars['String'];
+  strength: Scalars['Float'];
+  bearing?: Maybe<Scalars['Float']>;
 };
 
 export type Ambiance = {
@@ -2157,6 +2217,23 @@ export type Mutation = {
   _empty?: Maybe<Scalars['String']>;
   /** Macro: Actions: Trigger Action (eg. Flash, Blackout, etc.) */
   triggerAction?: Maybe<Scalars['String']>;
+  aegisSetMode?: Maybe<Scalars['String']>;
+  aegisDeploy?: Maybe<Scalars['String']>;
+  aegisRecall?: Maybe<Scalars['String']>;
+  aegisStartFabrication?: Maybe<Scalars['String']>;
+  aegisStopFabrication?: Maybe<Scalars['String']>;
+  aegisPauseFabrication?: Maybe<Scalars['String']>;
+  aegisSetAttrition?: Maybe<Scalars['String']>;
+  aegisDestroyDrone?: Maybe<Scalars['String']>;
+  aegisSetDroneCount?: Maybe<Scalars['String']>;
+  aegisSetMaxDrones?: Maybe<Scalars['String']>;
+  aegisSetScreenFocus?: Maybe<Scalars['String']>;
+  aegisSetEcmIntensity?: Maybe<Scalars['String']>;
+  aegisSetRelayTarget?: Maybe<Scalars['String']>;
+  aegisSetRepairEffort?: Maybe<Scalars['String']>;
+  aegisSetStructuralIntegrity?: Maybe<Scalars['String']>;
+  aegisHitStructure?: Maybe<Scalars['String']>;
+  aegisClearLog?: Maybe<Scalars['String']>;
   addSimulatorAmbiance?: Maybe<Scalars['String']>;
   updateSimulatorAmbiance?: Maybe<Scalars['String']>;
   removeSimulatorAmbiance?: Maybe<Scalars['String']>;
@@ -3327,6 +3404,104 @@ export type MutationTriggerActionArgs = {
   stationId?: Maybe<Scalars['String']>;
   clientId?: Maybe<Scalars['ID']>;
   duration?: Maybe<Scalars['Float']>;
+};
+
+
+export type MutationAegisSetModeArgs = {
+  id: Scalars['ID'];
+  mode: Aegis_Mode;
+};
+
+
+export type MutationAegisDeployArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationAegisRecallArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationAegisStartFabricationArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationAegisStopFabricationArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationAegisPauseFabricationArgs = {
+  id: Scalars['ID'];
+  paused: Scalars['Boolean'];
+};
+
+
+export type MutationAegisSetAttritionArgs = {
+  id: Scalars['ID'];
+  enabled: Scalars['Boolean'];
+};
+
+
+export type MutationAegisDestroyDroneArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationAegisSetDroneCountArgs = {
+  id: Scalars['ID'];
+  count: Scalars['Int'];
+};
+
+
+export type MutationAegisSetMaxDronesArgs = {
+  id: Scalars['ID'];
+  count: Scalars['Int'];
+};
+
+
+export type MutationAegisSetScreenFocusArgs = {
+  id: Scalars['ID'];
+  x: Scalars['Float'];
+  y: Scalars['Float'];
+};
+
+
+export type MutationAegisSetEcmIntensityArgs = {
+  id: Scalars['ID'];
+  intensity: Scalars['Float'];
+};
+
+
+export type MutationAegisSetRelayTargetArgs = {
+  id: Scalars['ID'];
+  target: Aegis_Relay_Target;
+};
+
+
+export type MutationAegisSetRepairEffortArgs = {
+  id: Scalars['ID'];
+  effort: Scalars['Float'];
+};
+
+
+export type MutationAegisSetStructuralIntegrityArgs = {
+  id: Scalars['ID'];
+  integrity: Scalars['Float'];
+};
+
+
+export type MutationAegisHitStructureArgs = {
+  id: Scalars['ID'];
+  amount?: Maybe<Scalars['Float']>;
+  bearing?: Maybe<Scalars['Float']>;
+};
+
+
+export type MutationAegisClearLogArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -9020,6 +9195,7 @@ export type Query = {
   __typename?: 'Query';
   _empty?: Maybe<Scalars['String']>;
   actions?: Maybe<Action>;
+  aegis?: Maybe<Aegis>;
   asset?: Maybe<Asset>;
   assets?: Maybe<Array<Maybe<Asset>>>;
   assetFolders?: Maybe<Array<Maybe<AssetFolder>>>;
@@ -9163,6 +9339,11 @@ export type Query = {
 export type QueryActionsArgs = {
   stationId?: Maybe<Scalars['ID']>;
   clientId?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryAegisArgs = {
+  simulatorId: Scalars['ID'];
 };
 
 
@@ -10542,6 +10723,8 @@ export type Subscription = {
   __typename?: 'Subscription';
   _empty?: Maybe<Scalars['String']>;
   actionsUpdate?: Maybe<Action>;
+  aegisUpdate?: Maybe<Aegis>;
+  aegisPing?: Maybe<AegisPing>;
   assetFolderChange: Array<AssetFolder>;
   clientChanged?: Maybe<Array<Maybe<Client>>>;
   clientPing?: Maybe<Scalars['Boolean']>;
@@ -10666,6 +10849,16 @@ export type SubscriptionActionsUpdateArgs = {
   simulatorId: Scalars['ID'];
   stationId?: Maybe<Scalars['ID']>;
   clientId?: Maybe<Scalars['ID']>;
+};
+
+
+export type SubscriptionAegisUpdateArgs = {
+  simulatorId: Scalars['ID'];
+};
+
+
+export type SubscriptionAegisPingArgs = {
+  simulatorId: Scalars['ID'];
 };
 
 
@@ -12815,6 +13008,225 @@ export type HandleUpdateProbeAssignmentsMutationVariables = Exact<{
 export type HandleUpdateProbeAssignmentsMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'handleUpdateProbeAssignments'>
+);
+
+export type AegisSubscriptionVariables = Exact<{
+  simulatorId: Scalars['ID'];
+}>;
+
+
+export type AegisSubscription = (
+  { __typename?: 'Subscription' }
+  & { aegisUpdate?: Maybe<(
+    { __typename?: 'Aegis' }
+    & Pick<Aegis, 'id' | 'simulatorId' | 'name' | 'displayName' | 'maxDrones' | 'droneCount' | 'deployed' | 'mode' | 'fabricating' | 'fabricationPaused' | 'fabricationProgress' | 'attritionEnabled' | 'structuralIntegrity' | 'screenFocusX' | 'screenFocusY' | 'ecmIntensity' | 'relayTarget' | 'repairEffort'>
+    & { damage: (
+      { __typename?: 'Damage' }
+      & Pick<Damage, 'damaged'>
+    ), power: (
+      { __typename?: 'Power' }
+      & Pick<Power, 'power' | 'powerLevels'>
+    ), log: Array<(
+      { __typename?: 'AegisLogEntry' }
+      & Pick<AegisLogEntry, 'id' | 'timestamp' | 'type' | 'contents'>
+    )> }
+  )> }
+);
+
+export type AegisClearLogMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type AegisClearLogMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'aegisClearLog'>
+);
+
+export type AegisDeployMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type AegisDeployMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'aegisDeploy'>
+);
+
+export type AegisDestroyDroneMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type AegisDestroyDroneMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'aegisDestroyDrone'>
+);
+
+export type AegisHitStructureMutationVariables = Exact<{
+  id: Scalars['ID'];
+  amount?: Maybe<Scalars['Float']>;
+  bearing?: Maybe<Scalars['Float']>;
+}>;
+
+
+export type AegisHitStructureMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'aegisHitStructure'>
+);
+
+export type AegisPauseFabricationMutationVariables = Exact<{
+  id: Scalars['ID'];
+  paused: Scalars['Boolean'];
+}>;
+
+
+export type AegisPauseFabricationMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'aegisPauseFabrication'>
+);
+
+export type AegisPingSubscriptionVariables = Exact<{
+  simulatorId: Scalars['ID'];
+}>;
+
+
+export type AegisPingSubscription = (
+  { __typename?: 'Subscription' }
+  & { aegisPing?: Maybe<(
+    { __typename?: 'AegisPing' }
+    & Pick<AegisPing, 'id' | 'pingType' | 'strength' | 'bearing'>
+  )> }
+);
+
+export type AegisRecallMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type AegisRecallMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'aegisRecall'>
+);
+
+export type AegisSetAttritionMutationVariables = Exact<{
+  id: Scalars['ID'];
+  enabled: Scalars['Boolean'];
+}>;
+
+
+export type AegisSetAttritionMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'aegisSetAttrition'>
+);
+
+export type AegisSetDroneCountMutationVariables = Exact<{
+  id: Scalars['ID'];
+  count: Scalars['Int'];
+}>;
+
+
+export type AegisSetDroneCountMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'aegisSetDroneCount'>
+);
+
+export type AegisSetEcmIntensityMutationVariables = Exact<{
+  id: Scalars['ID'];
+  intensity: Scalars['Float'];
+}>;
+
+
+export type AegisSetEcmIntensityMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'aegisSetEcmIntensity'>
+);
+
+export type AegisSetMaxDronesMutationVariables = Exact<{
+  id: Scalars['ID'];
+  count: Scalars['Int'];
+}>;
+
+
+export type AegisSetMaxDronesMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'aegisSetMaxDrones'>
+);
+
+export type AegisSetModeMutationVariables = Exact<{
+  id: Scalars['ID'];
+  mode: Aegis_Mode;
+}>;
+
+
+export type AegisSetModeMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'aegisSetMode'>
+);
+
+export type AegisSetRelayTargetMutationVariables = Exact<{
+  id: Scalars['ID'];
+  target: Aegis_Relay_Target;
+}>;
+
+
+export type AegisSetRelayTargetMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'aegisSetRelayTarget'>
+);
+
+export type AegisSetRepairEffortMutationVariables = Exact<{
+  id: Scalars['ID'];
+  effort: Scalars['Float'];
+}>;
+
+
+export type AegisSetRepairEffortMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'aegisSetRepairEffort'>
+);
+
+export type AegisSetScreenFocusMutationVariables = Exact<{
+  id: Scalars['ID'];
+  x: Scalars['Float'];
+  y: Scalars['Float'];
+}>;
+
+
+export type AegisSetScreenFocusMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'aegisSetScreenFocus'>
+);
+
+export type AegisSetStructuralIntegrityMutationVariables = Exact<{
+  id: Scalars['ID'];
+  integrity: Scalars['Float'];
+}>;
+
+
+export type AegisSetStructuralIntegrityMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'aegisSetStructuralIntegrity'>
+);
+
+export type AegisStartFabricationMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type AegisStartFabricationMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'aegisStartFabrication'>
+);
+
+export type AegisStopFabricationMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type AegisStopFabricationMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'aegisStopFabrication'>
 );
 
 export type CountermeasureModuleFragment = (
@@ -16473,6 +16885,9 @@ export type SoundPickerQuery = (
             "name": "AdvancedNavigationAndAstrometrics"
           },
           {
+            "name": "Aegis"
+          },
+          {
             "name": "CoolantTank"
           },
           {
@@ -17549,6 +17964,214 @@ export function useHandleUpdateProbeAssignmentsMutation(baseOptions?: ApolloReac
         return ApolloReactHooks.useMutation<HandleUpdateProbeAssignmentsMutation, HandleUpdateProbeAssignmentsMutationVariables>(HandleUpdateProbeAssignmentsDocument, baseOptions);
       }
 export type HandleUpdateProbeAssignmentsMutationHookResult = ReturnType<typeof useHandleUpdateProbeAssignmentsMutation>;
+export const AegisDocument = gql`
+    subscription Aegis($simulatorId: ID!) {
+  aegisUpdate(simulatorId: $simulatorId) {
+    id
+    simulatorId
+    name
+    displayName
+    damage {
+      damaged
+    }
+    power {
+      power
+      powerLevels
+    }
+    maxDrones
+    droneCount
+    deployed
+    mode
+    fabricating
+    fabricationPaused
+    fabricationProgress
+    attritionEnabled
+    structuralIntegrity
+    screenFocusX
+    screenFocusY
+    ecmIntensity
+    relayTarget
+    repairEffort
+    log {
+      id
+      timestamp
+      type
+      contents
+    }
+  }
+}
+    `;
+export function useAegisSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<AegisSubscription, AegisSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<AegisSubscription, AegisSubscriptionVariables>(AegisDocument, baseOptions);
+      }
+export type AegisSubscriptionHookResult = ReturnType<typeof useAegisSubscription>;
+export const AegisClearLogDocument = gql`
+    mutation AegisClearLog($id: ID!) {
+  aegisClearLog(id: $id)
+}
+    `;
+export function useAegisClearLogMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AegisClearLogMutation, AegisClearLogMutationVariables>) {
+        return ApolloReactHooks.useMutation<AegisClearLogMutation, AegisClearLogMutationVariables>(AegisClearLogDocument, baseOptions);
+      }
+export type AegisClearLogMutationHookResult = ReturnType<typeof useAegisClearLogMutation>;
+export const AegisDeployDocument = gql`
+    mutation AegisDeploy($id: ID!) {
+  aegisDeploy(id: $id)
+}
+    `;
+export function useAegisDeployMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AegisDeployMutation, AegisDeployMutationVariables>) {
+        return ApolloReactHooks.useMutation<AegisDeployMutation, AegisDeployMutationVariables>(AegisDeployDocument, baseOptions);
+      }
+export type AegisDeployMutationHookResult = ReturnType<typeof useAegisDeployMutation>;
+export const AegisDestroyDroneDocument = gql`
+    mutation AegisDestroyDrone($id: ID!) {
+  aegisDestroyDrone(id: $id)
+}
+    `;
+export function useAegisDestroyDroneMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AegisDestroyDroneMutation, AegisDestroyDroneMutationVariables>) {
+        return ApolloReactHooks.useMutation<AegisDestroyDroneMutation, AegisDestroyDroneMutationVariables>(AegisDestroyDroneDocument, baseOptions);
+      }
+export type AegisDestroyDroneMutationHookResult = ReturnType<typeof useAegisDestroyDroneMutation>;
+export const AegisHitStructureDocument = gql`
+    mutation AegisHitStructure($id: ID!, $amount: Float, $bearing: Float) {
+  aegisHitStructure(id: $id, amount: $amount, bearing: $bearing)
+}
+    `;
+export function useAegisHitStructureMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AegisHitStructureMutation, AegisHitStructureMutationVariables>) {
+        return ApolloReactHooks.useMutation<AegisHitStructureMutation, AegisHitStructureMutationVariables>(AegisHitStructureDocument, baseOptions);
+      }
+export type AegisHitStructureMutationHookResult = ReturnType<typeof useAegisHitStructureMutation>;
+export const AegisPauseFabricationDocument = gql`
+    mutation AegisPauseFabrication($id: ID!, $paused: Boolean!) {
+  aegisPauseFabrication(id: $id, paused: $paused)
+}
+    `;
+export function useAegisPauseFabricationMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AegisPauseFabricationMutation, AegisPauseFabricationMutationVariables>) {
+        return ApolloReactHooks.useMutation<AegisPauseFabricationMutation, AegisPauseFabricationMutationVariables>(AegisPauseFabricationDocument, baseOptions);
+      }
+export type AegisPauseFabricationMutationHookResult = ReturnType<typeof useAegisPauseFabricationMutation>;
+export const AegisPingDocument = gql`
+    subscription AegisPing($simulatorId: ID!) {
+  aegisPing(simulatorId: $simulatorId) {
+    id
+    pingType
+    strength
+    bearing
+  }
+}
+    `;
+export function useAegisPingSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<AegisPingSubscription, AegisPingSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<AegisPingSubscription, AegisPingSubscriptionVariables>(AegisPingDocument, baseOptions);
+      }
+export type AegisPingSubscriptionHookResult = ReturnType<typeof useAegisPingSubscription>;
+export const AegisRecallDocument = gql`
+    mutation AegisRecall($id: ID!) {
+  aegisRecall(id: $id)
+}
+    `;
+export function useAegisRecallMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AegisRecallMutation, AegisRecallMutationVariables>) {
+        return ApolloReactHooks.useMutation<AegisRecallMutation, AegisRecallMutationVariables>(AegisRecallDocument, baseOptions);
+      }
+export type AegisRecallMutationHookResult = ReturnType<typeof useAegisRecallMutation>;
+export const AegisSetAttritionDocument = gql`
+    mutation AegisSetAttrition($id: ID!, $enabled: Boolean!) {
+  aegisSetAttrition(id: $id, enabled: $enabled)
+}
+    `;
+export function useAegisSetAttritionMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AegisSetAttritionMutation, AegisSetAttritionMutationVariables>) {
+        return ApolloReactHooks.useMutation<AegisSetAttritionMutation, AegisSetAttritionMutationVariables>(AegisSetAttritionDocument, baseOptions);
+      }
+export type AegisSetAttritionMutationHookResult = ReturnType<typeof useAegisSetAttritionMutation>;
+export const AegisSetDroneCountDocument = gql`
+    mutation AegisSetDroneCount($id: ID!, $count: Int!) {
+  aegisSetDroneCount(id: $id, count: $count)
+}
+    `;
+export function useAegisSetDroneCountMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AegisSetDroneCountMutation, AegisSetDroneCountMutationVariables>) {
+        return ApolloReactHooks.useMutation<AegisSetDroneCountMutation, AegisSetDroneCountMutationVariables>(AegisSetDroneCountDocument, baseOptions);
+      }
+export type AegisSetDroneCountMutationHookResult = ReturnType<typeof useAegisSetDroneCountMutation>;
+export const AegisSetEcmIntensityDocument = gql`
+    mutation AegisSetEcmIntensity($id: ID!, $intensity: Float!) {
+  aegisSetEcmIntensity(id: $id, intensity: $intensity)
+}
+    `;
+export function useAegisSetEcmIntensityMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AegisSetEcmIntensityMutation, AegisSetEcmIntensityMutationVariables>) {
+        return ApolloReactHooks.useMutation<AegisSetEcmIntensityMutation, AegisSetEcmIntensityMutationVariables>(AegisSetEcmIntensityDocument, baseOptions);
+      }
+export type AegisSetEcmIntensityMutationHookResult = ReturnType<typeof useAegisSetEcmIntensityMutation>;
+export const AegisSetMaxDronesDocument = gql`
+    mutation AegisSetMaxDrones($id: ID!, $count: Int!) {
+  aegisSetMaxDrones(id: $id, count: $count)
+}
+    `;
+export function useAegisSetMaxDronesMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AegisSetMaxDronesMutation, AegisSetMaxDronesMutationVariables>) {
+        return ApolloReactHooks.useMutation<AegisSetMaxDronesMutation, AegisSetMaxDronesMutationVariables>(AegisSetMaxDronesDocument, baseOptions);
+      }
+export type AegisSetMaxDronesMutationHookResult = ReturnType<typeof useAegisSetMaxDronesMutation>;
+export const AegisSetModeDocument = gql`
+    mutation AegisSetMode($id: ID!, $mode: AEGIS_MODE!) {
+  aegisSetMode(id: $id, mode: $mode)
+}
+    `;
+export function useAegisSetModeMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AegisSetModeMutation, AegisSetModeMutationVariables>) {
+        return ApolloReactHooks.useMutation<AegisSetModeMutation, AegisSetModeMutationVariables>(AegisSetModeDocument, baseOptions);
+      }
+export type AegisSetModeMutationHookResult = ReturnType<typeof useAegisSetModeMutation>;
+export const AegisSetRelayTargetDocument = gql`
+    mutation AegisSetRelayTarget($id: ID!, $target: AEGIS_RELAY_TARGET!) {
+  aegisSetRelayTarget(id: $id, target: $target)
+}
+    `;
+export function useAegisSetRelayTargetMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AegisSetRelayTargetMutation, AegisSetRelayTargetMutationVariables>) {
+        return ApolloReactHooks.useMutation<AegisSetRelayTargetMutation, AegisSetRelayTargetMutationVariables>(AegisSetRelayTargetDocument, baseOptions);
+      }
+export type AegisSetRelayTargetMutationHookResult = ReturnType<typeof useAegisSetRelayTargetMutation>;
+export const AegisSetRepairEffortDocument = gql`
+    mutation AegisSetRepairEffort($id: ID!, $effort: Float!) {
+  aegisSetRepairEffort(id: $id, effort: $effort)
+}
+    `;
+export function useAegisSetRepairEffortMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AegisSetRepairEffortMutation, AegisSetRepairEffortMutationVariables>) {
+        return ApolloReactHooks.useMutation<AegisSetRepairEffortMutation, AegisSetRepairEffortMutationVariables>(AegisSetRepairEffortDocument, baseOptions);
+      }
+export type AegisSetRepairEffortMutationHookResult = ReturnType<typeof useAegisSetRepairEffortMutation>;
+export const AegisSetScreenFocusDocument = gql`
+    mutation AegisSetScreenFocus($id: ID!, $x: Float!, $y: Float!) {
+  aegisSetScreenFocus(id: $id, x: $x, y: $y)
+}
+    `;
+export function useAegisSetScreenFocusMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AegisSetScreenFocusMutation, AegisSetScreenFocusMutationVariables>) {
+        return ApolloReactHooks.useMutation<AegisSetScreenFocusMutation, AegisSetScreenFocusMutationVariables>(AegisSetScreenFocusDocument, baseOptions);
+      }
+export type AegisSetScreenFocusMutationHookResult = ReturnType<typeof useAegisSetScreenFocusMutation>;
+export const AegisSetStructuralIntegrityDocument = gql`
+    mutation AegisSetStructuralIntegrity($id: ID!, $integrity: Float!) {
+  aegisSetStructuralIntegrity(id: $id, integrity: $integrity)
+}
+    `;
+export function useAegisSetStructuralIntegrityMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AegisSetStructuralIntegrityMutation, AegisSetStructuralIntegrityMutationVariables>) {
+        return ApolloReactHooks.useMutation<AegisSetStructuralIntegrityMutation, AegisSetStructuralIntegrityMutationVariables>(AegisSetStructuralIntegrityDocument, baseOptions);
+      }
+export type AegisSetStructuralIntegrityMutationHookResult = ReturnType<typeof useAegisSetStructuralIntegrityMutation>;
+export const AegisStartFabricationDocument = gql`
+    mutation AegisStartFabrication($id: ID!) {
+  aegisStartFabrication(id: $id)
+}
+    `;
+export function useAegisStartFabricationMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AegisStartFabricationMutation, AegisStartFabricationMutationVariables>) {
+        return ApolloReactHooks.useMutation<AegisStartFabricationMutation, AegisStartFabricationMutationVariables>(AegisStartFabricationDocument, baseOptions);
+      }
+export type AegisStartFabricationMutationHookResult = ReturnType<typeof useAegisStartFabricationMutation>;
+export const AegisStopFabricationDocument = gql`
+    mutation AegisStopFabrication($id: ID!) {
+  aegisStopFabrication(id: $id)
+}
+    `;
+export function useAegisStopFabricationMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AegisStopFabricationMutation, AegisStopFabricationMutationVariables>) {
+        return ApolloReactHooks.useMutation<AegisStopFabricationMutation, AegisStopFabricationMutationVariables>(AegisStopFabricationDocument, baseOptions);
+      }
+export type AegisStopFabricationMutationHookResult = ReturnType<typeof useAegisStopFabricationMutation>;
 export const CountermeasuresDocument = gql`
     subscription Countermeasures($simulatorId: ID!) {
   countermeasuresUpdate(simulatorId: $simulatorId) {

@@ -1,0 +1,3 @@
+mutation AegisSetEcmIntensity($id: ID!, $intensity: Float!) {
+  aegisSetEcmIntensity(id: $id, intensity: $intensity)
+}
