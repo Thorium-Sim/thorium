@@ -1,5 +1,5 @@
 import React from "react";
-import {Container, Row, Col} from "helpers/reactstrap";
+import {Container, Row, Col, Button} from "helpers/reactstrap";
 import {Widgets} from "components/views/index";
 import ExtraMessageGroups from "./messageGroups";
 import {capitalCase} from "change-case";
@@ -16,6 +16,7 @@ import {
   useReorderStationWidgetsMutation,
 } from "generated/graphql";
 import {useParams} from "react-router";
+import {Link} from "react-router-dom";
 import CardsTable from "./CardsTable";
 
 const Layouts = Object.keys(LayoutList).filter(
@@ -154,6 +155,20 @@ const ConfigStation: React.FC<ConfigStationProps> = ({simulator, station}) => {
             </Col>
           </Row>
           <TrainingConfig station={station} />
+          <div style={{margin: "10px 0"}}>
+            <Button
+              tag={Link}
+              to={`/config/simulator/${
+                simulator.id
+              }/advancedTraining/${selectedStationSet}/${encodeURI(
+                station.name || "",
+              )}`}
+              size="sm"
+              color="info"
+            >
+              Configure Advanced Training
+            </Button>
+          </div>
           <AmbianceConfig station={station} />
           <div>
             <label>Layout:</label>

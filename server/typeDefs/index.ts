@@ -80,6 +80,7 @@ import dmxTypeDefs from "./dmx";
 import taskFlowTypeDefs from "./taskFlow";
 import firebaseConnectionTypeDefs from './firebase'
 import flightSetsTypeDefs from "./flightSets";
+import advancedTrainingTypeDefs from "./advancedTraining";
 export * from "./universe/components";
 
 export const actions = actionsTypeDefs;
@@ -164,3 +165,4 @@ export const countermeasures = countermeasuresTypeDefs;
 export const universe = universeTypeDefs;
 export const dmx = dmxTypeDefs;
 export const taskFlow = taskFlowTypeDefs;
+export const advancedTraining = advancedTrainingTypeDefs;

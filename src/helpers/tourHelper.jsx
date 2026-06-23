@@ -60,6 +60,8 @@ const TourHelper = ({
   // If we are in training mode and the station has audio or video training, don't show the tour.
   if (station.training && isMedia(station.training) && simulator.training)
     return null;
+  // If advanced training is enabled, suppress the legacy tour entirely.
+  if (station.advancedTraining?.enabled) return null;
   if (!steps) return null;
   return (
     <Tour

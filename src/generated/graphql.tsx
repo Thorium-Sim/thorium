@@ -90,6 +90,98 @@ export type AdvancedNavigationAndAstrometrics = SystemInterface & {
   probeAssignments: Scalars['String'];
 };
 
+export type AdvancedTrainingChapter = {
+  __typename?: 'AdvancedTrainingChapter';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  cardComponent: Scalars['String'];
+  mediaAsset?: Maybe<Scalars['String']>;
+  autoOpenMedia: Scalars['Boolean'];
+  autoAdvance: Scalars['Boolean'];
+  autoLogin: Scalars['String'];
+  cardSwitchBehavior: Scalars['String'];
+  mediaSize: Scalars['String'];
+  mediaPosition: Scalars['String'];
+  subChapters: Array<AdvancedTrainingSubChapter>;
+};
+
+export type AdvancedTrainingChapterInput = {
+  id?: Maybe<Scalars['ID']>;
+  name: Scalars['String'];
+  cardComponent: Scalars['String'];
+  mediaAsset?: Maybe<Scalars['String']>;
+  autoOpenMedia?: Maybe<Scalars['Boolean']>;
+  autoAdvance?: Maybe<Scalars['Boolean']>;
+  autoLogin?: Maybe<Scalars['String']>;
+  cardSwitchBehavior?: Maybe<Scalars['String']>;
+  mediaSize?: Maybe<Scalars['String']>;
+  mediaPosition?: Maybe<Scalars['String']>;
+  subChapters?: Maybe<Array<AdvancedTrainingSubChapterInput>>;
+};
+
+export type AdvancedTrainingConfig = {
+  __typename?: 'AdvancedTrainingConfig';
+  enabled: Scalars['Boolean'];
+  sequentialChapters: Scalars['Boolean'];
+  stripPosition: Scalars['String'];
+  chapters: Array<AdvancedTrainingChapter>;
+  inFlightChapters: Array<AdvancedTrainingChapter>;
+  loginChapter?: Maybe<AdvancedTrainingChapter>;
+  completionChapter?: Maybe<AdvancedTrainingChapter>;
+};
+
+export type AdvancedTrainingConfigInput = {
+  enabled?: Maybe<Scalars['Boolean']>;
+  sequentialChapters?: Maybe<Scalars['Boolean']>;
+  stripPosition?: Maybe<Scalars['String']>;
+  chapters?: Maybe<Array<AdvancedTrainingChapterInput>>;
+  inFlightChapters?: Maybe<Array<AdvancedTrainingChapterInput>>;
+  loginChapter?: Maybe<AdvancedTrainingChapterInput>;
+  completionChapter?: Maybe<AdvancedTrainingChapterInput>;
+};
+
+export type AdvancedTrainingProgress = {
+  __typename?: 'AdvancedTrainingProgress';
+  id: Scalars['ID'];
+  clientId: Scalars['ID'];
+  simulatorId: Scalars['ID'];
+  stationName: Scalars['String'];
+  activeChapterId?: Maybe<Scalars['ID']>;
+  activeSubChapterId?: Maybe<Scalars['ID']>;
+  completedChapterIds: Array<Scalars['ID']>;
+  completedSubChapterIds: Array<Scalars['ID']>;
+  observedActions?: Maybe<Scalars['JSON']>;
+  globalObservedEvents: Array<Scalars['String']>;
+  mediaViewerOpen: Scalars['Boolean'];
+  chapterListOpen: Scalars['Boolean'];
+};
+
+export type AdvancedTrainingRequiredAction = {
+  __typename?: 'AdvancedTrainingRequiredAction';
+  id: Scalars['ID'];
+  eventName: Scalars['String'];
+  args?: Maybe<Scalars['JSON']>;
+};
+
+export type AdvancedTrainingRequiredActionInput = {
+  id?: Maybe<Scalars['ID']>;
+  eventName: Scalars['String'];
+  args?: Maybe<Scalars['JSON']>;
+};
+
+export type AdvancedTrainingSubChapter = {
+  __typename?: 'AdvancedTrainingSubChapter';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  requiredActions: Array<AdvancedTrainingRequiredAction>;
+};
+
+export type AdvancedTrainingSubChapterInput = {
+  id?: Maybe<Scalars['ID']>;
+  name: Scalars['String'];
+  requiredActions?: Maybe<Array<AdvancedTrainingRequiredActionInput>>;
+};
+
 export type Aegis = SystemInterface & {
   __typename?: 'Aegis';
   id: Scalars['ID'];
@@ -303,6 +395,7 @@ export type Client = {
   mobile?: Maybe<Scalars['Boolean']>;
   cards?: Maybe<Array<Maybe<Scalars['String']>>>;
   keypad?: Maybe<Keypad>;
+  advancedTrainingProgress?: Maybe<AdvancedTrainingProgress>;
 };
 
 export type ColoredCoordinate = {
@@ -3245,6 +3338,38 @@ export type Mutation = {
   /** Macro: Tasks: Activate Task Flow */
   taskFlowActivate?: Maybe<Scalars['String']>;
   taskFlowAdvance?: Maybe<Scalars['String']>;
+  /** Save the full advanced training configuration for a station. */
+  setStationAdvancedTraining?: Maybe<Scalars['String']>;
+  /** Toggle advanced training mode on a station set. */
+  toggleAdvancedTrainingMode?: Maybe<Scalars['String']>;
+  /**
+   * Start an advanced training session for a client.
+   * Sets up progress tracking and activates the first chapter.
+   */
+  clientStartAdvancedTraining?: Maybe<Scalars['String']>;
+  /** Stop advanced training for a client. */
+  clientStopAdvancedTraining?: Maybe<Scalars['String']>;
+  /**
+   * Crew pressed the help/question-mark widget. Resolves the crew's current card
+   * and jumps to the in-flight help chapter for that card (or the regular chapter
+   * for it), falling back to the default begin-training behavior if neither exists.
+   */
+  clientRequestTrainingHelp?: Maybe<Scalars['String']>;
+  /**
+   * Record a crew action during advanced training.
+   * Checks against required actions and may trigger sub-chapter/chapter completion.
+   */
+  clientAdvancedTrainingAction?: Maybe<Scalars['String']>;
+  /** Set the active chapter for a client (crew navigation or FD override). */
+  advancedTrainingSetActiveChapter?: Maybe<Scalars['String']>;
+  /** FD force-complete a sub-chapter for a client. */
+  fdCompleteTrainingSubChapter?: Maybe<Scalars['String']>;
+  /** FD reset all training progress for a client. */
+  fdResetTrainingProgress?: Maybe<Scalars['String']>;
+  /** Toggle the media viewer open/close for a client. */
+  advancedTrainingToggleMediaViewer?: Maybe<Scalars['String']>;
+  /** Toggle the chapter list open/close for a client. */
+  advancedTrainingToggleChapterList?: Maybe<Scalars['String']>;
   entitySetAppearance?: Maybe<Scalars['String']>;
   entityRemoveAppearance?: Maybe<Scalars['String']>;
   entitySetBehavior?: Maybe<Scalars['String']>;
@@ -8234,6 +8359,71 @@ export type MutationTaskFlowAdvanceArgs = {
 };
 
 
+export type MutationSetStationAdvancedTrainingArgs = {
+  stationSetID: Scalars['ID'];
+  stationName: Scalars['String'];
+  config: AdvancedTrainingConfigInput;
+};
+
+
+export type MutationToggleAdvancedTrainingModeArgs = {
+  stationSetID: Scalars['ID'];
+  stationName: Scalars['String'];
+  enabled: Scalars['Boolean'];
+};
+
+
+export type MutationClientStartAdvancedTrainingArgs = {
+  clientId: Scalars['ID'];
+};
+
+
+export type MutationClientStopAdvancedTrainingArgs = {
+  clientId: Scalars['ID'];
+};
+
+
+export type MutationClientRequestTrainingHelpArgs = {
+  clientId: Scalars['ID'];
+};
+
+
+export type MutationClientAdvancedTrainingActionArgs = {
+  clientId: Scalars['ID'];
+  eventName: Scalars['String'];
+  args?: Maybe<Scalars['JSON']>;
+};
+
+
+export type MutationAdvancedTrainingSetActiveChapterArgs = {
+  clientId: Scalars['ID'];
+  chapterId: Scalars['ID'];
+};
+
+
+export type MutationFdCompleteTrainingSubChapterArgs = {
+  clientId: Scalars['ID'];
+  subChapterId: Scalars['ID'];
+};
+
+
+export type MutationFdResetTrainingProgressArgs = {
+  clientId: Scalars['ID'];
+};
+
+
+export type MutationAdvancedTrainingToggleMediaViewerArgs = {
+  clientId: Scalars['ID'];
+  open: Scalars['Boolean'];
+};
+
+
+export type MutationAdvancedTrainingToggleChapterListArgs = {
+  clientId: Scalars['ID'];
+  open: Scalars['Boolean'];
+};
+
+
 export type MutationEntitySetAppearanceArgs = {
   id?: Maybe<Scalars['ID']>;
   color?: Maybe<Scalars['String']>;
@@ -9142,6 +9332,7 @@ export type Query = {
   dmxConfig?: Maybe<DmxConfig>;
   dmxConfigs: Array<DmxConfig>;
   taskFlows: Array<TaskFlow>;
+  advancedTrainingProgress: Array<AdvancedTrainingProgress>;
 };
 
 
@@ -9730,6 +9921,12 @@ export type QueryDmxConfigArgs = {
 
 
 export type QueryTaskFlowsArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryAdvancedTrainingProgressArgs = {
+  clientId?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
 };
 
@@ -10463,6 +10660,7 @@ export type Station = {
   widgets?: Maybe<Array<Maybe<Scalars['String']>>>;
   cards?: Maybe<Array<Card>>;
   ambiance?: Maybe<Scalars['String']>;
+  advancedTraining?: Maybe<AdvancedTrainingConfig>;
 };
 
 
@@ -10642,6 +10840,8 @@ export type Subscription = {
   dmxFixtures: Array<DmxFixture>;
   dmxConfigs: Array<DmxConfig>;
   taskFlows: Array<TaskFlow>;
+  advancedTrainingProgressUpdate: Array<AdvancedTrainingProgress>;
+  advancedTrainingConfigUpdate: Array<StationSet>;
 };
 
 
@@ -11211,6 +11411,16 @@ export type SubscriptionDmxFixturesArgs = {
 
 export type SubscriptionTaskFlowsArgs = {
   simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type SubscriptionAdvancedTrainingProgressUpdateArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type SubscriptionAdvancedTrainingConfigUpdateArgs = {
+  stationSetID?: Maybe<Scalars['ID']>;
 };
 
 export type SubspaceField = SystemInterface & {
@@ -12273,7 +12483,55 @@ export type SimulatorDataFragment = (
     & { cards?: Maybe<Array<(
       { __typename?: 'Card' }
       & Pick<Card, 'name' | 'component' | 'hidden' | 'assigned' | 'newStation'>
-    )>> }
+    )>>, advancedTraining?: Maybe<(
+      { __typename?: 'AdvancedTrainingConfig' }
+      & Pick<AdvancedTrainingConfig, 'enabled' | 'sequentialChapters' | 'stripPosition'>
+      & { chapters: Array<(
+        { __typename?: 'AdvancedTrainingChapter' }
+        & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'autoLogin' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
+        & { subChapters: Array<(
+          { __typename?: 'AdvancedTrainingSubChapter' }
+          & Pick<AdvancedTrainingSubChapter, 'id' | 'name'>
+          & { requiredActions: Array<(
+            { __typename?: 'AdvancedTrainingRequiredAction' }
+            & Pick<AdvancedTrainingRequiredAction, 'id' | 'eventName' | 'args'>
+          )> }
+        )> }
+      )>, inFlightChapters: Array<(
+        { __typename?: 'AdvancedTrainingChapter' }
+        & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'autoLogin' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
+        & { subChapters: Array<(
+          { __typename?: 'AdvancedTrainingSubChapter' }
+          & Pick<AdvancedTrainingSubChapter, 'id' | 'name'>
+          & { requiredActions: Array<(
+            { __typename?: 'AdvancedTrainingRequiredAction' }
+            & Pick<AdvancedTrainingRequiredAction, 'id' | 'eventName' | 'args'>
+          )> }
+        )> }
+      )>, loginChapter?: Maybe<(
+        { __typename?: 'AdvancedTrainingChapter' }
+        & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'autoLogin' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
+        & { subChapters: Array<(
+          { __typename?: 'AdvancedTrainingSubChapter' }
+          & Pick<AdvancedTrainingSubChapter, 'id' | 'name'>
+          & { requiredActions: Array<(
+            { __typename?: 'AdvancedTrainingRequiredAction' }
+            & Pick<AdvancedTrainingRequiredAction, 'id' | 'eventName' | 'args'>
+          )> }
+        )> }
+      )>, completionChapter?: Maybe<(
+        { __typename?: 'AdvancedTrainingChapter' }
+        & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'autoLogin' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
+        & { subChapters: Array<(
+          { __typename?: 'AdvancedTrainingSubChapter' }
+          & Pick<AdvancedTrainingSubChapter, 'id' | 'name'>
+          & { requiredActions: Array<(
+            { __typename?: 'AdvancedTrainingRequiredAction' }
+            & Pick<AdvancedTrainingRequiredAction, 'id' | 'eventName' | 'args'>
+          )> }
+        )> }
+      )> }
+    )> }
   )>> }
 );
 
@@ -15911,7 +16169,55 @@ export type StationSetConfigSubscription = (
       & { cards?: Maybe<Array<(
         { __typename?: 'Card' }
         & Pick<Card, 'name' | 'component'>
-      )>> }
+      )>>, advancedTraining?: Maybe<(
+        { __typename?: 'AdvancedTrainingConfig' }
+        & Pick<AdvancedTrainingConfig, 'enabled' | 'sequentialChapters' | 'stripPosition'>
+        & { chapters: Array<(
+          { __typename?: 'AdvancedTrainingChapter' }
+          & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'autoLogin' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
+          & { subChapters: Array<(
+            { __typename?: 'AdvancedTrainingSubChapter' }
+            & Pick<AdvancedTrainingSubChapter, 'id' | 'name'>
+            & { requiredActions: Array<(
+              { __typename?: 'AdvancedTrainingRequiredAction' }
+              & Pick<AdvancedTrainingRequiredAction, 'id' | 'eventName' | 'args'>
+            )> }
+          )> }
+        )>, inFlightChapters: Array<(
+          { __typename?: 'AdvancedTrainingChapter' }
+          & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'autoLogin' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
+          & { subChapters: Array<(
+            { __typename?: 'AdvancedTrainingSubChapter' }
+            & Pick<AdvancedTrainingSubChapter, 'id' | 'name'>
+            & { requiredActions: Array<(
+              { __typename?: 'AdvancedTrainingRequiredAction' }
+              & Pick<AdvancedTrainingRequiredAction, 'id' | 'eventName' | 'args'>
+            )> }
+          )> }
+        )>, loginChapter?: Maybe<(
+          { __typename?: 'AdvancedTrainingChapter' }
+          & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'autoLogin' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
+          & { subChapters: Array<(
+            { __typename?: 'AdvancedTrainingSubChapter' }
+            & Pick<AdvancedTrainingSubChapter, 'id' | 'name'>
+            & { requiredActions: Array<(
+              { __typename?: 'AdvancedTrainingRequiredAction' }
+              & Pick<AdvancedTrainingRequiredAction, 'id' | 'eventName' | 'args'>
+            )> }
+          )> }
+        )>, completionChapter?: Maybe<(
+          { __typename?: 'AdvancedTrainingChapter' }
+          & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'autoLogin' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
+          & { subChapters: Array<(
+            { __typename?: 'AdvancedTrainingSubChapter' }
+            & Pick<AdvancedTrainingSubChapter, 'id' | 'name'>
+            & { requiredActions: Array<(
+              { __typename?: 'AdvancedTrainingRequiredAction' }
+              & Pick<AdvancedTrainingRequiredAction, 'id' | 'eventName' | 'args'>
+            )> }
+          )> }
+        )> }
+      )> }
     )> }
   )>>> }
 );
@@ -16742,6 +17048,95 @@ export const SimulatorDataFragmentDoc = gql`
       hidden
       assigned
       newStation
+    }
+    advancedTraining {
+      enabled
+      sequentialChapters
+      stripPosition
+      chapters {
+        id
+        name
+        cardComponent
+        mediaAsset
+        autoOpenMedia
+        autoAdvance
+        autoLogin
+        cardSwitchBehavior
+        mediaSize
+        mediaPosition
+        subChapters {
+          id
+          name
+          requiredActions {
+            id
+            eventName
+            args
+          }
+        }
+      }
+      inFlightChapters {
+        id
+        name
+        cardComponent
+        mediaAsset
+        autoOpenMedia
+        autoAdvance
+        autoLogin
+        cardSwitchBehavior
+        mediaSize
+        mediaPosition
+        subChapters {
+          id
+          name
+          requiredActions {
+            id
+            eventName
+            args
+          }
+        }
+      }
+      loginChapter {
+        id
+        name
+        cardComponent
+        mediaAsset
+        autoOpenMedia
+        autoAdvance
+        autoLogin
+        cardSwitchBehavior
+        mediaSize
+        mediaPosition
+        subChapters {
+          id
+          name
+          requiredActions {
+            id
+            eventName
+            args
+          }
+        }
+      }
+      completionChapter {
+        id
+        name
+        cardComponent
+        mediaAsset
+        autoOpenMedia
+        autoAdvance
+        autoLogin
+        cardSwitchBehavior
+        mediaSize
+        mediaPosition
+        subChapters {
+          id
+          name
+          requiredActions {
+            id
+            eventName
+            args
+          }
+        }
+      }
     }
   }
 }
@@ -20858,6 +21253,95 @@ export const StationSetConfigDocument = gql`
       cards {
         name
         component
+      }
+      advancedTraining {
+        enabled
+        sequentialChapters
+        stripPosition
+        chapters {
+          id
+          name
+          cardComponent
+          mediaAsset
+          autoOpenMedia
+          autoAdvance
+          autoLogin
+          cardSwitchBehavior
+          mediaSize
+          mediaPosition
+          subChapters {
+            id
+            name
+            requiredActions {
+              id
+              eventName
+              args
+            }
+          }
+        }
+        inFlightChapters {
+          id
+          name
+          cardComponent
+          mediaAsset
+          autoOpenMedia
+          autoAdvance
+          autoLogin
+          cardSwitchBehavior
+          mediaSize
+          mediaPosition
+          subChapters {
+            id
+            name
+            requiredActions {
+              id
+              eventName
+              args
+            }
+          }
+        }
+        loginChapter {
+          id
+          name
+          cardComponent
+          mediaAsset
+          autoOpenMedia
+          autoAdvance
+          autoLogin
+          cardSwitchBehavior
+          mediaSize
+          mediaPosition
+          subChapters {
+            id
+            name
+            requiredActions {
+              id
+              eventName
+              args
+            }
+          }
+        }
+        completionChapter {
+          id
+          name
+          cardComponent
+          mediaAsset
+          autoOpenMedia
+          autoAdvance
+          autoLogin
+          cardSwitchBehavior
+          mediaSize
+          mediaPosition
+          subChapters {
+            id
+            name
+            requiredActions {
+              id
+              eventName
+              args
+            }
+          }
+        }
       }
     }
   }
