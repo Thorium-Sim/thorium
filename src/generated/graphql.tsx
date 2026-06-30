@@ -11553,6 +11553,8 @@ export type TacticalItem = {
   icon?: Maybe<Scalars['String']>;
   size?: Maybe<Scalars['Float']>;
   opacity?: Maybe<Scalars['Float']>;
+  iconWidth?: Maybe<Scalars['Float']>;
+  iconHeight?: Maybe<Scalars['Float']>;
   speed?: Maybe<Scalars['Float']>;
   velocity?: Maybe<Coordinates>;
   location?: Maybe<Coordinates>;
@@ -11564,6 +11566,7 @@ export type TacticalItem = {
   thrusters?: Maybe<Scalars['Boolean']>;
   rotationMatch?: Maybe<Scalars['Boolean']>;
   thrusterControls?: Maybe<ThrusterControls>;
+  keepOnScreen?: Maybe<Scalars['Boolean']>;
 };
 
 export type TacticalItemInput = {
@@ -11576,6 +11579,8 @@ export type TacticalItemInput = {
   icon?: Maybe<Scalars['String']>;
   size?: Maybe<Scalars['Float']>;
   opacity?: Maybe<Scalars['Float']>;
+  iconWidth?: Maybe<Scalars['Float']>;
+  iconHeight?: Maybe<Scalars['Float']>;
   speed?: Maybe<Scalars['Float']>;
   velocity?: Maybe<CoordinatesInput>;
   location?: Maybe<CoordinatesInput>;
@@ -11586,6 +11591,7 @@ export type TacticalItemInput = {
   thrusters?: Maybe<Scalars['Boolean']>;
   rotationMatch?: Maybe<Scalars['Boolean']>;
   thrusterControls?: Maybe<ThrusterControlsInput>;
+  keepOnScreen?: Maybe<Scalars['Boolean']>;
 };
 
 export type TacticalLayer = {
@@ -14336,7 +14342,7 @@ export type TacticalMapUpdateSubscription = (
       & Pick<TacticalLayer, 'id' | 'name' | 'type' | 'image' | 'color' | 'labels' | 'gridCols' | 'gridRows' | 'advance' | 'asset' | 'autoplay' | 'loop' | 'playbackSpeed' | 'opacity' | 'mute'>
       & { items?: Maybe<Array<Maybe<(
         { __typename?: 'TacticalItem' }
-        & Pick<TacticalItem, 'id' | 'layerId' | 'font' | 'label' | 'fontSize' | 'fontColor' | 'icon' | 'size' | 'speed' | 'rotation' | 'opacity' | 'flash' | 'ijkl' | 'wasd' | 'thrusters' | 'rotationMatch'>
+        & Pick<TacticalItem, 'id' | 'layerId' | 'font' | 'label' | 'fontSize' | 'fontColor' | 'icon' | 'size' | 'iconWidth' | 'iconHeight' | 'keepOnScreen' | 'speed' | 'rotation' | 'opacity' | 'flash' | 'ijkl' | 'wasd' | 'thrusters' | 'rotationMatch'>
         & { velocity?: Maybe<(
           { __typename?: 'Coordinates' }
           & Pick<Coordinates, 'x' | 'y'>
@@ -19219,6 +19225,9 @@ export const TacticalMapUpdateDocument = gql`
         fontColor
         icon
         size
+        iconWidth
+        iconHeight
+        keepOnScreen
         speed
         velocity {
           x

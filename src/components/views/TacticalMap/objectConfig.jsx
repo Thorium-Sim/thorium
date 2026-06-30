@@ -331,6 +331,7 @@ const ObjectSettings = ({
   flash,
   ijkl,
   wasd,
+  keepOnScreen,
   opacity,
   updateObject,
   //thrusters,
@@ -439,6 +440,19 @@ const ObjectSettings = ({
               onChange={evt => updateObject("ijkl", evt.target.checked)}
             />
             IJKL Keys
+          </Label>
+        </FormGroup>
+        <FormGroup check>
+          <Label check>
+            <Input
+              type="checkbox"
+              checked={keepOnScreen}
+              onChange={evt =>
+                updateObject("keepOnScreen", evt.target.checked)
+              }
+            />
+            Keep on screen{" "}
+            <small>Stops the icon from moving off the edge of the screen.</small>
           </Label>
         </FormGroup>
         <Button size="sm" color="danger" onClick={() => removeObject()}>

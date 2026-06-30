@@ -5118,6 +5118,8 @@ type TacticalItem {
   icon: String
   size: Float
   opacity: Float
+  iconWidth: Float
+  iconHeight: Float
   speed: Float
   velocity: Coordinates
   location: Coordinates
@@ -5129,6 +5131,7 @@ type TacticalItem {
   thrusters: Boolean
   rotationMatch: Boolean
   thrusterControls: ThrusterControls
+  keepOnScreen: Boolean
 }
 
 input TacticalItemInput {
@@ -5141,6 +5144,8 @@ input TacticalItemInput {
   icon: String
   size: Float
   opacity: Float
+  iconWidth: Float
+  iconHeight: Float
   speed: Float
   velocity: CoordinatesInput
   location: CoordinatesInput
@@ -5151,6 +5156,7 @@ input TacticalItemInput {
   thrusters: Boolean
   rotationMatch: Boolean
   thrusterControls: ThrusterControlsInput
+  keepOnScreen: Boolean
 }
 
 type TacticalLayer {

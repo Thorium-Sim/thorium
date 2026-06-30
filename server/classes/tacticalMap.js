@@ -41,6 +41,9 @@ class TacticalItem {
     this.flash = params.flash || false;
     this.icon = params.icon || null;
     this.size = params.size || 1;
+    this.iconWidth = params.iconWidth || 0;
+    this.iconHeight = params.iconHeight || 0;
+    this.keepOnScreen = params.keepOnScreen || false;
     this.speed = params.speed || 1000;
     this.velocity = params.velocity || {x: 0, y: 0, z: 0};
     this.location = params.location || {x: 0, y: 0, z: 0};
@@ -60,6 +63,9 @@ class TacticalItem {
     flash,
     icon,
     size,
+    iconWidth,
+    iconHeight,
+    keepOnScreen,
     speed,
     velocity,
     location,
@@ -79,6 +85,9 @@ class TacticalItem {
     if (flash || flash === false) this.flash = flash;
     if (icon || icon === "") this.icon = icon;
     if (size) this.size = size;
+    if (iconWidth) this.iconWidth = iconWidth;
+    if (iconHeight) this.iconHeight = iconHeight;
+    if (keepOnScreen || keepOnScreen === false) this.keepOnScreen = keepOnScreen;
     if (speed || speed === 0) this.speed = speed;
     if (velocity) this.velocity = velocity;
     if (location) this.location = location;

@@ -1,6 +1,7 @@
 import App from "../app";
 import * as THREE from "three";
 import {pubsub} from "../helpers/subscriptionManager";
+import {clampItemPosition} from "../helpers/tacticalBounds";
 
 const interval = 1000 / 5;
 let lastTime = Date.now();
@@ -42,15 +43,28 @@ const moveTacticalMap = () => {
   App.tacticalMaps.forEach(m => {
     m.layers.forEach(l => {
       l.items.forEach(i => {
-        i.update({
-          location: moveContact(
-            i.destination,
-            i.location,
-            i.speed,
-            m.frozen,
-            delta,
-          ),
-        });
+        let location = moveContact(
+          i.destination,
+          i.location,
+          i.speed,
+          m.frozen,
+          delta,
+        );
+        // Authoritative backstop: never let the animated location settle
+        // off screen when the contact is constrained. Also pull a (possibly
+        // newly-constrained) destination back on screen so the persisted value
+        // converges instead of drifting.
+        if (i.keepOnScreen) {
+          location = clampItemPosition(i, location);
+          const destination = clampItemPosition(i, i.destination);
+          if (
+            destination.x !== i.destination.x ||
+            destination.y !== i.destination.y
+          ) {
+            i.update({destination});
+          }
+        }
+        i.update({location});
       });
     });
     m.interval = interval;
