@@ -1,6 +1,10 @@
 import uuid from "uuid";
 import App from "../app";
 import {pascalCase} from "change-case";
+import {
+  AdvancedTrainingConfig,
+  AdvancedTrainingConfigParams,
+} from "./advancedTraining";
 
 export class StationSet {
   id: string;
@@ -115,6 +119,7 @@ export class Station {
   training: string;
   ambiance: string;
   layout: string;
+  advancedTraining: AdvancedTrainingConfig | null;
   constructor({
     name,
     cards = [],
@@ -127,7 +132,13 @@ export class Station {
     training,
     ambiance,
     layout,
-  }: Partial<Station>) {
+    advancedTraining,
+  }: Partial<Station> & {
+    advancedTraining?:
+      | AdvancedTrainingConfigParams
+      | AdvancedTrainingConfig
+      | null;
+  }) {
     this.class = "Station";
     this.name = name || "Station";
     this.description = description || "";
@@ -139,6 +150,9 @@ export class Station {
     this.messageGroups = messageGroups;
     this.widgets = widgets;
     this.layout = layout || null;
+    this.advancedTraining = advancedTraining
+      ? new AdvancedTrainingConfig(advancedTraining)
+      : null;
     this.cards = [];
     cards.forEach(card => {
       this.addCard(card);
@@ -162,6 +176,9 @@ export class Station {
   }
   setTraining(training: string) {
     this.training = training;
+  }
+  setAdvancedTraining(config: AdvancedTrainingConfigParams | null) {
+    this.advancedTraining = config ? new AdvancedTrainingConfig(config) : null;
   }
   setTags(tags: string[]) {
     this.tags = tags.map(t => t.trim());

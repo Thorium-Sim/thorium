@@ -63,3 +63,5 @@ import "./Countermeasures";
 import "./hullPlating";
 import "./edVenturesApp";
 import "./advancedNavigationAndAstrometrics";
+import "./aegis";
+import "./advancedTraining";

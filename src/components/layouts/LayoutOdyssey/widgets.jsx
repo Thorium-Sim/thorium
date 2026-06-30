@@ -50,19 +50,17 @@ class WidgetsContainer extends Component {
     });
   };
   startTraining = () => {
-    const client = this.props.clientObj.id;
-    const variables = {
-      client,
-      training: true,
-    };
+    // Card-aware help: jumps to the in-flight (or regular) chapter for the
+    // crew's current card, falling back to begin-training. Resolved server-side.
+    const clientId = this.props.clientObj.id;
     const mutation = gql`
-      mutation ClientSetTraining($client: ID!, $training: Boolean!) {
-        clientSetTraining(client: $client, training: $training)
+      mutation ClientRequestTrainingHelp($clientId: ID!) {
+        clientRequestTrainingHelp(clientId: $clientId)
       }
     `;
     this.props.client.mutate({
       mutation,
-      variables,
+      variables: {clientId},
     });
   };
   logout = () => {

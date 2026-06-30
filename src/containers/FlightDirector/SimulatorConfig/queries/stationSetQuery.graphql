@@ -21,6 +21,95 @@ subscription StationSetConfig {
         name
         component
       }
+      advancedTraining {
+        enabled
+        sequentialChapters
+        stripPosition
+        chapters {
+          id
+          name
+          cardComponent
+          mediaAsset
+          autoOpenMedia
+          autoAdvance
+          autoLogin
+          cardSwitchBehavior
+          mediaSize
+          mediaPosition
+          subChapters {
+            id
+            name
+            requiredActions {
+              id
+              eventName
+              args
+            }
+          }
+        }
+        inFlightChapters {
+          id
+          name
+          cardComponent
+          mediaAsset
+          autoOpenMedia
+          autoAdvance
+          autoLogin
+          cardSwitchBehavior
+          mediaSize
+          mediaPosition
+          subChapters {
+            id
+            name
+            requiredActions {
+              id
+              eventName
+              args
+            }
+          }
+        }
+        loginChapter {
+          id
+          name
+          cardComponent
+          mediaAsset
+          autoOpenMedia
+          autoAdvance
+          autoLogin
+          cardSwitchBehavior
+          mediaSize
+          mediaPosition
+          subChapters {
+            id
+            name
+            requiredActions {
+              id
+              eventName
+              args
+            }
+          }
+        }
+        completionChapter {
+          id
+          name
+          cardComponent
+          mediaAsset
+          autoOpenMedia
+          autoAdvance
+          autoLogin
+          cardSwitchBehavior
+          mediaSize
+          mediaPosition
+          subChapters {
+            id
+            name
+            requiredActions {
+              id
+              eventName
+              args
+            }
+          }
+        }
+      }
     }
   }
 }

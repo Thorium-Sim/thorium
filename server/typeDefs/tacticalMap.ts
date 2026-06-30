@@ -102,6 +102,10 @@ const schema = gql`
     icon: String
     size: Float
     opacity: Float
+    # Intrinsic pixel dimensions of the icon image, measured by the client.
+    # Used to compute the icon footprint for the keepOnScreen clamp.
+    iconWidth: Float
+    iconHeight: Float
 
     #Animation
     speed: Float
@@ -116,6 +120,8 @@ const schema = gql`
     thrusters: Boolean
     rotationMatch: Boolean
     thrusterControls: ThrusterControls
+    # When true, the object is constrained so its full icon stays on screen.
+    keepOnScreen: Boolean
   }
 
   input TacticalItemInput {
@@ -132,6 +138,8 @@ const schema = gql`
     icon: String
     size: Float
     opacity: Float
+    iconWidth: Float
+    iconHeight: Float
 
     #Animation
     speed: Float
@@ -145,6 +153,7 @@ const schema = gql`
     thrusters: Boolean
     rotationMatch: Boolean
     thrusterControls: ThrusterControlsInput
+    keepOnScreen: Boolean
   }
 
   type TacticalPath {

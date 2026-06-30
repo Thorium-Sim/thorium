@@ -124,10 +124,13 @@ export function addAspects(
         // Override the system ID
         newAspect.id = uuid.v4();
         if (isochip) {
-          isochip.id = uuid.v4();
-          isochip.system = newAspect.id;
-          isochip.simulatorId = sim.id;
-          data.isochips.push(new Classes.Isochip(isochip));
+          // Clone the isochip rather than mutating the original — the template's
+          // isochip must remain intact so future flights can copy it correctly.
+          const isochipCopy = cloneDeep(isochip);
+          isochipCopy.id = uuid.v4();
+          isochipCopy.system = newAspect.id;
+          isochipCopy.simulatorId = sim.id;
+          data.isochips.push(new Classes.Isochip(isochipCopy));
         }
         if (!isImport) {
           if (newAspect.power && newAspect.power.powerLevels.length) {
@@ -417,8 +420,11 @@ const resolver = {
     startFlight(rootQuery, {id = uuid.v4(), name, simulators, flightType}) {
       const simIds = simulators.map(
         (s: {simulatorId: string; missionId?: string; stationSet: string}) => {
-          // Create a snapshot restore before the flight is created
-          App.saveRestore();
+          // Save a restore snapshot before creating the flight, but not for
+          // sandbox/preview flights used during training configuration.
+          if (!name?.startsWith("__sandbox_")) {
+            App.saveRestore();
+          }
           const template = cloneDeep(
             App.simulators.find(sim => sim.id === s.simulatorId),
           );
