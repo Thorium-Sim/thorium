@@ -84,6 +84,8 @@ export default class Task {
   macros: Macro[];
   preMacros: Macro[];
   assigned: boolean | string;
+  /** Frozen at creation so random instructions don't re-roll on every read */
+  instructions: string | null;
   constructor(params: Partial<Task> = {}) {
     // The check to see if the task is relevant was already handled
     // before this task was instantiated
@@ -181,6 +183,28 @@ export default class Task {
 
     // Task Report Assignment
     this.assigned = params.assigned || false;
+
+    // Freeze instructions at creation so random generators (Panel Actions,
+    // reportReplacer tokens) don't re-roll on every GraphQL read. The resolver
+    // returns this frozen value and falls back to live computation only for
+    // tasks persisted before this change (where instructions is undefined).
+    if (params.instructions !== undefined && params.instructions !== null) {
+      this.instructions = params.instructions;
+    } else {
+      try {
+        this.instructions = definitionObject?.instructions
+          ? definitionObject.instructions({
+              simulator,
+              requiredValues: this.values,
+              task: this,
+            })
+          : null;
+      } catch (e) {
+        // Some definitions throw if their required system/panel isn't found;
+        // fall back to live computation in the resolver.
+        this.instructions = null;
+      }
+    }
   }
   verify(dismiss) {
     if (this.verified) return;
