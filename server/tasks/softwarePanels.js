@@ -33,7 +33,7 @@ export default [
         input: ({simulator}) =>
           simulator
             ? simulator.panels.map(p => {
-                const panel = App.softwarePanels.find(pp => (pp.id = p));
+                const panel = App.softwarePanels.find(pp => pp.id === p);
                 return {label: panel.name, value: panel.id};
               })
             : App.softwarePanels.map(panel => ({
