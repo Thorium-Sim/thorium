@@ -26,6 +26,9 @@ const fragment = gql`
         fontColor
         icon
         size
+        iconWidth
+        iconHeight
+        keepOnScreen
         speed
         velocity {
           x

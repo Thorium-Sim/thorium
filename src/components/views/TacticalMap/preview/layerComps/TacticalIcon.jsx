@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import IconMarkup from "./IconMarkup";
+import {clampItemPosition} from "./clampToBounds";
 
 export default class TacticalIcon extends Component {
   constructor(props) {
@@ -38,7 +39,10 @@ export default class TacticalIcon extends Component {
     if (this.props.isSelected) {
       this.props.moveMultiple("cancel");
     } else {
-      const {x, y, z} = this.state.destination;
+      let {x, y, z} = this.state.destination;
+      if (this.props.keepOnScreen) {
+        ({x, y, z} = clampItemPosition(this.props, {x, y, z}));
+      }
       this.props.updateObject("destination", {x, y, z});
 
       this.dragging = false;
@@ -57,11 +61,27 @@ export default class TacticalIcon extends Component {
       this.props.moveMultiple(evt, bounds);
     } else {
       const {destination} = this.state;
-      const x = destination.x + evt.movementX / bounds.width;
-      const y = destination.y + evt.movementY / bounds.height;
+      let x = destination.x + evt.movementX / bounds.width;
+      let y = destination.y + evt.movementY / bounds.height;
+      if (this.props.keepOnScreen) {
+        ({x, y} = clampItemPosition(this.props, {x, y, z: destination.z}));
+      }
       this.setState({
         destination: Object.assign({}, this.state.destination, {x, y}),
       });
+    }
+  };
+  // Measure the icon's intrinsic dimensions once and persist them so the server
+  // (and every client) can compute the keepOnScreen footprint. Stored only when
+  // missing or changed, so this fires at most once per icon.
+  handleIconLoad = ({naturalWidth, naturalHeight}) => {
+    if (!naturalWidth || !naturalHeight) return;
+    const {id, layerId, iconWidth, iconHeight} = this.props;
+    if (iconWidth !== naturalWidth) {
+      this.props.updateObject("iconWidth", naturalWidth, {id, layerId});
+    }
+    if (iconHeight !== naturalHeight) {
+      this.props.updateObject("iconHeight", naturalHeight, {id, layerId});
     }
   };
   render() {
@@ -84,6 +104,9 @@ export default class TacticalIcon extends Component {
       interval,
       movement = {x: 0, y: 0, z: 0},
       isSelected,
+      keepOnScreen,
+      iconWidth,
+      iconHeight,
     } = this.props;
     if (icon) {
       return (
@@ -107,6 +130,10 @@ export default class TacticalIcon extends Component {
           fontSize={fontSize}
           label={label}
           core={core}
+          keepOnScreen={keepOnScreen}
+          iconWidth={iconWidth}
+          iconHeight={iconHeight}
+          onIconLoad={this.handleIconLoad}
         />
       );
     }

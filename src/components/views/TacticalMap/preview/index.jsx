@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import layerComps from "./layerComps";
 import {withApollo} from "react-apollo";
 import gql from "graphql-tag.macro";
+import {clampItemPosition} from "./layerComps/clampToBounds";
 class TacticalMapPreview extends Component {
   keypress = evt => {
     const distance = 0.005;
@@ -39,15 +40,15 @@ class TacticalMapPreview extends Component {
             (wasd.indexOf(evt.code) > -1 && i.wasd) ||
             (ijkl.indexOf(evt.code) > -1 && i.ijkl)
           ) {
-            this.props.updateObject(
-              "destination",
-              {
-                x: i.destination.x + movement.x,
-                y: i.destination.y + movement.y,
-                z: i.destination.z,
-              },
-              i,
-            );
+            let destination = {
+              x: i.destination.x + movement.x,
+              y: i.destination.y + movement.y,
+              z: i.destination.z,
+            };
+            if (i.keepOnScreen) {
+              destination = clampItemPosition(i, destination);
+            }
+            this.props.updateObject("destination", destination, i);
           }
         });
       }

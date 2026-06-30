@@ -2,6 +2,12 @@ import React from "react";
 import TacticalIcon from "./TacticalIcon";
 import Selection from "./select";
 import useInterval from "helpers/hooks/useInterval";
+import {clampItemPosition} from "./clampToBounds";
+
+// Extra slack (in px) added to the off-screen deletion boundary so contacts that
+// sit right at the edge — especially keepOnScreen ones pinned against it — are not
+// deleted by accident during a multi-select drag.
+const DELETE_MARGIN = 40;
 
 const Objects = ({
   id,
@@ -40,16 +46,30 @@ const Objects = ({
         x = x + movement.x;
         y = y + movement.y;
 
+        // Constrained contacts are clamped back on screen instead of being
+        // dragged off and deleted.
+        if (item.keepOnScreen) {
+          updateObject(
+            "destination",
+            clampItemPosition(item, {x, y, z}),
+            item,
+            speed,
+          );
+          return;
+        }
+
         const el = document.getElementById(`tactical-icon-${item.id}`);
         const elBounds = el.getBoundingClientRect();
         const leftBound =
           (-1 * (elBounds.width / item.size + canvasBounds.left)) /
-          canvasBounds.width;
-        const rightBound = 1 + 20 / canvasBounds.width;
+            canvasBounds.width -
+          DELETE_MARGIN / canvasBounds.width;
+        const rightBound = 1 + DELETE_MARGIN / canvasBounds.width;
         const topBound =
           (-1 * (elBounds.height / item.size + canvasBounds.top)) /
-          canvasBounds.height;
-        const bottomBound = 1 + 20 / canvasBounds.height;
+            canvasBounds.height -
+          DELETE_MARGIN / canvasBounds.height;
+        const bottomBound = 1 + DELETE_MARGIN / canvasBounds.height;
         if (
           x > rightBound ||
           x < leftBound ||
