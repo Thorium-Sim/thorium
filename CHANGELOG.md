@@ -1,3 +1,17 @@
+# [4.8.0](https://github.com/Thorium-Sim/thorium/compare/4.7.1...4.8.0) (2026-07-04)
+
+
+### Bug Fixes
+
+* **3505:** Fixed panel tasks from regenerating values on subscription ([477b0f0](https://github.com/Thorium-Sim/thorium/commit/477b0f0a963087d97f6853eaa640756400bcb600))
+
+
+### Features
+
+* Added ability to lock a tactical map object to screen ([715f394](https://github.com/Thorium-Sim/thorium/commit/715f394c60db6ad58fb0df5822b3f4d803f4cff4))
+* Added ability to lock a tactical map object to screen ([58b6318](https://github.com/Thorium-Sim/thorium/commit/58b6318148d3e1e94de5cfa99b658562d6c26c69))
+* Added Aegis system ([81615fb](https://github.com/Thorium-Sim/thorium/commit/81615fb98192c105f3111ae9e7424bda6635ca44))
+
 ## [4.7.1](https://github.com/Thorium-Sim/thorium/compare/4.7.0...4.7.1) (2026-06-19)
 
 
