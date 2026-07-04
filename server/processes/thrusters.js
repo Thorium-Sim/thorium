@@ -1,5 +1,6 @@
 import App from "../app";
 import {pubsub} from "../helpers/subscriptionManager";
+import {clampItemPosition} from "../helpers/tacticalBounds";
 
 function getMovementDirection(direction, movement) {
   if (movement === "up") return Math.abs(direction.z < 0 ? direction.z : 0);
@@ -189,6 +190,15 @@ const updateThrusters = () => {
                   item.destination.y += movement.y;
                   item.location.x += movement.x;
                   item.location.y += movement.y;
+                }
+                // Keep the icon on screen if requested. Clamping the stored
+                // values (rather than only the rendered position) cancels the
+                // "drift" at the edge: holding thrust into a wall no longer
+                // accumulates an off-screen position, so reversing thrust moves
+                // the contact immediately with no dead-zone.
+                if (item.keepOnScreen) {
+                  item.destination = clampItemPosition(item, item.destination);
+                  item.location = clampItemPosition(item, item.location);
                 }
               });
             });

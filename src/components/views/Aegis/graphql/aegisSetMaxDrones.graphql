@@ -1,0 +1,3 @@
+mutation AegisSetMaxDrones($id: ID!, $count: Int!) {
+  aegisSetMaxDrones(id: $id, count: $count)
+}

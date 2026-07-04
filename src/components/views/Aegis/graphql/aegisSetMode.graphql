@@ -1,0 +1,3 @@
+mutation AegisSetMode($id: ID!, $mode: AEGIS_MODE!) {
+  aegisSetMode(id: $id, mode: $mode)
+}

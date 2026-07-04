@@ -78,6 +78,7 @@ class Events extends EventEmitter {
   dmxConfigs: ClassesImport.DMXConfig[] = [];
   dmxSets: ClassesImport.DMXSet[] = [];
   hackingPresets: ClassesImport.HackingPreset[] = [];
+  advancedTrainingProgress: any[] = [];
   printQueue: {
     id: string;
     asset: string;
@@ -215,6 +216,7 @@ class Events extends EventEmitter {
     events = null,
     flights = [],
     motus = [],
+    advancedTrainingProgress = [],
     ...snapshot
   }: Events) {
     const newFlights = flights.map(({timeouts, ...f}) => f);

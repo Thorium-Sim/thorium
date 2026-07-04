@@ -61,6 +61,150 @@ type AdvancedNavStarsData {
   activating: Boolean!
 }
 
+type AdvancedTrainingChapter {
+  id: ID!
+  name: String!
+  cardComponent: String!
+  mediaAsset: String
+  autoOpenMedia: Boolean!
+  autoAdvance: Boolean!
+  autoLogin: String!
+  cardSwitchBehavior: String!
+  mediaSize: String!
+  mediaPosition: String!
+  subChapters: [AdvancedTrainingSubChapter!]!
+}
+
+input AdvancedTrainingChapterInput {
+  id: ID
+  name: String!
+  cardComponent: String!
+  mediaAsset: String
+  autoOpenMedia: Boolean
+  autoAdvance: Boolean
+  autoLogin: String
+  cardSwitchBehavior: String
+  mediaSize: String
+  mediaPosition: String
+  subChapters: [AdvancedTrainingSubChapterInput!]
+}
+
+type AdvancedTrainingConfig {
+  enabled: Boolean!
+  sequentialChapters: Boolean!
+  stripPosition: String!
+  chapters: [AdvancedTrainingChapter!]!
+  inFlightChapters: [AdvancedTrainingChapter!]!
+  loginChapter: AdvancedTrainingChapter
+  completionChapter: AdvancedTrainingChapter
+}
+
+input AdvancedTrainingConfigInput {
+  enabled: Boolean
+  sequentialChapters: Boolean
+  stripPosition: String
+  chapters: [AdvancedTrainingChapterInput!]
+  inFlightChapters: [AdvancedTrainingChapterInput!]
+  loginChapter: AdvancedTrainingChapterInput
+  completionChapter: AdvancedTrainingChapterInput
+}
+
+type AdvancedTrainingProgress {
+  id: ID!
+  clientId: ID!
+  simulatorId: ID!
+  stationName: String!
+  activeChapterId: ID
+  activeSubChapterId: ID
+  completedChapterIds: [ID!]!
+  completedSubChapterIds: [ID!]!
+  observedActions: JSON
+  globalObservedEvents: [String!]!
+  mediaViewerOpen: Boolean!
+  chapterListOpen: Boolean!
+}
+
+type AdvancedTrainingRequiredAction {
+  id: ID!
+  eventName: String!
+  args: JSON
+}
+
+input AdvancedTrainingRequiredActionInput {
+  id: ID
+  eventName: String!
+  args: JSON
+}
+
+type AdvancedTrainingSubChapter {
+  id: ID!
+  name: String!
+  requiredActions: [AdvancedTrainingRequiredAction!]!
+}
+
+input AdvancedTrainingSubChapterInput {
+  id: ID
+  name: String!
+  requiredActions: [AdvancedTrainingRequiredActionInput!]
+}
+
+type Aegis implements SystemInterface {
+  id: ID!
+  simulatorId: ID
+  class: String
+  type: String
+  name: String!
+  displayName: String!
+  upgradeName: String
+  upgraded: Boolean
+  damage: Damage!
+  power: Power!
+  stealthFactor: Float
+  locations: [Room]
+  maxDrones: Int!
+  droneCount: Int!
+  deployed: Boolean!
+  mode: AEGIS_MODE!
+  fabricating: Boolean!
+  fabricationPaused: Boolean!
+  fabricationProgress: Float!
+  attritionEnabled: Boolean!
+  structuralIntegrity: Float!
+  screenFocusX: Float!
+  screenFocusY: Float!
+  ecmIntensity: Float!
+  relayTarget: AEGIS_RELAY_TARGET!
+  repairEffort: Float!
+  log: [AegisLogEntry!]!
+}
+
+enum AEGIS_MODE {
+  screen
+  ecm
+  relay
+  repair
+}
+
+enum AEGIS_RELAY_TARGET {
+  sensors
+  balanced
+  comms
+}
+
+type AegisLogEntry {
+  id: ID!
+  timestamp: String!
+  type: String!
+  contents: String!
+}
+
+type AegisPing {
+  id: ID!
+  pingType: String!
+  strength: Float!
+  bearing: Float
+}
+
 type Ambiance {
   id: ID!
   name: String!
@@ -222,6 +366,7 @@ type Client {
   mobile: Boolean
   cards: [String]
   keypad: Keypad
+  advancedTrainingProgress: AdvancedTrainingProgress
 }
 
 type ColoredCoordinate {
@@ -1924,6 +2069,23 @@ type Mutation {
     clientId: ID
     duration: Float
   ): String
+  aegisSetMode(id: ID!, mode: AEGIS_MODE!): String
+  aegisDeploy(id: ID!): String
+  aegisRecall(id: ID!): String
+  aegisStartFabrication(id: ID!): String
+  aegisStopFabrication(id: ID!): String
+  aegisPauseFabrication(id: ID!, paused: Boolean!): String
+  aegisSetAttrition(id: ID!, enabled: Boolean!): String
+  aegisDestroyDrone(id: ID!): String
+  aegisSetDroneCount(id: ID!, count: Int!): String
+  aegisSetMaxDrones(id: ID!, count: Int!): String
+  aegisSetScreenFocus(id: ID!, x: Float!, y: Float!): String
+  aegisSetEcmIntensity(id: ID!, intensity: Float!): String
+  aegisSetRelayTarget(id: ID!, target: AEGIS_RELAY_TARGET!): String
+  aegisSetRepairEffort(id: ID!, effort: Float!): String
+  aegisSetStructuralIntegrity(id: ID!, integrity: Float!): String
+  aegisHitStructure(id: ID!, amount: Float, bearing: Float): String
+  aegisClearLog(id: ID!): String
   addSimulatorAmbiance(id: ID!, name: String!): String
   updateSimulatorAmbiance(id: ID!, ambiance: AmbianceInput!): String
   removeSimulatorAmbiance(id: ID!, ambianceId: ID!): String
@@ -3204,6 +3366,49 @@ type Mutation {
   """Macro: Tasks: Activate Task Flow"""
   taskFlowActivate(id: ID!, simulatorId: ID!): String
   taskFlowAdvance(simulatorId: ID!): String
+
+  """Save the full advanced training configuration for a station."""
+  setStationAdvancedTraining(stationSetID: ID!, stationName: String!, config: AdvancedTrainingConfigInput!): String
+
+  """Toggle advanced training mode on a station set."""
+  toggleAdvancedTrainingMode(stationSetID: ID!, stationName: String!, enabled: Boolean!): String
+
+  """
+  Start an advanced training session for a client.
+  Sets up progress tracking and activates the first chapter.
+  """
+  clientStartAdvancedTraining(clientId: ID!): String
+
+  """Stop advanced training for a client."""
+  clientStopAdvancedTraining(clientId: ID!): String
+
+  """
+  Crew pressed the help/question-mark widget. Resolves the crew's current card
+  and jumps to the in-flight help chapter for that card (or the regular chapter
+  for it), falling back to the default begin-training behavior if neither exists.
+  """
+  clientRequestTrainingHelp(clientId: ID!): String
+
+  """
+  Record a crew action during advanced training.
+  Checks against required actions and may trigger sub-chapter/chapter completion.
+  """
+  clientAdvancedTrainingAction(clientId: ID!, eventName: String!, args: JSON): String
+
+  """Set the active chapter for a client (crew navigation or FD override)."""
+  advancedTrainingSetActiveChapter(clientId: ID!, chapterId: ID!): String
+
+  """FD force-complete a sub-chapter for a client."""
+  fdCompleteTrainingSubChapter(clientId: ID!, subChapterId: ID!): String
+
+  """FD reset all training progress for a client."""
+  fdResetTrainingProgress(clientId: ID!): String
+
+  """Toggle the media viewer open/close for a client."""
+  advancedTrainingToggleMediaViewer(clientId: ID!, open: Boolean!): String
+
+  """Toggle the chapter list open/close for a client."""
+  advancedTrainingToggleChapterList(clientId: ID!, open: Boolean!): String
   entitySetAppearance(id: ID, color: String, meshType: MeshTypeEnum, modelAsset: String, materialMapAsset: String, ringMapAsset: String, cloudMapAsset: String, emissiveColor: String, emissiveIntensity: Float, scale: Float): String
   entityRemoveAppearance(id: ID!): String
   entitySetBehavior(id: ID!, behavior: Behaviors!, targetId: ID, destination: EntityCoordinatesInput): String
@@ -3803,6 +4008,7 @@ input QuaternionInput {
 type Query {
   _empty: String
   actions(stationId: ID, clientId: ID): Action
+  aegis(simulatorId: ID!): Aegis
   asset(assetKey: String!): Asset
   assets(assetKeys: [String!]!): [Asset]
   assetFolders(name: String, names: [String]): [AssetFolder]
@@ -3939,6 +4145,7 @@ type Query {
   dmxConfig(id: ID!): DMXConfig
   dmxConfigs: [DMXConfig!]!
   taskFlows(simulatorId: ID): [TaskFlow!]!
+  advancedTrainingProgress(clientId: ID, simulatorId: ID): [AdvancedTrainingProgress!]!
 }
 
 type Railgun implements SystemInterface {
@@ -4631,6 +4838,7 @@ type Station {
   widgets: [String]
   cards(showHidden: Boolean): [Card!]
   ambiance: String
+  advancedTraining: AdvancedTrainingConfig
 }
 
 type StationSet {
@@ -4683,6 +4891,8 @@ input StringCoordinatesInput {
 type Subscription {
   _empty: String
   actionsUpdate(simulatorId: ID!, stationId: ID, clientId: ID): Action
+  aegisUpdate(simulatorId: ID!): Aegis
+  aegisPing(simulatorId: ID!): AegisPing
   assetFolderChange: [AssetFolder!]!
   clientChanged(all: Boolean, clientId: ID, simulatorId: ID, stationName: String, flightId: ID): [Client]
   clientPing(clientId: ID!): Boolean
@@ -4798,6 +5008,8 @@ type Subscription {
   dmxFixtures(simulatorId: ID, clientId: ID): [DMXFixture!]!
   dmxConfigs: [DMXConfig!]!
   taskFlows(simulatorId: ID): [TaskFlow!]!
+  advancedTrainingProgressUpdate(simulatorId: ID): [AdvancedTrainingProgress!]!
+  advancedTrainingConfigUpdate(stationSetID: ID): [StationSet!]!
 }
 
 type SubspaceField implements SystemInterface {
@@ -4906,6 +5118,8 @@ type TacticalItem {
   icon: String
   size: Float
   opacity: Float
+  iconWidth: Float
+  iconHeight: Float
   speed: Float
   velocity: Coordinates
   location: Coordinates
@@ -4917,6 +5131,7 @@ type TacticalItem {
   thrusters: Boolean
   rotationMatch: Boolean
   thrusterControls: ThrusterControls
+  keepOnScreen: Boolean
 }
 
 input TacticalItemInput {
@@ -4929,6 +5144,8 @@ input TacticalItemInput {
   icon: String
   size: Float
   opacity: Float
+  iconWidth: Float
+  iconHeight: Float
   speed: Float
   velocity: CoordinatesInput
   location: CoordinatesInput
@@ -4939,6 +5156,7 @@ input TacticalItemInput {
   thrusters: Boolean
   rotationMatch: Boolean
   thrusterControls: ThrusterControlsInput
+  keepOnScreen: Boolean
 }
 
 type TacticalLayer {

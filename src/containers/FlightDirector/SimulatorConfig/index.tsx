@@ -3,6 +3,7 @@ import {Col, Row, Container, Button} from "helpers/reactstrap";
 
 import SimulatorProperties from "./SimulatorProperties";
 import * as Config from "./config";
+import AdvancedTrainingConfig from "./config/Stations/AdvancedTrainingConfig";
 import {
   useRemoveSimulatorMutation,
   useSimulatorsConfigSubscription,
@@ -88,6 +89,10 @@ const SimulatorConfigRoutes = () => {
     <Routes>
       <Route path="/" element={<SimulatorConfig />} />
       <Route path="Simulator/*" element={<SimulatorConfig />} />
+      <Route
+        path="advancedTraining/:stationSetId/:stationName"
+        element={<AdvancedTrainingConfig />}
+      />
       <Route path=":selectedProperty" element={<SimulatorConfig />} />
       <Route path=":selectedProperty/:subPath1" element={<SimulatorConfig />} />
       <Route

@@ -1,4 +1,5 @@
 import React from "react";
+import {clampItemPosition} from "./clampToBounds";
 
 const IconMarkup = ({
   mouseDown,
@@ -20,9 +21,29 @@ const IconMarkup = ({
   core,
   isSelected,
   interval,
+  keepOnScreen,
+  iconWidth,
+  iconHeight,
+  onIconLoad,
 }) => {
   if (core) {
     opacity = Math.max(0.5, opacity);
+  }
+  // Defensive render-time clamp: even if a stored position somehow drifted off
+  // screen, a keepOnScreen icon is never displayed clipping past the edge.
+  if (keepOnScreen) {
+    const footprintItem = {size, iconWidth, iconHeight};
+    if (location) {
+      location = clampItemPosition(footprintItem, location);
+    }
+    if (destination) {
+      destination = clampItemPosition(footprintItem, {
+        x: destination.x + movement.x,
+        y: destination.y + movement.y,
+        z: destination.z,
+      });
+      movement = {x: 0, y: 0, z: 0};
+    }
   }
   return [
     location ? (
@@ -49,6 +70,7 @@ const IconMarkup = ({
               draggable={false}
               src={src}
               style={{transform: `rotate(${rotation}deg)`}}
+              onLoad={onIconLoad ? evt => onIconLoad(evt.target) : undefined}
             />
           )}
           <pre

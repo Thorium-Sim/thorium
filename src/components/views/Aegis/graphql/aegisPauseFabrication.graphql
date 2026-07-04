@@ -1,0 +1,3 @@
+mutation AegisPauseFabrication($id: ID!, $paused: Boolean!) {
+  aegisPauseFabrication(id: $id, paused: $paused)
+}

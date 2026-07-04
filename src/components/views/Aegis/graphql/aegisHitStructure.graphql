@@ -1,0 +1,3 @@
+mutation AegisHitStructure($id: ID!, $amount: Float, $bearing: Float) {
+  aegisHitStructure(id: $id, amount: $amount, bearing: $bearing)
+}

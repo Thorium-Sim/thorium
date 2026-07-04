@@ -1,0 +1,3 @@
+mutation AegisClearLog($id: ID!) {
+  aegisClearLog(id: $id)
+}

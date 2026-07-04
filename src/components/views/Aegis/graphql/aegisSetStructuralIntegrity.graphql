@@ -1,0 +1,3 @@
+mutation AegisSetStructuralIntegrity($id: ID!, $integrity: Float!) {
+  aegisSetStructuralIntegrity(id: $id, integrity: $integrity)
+}

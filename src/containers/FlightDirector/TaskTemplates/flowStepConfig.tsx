@@ -2,6 +2,7 @@ import {css} from "@emotion/core";
 import React from "react";
 import {Col, Input, Label, ListGroup, ListGroupItem, Button} from "reactstrap";
 import {useParams, useNavigate, useMatch, Outlet} from "react-router";
+import DebouncedInput from "./DebouncedInput";
 import {
   useTaskFlowsConfigSubscription,
   useTaskFlowRenameStepMutation,
@@ -59,15 +60,15 @@ const StepConfig = () => {
         <h2>Step Config</h2>
         <Label>
           Name:
-          <Input
+          <DebouncedInput
             type="text"
-            defaultValue={step.name}
-            onChange={e =>
+            value={step.name}
+            onCommit={name =>
               rename({
                 variables: {
                   id: flowId || "",
                   stepId: stepId || "",
-                  name: e.target.value || "",
+                  name: name || "",
                 },
               })
             }
@@ -75,16 +76,16 @@ const StepConfig = () => {
         </Label>
         <Label>
           Delay (ms)
-          <Input
+          <DebouncedInput
             type="number"
             min={0}
-            defaultValue={step.delay}
-            onChange={e =>
+            value={step.delay ?? 0}
+            onCommit={v =>
               setDelay({
                 variables: {
                   id: flowId || "",
                   stepId: stepId || "",
-                  delay: parseInt(e.target.value, 10),
+                  delay: parseInt(v, 10),
                 },
               })
             }

@@ -1,0 +1,106 @@
+// Card layout: the canvas + activity log column on the left of the crew card.
+.card-aegis {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .aegis-content {
+    flex: 1;
+    min-height: 0;
+  }
+
+  .aegis-main {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 8px;
+  }
+
+  .aegis-canvas {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+
+    .aegis-canvas-element {
+      width: 100%;
+      height: 100%;
+      border: 1px solid rgba(92, 217, 255, 0.3);
+      border-radius: 6px;
+      background: radial-gradient(
+        ellipse at center,
+        rgba(20, 40, 60, 0.6) 0%,
+        rgba(5, 10, 20, 0.9) 100%
+      );
+    }
+
+    .aegis-status {
+      position: absolute;
+      bottom: 10px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 1.2em;
+      color: #5cd9ff;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      pointer-events: none;
+    }
+  }
+
+  .aegis-log {
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(92, 217, 255, 0.3);
+    border-radius: 6px;
+    padding: 6px 10px;
+    background: rgba(5, 10, 20, 0.6);
+
+    h5 {
+      margin-bottom: 4px;
+      color: #5cd9ff;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 0.85em;
+    }
+
+    .aegis-log-entries {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      font-size: 0.85em;
+    }
+
+    .aegis-log-empty {
+      opacity: 0.5;
+      font-style: italic;
+    }
+
+    // Entry colors keyed to log entry type (screen/damage/critical/...)
+    .aegis-log-entry {
+      margin-bottom: 2px;
+
+      .log-time {
+        opacity: 0.6;
+        margin-right: 4px;
+      }
+
+      &.log-screen {
+        color: #7fe7ff;
+      }
+      &.log-damage {
+        color: #ff7f7f;
+      }
+      &.log-critical {
+        color: #ff4f4f;
+        font-weight: bold;
+      }
+      &.log-repair {
+        color: #8fff9f;
+      }
+      &.log-relay {
+        color: #9fb7ff;
+      }
+    }
+  }
+}

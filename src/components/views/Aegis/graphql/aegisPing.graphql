@@ -1,0 +1,8 @@
+subscription AegisPing($simulatorId: ID!) {
+  aegisPing(simulatorId: $simulatorId) {
+    id
+    pingType
+    strength
+    bearing
+  }
+}

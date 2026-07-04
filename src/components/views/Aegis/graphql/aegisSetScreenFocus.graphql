@@ -1,0 +1,3 @@
+mutation AegisSetScreenFocus($id: ID!, $x: Float!, $y: Float!) {
+  aegisSetScreenFocus(id: $id, x: $x, y: $y)
+}

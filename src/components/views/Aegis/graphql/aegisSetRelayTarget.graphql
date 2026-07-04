@@ -1,0 +1,3 @@
+mutation AegisSetRelayTarget($id: ID!, $target: AEGIS_RELAY_TARGET!) {
+  aegisSetRelayTarget(id: $id, target: $target)
+}

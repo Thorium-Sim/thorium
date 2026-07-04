@@ -1,0 +1,35 @@
+subscription Aegis($simulatorId: ID!) {
+  aegisUpdate(simulatorId: $simulatorId) {
+    id
+    simulatorId
+    name
+    displayName
+    damage {
+      damaged
+    }
+    power {
+      power
+      powerLevels
+    }
+    maxDrones
+    droneCount
+    deployed
+    mode
+    fabricating
+    fabricationPaused
+    fabricationProgress
+    attritionEnabled
+    structuralIntegrity
+    screenFocusX
+    screenFocusY
+    ecmIntensity
+    relayTarget
+    repairEffort
+    log {
+      id
+      timestamp
+      type
+      contents
+    }
+  }
+}

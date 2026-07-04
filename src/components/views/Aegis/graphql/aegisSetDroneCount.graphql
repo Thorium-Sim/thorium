@@ -1,0 +1,3 @@
+mutation AegisSetDroneCount($id: ID!, $count: Int!) {
+  aegisSetDroneCount(id: $id, count: $count)
+}

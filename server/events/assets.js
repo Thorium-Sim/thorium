@@ -10,6 +10,15 @@ if (process.env.NODE_ENV === "production") {
   assetDir = paths.userData + "/assets";
 }
 
+// Ensure default asset folders exist
+const defaultFolders = ["/Training"];
+for (const folder of defaultFolders) {
+  const folderPath = `${assetDir}${folder}`;
+  if (!fs.existsSync(folderPath)) {
+    fs.mkdirSync(folderPath, {recursive: true});
+  }
+}
+
 function getFolders(dir, folderList = []) {
   const folders = fs
     .readdirSync(dir)

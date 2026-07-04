@@ -1,0 +1,3 @@
+mutation AegisSetRepairEffort($id: ID!, $effort: Float!) {
+  aegisSetRepairEffort(id: $id, effort: $effort)
+}

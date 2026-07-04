@@ -109,6 +109,9 @@ const sendUpdate = sys => {
   if (sys.class === "AdvancedNavigationAndAstrometrics") {
     pubsub.publish("advancedNavAndAstrometricsUpdate", sys);
   }
+  if (sys.class === "Aegis") {
+    pubsub.publish("aegisUpdate", sys);
+  }
   pubsub.publish("systemsUpdate", App.systems);
 };
 App.on("addExtraReportToSimulator", ({ simulatorId, name, which, cb }) => {

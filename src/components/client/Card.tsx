@@ -15,6 +15,7 @@ import {playSound} from "../generic/SoundPlayer";
 import {randomFromList} from "helpers/randomFromList";
 import styled from "styled-components";
 import {Simulator, Station, Flight, Client} from "generated/graphql";
+import AdvancedTrainingBorder from "components/training/AdvancedTrainingBorder";
 
 const Blackout = styled.div`
   width: 100vw;
@@ -186,6 +187,24 @@ const CardFrame: React.FC<CardFrameProps> = props => {
       training: false,
     },
   });
+  const advancedTrainingConfig = (station as any).advancedTraining;
+
+  const cardContent = (
+    <CardRenderer
+      {...props}
+      card={client?.currentCard?.name || ""}
+      changeCard={changeCard}
+      client={{
+        ...client,
+        training:
+          advancedTrainingConfig?.enabled ||
+          (simTraining && stationTraining && isMedia(stationTraining))
+            ? false
+            : client.training,
+      }}
+    />
+  );
+
   return (
     <div
       className={`client-container ${caps ? "all-caps" : ""} ${
@@ -194,20 +213,20 @@ const CardFrame: React.FC<CardFrameProps> = props => {
     >
       <ActionsMixin {...props} changeCard={changeCard} />
       {client.cracked && <div className="cracked-screen" />}
-      <CardRenderer
-        {...props}
-        card={client?.currentCard?.name || ""}
-        changeCard={changeCard}
-        client={{
-          ...client,
-          training:
-            simTraining && stationTraining && isMedia(stationTraining)
-              ? false
-              : client.training,
-        }}
-      />
+      {advancedTrainingConfig?.enabled ? (
+        <AdvancedTrainingBorder
+          clientId={client.id}
+          simulatorId={simulator.id}
+          advancedTrainingConfig={advancedTrainingConfig}
+        >
+          {cardContent}
+        </AdvancedTrainingBorder>
+      ) : (
+        cardContent
+      )}
       {client && <Reset station={station} clientId={client.id} />}
-      {simTraining &&
+      {!advancedTrainingConfig?.enabled &&
+        simTraining &&
         stationTraining &&
         client.training &&
         isMedia(stationTraining) && (

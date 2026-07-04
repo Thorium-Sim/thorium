@@ -1,0 +1,360 @@
+// ── Isolation boundary (portal into document.body) ──
+.advanced-training-isolation {
+  all: initial;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10000001;
+  pointer-events: none;
+  isolation: isolate;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.4;
+  color: #f5f5f5;
+  box-sizing: border-box;
+
+  // Amber instructor-layer accent so training reads as a layer, not bridge UI
+  --training-accent: #ffb74d;
+  --training-accent-strong: #ffa726;
+  --training-accent-soft: rgba(255, 183, 77, 0.18);
+  --training-accent-edge: rgba(255, 183, 77, 0.45);
+  --training-surface: rgba(12, 14, 18, 0.88);
+  --training-text-dim: #b0bec5;
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+}
+
+// ── Outside-click catcher for popovers (transparent, dismiss-only) ──
+.training-popover-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 64px; // exclude the bottom strip so strip buttons don't flicker on toggle
+  pointer-events: all;
+  background: transparent;
+  z-index: 1;
+
+  &--top {
+    top: 64px; // exclude the top strip instead
+    bottom: 0;
+  }
+}
+
+// ── Generic popover ──
+.training-popover {
+  position: fixed;
+  background: var(--training-surface);
+  border: 1px solid var(--training-accent-edge);
+  border-radius: 6px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  pointer-events: all;
+  z-index: 2;
+  backdrop-filter: blur(8px);
+  animation: trainingPopoverIn 0.18s ease-out;
+}
+
+.training-popover--chapters {
+  bottom: 80px;
+  left: 16px;
+  width: 340px;
+  max-height: 60vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  &-top {
+    bottom: auto;
+    top: 80px;
+  }
+}
+
+@keyframes trainingPopoverIn {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ── Bottom strip (always visible during training) ──
+.training-strip {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  display: flex;
+  align-items: stretch;
+  background: var(--training-surface);
+  border-top: 1px solid var(--training-accent-edge);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.45);
+  pointer-events: all;
+  z-index: 3;
+  backdrop-filter: blur(8px);
+}
+
+.training-strip--top {
+  bottom: auto;
+  top: 0;
+  border-top: none;
+  border-bottom: 1px solid var(--training-accent-edge);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+
+  .training-strip__progress {
+    bottom: auto;
+    top: 0; // progress bar sits at the top edge of the top strip
+  }
+
+  .training-strip__main {
+    padding: 3px 16px 0 20px; // flip padding so it's above the progress bar
+  }
+}
+
+.training-strip__main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 16px 3px 20px; // bottom 3px reserves space for the progress bar
+  min-width: 0;
+}
+
+.training-strip__text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  flex-shrink: 0;
+  max-width: 40%;
+}
+
+.training-strip__eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--training-text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.training-strip__task {
+  font-size: 19px;
+  font-weight: 600;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: 0.2px;
+}
+
+.training-strip__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.training-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  padding: 3px 9px;
+  border-radius: 12px;
+  white-space: nowrap;
+  font-family: inherit;
+
+  svg {
+    flex-shrink: 0;
+  }
+
+  &.pending {
+    color: #fff3e0;
+    background: var(--training-accent-soft);
+    border: 1px solid var(--training-accent-edge);
+
+    svg {
+      color: var(--training-accent);
+    }
+  }
+
+  &.done {
+    color: #a5d6a7;
+    background: rgba(76, 175, 80, 0.12);
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    text-decoration: line-through;
+    opacity: 0.75;
+  }
+}
+
+.training-strip__controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 12px 3px 8px;
+  flex-shrink: 0;
+}
+
+.training-strip__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--training-accent-edge);
+  border-radius: 6px;
+  color: var(--training-accent);
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  font-family: inherit;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+
+  &:hover:not(:disabled) {
+    background: var(--training-accent-soft);
+    color: #fff3e0;
+  }
+
+  &.active {
+    background: var(--training-accent-soft);
+    color: #fff3e0;
+    border-color: var(--training-accent);
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+}
+
+.training-strip__btn--next {
+  width: auto;
+  padding: 0 12px;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  background: var(--training-accent-soft);
+  border-color: var(--training-accent);
+  color: var(--training-accent-strong);
+  animation: nextChapterPulse 2s ease-in-out infinite;
+
+  &:hover:not(:disabled) {
+    background: var(--training-accent);
+    color: #1a1300;
+    animation: none;
+  }
+}
+
+@keyframes nextChapterPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 183, 77, 0); }
+  50% { box-shadow: 0 0 0 5px rgba(255, 183, 77, 0.22); }
+}
+
+.training-strip__btn--exit {
+  margin-left: 4px;
+  border-color: rgba(244, 67, 54, 0.4);
+  color: #ef9a9a;
+
+  &:hover:not(:disabled) {
+    background: rgba(244, 67, 54, 0.18);
+    color: #ffcdd2;
+  }
+}
+
+// ── Progress bar (bottom edge of strip) ──
+.training-strip__progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+}
+
+.training-strip__progress-fill {
+  height: 100%;
+  background: var(--training-accent);
+  transition: width 0.4s ease;
+
+  &.complete {
+    background: #4caf50;
+  }
+}
+
+// ── Toast notifications (moved to top to avoid colliding with strip) ──
+.advanced-training-toasts {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.training-toast {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  animation: toastIn 0.3s ease-out;
+  pointer-events: none;
+
+  &.action {
+    background: rgba(76, 175, 80, 0.85);
+    color: #fff;
+    padding: 6px 12px;
+    font-size: 12px;
+    box-shadow: 0 2px 12px rgba(76, 175, 80, 0.4);
+  }
+
+  &.subChapter {
+    background: var(--training-accent-strong);
+    color: #1a1300;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0 2px 16px rgba(255, 167, 38, 0.5);
+  }
+
+  &.chapter {
+    background: linear-gradient(135deg, var(--training-accent), var(--training-accent-strong));
+    color: #1a1300;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 10px 20px;
+    box-shadow: 0 4px 24px rgba(255, 152, 0, 0.55);
+    letter-spacing: 0.5px;
+  }
+}
+
+@keyframes toastIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

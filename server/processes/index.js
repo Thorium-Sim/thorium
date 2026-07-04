@@ -19,3 +19,4 @@ import "./clientPing";
 import "./systems";
 import "./advanced-nav";
 import "./helium";
+import "./aegis";

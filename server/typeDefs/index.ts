@@ -1,4 +1,5 @@
 import actionsTypeDefs from "./actions";
+import aegisTypeDefs from "./aegis";
 import ambianceTypeDefs from "./ambiance";
 import assetsTypeDefs from "./assets";
 import clientsTypeDefs from "./clients";
@@ -79,9 +80,11 @@ import dmxTypeDefs from "./dmx";
 import taskFlowTypeDefs from "./taskFlow";
 import firebaseConnectionTypeDefs from './firebase'
 import flightSetsTypeDefs from "./flightSets";
+import advancedTrainingTypeDefs from "./advancedTraining";
 export * from "./universe/components";
 
 export const actions = actionsTypeDefs;
+export const aegis = aegisTypeDefs;
 export const ambiance = ambianceTypeDefs;
 export const assets = assetsTypeDefs;
 export const clients = clientsTypeDefs;
@@ -162,3 +165,4 @@ export const countermeasures = countermeasuresTypeDefs;
 export const universe = universeTypeDefs;
 export const dmx = dmxTypeDefs;
 export const taskFlow = taskFlowTypeDefs;
+export const advancedTraining = advancedTrainingTypeDefs;

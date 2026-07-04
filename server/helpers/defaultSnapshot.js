@@ -13637,6 +13637,7 @@ export function getDefaultSnapshot(){return {
   dmxConfigs: [],
   dmxDevices: [],
   hackingPresets: [],
+  advancedTrainingProgress: [],
   printQueue: [],
   autoUpdate: true,
   thoriumId: randomWords(5).join("-"),

@@ -19,6 +19,9 @@ subscription TacticalMapUpdate($id: ID!) {
         fontColor
         icon
         size
+        iconWidth
+        iconHeight
+        keepOnScreen
         speed
         velocity {
           x

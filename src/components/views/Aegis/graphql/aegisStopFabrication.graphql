@@ -1,0 +1,3 @@
+mutation AegisStopFabrication($id: ID!) {
+  aegisStopFabrication(id: $id)
+}

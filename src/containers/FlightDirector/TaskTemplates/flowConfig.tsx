@@ -9,7 +9,8 @@ import {
   useTaskFlowAddStepMutation,
   useTaskFlowRemoveStepMutation,
 } from "generated/graphql";
-import {Col, Label, Input, Button} from "reactstrap";
+import {Col, Label, Button} from "reactstrap";
+import DebouncedInput from "./DebouncedInput";
 import SortableList from "helpers/SortableList";
 
 const FlowConfig = () => {
@@ -39,22 +40,22 @@ const FlowConfig = () => {
         <h2>Flow Config</h2>
         <Label>
           Name:
-          <Input
+          <DebouncedInput
             type="text"
-            defaultValue={taskFlow?.name}
-            onChange={e =>
-              rename({variables: {id: flowId || "", name: e.target.value || ""}})
+            value={taskFlow?.name}
+            onCommit={name =>
+              rename({variables: {id: flowId || "", name: name || ""}})
             }
           />
         </Label>
         <Label>
           Category:
-          <Input
+          <DebouncedInput
             type="text"
-            defaultValue={taskFlow?.category}
-            onChange={e =>
+            value={taskFlow?.category}
+            onCommit={category =>
               setCategory({
-                variables: {id: flowId || "", category: e.target.value || ""},
+                variables: {id: flowId || "", category: category || ""},
               })
             }
           />

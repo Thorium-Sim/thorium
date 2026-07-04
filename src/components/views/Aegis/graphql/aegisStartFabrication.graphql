@@ -1,0 +1,3 @@
+mutation AegisStartFabrication($id: ID!) {
+  aegisStartFabrication(id: $id)
+}

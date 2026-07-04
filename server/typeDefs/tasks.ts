@@ -111,6 +111,13 @@ const schema = gql`
 const resolver = {
   Task: {
     instructions(task) {
+      // Return the frozen value stamped at task creation when available.
+      // This prevents random generators (Panel Actions operations list,
+      // reportReplacer tokens) from re-rolling on every subscription push.
+      // The live fallback handles tasks created before this change.
+      if (task.instructions !== undefined && task.instructions !== null) {
+        return task.instructions;
+      }
       const {simulatorId, values, definition} = task;
       const simulator = App.simulators.find(s => s.id === simulatorId);
       const taskDef = taskDefinitions.find(d => d.name === definition);
