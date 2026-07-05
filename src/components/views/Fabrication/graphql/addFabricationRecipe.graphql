@@ -1,0 +1,6 @@
+mutation AddFabricationRecipe(
+  $simulatorId: ID!
+  $recipe: FabricationRecipeInput!
+) {
+  addFabricationRecipe(simulatorId: $simulatorId, recipe: $recipe)
+}

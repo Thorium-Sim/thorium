@@ -1,0 +1,3 @@
+mutation SetFabricationEnabled($simulatorId: ID!, $enabled: Boolean!) {
+  setFabricationEnabled(simulatorId: $simulatorId, enabled: $enabled)
+}

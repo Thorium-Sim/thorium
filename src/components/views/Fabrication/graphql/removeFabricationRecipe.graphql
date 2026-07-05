@@ -1,0 +1,3 @@
+mutation RemoveFabricationRecipe($id: ID!) {
+  removeFabricationRecipe(id: $id)
+}

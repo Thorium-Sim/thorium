@@ -368,6 +368,7 @@ class DecksCore extends Component {
                       "damageTeam",
                       "securityTeam",
                       "medicalTeam",
+                      "fabrication",
                     ].map(r => (
                       <option key={r} value={r}>
                         {r}

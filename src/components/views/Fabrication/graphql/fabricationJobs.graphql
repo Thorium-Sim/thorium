@@ -1,0 +1,29 @@
+subscription FabricationJobs($simulatorId: ID!) {
+  fabricationJobsUpdate(simulatorId: $simulatorId) {
+    id
+    simulatorId
+    recipeId
+    recipeName
+    roomId
+    room {
+      id
+      name
+      deck {
+        id
+        number
+      }
+    }
+    inputs {
+      name
+      count
+    }
+    output {
+      name
+      count
+    }
+    duration
+    elapsed
+    progress
+    status
+  }
+}

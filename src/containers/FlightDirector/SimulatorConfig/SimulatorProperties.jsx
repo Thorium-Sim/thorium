@@ -9,6 +9,7 @@ const properties = [
   "Decks",
   "Systems",
   "Inventory",
+  "Fabrication",
   "Crew",
   "Assets",
   "SoundEffects",

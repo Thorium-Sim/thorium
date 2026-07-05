@@ -78,6 +78,8 @@ class Events extends EventEmitter {
   dmxConfigs: ClassesImport.DMXConfig[] = [];
   dmxSets: ClassesImport.DMXSet[] = [];
   hackingPresets: ClassesImport.HackingPreset[] = [];
+  fabricationRecipes: ClassesImport.FabricationRecipe[] = [];
+  fabricationJobs: ClassesImport.FabricationJob[] = [];
   advancedTrainingProgress: any[] = [];
   printQueue: {
     id: string;
