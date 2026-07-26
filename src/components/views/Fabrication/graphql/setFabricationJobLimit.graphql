@@ -1,0 +1,3 @@
+mutation SetFabricationJobLimit($simulatorId: ID!, $limit: Int!) {
+  setFabricationJobLimit(simulatorId: $simulatorId, limit: $limit)
+}

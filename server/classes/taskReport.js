@@ -28,7 +28,7 @@ export default class TaskReport {
     this.systemId = params.systemId || null;
     this.type = params.type || "default";
     this.stepCount = params.stepCount || 8;
-    this.name = params.name || `${fullType} Report`;
+    this.name = params.name || `${fullType(this.type)} Report`;
     this.cleared = params.cleared || false;
     // Generate the report from the task templates when the task report is created
     // Tasks is a list of task IDs for tasks that are stored in App.tasks

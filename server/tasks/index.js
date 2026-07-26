@@ -20,6 +20,7 @@ import softwarePanels from "./softwarePanels";
 import reactivationCode from "./reactivationCode";
 import reactor from "./reactor";
 import sensors from "./sensors";
+import fabrication from "./fabrication";
 
 export default [
   ...docking,
@@ -44,4 +45,5 @@ export default [
   ...reactivationCode,
   ...reactor,
   ...sensors,
+  ...fabrication,
 ];

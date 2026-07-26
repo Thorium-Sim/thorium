@@ -1,0 +1,7 @@
+subscription FabricationSettings($simulatorId: ID!) {
+  fabricationSettingsUpdate(simulatorId: $simulatorId) {
+    id
+    enabled
+    jobLimit
+  }
+}

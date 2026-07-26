@@ -82,3 +82,7 @@ export * from './advancedNavigation';
 export * from './setClientHypercard';
 export * from './inventory';
 export * from './systems';
+export {default as revealFabricationRecipe} from "./revealFabricationRecipe";
+export {default as showFabricationRecipeHint} from "./showFabricationRecipeHint";
+export {default as setFabricationEnabled} from "./setFabricationEnabled";
+export {default as addFabricationRecipe} from "./addFabricationRecipe";

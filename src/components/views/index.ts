@@ -129,6 +129,7 @@ const EdVenturesApp = React.lazy(() => import("./EdVenturesApp"));
 const AdvancedNavigation = React.lazy(() => import("./AdvancedNavAndAstrometrics/AdvancedNavigationCard"));
 const Astrometrics = React.lazy(() => import("./AdvancedNavAndAstrometrics/AstrometricsCard"));
 const Aegis = React.lazy(() => import("./Aegis"));
+const Fabrication = React.lazy(() => import("./Fabrication"));
 // Cores
 const EngineControlCore = React.lazy(() => import("./EngineControl/core"));
 const TransporterCore = React.lazy(() => import("./Transporters/core"));
@@ -232,6 +233,7 @@ const EdVenturesAppCore = React.lazy(() => import("./EdVenturesApp/core"));
 const AdvancedNavigationCore = React.lazy(() => import("./AdvancedNavAndAstrometrics/CoreAdvancedNavigation"));
 const AstrometricsCore = React.lazy(() => import("./AdvancedNavAndAstrometrics/CoreAstrometrics"));
 const AegisCore = React.lazy(() => import("./Aegis/core"));
+const FabricationCore = React.lazy(() => import("./Fabrication/core"));
 const AdvancedTrainingCore = React.lazy(() => import("./AdvancedTraining/core"));
 // Widgets
 const ComposerWidget = React.lazy(() => import("./LongRangeComm/Composer"));
@@ -345,6 +347,7 @@ const Views = {
   AdvancedNavigation,
   Astrometrics,
   Aegis,
+  Fabrication,
 };
 
 export const Widgets = {
@@ -549,7 +552,8 @@ export const Cores = {
   AdvancedNavigationCore,
   AstrometricsCore,
   AegisCore,
-  AdvancedTrainingCore
+  AdvancedTrainingCore,
+  FabricationCore
 };
 
 export default Views;

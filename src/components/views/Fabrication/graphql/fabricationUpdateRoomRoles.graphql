@@ -1,0 +1,3 @@
+mutation FabricationUpdateRoomRoles($roomId: ID!, $roles: [RoomRoles]) {
+  updateRoomRoles(roomId: $roomId, roles: $roles)
+}

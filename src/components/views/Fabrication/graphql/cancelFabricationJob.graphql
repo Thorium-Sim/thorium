@@ -1,0 +1,3 @@
+mutation CancelFabricationJob($id: ID!) {
+  cancelFabricationJob(id: $id)
+}

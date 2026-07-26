@@ -1,0 +1,26 @@
+query FabricationInventory($simulatorId: ID!) {
+  decks(simulatorId: $simulatorId) {
+    id
+    number
+    rooms {
+      id
+      name
+      roles
+    }
+  }
+  inventory(simulatorId: $simulatorId) {
+    id
+    name
+    metadata {
+      type
+      description
+      image
+    }
+    roomCount {
+      room {
+        id
+      }
+      count
+    }
+  }
+}

@@ -13637,6 +13637,8 @@ export function getDefaultSnapshot(){return {
   dmxConfigs: [],
   dmxDevices: [],
   hackingPresets: [],
+  fabricationRecipes: [],
+  fabricationJobs: [],
   advancedTrainingProgress: [],
   printQueue: [],
   autoUpdate: true,

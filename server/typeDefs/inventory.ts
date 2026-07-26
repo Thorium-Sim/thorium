@@ -37,6 +37,8 @@ const schema = gql`
     science: Boolean
     # For Probes
     defense: Boolean
+    # For fabricated torpedos: photon, quantum, other
+    warheadType: String
   }
 
   input InventoryCount {
@@ -59,6 +61,8 @@ const schema = gql`
     science: Boolean
     # For Probes
     defense: Boolean
+    # For fabricated torpedos: photon, quantum, other
+    warheadType: String
   }
   type RoomCount {
     room: Room

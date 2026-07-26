@@ -65,3 +65,4 @@ import "./edVenturesApp";
 import "./advancedNavigationAndAstrometrics";
 import "./aegis";
 import "./advancedTraining";
+import "./fabrication";

@@ -1,0 +1,914 @@
+// Fabrication styles: crew card, recipe editor (shared with simulator
+// config), and Flight Director core.
+
+// Recipe editor form, used inside the core and the simulator config screen
+.fabrication-recipe-editor {
+  max-width: 720px;
+
+  label {
+    margin-top: 10px;
+    margin-bottom: 2px;
+  }
+
+  .editor-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 6px;
+
+    > div {
+      flex: 1;
+    }
+
+    .count-input {
+      max-width: 72px;
+    }
+  }
+
+  .editor-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .component-row {
+    display: grid;
+    grid-template-columns: 1fr 72px auto auto;
+    gap: 12px;
+    align-items: center;
+
+    .consumed-toggle {
+      white-space: nowrap;
+      margin: 0;
+    }
+  }
+
+  .secret-options {
+    padding: 4px 12px;
+    border-left: 2px solid rgba(255, 210, 92, 0.6);
+    margin: 8px 0;
+
+    label {
+      margin-top: 6px;
+    }
+  }
+}
+
+// Simulator config panel layout
+.fabrication-config {
+  color: white;
+
+  .config-intro {
+    opacity: 0.85;
+    max-width: 1000px;
+  }
+
+  .config-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 8px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.3);
+    margin-bottom: 8px;
+
+    .toolbar-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 0;
+      white-space: nowrap;
+
+      input[type="checkbox"] {
+        position: static;
+        margin: 0;
+      }
+    }
+
+    .job-limit-input {
+      width: 64px;
+      display: inline-block;
+    }
+
+    .toolbar-spacer {
+      flex: 1;
+    }
+
+    .template-select {
+      width: auto;
+      max-width: 220px;
+    }
+  }
+
+  .config-status {
+    margin: 4px 0;
+  }
+
+  .config-body {
+    margin-top: 8px;
+  }
+
+  .config-recipe-list {
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.3);
+    max-height: 45vh;
+    overflow-y: auto;
+  }
+
+  .config-empty {
+    opacity: 0.6;
+    font-style: italic;
+    padding: 12px;
+  }
+
+  .config-recipe {
+    padding: 8px 12px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    &.selected {
+      background: rgba(92, 217, 255, 0.15);
+    }
+
+    .config-recipe-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+
+      small {
+        opacity: 0.6;
+        white-space: nowrap;
+      }
+    }
+
+    .config-recipe-io {
+      opacity: 0.75;
+    }
+  }
+
+  .rooms-header {
+    margin-top: 16px;
+
+    small {
+      opacity: 0.6;
+      font-weight: normal;
+    }
+  }
+
+  .config-room-list {
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.3);
+    max-height: 30vh;
+    overflow-y: auto;
+    padding: 8px 12px;
+
+    strong {
+      display: block;
+      margin-top: 6px;
+      opacity: 0.8;
+    }
+
+    .config-room {
+      display: block;
+      margin: 0 0 0 12px;
+      cursor: pointer;
+    }
+  }
+
+  .template-preview {
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 16px;
+    max-width: 720px;
+
+    .template-columns {
+      display: flex;
+      gap: 32px;
+
+      ul {
+        padding-left: 20px;
+      }
+    }
+
+    .template-room-select {
+      max-width: 320px;
+    }
+
+    .template-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+  }
+
+  .remove-recipe {
+    margin-top: 8px;
+  }
+}
+
+// Flight Director core panel
+.core-fabrication {
+  height: 100%;
+  overflow-y: auto;
+  font-size: 12px;
+
+  .core-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.5);
+  }
+
+  .core-settings {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding-bottom: 4px;
+
+    label {
+      margin: 0;
+    }
+
+    .core-job-limit {
+      width: 50px;
+    }
+  }
+
+  .core-hint-shown {
+    opacity: 0.7;
+    font-style: italic;
+  }
+
+  .core-hint {
+    opacity: 0.6;
+    font-style: italic;
+    margin: 4px 0;
+  }
+
+  .core-missing {
+    border: 1px solid rgba(255, 193, 7, 0.6);
+    border-radius: 4px;
+    padding: 4px;
+    margin-bottom: 4px;
+
+    .core-missing-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2px 0;
+    }
+  }
+
+  .core-job {
+    display: grid;
+    grid-template-columns: 1fr 80px auto auto;
+    gap: 4px;
+    align-items: center;
+    padding: 2px 0;
+
+    &.finished {
+      opacity: 0.6;
+    }
+  }
+
+  .core-recipe {
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.25);
+
+    .core-recipe-name {
+      display: flex;
+      justify-content: space-between;
+
+      .editable {
+        cursor: pointer;
+        text-decoration: underline dotted;
+      }
+
+      .core-recipe-category {
+        opacity: 0.6;
+      }
+    }
+
+    .core-recipe-io {
+      opacity: 0.8;
+    }
+
+    .core-recipe-secret {
+      color: #ffc107;
+
+      &.discovered {
+        color: #7bd67b;
+      }
+    }
+
+    .core-near-miss {
+      color: #ffdb70;
+      font-style: italic;
+
+      &.hot {
+        color: #ff8f5c;
+        font-weight: bold;
+        font-style: normal;
+      }
+    }
+  }
+}
+
+// Fabrication crew card: component source | fabricator slots | schematic
+// database. The job queue lives inside the materializer chamber in the
+// center column.
+.card-fabrication {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  color: white;
+
+  h4 {
+    margin-top: 8px;
+  }
+
+  .fabrication-content {
+    flex: 1;
+    min-height: 0;
+
+    > [class*="col-"] {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      min-height: 0;
+    }
+  }
+
+  .hint {
+    opacity: 0.6;
+    font-style: italic;
+    padding: 8px;
+  }
+
+  .room-pickers {
+    display: flex;
+    gap: 8px;
+
+    .btn-group,
+    .dropdown {
+      flex: 1;
+    }
+  }
+
+  .cargo-list,
+  .recipe-list {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    margin-top: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  .cargo-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    &.depleted {
+      opacity: 0.4;
+      cursor: default;
+    }
+
+    .count {
+      opacity: 0.7;
+    }
+  }
+
+  // Wraps the slots, the drop connector, and the output chamber. The
+  // conduit cross between the slots feeds a central node; a short drop
+  // line carries the product into the output chamber below. Animations
+  // play as a brief surge when a job starts — a continuous animation
+  // would wrongly suggest the fabricator can't take concurrent jobs.
+  .fabricator-visual {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    .conduit {
+      position: absolute;
+      background-color: rgba(92, 217, 255, 0.22);
+      pointer-events: none;
+    }
+
+    // Components loaded: the conduits and node warm up
+    &.charged .conduit,
+    &.charged .conduit-drop {
+      background-color: rgba(92, 217, 255, 0.45);
+    }
+
+    &.charged .fab-node {
+      border-color: rgba(92, 217, 255, 0.9);
+      box-shadow: 0 0 9px rgba(92, 217, 255, 0.6);
+    }
+
+    // Job started: a ~3 second energy surge. Side and top conduits flow
+    // into the node; the bottom conduit and drop line carry the product
+    // down into the output chamber.
+    &.surging .conduit-h-left {
+      background-image: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(92, 217, 255, 0.95) 50%,
+        transparent 100%
+      );
+      background-size: 18px 100%;
+      animation: fabrication-flow-right 0.7s linear infinite;
+    }
+
+    &.surging .conduit-h-right {
+      background-image: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(92, 217, 255, 0.95) 50%,
+        transparent 100%
+      );
+      background-size: 18px 100%;
+      animation: fabrication-flow-left 0.7s linear infinite;
+    }
+
+    &.surging .conduit-v-top,
+    &.surging .conduit-v-bottom,
+    &.surging .conduit-drop {
+      background-image: linear-gradient(
+        180deg,
+        transparent 0%,
+        rgba(92, 217, 255, 0.95) 50%,
+        transparent 100%
+      );
+      background-size: 100% 18px;
+      animation: fabrication-flow-down 0.7s linear infinite;
+    }
+
+    &.surging .fab-node {
+      animation: fabrication-node-pulse 0.75s ease-in-out infinite;
+    }
+
+    &.surging .output-preview {
+      border-color: rgba(92, 217, 255, 0.8);
+      box-shadow: 0 0 12px rgba(92, 217, 255, 0.35) inset;
+    }
+
+    // Failed attempt: a brief red misfire. The flow keyframes run in
+    // reverse so the energy reads as rejected — spat back out of the core
+    &.misfiring .conduit,
+    &.misfiring .conduit-drop {
+      background-color: rgba(255, 92, 92, 0.3);
+    }
+
+    &.misfiring .conduit-h-left {
+      background-image: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 92, 92, 0.95) 50%,
+        transparent 100%
+      );
+      background-size: 18px 100%;
+      animation: fabrication-flow-right 0.7s linear infinite reverse;
+    }
+
+    &.misfiring .conduit-h-right {
+      background-image: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 92, 92, 0.95) 50%,
+        transparent 100%
+      );
+      background-size: 18px 100%;
+      animation: fabrication-flow-left 0.7s linear infinite reverse;
+    }
+
+    &.misfiring .conduit-v-top,
+    &.misfiring .conduit-v-bottom,
+    &.misfiring .conduit-drop {
+      background-image: linear-gradient(
+        180deg,
+        transparent 0%,
+        rgba(255, 92, 92, 0.95) 50%,
+        transparent 100%
+      );
+      background-size: 100% 18px;
+      animation: fabrication-flow-down 0.7s linear infinite reverse;
+    }
+
+    &.misfiring .fab-node {
+      border-color: rgba(255, 92, 92, 0.9);
+      animation: fabrication-node-misfire 0.75s ease-in-out infinite;
+    }
+
+    &.misfiring .output-preview {
+      border-color: rgba(255, 92, 92, 0.7);
+      box-shadow: 0 0 12px rgba(255, 92, 92, 0.3) inset;
+    }
+
+    // Components that belong to a nearby secret recipe resonate amber
+    // through the red misfire: keep these, swap the rest
+    &.misfiring .slot.resonant {
+      border-color: rgba(255, 193, 7, 0.9);
+      animation: fabrication-slot-resonate 0.75s ease-in-out infinite;
+    }
+  }
+
+  .slots {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 26px;
+    margin-top: 8px;
+    padding: 4px;
+    position: relative;
+
+    // The conduit cross runs through the widened gaps between the slots,
+    // meeting at the central node
+    .conduit-h-left,
+    .conduit-h-right {
+      top: calc(50% - 1px);
+      height: 2px;
+    }
+
+    .conduit-h-left {
+      left: 4px;
+      right: calc(50% + 14px);
+    }
+
+    .conduit-h-right {
+      left: calc(50% + 14px);
+      right: 4px;
+    }
+
+    .conduit-v-top,
+    .conduit-v-bottom {
+      left: calc(50% - 1px);
+      width: 2px;
+    }
+
+    .conduit-v-top {
+      top: 4px;
+      bottom: calc(50% + 14px);
+    }
+
+    .conduit-v-bottom {
+      top: calc(50% + 14px);
+      bottom: -8px;
+    }
+
+    // The junction where the conduits meet — the fabricator's core
+    .fab-node {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 18px;
+      height: 18px;
+      transform: translate(-50%, -50%) rotate(45deg);
+      background: #0a2833;
+      border: 1px solid rgba(92, 217, 255, 0.6);
+      box-shadow: 0 0 6px rgba(92, 217, 255, 0.4);
+      z-index: 2;
+      pointer-events: none;
+    }
+  }
+
+  // Short connector carrying the product from the node down into the
+  // output chamber — it stops there, nothing draws behind the controls
+  .conduit-drop {
+    width: 2px;
+    height: 14px;
+    align-self: center;
+    background-color: rgba(92, 217, 255, 0.22);
+    pointer-events: none;
+  }
+
+  .slot {
+    min-height: 60px;
+    border: 1px dashed rgba(255, 255, 255, 0.35);
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 4px;
+
+    &.filled {
+      border-style: solid;
+      border-color: rgba(92, 217, 255, 0.7);
+      background: rgba(92, 217, 255, 0.12);
+      cursor: pointer;
+      animation: fabrication-slot-pop 0.25s ease-out;
+      position: relative;
+
+      .slot-remove {
+        position: absolute;
+        top: 2px;
+        right: 6px;
+        font-size: 11px;
+        opacity: 0.6;
+      }
+
+      &:hover .slot-remove {
+        opacity: 1;
+      }
+    }
+
+    .slot-empty {
+      opacity: 0.4;
+      font-style: italic;
+    }
+
+    .slot-name {
+      font-weight: bold;
+    }
+
+    .slot-count {
+      opacity: 0.8;
+    }
+  }
+
+  // The materializer chamber: the drop conduit feeds into it, it glows
+  // briefly when a job starts, and finished work materializes inside —
+  // the projected output sits on top and the job queue lives beneath it,
+  // scrolling within the chamber so it never grows past its box.
+  .output-preview {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    border: 1px solid rgba(92, 217, 255, 0.25);
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 8px;
+    transition: border-color 0.4s, box-shadow 0.4s;
+
+    .chamber-output {
+      border-bottom: 1px solid rgba(92, 217, 255, 0.2);
+      padding-bottom: 6px;
+      margin-bottom: 6px;
+    }
+
+    .output-label {
+      margin: 0;
+      opacity: 0.6;
+      text-transform: uppercase;
+      font-size: 0.8em;
+    }
+
+    .output-name {
+      font-size: 1.3em;
+      font-weight: bold;
+      margin: 4px 0;
+    }
+
+    .output-description {
+      opacity: 0.8;
+      margin-bottom: 0;
+    }
+
+    .output-unknown {
+      opacity: 0.6;
+      font-style: italic;
+      margin: 4px 0;
+    }
+
+    .chamber-queue {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+
+      .queue-label {
+        margin: 0 0 4px;
+        opacity: 0.6;
+        text-transform: uppercase;
+        font-size: 0.8em;
+      }
+
+      .job-list {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+    }
+
+    .job {
+      text-align: left;
+      padding: 4px 8px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+      font-size: 0.9em;
+
+      &.job-complete {
+        border-color: rgba(92, 255, 133, 0.4);
+      }
+
+      &.job-cancelled {
+        opacity: 0.5;
+      }
+
+      .job-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 8px;
+
+        .job-name {
+          font-weight: bold;
+        }
+
+        .job-room,
+        .job-status {
+          font-size: 0.85em;
+          opacity: 0.7;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+
+      .job-progress-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 4px;
+
+        .progress {
+          flex: 1;
+        }
+      }
+    }
+  }
+
+  .status-message {
+    text-align: center;
+    margin-top: 8px;
+  }
+
+  .recipe-search {
+    margin-top: 8px;
+  }
+
+  .recipe {
+    padding: 8px 12px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    &.selected {
+      background: rgba(92, 217, 255, 0.15);
+    }
+
+    &.unavailable {
+      opacity: 0.5;
+    }
+
+    .recipe-title {
+      display: flex;
+      justify-content: space-between;
+      font-weight: bold;
+
+      .recipe-category {
+        font-weight: normal;
+        opacity: 0.6;
+        font-size: 0.85em;
+      }
+    }
+
+    .recipe-io {
+      font-size: 0.85em;
+      opacity: 0.8;
+    }
+
+    .recipe-secret {
+      font-size: 0.75em;
+      color: #ffd25c;
+      text-transform: uppercase;
+    }
+
+    &.partial {
+      cursor: default;
+      border-left: 2px solid rgba(255, 210, 92, 0.6);
+      font-style: italic;
+
+      &:hover {
+        background: transparent;
+      }
+    }
+  }
+
+  .batch-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 12px;
+    margin-bottom: 8px;
+
+    .batch-label {
+      opacity: 0.7;
+      text-transform: uppercase;
+      font-size: 0.8em;
+    }
+
+    .batch-count {
+      font-size: 1.2em;
+      font-weight: bold;
+      min-width: 24px;
+      text-align: center;
+    }
+  }
+
+}
+
+@keyframes fabrication-slot-pop {
+  from {
+    transform: scale(0.85);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes fabrication-flow-down {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 0 18px;
+  }
+}
+
+@keyframes fabrication-flow-right {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 18px 0;
+  }
+}
+
+@keyframes fabrication-flow-left {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -18px 0;
+  }
+}
+
+@keyframes fabrication-node-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 5px rgba(92, 217, 255, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 18px rgba(92, 217, 255, 0.95);
+  }
+}
+
+@keyframes fabrication-slot-resonate {
+  0%,
+  100% {
+    box-shadow: 0 0 4px rgba(255, 193, 7, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 14px rgba(255, 193, 7, 0.9);
+  }
+}
+
+@keyframes fabrication-node-misfire {
+  0%,
+  100% {
+    box-shadow: 0 0 5px rgba(255, 92, 92, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 18px rgba(255, 92, 92, 0.95);
+  }
+}
