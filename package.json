@@ -180,7 +180,7 @@
     "random-words": "^1.1.0",
     "react-lottie-player": "^2.1.0",
     "react-pdf": "^5.0.0",
-    "react-router": "^6.0.0-alpha.4",
+    "react-router": "^8.3.0",
     "react-three-fiber": "^4.0.17",
     "react-use-gesture": "^7.0.4",
     "request": "^2.88.0",
