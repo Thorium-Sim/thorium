@@ -3,8 +3,8 @@ import FileExplorer from "./fileExplorer";
 import {Row, Col} from "helpers/reactstrap";
 
 export default ({selectedLayer, updateLayer}) => (
-  <Row>
-    <Col sm={9} style={{height: "calc(100vh - 42.2vw)"}}>
+  <Row style={{height: "100%"}}>
+    <Col sm={9} style={{height: "100%"}}>
       <FileExplorer
         directory="/Viewscreen/Videos"
         selectedFiles={[selectedLayer.asset]}

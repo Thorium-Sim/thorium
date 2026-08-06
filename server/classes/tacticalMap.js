@@ -44,6 +44,13 @@ class TacticalItem {
     this.iconWidth = params.iconWidth || 0;
     this.iconHeight = params.iconHeight || 0;
     this.keepOnScreen = params.keepOnScreen || false;
+    // Training exercise goal target: when a client's advanced-training
+    // tactical map is active, server/processes/trainingTacticalGoal.ts fires
+    // __tacticalMapGoal__ once the player-controlled item(s) get within
+    // trainingGoalRadius (normalized, aspect-corrected) of this item.
+    this.trainingGoal = params.trainingGoal || false;
+    this.trainingGoalRadius =
+      params.trainingGoalRadius === 0 ? 0 : params.trainingGoalRadius || 0.08;
     this.speed = params.speed || 1000;
     this.velocity = params.velocity || {x: 0, y: 0, z: 0};
     this.location = params.location || {x: 0, y: 0, z: 0};
@@ -66,6 +73,8 @@ class TacticalItem {
     iconWidth,
     iconHeight,
     keepOnScreen,
+    trainingGoal,
+    trainingGoalRadius,
     speed,
     velocity,
     location,
@@ -87,7 +96,12 @@ class TacticalItem {
     if (size) this.size = size;
     if (iconWidth) this.iconWidth = iconWidth;
     if (iconHeight) this.iconHeight = iconHeight;
-    if (keepOnScreen || keepOnScreen === false) this.keepOnScreen = keepOnScreen;
+    if (keepOnScreen || keepOnScreen === false)
+      this.keepOnScreen = keepOnScreen;
+    if (trainingGoal || trainingGoal === false)
+      this.trainingGoal = trainingGoal;
+    if (trainingGoalRadius || trainingGoalRadius === 0)
+      this.trainingGoalRadius = trainingGoalRadius;
     if (speed || speed === 0) this.speed = speed;
     if (velocity) this.velocity = velocity;
     if (location) this.location = location;
@@ -200,6 +214,11 @@ export default class TacticalMap {
     this.templateId = params.templateId || null;
     this.flightId = params.flightId || null;
     this.frozen = params.frozen || false;
+    // Marks this instance as a private advanced-training copy owned by one
+    // client (see server/events/advancedTrainingTacticalMap.ts). Set so FD
+    // map lists can exclude it and so it can be cleaned up when the client's
+    // training session ends.
+    this.trainingClientId = params.trainingClientId || null;
     this.layers = [];
     this.interval = params.interval || 1000 / 20;
     (params.layers || []).forEach(l =>

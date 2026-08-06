@@ -36,6 +36,10 @@ const schema = gql`
     cardSwitchBehavior: String!
     mediaSize: String!
     mediaPosition: String!
+    tacticalMapId: ID
+    autoOpenTacticalMap: Boolean!
+    tacticalMapSize: String!
+    tacticalMapPosition: String!
     subChapters: [AdvancedTrainingSubChapter!]!
   }
 
@@ -62,6 +66,8 @@ const schema = gql`
     globalObservedEvents: [String!]!
     mediaViewerOpen: Boolean!
     chapterListOpen: Boolean!
+    tacticalMapViewerOpen: Boolean!
+    activeTacticalMapId: ID
   }
 
   input AdvancedTrainingRequiredActionInput {
@@ -87,6 +93,10 @@ const schema = gql`
     cardSwitchBehavior: String
     mediaSize: String
     mediaPosition: String
+    tacticalMapId: ID
+    autoOpenTacticalMap: Boolean
+    tacticalMapSize: String
+    tacticalMapPosition: String
     subChapters: [AdvancedTrainingSubChapterInput!]
   }
 
@@ -181,6 +191,14 @@ const schema = gql`
     Toggle the media viewer open/close for a client.
     """
     advancedTrainingToggleMediaViewer(clientId: ID!, open: Boolean!): String
+
+    """
+    Toggle the tactical map training viewer open/close for a client.
+    """
+    advancedTrainingToggleTacticalMapViewer(
+      clientId: ID!
+      open: Boolean!
+    ): String
 
     """
     Toggle the chapter list open/close for a client.
@@ -285,6 +303,12 @@ const resolver = {
       return "";
     },
     advancedTrainingToggleMediaViewer(rootValue: any, {clientId, open}: any) {
+      return "";
+    },
+    advancedTrainingToggleTacticalMapViewer(
+      rootValue: any,
+      {clientId, open}: any,
+    ) {
       return "";
     },
     advancedTrainingToggleChapterList(rootValue: any, {clientId, open}: any) {

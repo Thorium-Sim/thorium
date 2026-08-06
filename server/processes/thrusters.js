@@ -102,7 +102,18 @@ const updateThrusters = () => {
           (v.component === "TacticalMap" ||
             (v.pictureInPicture && v.pictureInPicture === "TacticalMap")),
       );
-      const mapIds = viewscreens.map(v => JSON.parse(v.data).tacticalMapId);
+      const viewscreenMapIds = viewscreens.map(
+        v => JSON.parse(v.data).tacticalMapId,
+      );
+      // Also drive any advanced-training tactical map exercises currently
+      // active on this simulator, so trainees can fly the training map with
+      // this same Thrusters system. Scoped to this simulator specifically
+      // (unlike the viewscreen lookup above, which is deliberately "lazy"
+      // and flight-wide) since each client's training map is private.
+      const trainingMapIds = (App.advancedTrainingProgress || [])
+        .filter(p => p.activeTacticalMapId && p.simulatorId === sys.simulatorId)
+        .map(p => p.activeTacticalMapId);
+      const mapIds = [...viewscreenMapIds, ...trainingMapIds];
       App.tacticalMaps
         .filter(
           t =>

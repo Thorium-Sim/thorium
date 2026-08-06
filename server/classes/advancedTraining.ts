@@ -65,6 +65,10 @@ export interface ChapterParams {
   cardSwitchBehavior?: "auto" | "manual";
   mediaSize?: "small" | "medium" | "large";
   mediaPosition?: string;
+  tacticalMapId?: string | null;
+  autoOpenTacticalMap?: boolean;
+  tacticalMapSize?: "small" | "medium" | "large";
+  tacticalMapPosition?: string;
   subChapters?: SubChapterParams[];
 }
 
@@ -79,6 +83,14 @@ export class Chapter {
   cardSwitchBehavior: "auto" | "manual";
   mediaSize: "small" | "medium" | "large";
   mediaPosition: string;
+  // Tactical map exercise: FD picks a template map; when this chapter is
+  // activated, a live per-client instance is provisioned (see
+  // server/events/advancedTrainingTacticalMap.ts) and shown in a floating
+  // viewer alongside the card, mirroring the mediaAsset fields above.
+  tacticalMapId: string | null;
+  autoOpenTacticalMap: boolean;
+  tacticalMapSize: "small" | "medium" | "large";
+  tacticalMapPosition: string;
   subChapters: SubChapter[];
 
   constructor(params: ChapterParams = {}) {
@@ -99,6 +111,10 @@ export class Chapter {
     this.cardSwitchBehavior = params.cardSwitchBehavior || "manual";
     this.mediaSize = params.mediaSize || "small";
     this.mediaPosition = params.mediaPosition || "bottom-right";
+    this.tacticalMapId = params.tacticalMapId || null;
+    this.autoOpenTacticalMap = params.autoOpenTacticalMap ?? false;
+    this.tacticalMapSize = params.tacticalMapSize || "medium";
+    this.tacticalMapPosition = params.tacticalMapPosition || "bottom-right";
     this.subChapters = (params.subChapters || []).map(s => new SubChapter(s));
   }
 
@@ -136,6 +152,22 @@ export class Chapter {
 
   setMediaPosition(position: string) {
     this.mediaPosition = position;
+  }
+
+  setTacticalMapId(tacticalMapId: string | null) {
+    this.tacticalMapId = tacticalMapId;
+  }
+
+  setAutoOpenTacticalMap(auto: boolean) {
+    this.autoOpenTacticalMap = auto;
+  }
+
+  setTacticalMapSize(size: "small" | "medium" | "large") {
+    this.tacticalMapSize = size;
+  }
+
+  setTacticalMapPosition(position: string) {
+    this.tacticalMapPosition = position;
   }
 
   addSubChapter(subChapter?: SubChapterParams) {

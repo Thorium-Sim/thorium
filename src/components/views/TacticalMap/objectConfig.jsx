@@ -1,14 +1,6 @@
-import React, {Component} from "react";
+import React, {Component, useState} from "react";
 import gql from "graphql-tag.macro";
-import {
-  Row,
-  Col,
-  Input,
-  Label,
-  FormGroup,
-  Button,
-  ButtonGroup,
-} from "helpers/reactstrap";
+import {Input, Label, FormGroup, Button, ButtonGroup} from "helpers/reactstrap";
 import {ChromePicker} from "react-color";
 import FileExplorer from "./fileExplorer";
 import {
@@ -192,133 +184,119 @@ function logslider(position, reverse) {
   return Math.exp(minv + scale * (position - minp));
 }
 
+const DIRECTION_OPTIONS = [
+  ["up", "Up"],
+  ["down", "Down"],
+  ["port", "Port"],
+  ["starboard", "Starboard"],
+  ["fore", "Fore"],
+  ["reverse", "Reverse"],
+];
+
+const DirectionField = ({icon, label, value, onChange}) => (
+  <FormGroup className="tactical-thruster-direction">
+    <Label>
+      {icon} {label}
+    </Label>
+    <Input type="select" bsSize="sm" value={value} onChange={onChange}>
+      <option value="">Choose a direction</option>
+      {DIRECTION_OPTIONS.map(([val, text]) => (
+        <option key={val} value={val}>
+          {text}
+        </option>
+      ))}
+    </Input>
+  </FormGroup>
+);
+
 const Thrusters = ({cancel, updateObject, thrusterControls}) => {
-  const {
-    rotation,
-    reversed,
-    matchRotation,
-    up,
-    down,
-    left,
-    right,
-  } = thrusterControls;
+  const {rotation, reversed, matchRotation, up, down, left, right} =
+    thrusterControls;
   function updateThrusters(which, value) {
     updateObject("thrusterControls", {...thrusterControls, [which]: value});
   }
   return (
-    <Row>
-      <Col>
-        <p>Thrusters</p>
+    <div className="tactical-inspector">
+      <section className="tactical-inspector-section">
+        <h4>Thrusters</h4>
         <Button size="sm" color="warning" onClick={cancel}>
           Standard Config
         </Button>
-        <p>
-          <small>Rotation speed is controlled in the thrusters core</small>
+        <p className="tactical-inspector-hint">
+          Rotation speed is controlled in the thrusters core. Movement speed is
+          controlled by the speed of the object.
         </p>
-        <p>
-          <small>Movement speed is controlled by the speed of the object</small>
-        </p>
-      </Col>
-      <Col>
-        <label>Match Thruster Rotation</label>
-        <Input
-          type="select"
-          value={rotation}
-          onChange={evt => updateThrusters("rotation", evt.target.value)}
-        >
-          <option value="">Choose a rotation</option>
-          <option value="yaw">Yaw</option>
-          <option value="pitch">Pitch</option>
-          <option value="roll">Roll</option>
-        </Input>
-        <Label check>
-          <Input
-            type="checkbox"
-            checked={reversed}
-            onChange={evt => updateThrusters("reversed", evt.target.checked)}
-          />
-          Reverse{" "}
-          <small>Makes object rotate opposite the thruster setting.</small>
-        </Label>
-        <Label check>
-          <Input
-            type="checkbox"
-            checked={matchRotation}
-            onChange={evt =>
-              updateThrusters("matchRotation", evt.target.checked)
-            }
-          />
-          Match Key/Thruster Direction to Rotation
-        </Label>
-      </Col>
-      <Col>
-        <p>Thruster Direction</p>
-        <div style={{display: "flex"}}>
-          <FaArrowUp />{" "}
+      </section>
+      <section className="tactical-inspector-section">
+        <h4>Rotation Match</h4>
+        <FormGroup>
+          <Label>Match Thruster Rotation</Label>
           <Input
             type="select"
-            value={up}
-            onChange={evt => updateThrusters("up", evt.target.value)}
+            bsSize="sm"
+            value={rotation}
+            onChange={evt => updateThrusters("rotation", evt.target.value)}
           >
-            <option value="">Choose a Direction</option>
-            <option value="up">Up</option>
-            <option value="down">Down</option>
-            <option value="port">Port</option>
-            <option value="starboard">Starboard</option>
-            <option value="fore">Fore</option>
-            <option value="reverse">Reverse</option>
+            <option value="">Choose a rotation</option>
+            <option value="yaw">Yaw</option>
+            <option value="pitch">Pitch</option>
+            <option value="roll">Roll</option>
           </Input>
-        </div>
-        <div style={{display: "flex"}}>
-          <FaArrowDown />{" "}
-          <Input
-            type="select"
-            value={down}
-            onChange={evt => updateThrusters("down", evt.target.value)}
-          >
-            <option value="">Choose a Direction</option>
-            <option value="up">Up</option>
-            <option value="down">Down</option>
-            <option value="port">Port</option>
-            <option value="starboard">Starboard</option>
-            <option value="fore">Fore</option>
-            <option value="reverse">Reverse</option>
-          </Input>
-        </div>
-        <div style={{display: "flex"}}>
-          <FaArrowLeft />{" "}
-          <Input
-            type="select"
-            value={left}
-            onChange={evt => updateThrusters("left", evt.target.value)}
-          >
-            <option value="">Choose a Direction</option>
-            <option value="up">Up</option>
-            <option value="down">Down</option>
-            <option value="port">Port</option>
-            <option value="starboard">Starboard</option>
-            <option value="fore">Fore</option>
-            <option value="reverse">Reverse</option>
-          </Input>
-        </div>
-        <div style={{display: "flex"}}>
-          <FaArrowRight />{" "}
-          <Input
-            type="select"
-            value={right}
-            onChange={evt => updateThrusters("right", evt.target.value)}
-          >
-            <option value="">Choose a Direction</option>
-            <option value="up">Up</option>
-            <option value="down">Down</option>
-            <option value="port">Port</option>
-            <option value="starboard">Starboard</option>
-            <option value="fore">Fore</option>
-            <option value="reverse">Reverse</option>
-          </Input>
-        </div>
-      </Col>
-    </Row>
+        </FormGroup>
+        <FormGroup check>
+          <Label check>
+            <Input
+              type="checkbox"
+              checked={reversed}
+              onChange={evt => updateThrusters("reversed", evt.target.checked)}
+            />
+            Reverse
+          </Label>
+          <p className="tactical-inspector-hint">
+            Makes the object rotate opposite the thruster setting.
+          </p>
+        </FormGroup>
+        <FormGroup check>
+          <Label check>
+            <Input
+              type="checkbox"
+              checked={matchRotation}
+              onChange={evt =>
+                updateThrusters("matchRotation", evt.target.checked)
+              }
+            />
+            Match Key/Thruster Direction to Rotation
+          </Label>
+        </FormGroup>
+      </section>
+      <section className="tactical-inspector-section">
+        <h4>Thruster Direction</h4>
+        <DirectionField
+          icon={<FaArrowUp />}
+          label="Up"
+          value={up}
+          onChange={evt => updateThrusters("up", evt.target.value)}
+        />
+        <DirectionField
+          icon={<FaArrowDown />}
+          label="Down"
+          value={down}
+          onChange={evt => updateThrusters("down", evt.target.value)}
+        />
+        <DirectionField
+          icon={<FaArrowLeft />}
+          label="Left"
+          value={left}
+          onChange={evt => updateThrusters("left", evt.target.value)}
+        />
+        <DirectionField
+          icon={<FaArrowRight />}
+          label="Right"
+          value={right}
+          onChange={evt => updateThrusters("right", evt.target.value)}
+        />
+      </section>
+    </div>
   );
 };
 const ObjectSettings = ({
@@ -332,6 +310,8 @@ const ObjectSettings = ({
   ijkl,
   wasd,
   keepOnScreen,
+  trainingGoal,
+  trainingGoalRadius,
   opacity,
   updateObject,
   //thrusters,
@@ -341,77 +321,118 @@ const ObjectSettings = ({
   configThrusters,
   removeObject,
 }) => {
+  const [colorPickerOpen, setColorPickerOpen] = useState(false);
   return (
-    <Row className="tactical-object-config">
-      <Col>
-        <FormGroup style={{marginBottom: 0}}>
-          <Label>
-            Size
+    <div className="tactical-inspector tactical-object-config">
+      <section className="tactical-inspector-section">
+        <h4>Transform</h4>
+        <FormGroup>
+          <Label>Size</Label>
+          <Input
+            type="range"
+            min="0"
+            max="100"
+            step={0.1}
+            value={logslider(size, true)}
+            onChange={evt => updateObject("size", logslider(evt.target.value))}
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label>Rotation</Label>
+          <div className="tactical-inspector-slider-row">
             <Input
               type="range"
               min="0"
-              max="100"
+              max="360"
               step={0.1}
-              value={logslider(size, true)}
+              value={rotation}
+              onChange={evt => updateObject("rotation", evt.target.value)}
+            />
+            <Input
+              className="tactical-inspector-slider-value"
+              type="number"
+              value={rotation}
               onChange={evt =>
-                updateObject("size", logslider(evt.target.value))
+                (evt.target.value || evt.target.value === 0) &&
+                updateObject("rotation", evt.target.value)
               }
             />
-          </Label>
+          </div>
         </FormGroup>
         <FormGroup style={{marginBottom: 0}}>
-          <Label>
-            Rotation
-            <div style={{display: "flex"}}>
-              <Input
-                style={{flex: 1}}
-                type="range"
-                min="0"
-                max="360"
-                step={0.1}
-                value={rotation}
-                onChange={evt => updateObject("rotation", evt.target.value)}
-              />
-              <Input
-                style={{
-                  width: "6ch",
-                  padding: "3px",
-                }}
-                type="number"
-                value={rotation}
-                onChange={evt =>
-                  (evt.target.value || evt.target.value === 0) &&
-                  updateObject("rotation", evt.target.value)
+          <Label>Opacity</Label>
+          <Input
+            type="range"
+            min="0"
+            max="1"
+            step={0.01}
+            value={opacity}
+            onChange={evt => updateObject("opacity", evt.target.value)}
+          />
+          <small className="tactical-inspector-hint">
+            Can be fully transparent on the viewscreen.
+          </small>
+        </FormGroup>
+      </section>
+
+      <section className="tactical-inspector-section">
+        <h4>Label &amp; Text</h4>
+        <FormGroup>
+          <Label>Label</Label>
+          <Input
+            type="textarea"
+            rows={2}
+            defaultValue={label}
+            onBlur={evt => updateObject("label", evt.target.value)}
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label>Font</Label>
+          <Input
+            type="text"
+            defaultValue={font}
+            onBlur={evt => updateObject("font", evt.target.value)}
+          />
+        </FormGroup>
+        <FormGroup style={{marginBottom: 0}}>
+          <Label>Font Size</Label>
+          <Input
+            type="range"
+            min="0"
+            max="255"
+            step="1"
+            value={fontSize}
+            onChange={evt => updateObject("fontSize", evt.target.value)}
+          />
+        </FormGroup>
+        <FormGroup className="tactical-color-field">
+          <Label>Font Color</Label>
+          <button
+            type="button"
+            className="tactical-color-swatch"
+            style={{background: fontColor || "transparent"}}
+            onClick={() => setColorPickerOpen(open => !open)}
+          >
+            <span>{colorPickerOpen ? "Close" : "Edit"}</span>
+          </button>
+          {colorPickerOpen && (
+            <div className="tactical-color-popover">
+              <ChromePicker
+                color={fontColor}
+                onChangeComplete={color =>
+                  updateObject(
+                    "fontColor",
+                    `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb.a})`,
+                  )
                 }
               />
             </div>
-          </Label>
+          )}
         </FormGroup>
-        <FormGroup style={{marginBottom: 0}}>
-          <Label>
-            Opacity <small>Can be fully transparent on viewscreen</small>
-            <Input
-              type="range"
-              min="0"
-              max="1"
-              step={0.01}
-              value={opacity}
-              onChange={evt => updateObject("opacity", evt.target.value)}
-            />
-          </Label>
-        </FormGroup>
-      </Col>
-      <Col>
-        <FormGroup>
-          <Label>
-            Label
-            <Input
-              type="textarea"
-              defaultValue={label}
-              onBlur={evt => updateObject("label", evt.target.value)}
-            />
-          </Label>
-        </FormGroup>
+      </section>
+
+      <section className="tactical-inspector-section">
+        <h4>Behavior</h4>
         <FormGroup check>
           <Label check>
             <Input
@@ -447,83 +468,84 @@ const ObjectSettings = ({
             <Input
               type="checkbox"
               checked={keepOnScreen}
-              onChange={evt =>
-                updateObject("keepOnScreen", evt.target.checked)
-              }
+              onChange={evt => updateObject("keepOnScreen", evt.target.checked)}
             />
-            Keep on screen{" "}
-            <small>Stops the icon from moving off the edge of the screen.</small>
+            Keep on screen
           </Label>
+          <small className="tactical-inspector-hint">
+            Stops the icon from moving off the edge of the screen.
+          </small>
         </FormGroup>
-        <Button size="sm" color="danger" onClick={() => removeObject()}>
-          Remove Item
-        </Button>
-      </Col>
-      <Col>
-        <FormGroup>
-          <Label>
-            Font
+        <FormGroup style={{marginBottom: 0}}>
+          <Label>Movement Speed</Label>
+          <Input
+            type="select"
+            bsSize="sm"
+            value={speed}
+            onChange={evt => updateObject("speed", evt.target.value)}
+          >
+            <option value="1000">Instant</option>
+            <option value="1.5">Warp</option>
+            <option value="0.2">Very Fast</option>
+            <option value="0.08">Fast</option>
+            <option value="0.05">Moderate</option>
+            <option value="0.02">Slow</option>
+            <option value="0.008">Very Slow</option>
+          </Input>
+        </FormGroup>
+      </section>
+
+      <section className="tactical-inspector-section">
+        <h4>Training Goal</h4>
+        <FormGroup check>
+          <Label check>
             <Input
-              type="text"
-              defaultValue={font}
-              onBlur={evt => updateObject("font", evt.target.value)}
+              type="checkbox"
+              checked={trainingGoal || false}
+              onChange={evt => updateObject("trainingGoal", evt.target.checked)}
             />
+            Training goal
           </Label>
+          <small className="tactical-inspector-hint">
+            Advanced Training: fires when a thruster-controlled item reaches
+            this object.
+          </small>
         </FormGroup>
-        <FormGroup>
-          <Label>
-            Font Size
+        {trainingGoal && (
+          <FormGroup style={{marginBottom: 0}}>
+            <Label>Goal Radius</Label>
             <Input
               type="range"
-              min="0"
-              max="255"
-              step="1"
-              value={fontSize}
-              onChange={evt => updateObject("fontSize", evt.target.value)}
+              min="0.01"
+              max="0.5"
+              step="0.01"
+              value={
+                trainingGoalRadius || trainingGoalRadius === 0
+                  ? trainingGoalRadius
+                  : 0.08
+              }
+              onChange={evt =>
+                updateObject("trainingGoalRadius", evt.target.value)
+              }
             />
-          </Label>
-        </FormGroup>
-        <FormGroup>
-          <ButtonGroup>
-            <Button size="sm" color="success" onClick={duplicate}>
-              Duplicate
-            </Button>
-            <Button size="sm" color="info" onClick={configThrusters}>
-              Config Thrusters
-            </Button>
-          </ButtonGroup>
-        </FormGroup>
-        <FormGroup>
-          <Label>
-            Speed
-            <Input
-              type="select"
-              size="sm"
-              value={speed}
-              onChange={evt => updateObject("speed", evt.target.value)}
-            >
-              <option value="1000">Instant</option>
-              <option value="1.5">Warp</option>
-              <option value="0.2">Very Fast</option>
-              <option value="0.08">Fast</option>
-              <option value="0.05">Moderate</option>
-              <option value="0.02">Slow</option>
-              <option value="0.008">Very Slow</option>
-            </Input>
-          </Label>
-        </FormGroup>
-      </Col>
-      <Col>
-        <ChromePicker
-          color={fontColor}
-          onChangeComplete={color =>
-            updateObject(
-              "fontColor",
-              `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb.a})`,
-            )
-          }
-        />
-      </Col>
-    </Row>
+          </FormGroup>
+        )}
+      </section>
+
+      <section className="tactical-inspector-section tactical-inspector-section--actions">
+        <h4>Actions</h4>
+        <ButtonGroup vertical>
+          <Button size="sm" color="success" onClick={duplicate}>
+            Duplicate
+          </Button>
+          <Button size="sm" color="info" onClick={configThrusters}>
+            Config Thrusters
+          </Button>
+          <Button size="sm" color="danger" onClick={() => removeObject()}>
+            Remove Item
+          </Button>
+        </ButtonGroup>
+      </section>
+    </div>
   );
 };
