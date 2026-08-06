@@ -107,6 +107,8 @@ export default class TacticalIcon extends Component {
       keepOnScreen,
       iconWidth,
       iconHeight,
+      trainingGoal,
+      trainingGoalRadius,
     } = this.props;
     if (icon) {
       return (
@@ -134,6 +136,8 @@ export default class TacticalIcon extends Component {
           iconWidth={iconWidth}
           iconHeight={iconHeight}
           onIconLoad={this.handleIconLoad}
+          trainingGoal={trainingGoal}
+          trainingGoalRadius={trainingGoalRadius}
         />
       );
     }
@@ -157,6 +161,8 @@ export default class TacticalIcon extends Component {
         fontSize={fontSize}
         label={label}
         core={core}
+        trainingGoal={trainingGoal}
+        trainingGoalRadius={trainingGoalRadius}
       />
     );
   }

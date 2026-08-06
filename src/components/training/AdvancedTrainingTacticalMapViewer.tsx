@@ -218,8 +218,12 @@ const AdvancedTrainingTacticalMapViewer: React.FC<
     [mapId, updateTacticalItemMutation],
   );
 
+  // Unlike the FD's own editor (which passes lowInterval to cut chatter
+  // while it isn't the thing being piloted), this is the trainee's live,
+  // actively-controlled view — it needs the same full-rate updates as any
+  // other crew viewscreen, or thruster/WASD movement reads as stalled.
   const {data} = useQuerySub(TACTICAL_MAP_QUERY, TACTICAL_MAP_SUB, {
-    variables: {id: mapId, lowInterval: true},
+    variables: {id: mapId, lowInterval: false},
     skip: !mapId,
   });
   const tacticalMap = data?.tacticalMap;

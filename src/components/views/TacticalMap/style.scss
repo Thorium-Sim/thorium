@@ -314,6 +314,21 @@
       pointer-events: none;
     }
   }
+  // Shows the FD exactly how big a `trainingGoalRadius` reads on the canvas
+  // while they configure it, instead of them having to guess from the 0–0.5
+  // slider value. Mirrors .tactical-goal-ring in
+  // AdvancedTrainingTacticalMapViewer.scss, which draws the same thing for
+  // the trainee.
+  .tactical-training-goal-ring {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    border: 2px dashed #ffa726;
+    box-shadow: 0 0 8px rgba(255, 167, 38, 0.5);
+    pointer-events: none;
+  }
   .tactical-objects {
     width: 100%;
     height: 100%;
