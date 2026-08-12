@@ -3,6 +3,7 @@ import gql from "graphql-tag.macro";
 import {useMutation} from "@apollo/client";
 import {useQuerySub} from "helpers/hooks/useQueryAndSubscribe";
 import Preview from "components/views/TacticalMap/preview";
+import {getItemCenter} from "components/views/TacticalMap/preview/layerComps/clampToBounds";
 import "./AdvancedTrainingTacticalMapViewer.scss";
 
 // Floating training exercise panel: a read-only-by-construction (core=false)
@@ -346,13 +347,17 @@ const AdvancedTrainingTacticalMapViewer: React.FC<
               const r = g.trainingGoalRadius ?? 0.08;
               const widthPct = ((2 * r) / CANVAS_ASPECT_RATIO) * 100;
               const heightPct = 2 * r * 100;
+              // An item's position anchors its top-left corner, so the ring is
+              // centered on the icon's middle instead — matching the goal check
+              // in server/processes/trainingTacticalGoal.ts.
+              const center = getItemCenter(g, g.location);
               return (
                 <div
                   key={g.id}
                   className="tactical-goal-ring"
                   style={{
-                    left: `${g.location.x * 100}%`,
-                    top: `${g.location.y * 100}%`,
+                    left: `${center.x * 100}%`,
+                    top: `${center.y * 100}%`,
                     width: `${widthPct}%`,
                     height: `${heightPct}%`,
                     transform: "translate(-50%, -50%)",

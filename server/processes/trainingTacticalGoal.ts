@@ -1,5 +1,6 @@
 import App from "../app";
 import {withinGoalRadius} from "../helpers/trainingGoalDistance";
+import {getItemCenter} from "../helpers/tacticalBounds";
 
 // Checks each active advanced-training tactical map exercise for whether a
 // player-controlled item has reached a `trainingGoal` item, firing the
@@ -64,11 +65,14 @@ function checkTrainingGoals() {
       continue;
     }
 
+    // Item positions anchor the icon's top-left corner, so compare icon centers
+    // — that's where the goal ring is drawn for the trainee, and it keeps the
+    // check independent of how large the two icons happen to be.
     const reached = players.some(player =>
       goals.some(goal =>
         withinGoalRadius(
-          player.location,
-          goal.location,
+          getItemCenter(player, player.location),
+          getItemCenter(goal, goal.location),
           goal.trainingGoalRadius,
         ),
       ),

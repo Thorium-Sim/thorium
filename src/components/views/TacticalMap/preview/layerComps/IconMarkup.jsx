@@ -1,5 +1,5 @@
 import React from "react";
-import {clampItemPosition} from "./clampToBounds";
+import {clampItemPosition, getFootprint} from "./clampToBounds";
 
 // Aspect-corrected radius sizing, mirroring server/helpers/trainingGoalDistance.ts
 // and src/components/training/AdvancedTrainingTacticalMapViewer.tsx — kept in
@@ -52,6 +52,11 @@ const IconMarkup = ({
       movement = {x: 0, y: 0, z: 0};
     }
   }
+  // The item position anchors the icon's top-left corner, so the ring is nudged
+  // by half the icon's footprint to sit on the object's middle rather than its
+  // corner. `.tactical-icon` fills the canvas, so these percentages are in the
+  // same normalized units as the ring's own width/height.
+  const goalOffset = getFootprint({size, iconWidth, iconHeight});
   return [
     location ? (
       <div
@@ -103,6 +108,8 @@ const IconMarkup = ({
           <div
             className="tactical-training-goal-ring"
             style={{
+              left: `${(goalOffset.w / 2) * 100}%`,
+              top: `${(goalOffset.h / 2) * 100}%`,
               width: `${
                 ((2 * (trainingGoalRadius ?? 0.08)) / CANVAS_ASPECT_RATIO) * 100
               }%`,
