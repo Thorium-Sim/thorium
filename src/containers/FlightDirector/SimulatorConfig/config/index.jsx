@@ -7,6 +7,7 @@ export {default as Docking} from "./Docking";
 export {default as Assets} from "./Assets";
 export {default as SoundEffects} from "./SoundEffects";
 export {default as Inventory} from "./Inventory";
+export {default as Fabrication} from "./Fabrication";
 export {default as DamageReports} from "./DamageReports";
 export {default as Library} from "./Library";
 export {default as Panels} from "./Panels";

@@ -1,0 +1,34 @@
+subscription FabricationRecipes($simulatorId: ID!) {
+  fabricationRecipesUpdate(simulatorId: $simulatorId) {
+    id
+    simulatorId
+    name
+    description
+    category
+    inputs {
+      name
+      count
+      consumed
+    }
+    output {
+      name
+      count
+      metadata {
+        type
+        size
+        description
+        image
+        science
+        defense
+        warheadType
+      }
+    }
+    duration
+    secret
+    discovered
+    hint
+    hintVisible
+    nearMiss
+    nearMissCount
+  }
+}

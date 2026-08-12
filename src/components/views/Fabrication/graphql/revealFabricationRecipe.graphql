@@ -1,0 +1,3 @@
+mutation RevealFabricationRecipe($simulatorId: ID!, $recipe: String!) {
+  revealFabricationRecipe(simulatorId: $simulatorId, recipe: $recipe)
+}

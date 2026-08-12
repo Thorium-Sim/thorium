@@ -30,6 +30,7 @@ const schema = gql`
     damageTeam
     securityTeam
     medicalTeam
+    fabrication
   }
   extend type Query {
     rooms(simulatorId: ID, deck: ID, name: String, role: RoomRoles): [Room]

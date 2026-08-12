@@ -1,0 +1,3 @@
+mutation UpdateFabricationRecipe($id: ID!, $recipe: FabricationRecipeInput!) {
+  updateFabricationRecipe(id: $id, recipe: $recipe)
+}

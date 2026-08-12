@@ -64,6 +64,9 @@ export default class Simulator {
   recordSnippets: RecordSnippet[];
   documents: Document[];
   spaceEdventuresId: string | null;
+  fabricationEnabled: boolean;
+  // Maximum simultaneous fabrication jobs; 0 means unlimited
+  fabricationJobLimit: number;
 
   constructor(params: Partial<Simulator> = {}, newlyCreated: boolean = false) {
     this.id = params.id || uuid.v4();
@@ -95,6 +98,8 @@ export default class Simulator {
     this.missionConfigs = params.missionConfigs || {};
 
     this.bridgeOfficerMessaging = params.bridgeOfficerMessaging ?? true;
+    this.fabricationEnabled = params.fabricationEnabled ?? true;
+    this.fabricationJobLimit = params.fabricationJobLimit || 0;
     this.teams = [];
     this.training = params.training || false;
     this.ship = new Ship({...params.ship}, newlyCreated);

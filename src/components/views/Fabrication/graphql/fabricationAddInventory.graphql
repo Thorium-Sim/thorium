@@ -1,0 +1,15 @@
+mutation FabricationAddInventory(
+  $simulatorId: ID
+  $name: String
+  $metadata: InventoryMetadataInput
+  $roomCount: [RoomCountInput]
+) {
+  addInventory(
+    inventory: {
+      simulatorId: $simulatorId
+      name: $name
+      metadata: $metadata
+      roomCount: $roomCount
+    }
+  )
+}
