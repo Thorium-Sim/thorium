@@ -270,6 +270,7 @@ App.on("autoAdvance", ({simulatorId, prev}) => {
   const macros = timelineStep.timelineItems.filter(t => {
     if (executedTimelineSteps.indexOf(t.id) === -1) return true;
     if (allowedMacros.indexOf(t.event) > -1) return true;
+    if (t.repeatable) return true;
     if (executedTimelineSteps.indexOf(t.id) > -1) return false;
     return true;
   });

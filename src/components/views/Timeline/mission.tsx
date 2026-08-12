@@ -2,7 +2,7 @@ import React from "react";
 import {Label, Input} from "helpers/reactstrap";
 import TimelineControl from "./timelineControl";
 import TimelineStep from "./timelineStep";
-import allowedMacros from "./allowedMacros";
+import {getArmedActions} from "./isRepeatable";
 import {
   TimelineStep as TimelineStepI,
   Station,
@@ -42,31 +42,14 @@ const Mission: React.FC<MissionProps> = ({
   );
   const [values, setValues] = React.useState<{[key: string]: any}>({});
   const [delay, setDelay] = React.useState<{[key: string]: number}>({});
-  const [actions, setActions] = React.useState<{[key: string]: boolean}>(
-    currentStep
-      ? currentStep.timelineItems.reduce(
-          (prev, next) =>
-            executedTimelineSteps.indexOf(next.id) > -1 &&
-            allowedMacros.indexOf(next.event) === -1
-              ? prev
-              : Object.assign(prev, {[next.id]: true}),
-          {},
-        )
-      : {},
+  const [actions, setActions] = React.useState<{[key: string]: boolean}>(() =>
+    getArmedActions(currentStep?.timelineItems, executedTimelineSteps),
   );
 
   React.useEffect(() => {
-    const actions = currentStep
-      ? currentStep.timelineItems.reduce(
-          (prev, next) =>
-            executedTimelineSteps.indexOf(next.id) > -1 &&
-            allowedMacros.indexOf(next.event) === -1
-              ? prev
-              : Object.assign(prev, {[next.id]: true}),
-          {},
-        )
-      : {};
-    setActions(actions);
+    setActions(
+      getArmedActions(currentStep?.timelineItems, executedTimelineSteps),
+    );
   }, [currentStep, executedTimelineSteps]);
 
   return (

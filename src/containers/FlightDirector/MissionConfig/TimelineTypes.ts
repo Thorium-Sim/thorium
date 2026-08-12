@@ -5,6 +5,7 @@ export interface TimelineItem {
   args: string;
   delay: number | undefined;
   noCancelOnReset: boolean;
+  repeatable: boolean;
 }
 export interface TimelineStep {
   id: string;

@@ -29,6 +29,7 @@ subscription MissionSubscription($missionId: ID!) {
         delay
         needsConfig
         noCancelOnReset
+        repeatable
       }
     }
   }

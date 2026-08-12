@@ -144,6 +144,7 @@ const TimelineStep: React.FC<TimelineStepProps> = ({
                 name={i.name || ""}
                 event={i.event}
                 args={i.args || "{}"}
+                repeatable={i.repeatable}
                 showDescription={false}
                 steps={timeline}
                 itemDelay={i.delay || 0}

@@ -25,6 +25,7 @@ const schema = gql`
     args: String
     delay: Int
     noCancelOnReset: Boolean
+    repeatable: Boolean
   }
   input RequirementInput {
     cards: [String]
@@ -47,6 +48,7 @@ const schema = gql`
     args: String
     delay: Int
     noCancelOnReset: Boolean
+    repeatable: Boolean
   }
 
   enum TIMELINE_ITEM_CONFIG_TYPE {
@@ -61,6 +63,7 @@ const schema = gql`
     args: String
     delay: Int
     noCancelOnReset: Boolean
+    repeatable: Boolean
   }
 
   type TimelineInstance {
