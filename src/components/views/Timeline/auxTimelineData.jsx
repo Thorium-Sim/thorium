@@ -22,6 +22,7 @@ const fragment = gql`
           args
           event
           delay
+          repeatable
         }
       }
     }

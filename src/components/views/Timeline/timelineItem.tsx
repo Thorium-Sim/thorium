@@ -2,7 +2,7 @@ import React, {Fragment} from "react";
 import * as MacrosPrint from "../../macrosPrint";
 import * as Macros from "../../macros";
 import {Button, Input, Label} from "helpers/reactstrap";
-import allowedMacros from "./allowedMacros";
+import isRepeatableAction from "./isRepeatable";
 import EventName from "../../../containers/FlightDirector/MissionConfig/EventName";
 import {FaArrowDown, FaArrowRight} from "react-icons/fa";
 import {TimelineStep, Station, Client, Mission} from "generated/graphql";
@@ -124,6 +124,7 @@ interface TimelineItemProps {
   event: string;
   name: string;
   args: string;
+  repeatable?: boolean | null;
   executedTimelineSteps: string[];
   steps: TimelineStep[];
   simulatorId: string;
@@ -147,6 +148,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
   event,
   name,
   args,
+  repeatable,
   executedTimelineSteps,
   actions,
   checkAction,
@@ -186,13 +188,22 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
       <span
         className={
           executedTimelineSteps.indexOf(id) > -1 &&
-          allowedMacros.indexOf(event) === -1
+          !isRepeatableAction({event, repeatable})
             ? "text-success"
             : ""
         }
       >
         <EventName id={event} label={name} />
       </span>
+      {repeatable && (
+        <span
+          className="text-info"
+          title="Repeatable - this action runs again every time the step is triggered"
+        >
+          {" "}
+          &#8635;
+        </span>
+      )}
 
       {args && (
         <Fragment>
