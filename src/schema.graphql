@@ -72,6 +72,10 @@ type AdvancedTrainingChapter {
   cardSwitchBehavior: String!
   mediaSize: String!
   mediaPosition: String!
+  tacticalMapId: ID
+  autoOpenTacticalMap: Boolean!
+  tacticalMapSize: String!
+  tacticalMapPosition: String!
   subChapters: [AdvancedTrainingSubChapter!]!
 }
 
@@ -86,6 +90,10 @@ input AdvancedTrainingChapterInput {
   cardSwitchBehavior: String
   mediaSize: String
   mediaPosition: String
+  tacticalMapId: ID
+  autoOpenTacticalMap: Boolean
+  tacticalMapSize: String
+  tacticalMapPosition: String
   subChapters: [AdvancedTrainingSubChapterInput!]
 }
 
@@ -122,6 +130,8 @@ type AdvancedTrainingProgress {
   globalObservedEvents: [String!]!
   mediaViewerOpen: Boolean!
   chapterListOpen: Boolean!
+  tacticalMapViewerOpen: Boolean!
+  activeTacticalMapId: ID
 }
 
 type AdvancedTrainingRequiredAction {
@@ -3528,6 +3538,9 @@ type Mutation {
   """Toggle the media viewer open/close for a client."""
   advancedTrainingToggleMediaViewer(clientId: ID!, open: Boolean!): String
 
+  """Toggle the tactical map training viewer open/close for a client."""
+  advancedTrainingToggleTacticalMapViewer(clientId: ID!, open: Boolean!): String
+
   """Toggle the chapter list open/close for a client."""
   advancedTrainingToggleChapterList(clientId: ID!, open: Boolean!): String
   entitySetAppearance(id: ID, color: String, meshType: MeshTypeEnum, modelAsset: String, materialMapAsset: String, ringMapAsset: String, cloudMapAsset: String, emissiveColor: String, emissiveIntensity: Float, scale: Float): String
@@ -5260,6 +5273,8 @@ type TacticalItem {
   rotationMatch: Boolean
   thrusterControls: ThrusterControls
   keepOnScreen: Boolean
+  trainingGoal: Boolean
+  trainingGoalRadius: Float
 }
 
 input TacticalItemInput {
@@ -5285,6 +5300,8 @@ input TacticalItemInput {
   rotationMatch: Boolean
   thrusterControls: ThrusterControlsInput
   keepOnScreen: Boolean
+  trainingGoal: Boolean
+  trainingGoalRadius: Float
 }
 
 type TacticalLayer {
@@ -5332,6 +5349,7 @@ type TacticalMap {
   layers: [TacticalLayer]
   frozen: Boolean
   interval: Float
+  trainingClientId: ID
 }
 
 type TacticalPath {

@@ -102,6 +102,10 @@ export type AdvancedTrainingChapter = {
   cardSwitchBehavior: Scalars['String'];
   mediaSize: Scalars['String'];
   mediaPosition: Scalars['String'];
+  tacticalMapId?: Maybe<Scalars['ID']>;
+  autoOpenTacticalMap: Scalars['Boolean'];
+  tacticalMapSize: Scalars['String'];
+  tacticalMapPosition: Scalars['String'];
   subChapters: Array<AdvancedTrainingSubChapter>;
 };
 
@@ -116,6 +120,10 @@ export type AdvancedTrainingChapterInput = {
   cardSwitchBehavior?: Maybe<Scalars['String']>;
   mediaSize?: Maybe<Scalars['String']>;
   mediaPosition?: Maybe<Scalars['String']>;
+  tacticalMapId?: Maybe<Scalars['ID']>;
+  autoOpenTacticalMap?: Maybe<Scalars['Boolean']>;
+  tacticalMapSize?: Maybe<Scalars['String']>;
+  tacticalMapPosition?: Maybe<Scalars['String']>;
   subChapters?: Maybe<Array<AdvancedTrainingSubChapterInput>>;
 };
 
@@ -154,6 +162,8 @@ export type AdvancedTrainingProgress = {
   globalObservedEvents: Array<Scalars['String']>;
   mediaViewerOpen: Scalars['Boolean'];
   chapterListOpen: Scalars['Boolean'];
+  tacticalMapViewerOpen: Scalars['Boolean'];
+  activeTacticalMapId?: Maybe<Scalars['ID']>;
 };
 
 export type AdvancedTrainingRequiredAction = {
@@ -3480,6 +3490,8 @@ export type Mutation = {
   fdResetTrainingProgress?: Maybe<Scalars['String']>;
   /** Toggle the media viewer open/close for a client. */
   advancedTrainingToggleMediaViewer?: Maybe<Scalars['String']>;
+  /** Toggle the tactical map training viewer open/close for a client. */
+  advancedTrainingToggleTacticalMapViewer?: Maybe<Scalars['String']>;
   /** Toggle the chapter list open/close for a client. */
   advancedTrainingToggleChapterList?: Maybe<Scalars['String']>;
   entitySetAppearance?: Maybe<Scalars['String']>;
@@ -8594,6 +8606,12 @@ export type MutationAdvancedTrainingToggleMediaViewerArgs = {
 };
 
 
+export type MutationAdvancedTrainingToggleTacticalMapViewerArgs = {
+  clientId: Scalars['ID'];
+  open: Scalars['Boolean'];
+};
+
+
 export type MutationAdvancedTrainingToggleChapterListArgs = {
   clientId: Scalars['ID'];
   open: Scalars['Boolean'];
@@ -11780,6 +11798,8 @@ export type TacticalItem = {
   rotationMatch?: Maybe<Scalars['Boolean']>;
   thrusterControls?: Maybe<ThrusterControls>;
   keepOnScreen?: Maybe<Scalars['Boolean']>;
+  trainingGoal?: Maybe<Scalars['Boolean']>;
+  trainingGoalRadius?: Maybe<Scalars['Float']>;
 };
 
 export type TacticalItemInput = {
@@ -11805,6 +11825,8 @@ export type TacticalItemInput = {
   rotationMatch?: Maybe<Scalars['Boolean']>;
   thrusterControls?: Maybe<ThrusterControlsInput>;
   keepOnScreen?: Maybe<Scalars['Boolean']>;
+  trainingGoal?: Maybe<Scalars['Boolean']>;
+  trainingGoalRadius?: Maybe<Scalars['Float']>;
 };
 
 export type TacticalLayer = {
@@ -11854,6 +11876,7 @@ export type TacticalMap = {
   layers?: Maybe<Array<Maybe<TacticalLayer>>>;
   frozen?: Maybe<Scalars['Boolean']>;
   interval?: Maybe<Scalars['Float']>;
+  trainingClientId?: Maybe<Scalars['ID']>;
 };
 
 export type TacticalPath = {
@@ -12709,48 +12732,16 @@ export type SimulatorDataFragment = (
       & Pick<AdvancedTrainingConfig, 'enabled' | 'sequentialChapters' | 'stripPosition'>
       & { chapters: Array<(
         { __typename?: 'AdvancedTrainingChapter' }
-        & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'autoLogin' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
-        & { subChapters: Array<(
-          { __typename?: 'AdvancedTrainingSubChapter' }
-          & Pick<AdvancedTrainingSubChapter, 'id' | 'name'>
-          & { requiredActions: Array<(
-            { __typename?: 'AdvancedTrainingRequiredAction' }
-            & Pick<AdvancedTrainingRequiredAction, 'id' | 'eventName' | 'args'>
-          )> }
-        )> }
+        & AdvancedTrainingChapterFieldsFragment
       )>, inFlightChapters: Array<(
         { __typename?: 'AdvancedTrainingChapter' }
-        & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'autoLogin' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
-        & { subChapters: Array<(
-          { __typename?: 'AdvancedTrainingSubChapter' }
-          & Pick<AdvancedTrainingSubChapter, 'id' | 'name'>
-          & { requiredActions: Array<(
-            { __typename?: 'AdvancedTrainingRequiredAction' }
-            & Pick<AdvancedTrainingRequiredAction, 'id' | 'eventName' | 'args'>
-          )> }
-        )> }
+        & AdvancedTrainingChapterFieldsFragment
       )>, loginChapter?: Maybe<(
         { __typename?: 'AdvancedTrainingChapter' }
-        & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'autoLogin' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
-        & { subChapters: Array<(
-          { __typename?: 'AdvancedTrainingSubChapter' }
-          & Pick<AdvancedTrainingSubChapter, 'id' | 'name'>
-          & { requiredActions: Array<(
-            { __typename?: 'AdvancedTrainingRequiredAction' }
-            & Pick<AdvancedTrainingRequiredAction, 'id' | 'eventName' | 'args'>
-          )> }
-        )> }
+        & AdvancedTrainingChapterFieldsFragment
       )>, completionChapter?: Maybe<(
         { __typename?: 'AdvancedTrainingChapter' }
-        & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'autoLogin' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
-        & { subChapters: Array<(
-          { __typename?: 'AdvancedTrainingSubChapter' }
-          & Pick<AdvancedTrainingSubChapter, 'id' | 'name'>
-          & { requiredActions: Array<(
-            { __typename?: 'AdvancedTrainingRequiredAction' }
-            & Pick<AdvancedTrainingRequiredAction, 'id' | 'eventName' | 'args'>
-          )> }
-        )> }
+        & AdvancedTrainingChapterFieldsFragment
       )> }
     )> }
   )>> }
@@ -12824,6 +12815,19 @@ export type MissionMacrosQuery = (
     & { timeline: Array<(
       { __typename?: 'TimelineStep' }
       & Pick<TimelineStep, 'id' | 'name'>
+    )> }
+  )> }
+);
+
+export type AdvancedTrainingChapterFieldsFragment = (
+  { __typename?: 'AdvancedTrainingChapter' }
+  & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'autoLogin' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition' | 'tacticalMapId' | 'autoOpenTacticalMap' | 'tacticalMapSize' | 'tacticalMapPosition'>
+  & { subChapters: Array<(
+    { __typename?: 'AdvancedTrainingSubChapter' }
+    & Pick<AdvancedTrainingSubChapter, 'id' | 'name'>
+    & { requiredActions: Array<(
+      { __typename?: 'AdvancedTrainingRequiredAction' }
+      & Pick<AdvancedTrainingRequiredAction, 'id' | 'eventName' | 'args'>
     )> }
   )> }
 );
@@ -14819,7 +14823,7 @@ export type TacticalMapUpdateSubscription = (
       & Pick<TacticalLayer, 'id' | 'name' | 'type' | 'image' | 'color' | 'labels' | 'gridCols' | 'gridRows' | 'advance' | 'asset' | 'autoplay' | 'loop' | 'playbackSpeed' | 'opacity' | 'mute'>
       & { items?: Maybe<Array<Maybe<(
         { __typename?: 'TacticalItem' }
-        & Pick<TacticalItem, 'id' | 'layerId' | 'font' | 'label' | 'fontSize' | 'fontColor' | 'icon' | 'size' | 'iconWidth' | 'iconHeight' | 'keepOnScreen' | 'speed' | 'rotation' | 'opacity' | 'flash' | 'ijkl' | 'wasd' | 'thrusters' | 'rotationMatch'>
+        & Pick<TacticalItem, 'id' | 'layerId' | 'font' | 'label' | 'fontSize' | 'fontColor' | 'icon' | 'size' | 'iconWidth' | 'iconHeight' | 'keepOnScreen' | 'trainingGoal' | 'trainingGoalRadius' | 'speed' | 'rotation' | 'opacity' | 'flash' | 'ijkl' | 'wasd' | 'thrusters' | 'rotationMatch'>
         & { velocity?: Maybe<(
           { __typename?: 'Coordinates' }
           & Pick<Coordinates, 'x' | 'y'>
@@ -14861,7 +14865,7 @@ export type TacticalMapListSubscription = (
   { __typename?: 'Subscription' }
   & { tacticalMapsUpdate?: Maybe<Array<Maybe<(
     { __typename?: 'TacticalMap' }
-    & Pick<TacticalMap, 'id' | 'name' | 'template'>
+    & Pick<TacticalMap, 'id' | 'name' | 'template' | 'trainingClientId'>
     & { flight?: Maybe<(
       { __typename?: 'Flight' }
       & Pick<Flight, 'id'>
@@ -16657,48 +16661,16 @@ export type StationSetConfigSubscription = (
         & Pick<AdvancedTrainingConfig, 'enabled' | 'sequentialChapters' | 'stripPosition'>
         & { chapters: Array<(
           { __typename?: 'AdvancedTrainingChapter' }
-          & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'autoLogin' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
-          & { subChapters: Array<(
-            { __typename?: 'AdvancedTrainingSubChapter' }
-            & Pick<AdvancedTrainingSubChapter, 'id' | 'name'>
-            & { requiredActions: Array<(
-              { __typename?: 'AdvancedTrainingRequiredAction' }
-              & Pick<AdvancedTrainingRequiredAction, 'id' | 'eventName' | 'args'>
-            )> }
-          )> }
+          & AdvancedTrainingChapterFieldsFragment
         )>, inFlightChapters: Array<(
           { __typename?: 'AdvancedTrainingChapter' }
-          & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'autoLogin' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
-          & { subChapters: Array<(
-            { __typename?: 'AdvancedTrainingSubChapter' }
-            & Pick<AdvancedTrainingSubChapter, 'id' | 'name'>
-            & { requiredActions: Array<(
-              { __typename?: 'AdvancedTrainingRequiredAction' }
-              & Pick<AdvancedTrainingRequiredAction, 'id' | 'eventName' | 'args'>
-            )> }
-          )> }
+          & AdvancedTrainingChapterFieldsFragment
         )>, loginChapter?: Maybe<(
           { __typename?: 'AdvancedTrainingChapter' }
-          & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'autoLogin' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
-          & { subChapters: Array<(
-            { __typename?: 'AdvancedTrainingSubChapter' }
-            & Pick<AdvancedTrainingSubChapter, 'id' | 'name'>
-            & { requiredActions: Array<(
-              { __typename?: 'AdvancedTrainingRequiredAction' }
-              & Pick<AdvancedTrainingRequiredAction, 'id' | 'eventName' | 'args'>
-            )> }
-          )> }
+          & AdvancedTrainingChapterFieldsFragment
         )>, completionChapter?: Maybe<(
           { __typename?: 'AdvancedTrainingChapter' }
-          & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'autoLogin' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
-          & { subChapters: Array<(
-            { __typename?: 'AdvancedTrainingSubChapter' }
-            & Pick<AdvancedTrainingSubChapter, 'id' | 'name'>
-            & { requiredActions: Array<(
-              { __typename?: 'AdvancedTrainingRequiredAction' }
-              & Pick<AdvancedTrainingRequiredAction, 'id' | 'eventName' | 'args'>
-            )> }
-          )> }
+          & AdvancedTrainingChapterFieldsFragment
         )> }
       )> }
     )> }
@@ -17494,6 +17466,33 @@ export const ClientDataFragmentDoc = gql`
   soundPlayer
 }
     `;
+export const AdvancedTrainingChapterFieldsFragmentDoc = gql`
+    fragment AdvancedTrainingChapterFields on AdvancedTrainingChapter {
+  id
+  name
+  cardComponent
+  mediaAsset
+  autoOpenMedia
+  autoAdvance
+  autoLogin
+  cardSwitchBehavior
+  mediaSize
+  mediaPosition
+  tacticalMapId
+  autoOpenTacticalMap
+  tacticalMapSize
+  tacticalMapPosition
+  subChapters {
+    id
+    name
+    requiredActions {
+      id
+      eventName
+      args
+    }
+  }
+}
+    `;
 export const SimulatorDataFragmentDoc = gql`
     fragment SimulatorData on Simulator {
   id
@@ -17537,93 +17536,21 @@ export const SimulatorDataFragmentDoc = gql`
       sequentialChapters
       stripPosition
       chapters {
-        id
-        name
-        cardComponent
-        mediaAsset
-        autoOpenMedia
-        autoAdvance
-        autoLogin
-        cardSwitchBehavior
-        mediaSize
-        mediaPosition
-        subChapters {
-          id
-          name
-          requiredActions {
-            id
-            eventName
-            args
-          }
-        }
+        ...AdvancedTrainingChapterFields
       }
       inFlightChapters {
-        id
-        name
-        cardComponent
-        mediaAsset
-        autoOpenMedia
-        autoAdvance
-        autoLogin
-        cardSwitchBehavior
-        mediaSize
-        mediaPosition
-        subChapters {
-          id
-          name
-          requiredActions {
-            id
-            eventName
-            args
-          }
-        }
+        ...AdvancedTrainingChapterFields
       }
       loginChapter {
-        id
-        name
-        cardComponent
-        mediaAsset
-        autoOpenMedia
-        autoAdvance
-        autoLogin
-        cardSwitchBehavior
-        mediaSize
-        mediaPosition
-        subChapters {
-          id
-          name
-          requiredActions {
-            id
-            eventName
-            args
-          }
-        }
+        ...AdvancedTrainingChapterFields
       }
       completionChapter {
-        id
-        name
-        cardComponent
-        mediaAsset
-        autoOpenMedia
-        autoAdvance
-        autoLogin
-        cardSwitchBehavior
-        mediaSize
-        mediaPosition
-        subChapters {
-          id
-          name
-          requiredActions {
-            id
-            eventName
-            args
-          }
-        }
+        ...AdvancedTrainingChapterFields
       }
     }
   }
 }
-    `;
+    ${AdvancedTrainingChapterFieldsFragmentDoc}`;
 export const CountermeasureModuleFragmentDoc = gql`
     fragment CountermeasureModule on CountermeasureModule {
   id
@@ -19972,6 +19899,8 @@ export const TacticalMapUpdateDocument = gql`
         iconWidth
         iconHeight
         keepOnScreen
+        trainingGoal
+        trainingGoalRadius
         speed
         velocity {
           x
@@ -20056,6 +19985,7 @@ export const TacticalMapListDocument = gql`
       id
     }
     template
+    trainingClientId
   }
 }
     `;
@@ -22014,94 +21944,22 @@ export const StationSetConfigDocument = gql`
         sequentialChapters
         stripPosition
         chapters {
-          id
-          name
-          cardComponent
-          mediaAsset
-          autoOpenMedia
-          autoAdvance
-          autoLogin
-          cardSwitchBehavior
-          mediaSize
-          mediaPosition
-          subChapters {
-            id
-            name
-            requiredActions {
-              id
-              eventName
-              args
-            }
-          }
+          ...AdvancedTrainingChapterFields
         }
         inFlightChapters {
-          id
-          name
-          cardComponent
-          mediaAsset
-          autoOpenMedia
-          autoAdvance
-          autoLogin
-          cardSwitchBehavior
-          mediaSize
-          mediaPosition
-          subChapters {
-            id
-            name
-            requiredActions {
-              id
-              eventName
-              args
-            }
-          }
+          ...AdvancedTrainingChapterFields
         }
         loginChapter {
-          id
-          name
-          cardComponent
-          mediaAsset
-          autoOpenMedia
-          autoAdvance
-          autoLogin
-          cardSwitchBehavior
-          mediaSize
-          mediaPosition
-          subChapters {
-            id
-            name
-            requiredActions {
-              id
-              eventName
-              args
-            }
-          }
+          ...AdvancedTrainingChapterFields
         }
         completionChapter {
-          id
-          name
-          cardComponent
-          mediaAsset
-          autoOpenMedia
-          autoAdvance
-          autoLogin
-          cardSwitchBehavior
-          mediaSize
-          mediaPosition
-          subChapters {
-            id
-            name
-            requiredActions {
-              id
-              eventName
-              args
-            }
-          }
+          ...AdvancedTrainingChapterFields
         }
       }
     }
   }
 }
-    `;
+    ${AdvancedTrainingChapterFieldsFragmentDoc}`;
 export function useStationSetConfigSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<StationSetConfigSubscription, StationSetConfigSubscriptionVariables>) {
         return ApolloReactHooks.useSubscription<StationSetConfigSubscription, StationSetConfigSubscriptionVariables>(StationSetConfigDocument, baseOptions);
       }

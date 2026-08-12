@@ -22,6 +22,8 @@ subscription TacticalMapUpdate($id: ID!) {
         iconWidth
         iconHeight
         keepOnScreen
+        trainingGoal
+        trainingGoalRadius
         speed
         velocity {
           x

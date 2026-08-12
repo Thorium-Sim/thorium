@@ -1,6 +1,7 @@
 import App from "../app";
 import {pubsub} from "../helpers/subscriptionManager";
 import {AdvancedTrainingProgress} from "../classes/advancedTrainingProgress";
+import {provisionTrainingTacticalMap} from "./advancedTrainingTacticalMap";
 
 // Shared helpers for the advanced-training event handlers. Kept separate from
 // the listener registrations in ./advancedTraining so neither file grows
@@ -119,7 +120,9 @@ export function advanceToNextChapter(
   }
 
   progress.setMediaViewerOpen(false);
+  progress.setTacticalMapViewerOpen(false);
   progress.setActiveChapter(nextChapter.id);
+  provisionTrainingTacticalMap(progress, nextChapter, clientId);
 
   if (!autoCompleteIfEmpty(progress, nextChapter)) {
     const firstSub = nextChapter.subChapters[0];
@@ -133,6 +136,9 @@ export function advanceToNextChapter(
 
   if (nextChapter.autoOpenMedia && nextChapter.mediaAsset) {
     progress.setMediaViewerOpen(true);
+  }
+  if (nextChapter.autoOpenTacticalMap && nextChapter.tacticalMapId) {
+    progress.setTacticalMapViewerOpen(true);
   }
 
   autoSwitchCardForChapter(nextChapter, clientId);
@@ -149,6 +155,7 @@ export function activateChapter(
   clientId: string,
 ) {
   progress.setActiveChapter(chapter.id);
+  provisionTrainingTacticalMap(progress, chapter, clientId);
 
   if (!autoCompleteIfEmpty(progress, chapter)) {
     const firstIncompleteSub = chapter.subChapters.find(
@@ -160,6 +167,9 @@ export function activateChapter(
   }
 
   progress.setMediaViewerOpen(!!(chapter.autoOpenMedia && chapter.mediaAsset));
+  progress.setTacticalMapViewerOpen(
+    !!(chapter.autoOpenTacticalMap && chapter.tacticalMapId),
+  );
 
   autoSwitchCardForChapter(chapter, clientId);
 }
