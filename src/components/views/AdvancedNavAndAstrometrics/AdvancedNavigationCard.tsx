@@ -18,6 +18,7 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 import {graphql, withApollo} from "react-apollo";
 import {AdvancedNavigation} from "./AdvancedNavigation";
 import DamageOverlay from "../helpers/DamageOverlay";
+import parseAdvancedNavData from "./helpers/parseAdvancedNavData";
 import {EngineStatus} from "./types";
 import {FlightSet} from "containers/FlightDirector/FlightSets/types";
 import {FormattedMessage} from "react-intl";
@@ -61,22 +62,16 @@ const AdvancedNavigationCard: React.FC<AdvancedNavigationCardProps> = ({
   const [SaveFlightPath] = useHandleSaveFlightPathMutation();
   const [ResumePath] = useHandleResumePathMutation();
   const [UpdateCurrentFlightPath] = useHandleUpdateCurrentFlightPathMutation();
-  let parsedData = undefined;
   const {assets} = simulator;
 
-  if (data && data.advancedNavAndAstrometrics) {
-    parsedData = data.advancedNavAndAstrometrics.map(d => {
-      return {
-        ...d,
-        flightSetPathMap: JSON.parse(d.flightSetPathMap),
-        probeAssignments: Object.keys(JSON.parse(d.probeAssignments)).map(
-          k => JSON.parse(d.probeAssignments)[k],
-        ),
-      };
-    });
-  }
+  const parsedData = parseAdvancedNavData(
+    data?.advancedNavAndAstrometrics,
+  ).map(d => ({
+    ...d,
+    probeAssignments: Object.values(d.probeAssignments),
+  }));
 
-  const advancedNav = parsedData && parsedData[0];
+  const advancedNav = parsedData[0];
   if (!data || data.loading || !advancedNav || !assets) {
     return <React.Fragment />;
   }
