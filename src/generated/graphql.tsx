@@ -2087,6 +2087,7 @@ export type MacroInput = {
   args?: Maybe<Scalars['String']>;
   delay?: Maybe<Scalars['Int']>;
   noCancelOnReset?: Maybe<Scalars['Boolean']>;
+  repeatable?: Maybe<Scalars['Boolean']>;
 };
 
 export type MapBorder = {
@@ -12188,6 +12189,7 @@ export type TimelineItem = {
   args?: Maybe<Scalars['String']>;
   delay?: Maybe<Scalars['Int']>;
   noCancelOnReset?: Maybe<Scalars['Boolean']>;
+  repeatable?: Maybe<Scalars['Boolean']>;
 };
 
 export type TimelineItemInput = {
@@ -12198,6 +12200,7 @@ export type TimelineItemInput = {
   args?: Maybe<Scalars['String']>;
   delay?: Maybe<Scalars['Int']>;
   noCancelOnReset?: Maybe<Scalars['Boolean']>;
+  repeatable?: Maybe<Scalars['Boolean']>;
 };
 
 export type TimelineStep = {
@@ -15064,7 +15067,7 @@ export type TimelineMissionSubscription = (
       & Pick<TimelineStep, 'id' | 'name' | 'order' | 'description'>
       & { timelineItems: Array<(
         { __typename?: 'TimelineItem' }
-        & Pick<TimelineItem, 'id' | 'name' | 'type' | 'args' | 'event' | 'delay'>
+        & Pick<TimelineItem, 'id' | 'name' | 'type' | 'args' | 'event' | 'delay' | 'repeatable'>
       )> }
     )> }
   )> }
@@ -16031,7 +16034,7 @@ export type MissionSubscriptionSubscription = (
       & Pick<TimelineStep, 'id' | 'name' | 'description' | 'order'>
       & { timelineItems: Array<(
         { __typename?: 'TimelineItem' }
-        & Pick<TimelineItem, 'id' | 'name' | 'type' | 'event' | 'args' | 'delay' | 'needsConfig' | 'noCancelOnReset'>
+        & Pick<TimelineItem, 'id' | 'name' | 'type' | 'event' | 'args' | 'delay' | 'needsConfig' | 'noCancelOnReset' | 'repeatable'>
       )> }
     )> }
   )> }
@@ -20255,6 +20258,7 @@ export const TimelineMissionDocument = gql`
         args
         event
         delay
+        repeatable
       }
     }
   }
@@ -21284,6 +21288,7 @@ export const MissionSubscriptionDocument = gql`
         delay
         needsConfig
         noCancelOnReset
+        repeatable
       }
     }
   }

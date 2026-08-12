@@ -188,6 +188,7 @@ interface TimelineItemParams {
   args?: string;
   delay?: number;
   noCancelOnReset?: boolean;
+  repeatable?: boolean;
 }
 
 export class TimelineItem {
@@ -198,6 +199,9 @@ export class TimelineItem {
   args: string;
   delay: number;
   noCancelOnReset: boolean;
+  // Repeatable actions re-run every time their step is triggered, instead of
+  // being skipped once they show up in the simulator's executedTimelineSteps.
+  repeatable: boolean;
   constructor(timelineItemId, params: TimelineItemParams = {}) {
     this.id = timelineItemId || uuid.v4();
     this.name = params.name || "Item";
@@ -206,8 +210,9 @@ export class TimelineItem {
     this.args = params.args || null;
     this.delay = params.delay || 0;
     this.noCancelOnReset = params.noCancelOnReset || false;
+    this.repeatable = params.repeatable || false;
   }
-  update({name, type, event, delay, args, noCancelOnReset}) {
+  update({name, type, event, delay, args, noCancelOnReset, repeatable}) {
     if (name) this.name = name;
     if (type) this.type = type;
     if (event) this.event = event;
@@ -215,5 +220,6 @@ export class TimelineItem {
     if (args) this.args = args;
     if (noCancelOnReset || noCancelOnReset === false)
       this.noCancelOnReset = noCancelOnReset;
+    if (repeatable || repeatable === false) this.repeatable = repeatable;
   }
 }

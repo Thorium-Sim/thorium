@@ -1941,6 +1941,7 @@ input MacroInput {
   args: String
   delay: Int
   noCancelOnReset: Boolean
+  repeatable: Boolean
 }
 
 type MapBorder {
@@ -5661,6 +5662,7 @@ type TimelineItem {
   args: String
   delay: Int
   noCancelOnReset: Boolean
+  repeatable: Boolean
 }
 
 input TimelineItemInput {
@@ -5671,6 +5673,7 @@ input TimelineItemInput {
   args: String
   delay: Int
   noCancelOnReset: Boolean
+  repeatable: Boolean
 }
 
 type TimelineStep {

@@ -146,6 +146,16 @@ export const TimelineMacroConfig: React.FC<{
               Don't Cancel Delay on Flight Reset
             </Label>
           </FormGroup>
+          <FormGroup style={{marginLeft: "5ch"}}>
+            <Label title="Normally an action only runs once per flight - going back to its step leaves it unchecked. Repeatable actions stay checked and run again every time the step is triggered.">
+              <Input
+                type="checkbox"
+                defaultChecked={Boolean(item.repeatable)}
+                onChange={e => updateMacro("repeatable", e.target.checked)}
+              />
+              Repeatable — Re-run Every Time the Step is Triggered
+            </Label>
+          </FormGroup>
           <MacroWrapper
             id={item.id}
             delay={item.delay}
