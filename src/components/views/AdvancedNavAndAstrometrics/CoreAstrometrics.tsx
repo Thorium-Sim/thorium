@@ -14,6 +14,7 @@ import {FormattedMessage} from "react-intl";
 import {Container} from "reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import {AstrometricsCoreComponent} from "./CoreAstrometricsBase";
+import parseAdvancedNavData from "./helpers/parseAdvancedNavData";
 import {Probe} from "containers/FlightDirector/FlightSets/types";
 
 interface CoreAstrometricsProps {
@@ -33,20 +34,9 @@ const CoreAstrometrics: React.FC<CoreAstrometricsProps> = ({
   client,
 }) => {
   const [HandleAssignments] = useHandleUpdateProbeAssignmentsMutation();
-  let parsedData = undefined;
-
-  if (data && data.advancedNavAndAstrometrics) {
-    parsedData = data.advancedNavAndAstrometrics.map(d => {
-      return {
-        ...d,
-        flightSetPathMap: JSON.parse(d.flightSetPathMap),
-        probeAssignments: JSON.parse(d.probeAssignments),
-      };
-    });
-  }
-
-  const advancedNav = parsedData && parsedData[0];
-  if (!data || data.loading || !parsedData) {
+  const parsedData = parseAdvancedNavData(data?.advancedNavAndAstrometrics);
+  const advancedNav = parsedData[0];
+  if (!data || data.loading || !parsedData.length) {
     return <div>No Values</div>;
   }
 

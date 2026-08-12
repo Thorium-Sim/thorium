@@ -26,6 +26,7 @@ import {
 } from "./core-queries";
 import {graphql, withApollo} from "react-apollo";
 import {CoreAdvancedNavigation as CoreAdvancedNavigationModal} from "./components/CoreComponents/advanced-flight";
+import parseAdvancedNavData from "./helpers/parseAdvancedNavData";
 import {EngineStatus} from "./types";
 import {FlightSet} from "containers/FlightDirector/FlightSets/types";
 import "./styles.css";
@@ -65,19 +66,9 @@ const CoreAdvancedNavigation: React.FC<CoreAdvancedNavigationProps> = ({
   const [UpdateFlightSetData] = useHandleUpdateAdvNavFlightSetDataMutation();
 
   const flightSetQuery = useGetBasicFlightSetsQuery();
-  let parsedData = undefined;
 
-  if (data && data.advancedNavAndAstrometrics) {
-    parsedData = data.advancedNavAndAstrometrics.map(d => {
-      return {
-        ...d,
-        flightSetPathMap: JSON.parse(d.flightSetPathMap),
-        probeAssignments: JSON.parse(d.probeAssignments),
-      };
-    });
-  }
-
-  const advancedNav = parsedData && parsedData[0];
+  const parsedData = parseAdvancedNavData(data?.advancedNavAndAstrometrics);
+  const advancedNav = parsedData[0];
 
   const notIncludedFlightSets = React.useMemo(() => {
     return (
@@ -87,7 +78,7 @@ const CoreAdvancedNavigation: React.FC<CoreAdvancedNavigationProps> = ({
     );
   }, [flightSetQuery.data, advancedNav]);
 
-  if (!data || data.loading || !parsedData) {
+  if (!data || data.loading || !parsedData.length) {
     return <div>No Values</div>;
   }
 
