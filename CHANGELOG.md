@@ -1,3 +1,18 @@
+# [4.9.0](https://github.com/Thorium-Sim/thorium/compare/4.8.0...4.9.0) (2026-08-26)
+
+
+### Bug Fixes
+
+* fix the training circle in tactical maps to the center of the items it's around ([87f119c](https://github.com/Thorium-Sim/thorium/commit/87f119ca51a0fc53bdb75139a3b0234b4f39fa10))
+* Fixed a crash when you start the engines and then emergency stop ([5c4a6ff](https://github.com/Thorium-Sim/thorium/commit/5c4a6ff844e41f601a07c8d374879f4517d8dde0))
+
+
+### Features
+
+* Added the ability to create a "repeatable" timeline action ([47bae6f](https://github.com/Thorium-Sim/thorium/commit/47bae6f80e3f9aef984e2f27111472b9ff542831))
+* Adds support for showing a tactical map on the thrusters card in advanced training. ([a77ea1b](https://github.com/Thorium-Sim/thorium/commit/a77ea1bb4193de7da52b2a53515646fc43531e23))
+* **Fabrication:** started work on fabrication system ([767a630](https://github.com/Thorium-Sim/thorium/commit/767a6309206aa37e7d39a2fe71a96ed246c5fdbc))
+
 # [4.8.0](https://github.com/Thorium-Sim/thorium/compare/4.7.1...4.8.0) (2026-07-04)
 
 
