@@ -119,6 +119,14 @@ const actionRegistry: CardActions[] = [
     ],
   },
   {
+    cardComponent: "Thrusters",
+    cardLabel: "Thrusters",
+    actions: [
+      {eventName: "directionUpdate", label: "Use Thrusters"},
+      {eventName: "rotationUpdate", label: "Rotate Ship"},
+    ],
+  },
+  {
     cardComponent: "Transporters",
     cardLabel: "Transporters",
     actions: [
@@ -154,6 +162,20 @@ export function getGlobalActions(): ActionDefinition[] {
 export const VIDEO_COMPLETE_EVENT = "__videoComplete__";
 
 /**
+ * Synthetic event fired by server/processes/trainingTacticalGoal.ts when a
+ * player-controlled tactical map item reaches a trainingGoal item. Add this
+ * as a requiredAction on a subchapter to require the crew to fly to the goal.
+ */
+export const TACTICAL_MAP_GOAL_EVENT = "__tacticalMapGoal__";
+
+/**
+ * Synthetic event fired by the tactical map training viewer's "Mark Exercise
+ * Complete" button. Add this as a requiredAction to let the crew self-report
+ * completion instead of (or alongside) a goal zone.
+ */
+export const TACTICAL_MAP_COMPLETE_EVENT = "__tacticalMapComplete__";
+
+/**
  * The GraphQL mutation event fired when a crew member logs in to their station.
  * Add this as a requiredAction on a login-chapter subchapter to gate completion
  * on the crew actually logging in.
@@ -177,6 +199,14 @@ export function getActionLabel(
   // Handle the video completion sentinel
   if (eventName === VIDEO_COMPLETE_EVENT) {
     return "Media finishes";
+  }
+
+  // Handle the tactical map training sentinels
+  if (eventName === TACTICAL_MAP_GOAL_EVENT) {
+    return "Reach the goal";
+  }
+  if (eventName === TACTICAL_MAP_COMPLETE_EVENT) {
+    return "Mark map complete";
   }
 
   // Handle click-type actions

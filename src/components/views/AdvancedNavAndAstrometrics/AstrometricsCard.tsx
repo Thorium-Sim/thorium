@@ -13,6 +13,7 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 import {graphql, withApollo} from "react-apollo";
 import {FlightSet, Probe} from "containers/FlightDirector/FlightSets/types";
 import {Astrometrics} from "./Astrometrics";
+import parseAdvancedNavData from "./helpers/parseAdvancedNavData";
 import {FormattedMessage} from "react-intl";
 import Tour from "helpers/tourHelper";
 
@@ -50,19 +51,10 @@ const AstrometricsCard: React.FC<AstrometricsCardProps> = ({
   simulator,
 }) => {
   const [AssignProbe] = useHandleOnAssignProbeMutation();
-  let parsedData = undefined;
   const {assets} = simulator;
 
-  if (data && data.advancedNavAndAstrometrics) {
-    parsedData = data.advancedNavAndAstrometrics.map(d => {
-      return {
-        ...d,
-        flightSetPathMap: JSON.parse(d.flightSetPathMap),
-        probeAssignments: JSON.parse(d.probeAssignments),
-      };
-    });
-  }
-  const advancedNav = parsedData && parsedData[0];
+  const parsedData = parseAdvancedNavData(data?.advancedNavAndAstrometrics);
+  const advancedNav = parsedData[0];
   if (!data || data.loading || !advancedNav || !assets) {
     return <React.Fragment />;
   }

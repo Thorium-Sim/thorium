@@ -72,6 +72,10 @@ type AdvancedTrainingChapter {
   cardSwitchBehavior: String!
   mediaSize: String!
   mediaPosition: String!
+  tacticalMapId: ID
+  autoOpenTacticalMap: Boolean!
+  tacticalMapSize: String!
+  tacticalMapPosition: String!
   subChapters: [AdvancedTrainingSubChapter!]!
 }
 
@@ -86,6 +90,10 @@ input AdvancedTrainingChapterInput {
   cardSwitchBehavior: String
   mediaSize: String
   mediaPosition: String
+  tacticalMapId: ID
+  autoOpenTacticalMap: Boolean
+  tacticalMapSize: String
+  tacticalMapPosition: String
   subChapters: [AdvancedTrainingSubChapterInput!]
 }
 
@@ -122,6 +130,8 @@ type AdvancedTrainingProgress {
   globalObservedEvents: [String!]!
   mediaViewerOpen: Boolean!
   chapterListOpen: Boolean!
+  tacticalMapViewerOpen: Boolean!
+  activeTacticalMapId: ID
 }
 
 type AdvancedTrainingRequiredAction {
@@ -1168,6 +1178,95 @@ type ExternalSimulator {
   date: String
 }
 
+enum FABRICATION_CATEGORY {
+  repair
+  weapon
+  probe
+  upgrade
+  science
+  misc
+}
+
+enum FABRICATION_JOB_STATUS {
+  active
+  complete
+  cancelled
+}
+
+type FabricationJob {
+  id: ID!
+  simulatorId: ID
+  recipeId: ID
+  recipeName: String!
+  roomId: ID
+  room: Room
+  inputs: [FabricationRecipeItem!]!
+  output: FabricationRecipeOutput!
+  duration: Int!
+  elapsed: Float!
+  progress: Float!
+  status: FABRICATION_JOB_STATUS!
+}
+
+type FabricationRecipe {
+  id: ID!
+  simulatorId: ID
+  name: String!
+  description: String!
+  category: FABRICATION_CATEGORY!
+  inputs: [FabricationRecipeItem!]!
+  output: FabricationRecipeOutput!
+  duration: Int!
+  secret: Boolean!
+  discovered: Boolean!
+  hint: String!
+  hintVisible: Boolean!
+  nearMiss: Boolean!
+  nearMissCount: Int!
+}
+
+input FabricationRecipeInput {
+  name: String
+  description: String
+  category: FABRICATION_CATEGORY
+  inputs: [FabricationRecipeItemInput!]
+  output: FabricationRecipeOutputInput
+  duration: Int
+  secret: Boolean
+  hint: String
+  nearMiss: Boolean
+}
+
+type FabricationRecipeItem {
+  name: String!
+  count: Int!
+  consumed: Boolean!
+}
+
+input FabricationRecipeItemInput {
+  name: String!
+  count: Int!
+  consumed: Boolean
+}
+
+type FabricationRecipeOutput {
+  name: String!
+  count: Int!
+  metadata: InventoryMetadata
+}
+
+input FabricationRecipeOutputInput {
+  name: String!
+  count: Int!
+  metadata: InventoryMetadataInput
+}
+
+type FabricationSettings {
+  id: ID!
+  enabled: Boolean!
+  jobLimit: Int!
+}
+
 input FBAwardInput {
   id: ID!
   Name: String!
@@ -1560,6 +1659,7 @@ type InventoryMetadata {
   image: String
   science: Boolean
   defense: Boolean
+  warheadType: String
 }
 
 input InventoryMetadataInput {
@@ -1569,6 +1669,7 @@ input InventoryMetadataInput {
   image: String
   science: Boolean
   defense: Boolean
+  warheadType: String
 }
 
 type Isochip {
@@ -1850,6 +1951,7 @@ input MacroInput {
   args: String
   delay: Int
   noCancelOnReset: Boolean
+  repeatable: Boolean
 }
 
 type MapBorder {
@@ -2090,6 +2192,35 @@ type Mutation {
   updateSimulatorAmbiance(id: ID!, ambiance: AmbianceInput!): String
   removeSimulatorAmbiance(id: ID!, ambianceId: ID!): String
   setStationAmbiance(stationSetID: ID!, stationName: String!, ambiance: String): String
+
+  """Macro: Fabrication: Add Recipe"""
+  addFabricationRecipe(simulatorId: ID!, recipe: FabricationRecipeInput!): String
+  updateFabricationRecipe(id: ID!, recipe: FabricationRecipeInput!): String
+  removeFabricationRecipe(id: ID!): String
+
+  """Macro: Fabrication: Reveal Secret Recipe"""
+  revealFabricationRecipe(simulatorId: ID!, recipe: String!): String
+
+  """Macro: Fabrication: Show Recipe Hint"""
+  showFabricationRecipeHint(simulatorId: ID!, recipe: String!): String
+
+  """Macro: Fabrication: Set Fabricator Status"""
+  setFabricationEnabled(simulatorId: ID!, enabled: Boolean!): String
+  setFabricationJobLimit(simulatorId: ID!, limit: Int!): String
+  startFabrication(
+    simulatorId: ID!
+
+    """
+    Omit to fabricate ship-wide (no designated fabrication rooms) or to
+    default to the first designated fabrication room.
+    """
+    roomId: ID
+    inputs: [FabricationRecipeItemInput!]!
+    count: Int
+  ): String
+  cancelFabricationJob(id: ID!): String
+  completeFabricationJob(id: ID!): String
+  clearFabricationJobs(simulatorId: ID!): String
   addAssetFolder(name: String!, folderPath: String!, fullPath: String!): String
   removeAssetFolder(fullPath: String!): String
   removeAssetObject(fullPath: String!): String
@@ -3407,6 +3538,9 @@ type Mutation {
   """Toggle the media viewer open/close for a client."""
   advancedTrainingToggleMediaViewer(clientId: ID!, open: Boolean!): String
 
+  """Toggle the tactical map training viewer open/close for a client."""
+  advancedTrainingToggleTacticalMapViewer(clientId: ID!, open: Boolean!): String
+
   """Toggle the chapter list open/close for a client."""
   advancedTrainingToggleChapterList(clientId: ID!, open: Boolean!): String
   entitySetAppearance(id: ID, color: String, meshType: MeshTypeEnum, modelAsset: String, materialMapAsset: String, ringMapAsset: String, cloudMapAsset: String, emissiveColor: String, emissiveIntensity: Float, scale: Float): String
@@ -4009,6 +4143,9 @@ type Query {
   _empty: String
   actions(stationId: ID, clientId: ID): Action
   aegis(simulatorId: ID!): Aegis
+  fabricationRecipes(simulatorId: ID!): [FabricationRecipe!]!
+  fabricationJobs(simulatorId: ID!): [FabricationJob!]!
+  fabricationSettings(simulatorId: ID!): FabricationSettings!
   asset(assetKey: String!): Asset
   assets(assetKeys: [String!]!): [Asset]
   assetFolders(name: String, names: [String]): [AssetFolder]
@@ -4307,6 +4444,7 @@ enum RoomRoles {
   damageTeam
   securityTeam
   medicalTeam
+  fabrication
 }
 
 type Rotation {
@@ -4893,6 +5031,9 @@ type Subscription {
   actionsUpdate(simulatorId: ID!, stationId: ID, clientId: ID): Action
   aegisUpdate(simulatorId: ID!): Aegis
   aegisPing(simulatorId: ID!): AegisPing
+  fabricationRecipesUpdate(simulatorId: ID!): [FabricationRecipe!]!
+  fabricationJobsUpdate(simulatorId: ID!): [FabricationJob!]!
+  fabricationSettingsUpdate(simulatorId: ID!): FabricationSettings!
   assetFolderChange: [AssetFolder!]!
   clientChanged(all: Boolean, clientId: ID, simulatorId: ID, stationName: String, flightId: ID): [Client]
   clientPing(clientId: ID!): Boolean
@@ -5132,6 +5273,8 @@ type TacticalItem {
   rotationMatch: Boolean
   thrusterControls: ThrusterControls
   keepOnScreen: Boolean
+  trainingGoal: Boolean
+  trainingGoalRadius: Float
 }
 
 input TacticalItemInput {
@@ -5157,6 +5300,8 @@ input TacticalItemInput {
   rotationMatch: Boolean
   thrusterControls: ThrusterControlsInput
   keepOnScreen: Boolean
+  trainingGoal: Boolean
+  trainingGoalRadius: Float
 }
 
 type TacticalLayer {
@@ -5204,6 +5349,7 @@ type TacticalMap {
   layers: [TacticalLayer]
   frozen: Boolean
   interval: Float
+  trainingClientId: ID
 }
 
 type TacticalPath {
@@ -5534,6 +5680,7 @@ type TimelineItem {
   args: String
   delay: Int
   noCancelOnReset: Boolean
+  repeatable: Boolean
 }
 
 input TimelineItemInput {
@@ -5544,6 +5691,7 @@ input TimelineItemInput {
   args: String
   delay: Int
   noCancelOnReset: Boolean
+  repeatable: Boolean
 }
 
 type TimelineStep {

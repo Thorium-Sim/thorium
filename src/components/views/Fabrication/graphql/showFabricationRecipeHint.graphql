@@ -1,0 +1,3 @@
+mutation ShowFabricationRecipeHint($simulatorId: ID!, $recipe: String!) {
+  showFabricationRecipeHint(simulatorId: $simulatorId, recipe: $recipe)
+}

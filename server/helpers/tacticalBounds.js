@@ -27,6 +27,20 @@ export function getFootprint(
   return {w, h};
 }
 
+// Returns the normalized center point of an item rendered at `position`. A stored
+// position anchors the icon's top-left corner (it is applied as a `translate`), so
+// anything that should read as "at the object" — the training goal ring, the goal
+// proximity check — has to add half the footprint.
+export function getItemCenter(
+  item,
+  position,
+  canvasWidth = CANONICAL_WIDTH,
+  canvasHeight = CANONICAL_HEIGHT,
+) {
+  const {w, h} = getFootprint(item, canvasWidth, canvasHeight);
+  return {x: position.x + w / 2, y: position.y + h / 2, z: position.z};
+}
+
 export function clampToBounds(position, footprint) {
   const maxX = Math.max(0, 1 - footprint.w);
   const maxY = Math.max(0, 1 - footprint.h);

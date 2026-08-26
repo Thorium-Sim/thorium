@@ -15,6 +15,8 @@ export interface AdvancedTrainingProgressParams {
   chapterListOpen?: boolean;
   inFlightHelp?: boolean;
   inFlightHelpCard?: string | null;
+  tacticalMapViewerOpen?: boolean;
+  activeTacticalMapId?: string | null;
 }
 
 export class AdvancedTrainingProgress {
@@ -39,6 +41,13 @@ export class AdvancedTrainingProgress {
   // help shown on a card without a dedicated in-flight chapter: navigating to a
   // different card auto-closes the help. Null means no card binding.
   inFlightHelpCard: string | null;
+  // Whether the tactical-map training viewer is currently open for this client.
+  tacticalMapViewerOpen: boolean;
+  // The id of this client's live, per-client tactical map instance (a
+  // duplicate of the active chapter's template map), or null when no
+  // tactical map exercise is active. See
+  // server/events/advancedTrainingTacticalMap.ts for provisioning/teardown.
+  activeTacticalMapId: string | null;
 
   constructor(params: AdvancedTrainingProgressParams = {}) {
     this.id = params.id || uuid.v4();
@@ -55,6 +64,8 @@ export class AdvancedTrainingProgress {
     this.chapterListOpen = params.chapterListOpen ?? false;
     this.inFlightHelp = params.inFlightHelp ?? false;
     this.inFlightHelpCard = params.inFlightHelpCard ?? null;
+    this.tacticalMapViewerOpen = params.tacticalMapViewerOpen ?? false;
+    this.activeTacticalMapId = params.activeTacticalMapId ?? null;
   }
 
   setActiveChapter(chapterId: string | null) {
@@ -109,6 +120,14 @@ export class AdvancedTrainingProgress {
     this.chapterListOpen = open;
   }
 
+  setTacticalMapViewerOpen(open: boolean) {
+    this.tacticalMapViewerOpen = open;
+  }
+
+  setActiveTacticalMapId(tacticalMapId: string | null) {
+    this.activeTacticalMapId = tacticalMapId;
+  }
+
   reset() {
     this.activeChapterId = null;
     this.activeSubChapterId = null;
@@ -120,5 +139,11 @@ export class AdvancedTrainingProgress {
     this.chapterListOpen = false;
     this.inFlightHelp = false;
     this.inFlightHelpCard = null;
+    this.tacticalMapViewerOpen = false;
+    // Callers that reset progress (fdResetTrainingProgress) must call
+    // teardownTrainingTacticalMap(progress) BEFORE this, so the live map
+    // instance is actually deleted from App.tacticalMaps — this just clears
+    // the dangling reference.
+    this.activeTacticalMapId = null;
   }
 }

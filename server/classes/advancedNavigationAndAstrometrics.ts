@@ -67,6 +67,7 @@ export default class AdvancedNavigationAndAstrometrics extends System {
         this.locationMap = {}
         this.resyncProbes();
         this.lastTransitIndex = 0;
+        this.normalizeCurrentLocation();
     }
 
 
@@ -152,7 +153,28 @@ export default class AdvancedNavigationAndAstrometrics extends System {
     }
 
 
+    // currentLocation is a non-null GraphQL field. If it ever goes missing or picks up NaN
+    // coordinates the whole system serializes to null and every advanced nav card throws while
+    // rendering, so repair it rather than letting it out the door. Also heals a snapshot that
+    // was saved while the state was bad.
+    normalizeCurrentLocation() {
+        const location = this.currentLocation as BasicCoordinate | undefined;
+        if (
+            location &&
+            Number.isFinite(location.x) &&
+            Number.isFinite(location.y)
+        ) {
+            return;
+        }
+        const fallback = this.currentFlightSet?.defaultStartingLocation;
+        this.currentLocation =
+            fallback && Number.isFinite(fallback.x) && Number.isFinite(fallback.y)
+                ? { ...fallback }
+                : { x: 0, y: 0 };
+    }
+
     executeLoopInterval() {
+        this.normalizeCurrentLocation();
         if (this.currentFlightPath && this.currentFlightSet) {
 
             const currentTimestamp = generateCurrentUnixTimestamp();
@@ -187,6 +209,12 @@ export default class AdvancedNavigationAndAstrometrics extends System {
             else if (this.engineStatus === EngineStatus.ENGAGED || this.engineStatus === EngineStatus.FULL_POWER || this.engineStatus === EngineStatus.FLUX) {
                 if (this.power.power < this.power.powerLevels[0] || this.damage.damaged) {
                     // shutdown the engine
+                    this.engineStatus = EngineStatus.STOPPED;
+                    return;
+                }
+                if (!this.flightPathCoords?.length || !this.totalEta) {
+                    // Under way with nothing to travel along - there is no position to
+                    // interpolate, so stop instead of walking off the end of the path.
                     this.engineStatus = EngineStatus.STOPPED;
                     return;
                 }
@@ -280,6 +308,9 @@ export default class AdvancedNavigationAndAstrometrics extends System {
     }
 
     updateFlightSet(flightSet: FlightSet) {
+        // Never stash a bad location into locationMap - that is what makes a corrupted
+        // location survive switching flight sets and coming back.
+        this.normalizeCurrentLocation();
         const oldFlightPaths = [...this.flightPaths];
         const locationMap = { ...this.locationMap };
         const setMap = { ...this.flightSetPathMap };
@@ -336,10 +367,32 @@ export default class AdvancedNavigationAndAstrometrics extends System {
         }
     }
     handleEmergencyStop() {
+        // Stopping during startup is an abort: the ship never left, and no flight path
+        // coordinates or ETA have been generated yet. Leaving the path in place would let
+        // the crew "resume" into a flight with an empty path, which corrupts currentLocation.
+        if (this.engineStatus === EngineStatus.STARTUP) {
+            this.currentFlightPath = undefined;
+            this.remainingStartupTime = undefined;
+            this.flightPathCoords = [];
+            this.remainingEta = 0;
+            this.totalEta = 0;
+            this.lastTransitIndex = 0;
+        }
         this.engineStatus = EngineStatus.STOPPED;
     }
     handleResumePath() {
-        this.engineStatus = EngineStatus.ENGAGED;
+        // Only a flight that actually got under way can be resumed - anything else has no
+        // path coordinates to move along.
+        if (!this.currentFlightPath || !this.flightPathCoords?.length || !this.totalEta) {
+            this.engineStatus = EngineStatus.STOPPED;
+            return;
+        }
+        if (this.currentFlightPath.speedOption?.requiresMaxEngines) {
+            this.engineStatus = EngineStatus.FULL_POWER;
+        }
+        else {
+            this.engineStatus = EngineStatus.ENGAGED;
+        }
     }
     handleShowFlightSet(show: boolean) {
         this.showFlightSet = show;

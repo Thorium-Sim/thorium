@@ -154,12 +154,16 @@ const Bottom: React.FC<BottomProps> = ({
   if (!tacticalMapId || !layerId) return null;
   const selectedLayer = tacticalMap?.layers?.find(l => l?.id === layerId);
   return (
-    <div style={{height: "100%"}}>
-      <Row style={{height: "100%"}}>
-        <Col sm={3} style={{height: "100%"}}>
-          <h3>{selectedLayer?.name}</h3>
+    <div className="tactical-bottom-panel">
+      <div className="tactical-bottom-panel__meta auto-scroll">
+        <h3 className="tactical-bottom-panel__layer-name">
+          {selectedLayer?.name}
+        </h3>
+        <FormGroup>
+          <Label>Layer Type</Label>
           <Input
             type="select"
+            bsSize="sm"
             value={selectedLayer?.type || ""}
             onChange={updateType}
           >
@@ -169,11 +173,16 @@ const Bottom: React.FC<BottomProps> = ({
             <option value="path">Paths</option>
             <option value="video">Video</option>
           </Input>
-          {selectedLayer?.type === "objects" && (
-            <Fragment>
-              <Button size="sm" color="primary" onClick={addLabel}>
+        </FormGroup>
+        {selectedLayer?.type === "objects" && (
+          <Fragment>
+            <FormGroup>
+              <Button size="sm" color="primary" block onClick={addLabel}>
                 Add Label
               </Button>
+            </FormGroup>
+            <FormGroup>
+              <Label>Placement Speed</Label>
               <Input
                 type="select"
                 bsSize="sm"
@@ -188,46 +197,46 @@ const Bottom: React.FC<BottomProps> = ({
                 <option value="0.02">Slow</option>
                 <option value="0.008">Very Slow</option>
               </Input>
-            </Fragment>
-          )}
-
-          <Fragment>
-            <Label>Opacity</Label>
-            <Input
-              type="range"
-              bsSize="sm"
-              min={0}
-              max={1}
-              step={0.01}
-              value={selectedLayer?.opacity || 1}
-              onChange={evt => updateLayer("opacity", evt.target.value)}
-            />
+            </FormGroup>
           </Fragment>
-        </Col>
-        <Col sm={9} style={{height: "100%"}}>
-          {(() => {
-            const config = `${selectedLayer?.type}Config` as
-              | "gridConfig"
-              | "imageConfig"
-              | "objectsConfig"
-              | "pathConfig"
-              | "videoConfig";
-            const Comp = configs[config];
-            return (
-              <Comp
-                tacticalMapId={tacticalMapId || ""}
-                layerId={layerId}
-                objectId={objectId}
-                client={client}
-                selectedLayer={selectedLayer}
-                updateLayer={updateLayer}
-                updateObject={updateObject}
-                removeObject={removeObject}
-              />
-            );
-          })()}
-        </Col>
-      </Row>
+        )}
+
+        <FormGroup style={{marginBottom: 0}}>
+          <Label>Layer Opacity</Label>
+          <Input
+            type="range"
+            bsSize="sm"
+            min={0}
+            max={1}
+            step={0.01}
+            value={selectedLayer?.opacity || 1}
+            onChange={evt => updateLayer("opacity", evt.target.value)}
+          />
+        </FormGroup>
+      </div>
+      <div className="tactical-bottom-panel__config auto-scroll">
+        {(() => {
+          const config = `${selectedLayer?.type}Config` as
+            | "gridConfig"
+            | "imageConfig"
+            | "objectsConfig"
+            | "pathConfig"
+            | "videoConfig";
+          const Comp = configs[config];
+          return (
+            <Comp
+              tacticalMapId={tacticalMapId || ""}
+              layerId={layerId}
+              objectId={objectId}
+              client={client}
+              selectedLayer={selectedLayer}
+              updateLayer={updateLayer}
+              updateObject={updateObject}
+              removeObject={removeObject}
+            />
+          );
+        })()}
+      </div>
     </div>
   );
 };

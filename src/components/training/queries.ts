@@ -16,6 +16,8 @@ export const ADVANCED_TRAINING_PROGRESS_FRAGMENT = gql`
     globalObservedEvents
     mediaViewerOpen
     chapterListOpen
+    tacticalMapViewerOpen
+    activeTacticalMapId
   }
 `;
 
@@ -68,6 +70,15 @@ export const TOGGLE_MEDIA_VIEWER = gql`
 export const TOGGLE_CHAPTER_LIST = gql`
   mutation AdvancedTrainingToggleChapterList($clientId: ID!, $open: Boolean!) {
     advancedTrainingToggleChapterList(clientId: $clientId, open: $open)
+  }
+`;
+
+export const TOGGLE_TACTICAL_MAP_VIEWER = gql`
+  mutation AdvancedTrainingToggleTacticalMapViewer(
+    $clientId: ID!
+    $open: Boolean!
+  ) {
+    advancedTrainingToggleTacticalMapViewer(clientId: $clientId, open: $open)
   }
 `;
 

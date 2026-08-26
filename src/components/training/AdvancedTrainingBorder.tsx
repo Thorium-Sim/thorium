@@ -3,7 +3,8 @@ import {createPortal} from "react-dom";
 import {useAdvancedTraining} from "./useAdvancedTraining";
 import AdvancedTrainingChapterList from "./AdvancedTrainingChapterList";
 import AdvancedTrainingMediaViewer from "./AdvancedTrainingMediaViewer";
-import {getActionLabel} from "./actionRegistry";
+import AdvancedTrainingTacticalMapViewer from "./AdvancedTrainingTacticalMapViewer";
+import {getActionLabel, TACTICAL_MAP_COMPLETE_EVENT} from "./actionRegistry";
 import "./AdvancedTrainingBorder.scss";
 
 interface AdvancedTrainingBorderProps {
@@ -53,7 +54,7 @@ function getAllSubChapters(config: any): any[] {
 // Selector matching every training-UI element so the document click capture
 // records crew interactions with the card, not clicks on training chrome.
 const TRAINING_UI_SELECTOR =
-  ".training-strip, .training-popover, .training-popover-backdrop, .advanced-training-toasts, .advanced-training-media-viewer";
+  ".training-strip, .training-popover, .training-popover-backdrop, .advanced-training-toasts, .advanced-training-media-viewer, .advanced-training-tactical-map-viewer";
 
 const AdvancedTrainingBorder: React.FC<AdvancedTrainingBorderProps> = ({
   clientId,
@@ -69,6 +70,7 @@ const AdvancedTrainingBorder: React.FC<AdvancedTrainingBorderProps> = ({
     setActiveChapter,
     toggleMediaViewer,
     toggleChapterList,
+    toggleTacticalMapViewer,
     stopTraining,
   } = useAdvancedTraining({
     clientId,
@@ -78,6 +80,10 @@ const AdvancedTrainingBorder: React.FC<AdvancedTrainingBorderProps> = ({
 
   const onVideoEnd = useCallback(
     () => recordAction("__videoComplete__"),
+    [recordAction],
+  );
+  const onTacticalMapComplete = useCallback(
+    () => recordAction(TACTICAL_MAP_COMPLETE_EVENT),
     [recordAction],
   );
 
@@ -172,6 +178,9 @@ const AdvancedTrainingBorder: React.FC<AdvancedTrainingBorderProps> = ({
   const completedActions = (activeSubChapter?.requiredActions || []).filter(
     (ra: any) => observedForSub.includes(ra.eventName),
   );
+  const tacticalMapNeedsDoneButton = (
+    activeSubChapter?.requiredActions || []
+  ).some((ra: any) => ra.eventName === TACTICAL_MAP_COMPLETE_EVENT);
 
   const allSubChapters = getAllSubChapters(config);
   const totalSubs = allSubChapters.length;
@@ -243,6 +252,22 @@ const AdvancedTrainingBorder: React.FC<AdvancedTrainingBorderProps> = ({
               stripPosition={
                 (config.stripPosition || "bottom") as "top" | "bottom"
               }
+            />
+          )}
+
+          {/* Tactical map training exercise popover */}
+          {progress.tacticalMapViewerOpen && progress.activeTacticalMapId && (
+            <AdvancedTrainingTacticalMapViewer
+              key={progress.activeTacticalMapId}
+              mapId={progress.activeTacticalMapId}
+              onClose={() => toggleTacticalMapViewer(false)}
+              size={activeChapter?.tacticalMapSize || "medium"}
+              position={activeChapter?.tacticalMapPosition || "bottom-right"}
+              stripPosition={
+                (config.stripPosition || "bottom") as "top" | "bottom"
+              }
+              showDoneButton={tacticalMapNeedsDoneButton}
+              onMarkComplete={onTacticalMapComplete}
             />
           )}
 
@@ -349,6 +374,25 @@ const AdvancedTrainingBorder: React.FC<AdvancedTrainingBorderProps> = ({
                   fill="currentColor"
                 >
                   <path d="M8 5v14l11-7z" />
+                </svg>
+              </button>
+              <button
+                className={`training-strip__btn ${
+                  progress.tacticalMapViewerOpen ? "active" : ""
+                }`}
+                onClick={() =>
+                  toggleTacticalMapViewer(!progress.tacticalMapViewerOpen)
+                }
+                title="Tactical Map"
+                disabled={!activeChapter?.tacticalMapId}
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  width="20"
+                  height="20"
+                  fill="currentColor"
+                >
+                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" />
                 </svg>
               </button>
               <button

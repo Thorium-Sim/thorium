@@ -6,5 +6,6 @@ subscription TacticalMapList {
       id
     }
     template
+    trainingClientId
   }
 }

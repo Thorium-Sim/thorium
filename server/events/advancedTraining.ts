@@ -9,8 +9,15 @@ import {
   advanceToNextChapter,
   activateChapter,
 } from "./advancedTrainingHelpers";
+import {
+  provisionTrainingTacticalMap,
+  teardownTrainingTacticalMap,
+} from "./advancedTrainingTacticalMap";
 // Registers the FD-intervention and UI-state listeners as a side effect.
 import "./advancedTrainingFdEvents";
+// Note: importing the named exports above already registers
+// advancedTrainingTacticalMap's advancedTrainingToggleTacticalMapViewer
+// listener as a side effect of module evaluation.
 
 // Ensure the array exists on App
 if (!App.advancedTrainingProgress) {
@@ -90,6 +97,13 @@ App.on("clientStartAdvancedTraining", ({clientId}: any) => {
 
   App.advancedTrainingProgress.push(progress);
 
+  if (startChapter) {
+    provisionTrainingTacticalMap(progress, startChapter, clientId);
+    progress.setTacticalMapViewerOpen(
+      !!(startChapter.autoOpenTacticalMap && startChapter.tacticalMapId),
+    );
+  }
+
   // Fire immediate auto-login before auto-complete so the clientLogin action is
   // tracked against the loginChapter while it's still the active chapter.
   // (If it fired after chaining, it would land on whatever chapter ended up active.)
@@ -123,6 +137,13 @@ App.on("clientStopAdvancedTraining", ({clientId}: any) => {
   const client = App.clients.find((c: any) => c.id === clientId);
   if (!client) {
     return;
+  }
+
+  const progress = (App.advancedTrainingProgress || []).find(
+    (p: any) => p.clientId === clientId,
+  );
+  if (progress) {
+    teardownTrainingTacticalMap(progress);
   }
 
   App.advancedTrainingProgress = (App.advancedTrainingProgress || []).filter(

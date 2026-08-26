@@ -1,0 +1,3 @@
+mutation CompleteFabricationJob($id: ID!) {
+  completeFabricationJob(id: $id)
+}

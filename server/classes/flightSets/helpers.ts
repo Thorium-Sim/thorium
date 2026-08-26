@@ -235,6 +235,12 @@ export const generateSpeedColor = (index: number) => {
 }
 
 export function getPositionAtTime(t: number, path: FullCoordinate[], totalTime: number): { x: number, y: number } {
+    // An empty path has no position to report. Returning path[-1] here would hand back
+    // undefined, which nulls out the non-null currentLocation field downstream.
+    if (!path?.length) {
+        return { x: 0, y: 0 };
+    }
+
     // Calculate the total distance of the path
     const segmentDistances: number[] = [];
     let totalDistance = 0;
@@ -283,6 +289,9 @@ export function getPositionAtTime(t: number, path: FullCoordinate[], totalTime: 
 
 
 export function getLastVisitedCoordinate(t: number, path: FullCoordinate[], T: number): BasicCoordinate {
+    if (!path?.length) {
+        return { x: 0, y: 0 };
+    }
     if (t <= 0) {
         return path[0];  // If time is zero or negative, return the starting point
     }

@@ -102,6 +102,10 @@ export type AdvancedTrainingChapter = {
   cardSwitchBehavior: Scalars['String'];
   mediaSize: Scalars['String'];
   mediaPosition: Scalars['String'];
+  tacticalMapId?: Maybe<Scalars['ID']>;
+  autoOpenTacticalMap: Scalars['Boolean'];
+  tacticalMapSize: Scalars['String'];
+  tacticalMapPosition: Scalars['String'];
   subChapters: Array<AdvancedTrainingSubChapter>;
 };
 
@@ -116,6 +120,10 @@ export type AdvancedTrainingChapterInput = {
   cardSwitchBehavior?: Maybe<Scalars['String']>;
   mediaSize?: Maybe<Scalars['String']>;
   mediaPosition?: Maybe<Scalars['String']>;
+  tacticalMapId?: Maybe<Scalars['ID']>;
+  autoOpenTacticalMap?: Maybe<Scalars['Boolean']>;
+  tacticalMapSize?: Maybe<Scalars['String']>;
+  tacticalMapPosition?: Maybe<Scalars['String']>;
   subChapters?: Maybe<Array<AdvancedTrainingSubChapterInput>>;
 };
 
@@ -154,6 +162,8 @@ export type AdvancedTrainingProgress = {
   globalObservedEvents: Array<Scalars['String']>;
   mediaViewerOpen: Scalars['Boolean'];
   chapterListOpen: Scalars['Boolean'];
+  tacticalMapViewerOpen: Scalars['Boolean'];
+  activeTacticalMapId?: Maybe<Scalars['ID']>;
 };
 
 export type AdvancedTrainingRequiredAction = {
@@ -1253,6 +1263,21 @@ export type Externals = {
   missions?: Maybe<Array<Maybe<ExternalMission>>>;
 };
 
+export enum Fabrication_Category {
+  Repair = 'repair',
+  Weapon = 'weapon',
+  Probe = 'probe',
+  Upgrade = 'upgrade',
+  Science = 'science',
+  Misc = 'misc'
+}
+
+export enum Fabrication_Job_Status {
+  Active = 'active',
+  Complete = 'complete',
+  Cancelled = 'cancelled'
+}
+
 export type FbAwardInput = {
   id: Scalars['ID'];
   Name: Scalars['String'];
@@ -1338,6 +1363,85 @@ export type FsProbeInput = {
   name: Scalars['String'];
   type: Scalars['String'];
   equipment: Array<FsEquipmentInput>;
+};
+
+export type FabricationJob = {
+  __typename?: 'FabricationJob';
+  id: Scalars['ID'];
+  simulatorId?: Maybe<Scalars['ID']>;
+  recipeId?: Maybe<Scalars['ID']>;
+  recipeName: Scalars['String'];
+  roomId?: Maybe<Scalars['ID']>;
+  room?: Maybe<Room>;
+  inputs: Array<FabricationRecipeItem>;
+  output: FabricationRecipeOutput;
+  duration: Scalars['Int'];
+  elapsed: Scalars['Float'];
+  progress: Scalars['Float'];
+  status: Fabrication_Job_Status;
+};
+
+export type FabricationRecipe = {
+  __typename?: 'FabricationRecipe';
+  id: Scalars['ID'];
+  simulatorId?: Maybe<Scalars['ID']>;
+  name: Scalars['String'];
+  description: Scalars['String'];
+  category: Fabrication_Category;
+  inputs: Array<FabricationRecipeItem>;
+  output: FabricationRecipeOutput;
+  duration: Scalars['Int'];
+  secret: Scalars['Boolean'];
+  discovered: Scalars['Boolean'];
+  hint: Scalars['String'];
+  hintVisible: Scalars['Boolean'];
+  nearMiss: Scalars['Boolean'];
+  nearMissCount: Scalars['Int'];
+};
+
+export type FabricationRecipeInput = {
+  name?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  category?: Maybe<Fabrication_Category>;
+  inputs?: Maybe<Array<FabricationRecipeItemInput>>;
+  output?: Maybe<FabricationRecipeOutputInput>;
+  duration?: Maybe<Scalars['Int']>;
+  secret?: Maybe<Scalars['Boolean']>;
+  hint?: Maybe<Scalars['String']>;
+  nearMiss?: Maybe<Scalars['Boolean']>;
+};
+
+export type FabricationRecipeItem = {
+  __typename?: 'FabricationRecipeItem';
+  name: Scalars['String'];
+  count: Scalars['Int'];
+  consumed: Scalars['Boolean'];
+};
+
+export type FabricationRecipeItemInput = {
+  name: Scalars['String'];
+  count: Scalars['Int'];
+  consumed?: Maybe<Scalars['Boolean']>;
+};
+
+export type FabricationRecipeOutput = {
+  __typename?: 'FabricationRecipeOutput';
+  name: Scalars['String'];
+  count: Scalars['Int'];
+  metadata?: Maybe<InventoryMetadata>;
+};
+
+export type FabricationRecipeOutputInput = {
+  name: Scalars['String'];
+  count: Scalars['Int'];
+  metadata?: Maybe<InventoryMetadataInput>;
+};
+
+export type FabricationSettings = {
+  __typename?: 'FabricationSettings';
+  id: Scalars['ID'];
+  enabled: Scalars['Boolean'];
+  jobLimit: Scalars['Int'];
 };
 
 export type Flight = {
@@ -1686,6 +1790,7 @@ export type InventoryMetadata = {
   image?: Maybe<Scalars['String']>;
   science?: Maybe<Scalars['Boolean']>;
   defense?: Maybe<Scalars['Boolean']>;
+  warheadType?: Maybe<Scalars['String']>;
 };
 
 export type InventoryMetadataInput = {
@@ -1695,6 +1800,7 @@ export type InventoryMetadataInput = {
   image?: Maybe<Scalars['String']>;
   science?: Maybe<Scalars['Boolean']>;
   defense?: Maybe<Scalars['Boolean']>;
+  warheadType?: Maybe<Scalars['String']>;
 };
 
 export type Isochip = {
@@ -1991,6 +2097,7 @@ export type MacroInput = {
   args?: Maybe<Scalars['String']>;
   delay?: Maybe<Scalars['Int']>;
   noCancelOnReset?: Maybe<Scalars['Boolean']>;
+  repeatable?: Maybe<Scalars['Boolean']>;
 };
 
 export type MapBorder = {
@@ -2238,6 +2345,21 @@ export type Mutation = {
   updateSimulatorAmbiance?: Maybe<Scalars['String']>;
   removeSimulatorAmbiance?: Maybe<Scalars['String']>;
   setStationAmbiance?: Maybe<Scalars['String']>;
+  /** Macro: Fabrication: Add Recipe */
+  addFabricationRecipe?: Maybe<Scalars['String']>;
+  updateFabricationRecipe?: Maybe<Scalars['String']>;
+  removeFabricationRecipe?: Maybe<Scalars['String']>;
+  /** Macro: Fabrication: Reveal Secret Recipe */
+  revealFabricationRecipe?: Maybe<Scalars['String']>;
+  /** Macro: Fabrication: Show Recipe Hint */
+  showFabricationRecipeHint?: Maybe<Scalars['String']>;
+  /** Macro: Fabrication: Set Fabricator Status */
+  setFabricationEnabled?: Maybe<Scalars['String']>;
+  setFabricationJobLimit?: Maybe<Scalars['String']>;
+  startFabrication?: Maybe<Scalars['String']>;
+  cancelFabricationJob?: Maybe<Scalars['String']>;
+  completeFabricationJob?: Maybe<Scalars['String']>;
+  clearFabricationJobs?: Maybe<Scalars['String']>;
   addAssetFolder?: Maybe<Scalars['String']>;
   removeAssetFolder?: Maybe<Scalars['String']>;
   removeAssetObject?: Maybe<Scalars['String']>;
@@ -3368,6 +3490,8 @@ export type Mutation = {
   fdResetTrainingProgress?: Maybe<Scalars['String']>;
   /** Toggle the media viewer open/close for a client. */
   advancedTrainingToggleMediaViewer?: Maybe<Scalars['String']>;
+  /** Toggle the tactical map training viewer open/close for a client. */
+  advancedTrainingToggleTacticalMapViewer?: Maybe<Scalars['String']>;
   /** Toggle the chapter list open/close for a client. */
   advancedTrainingToggleChapterList?: Maybe<Scalars['String']>;
   entitySetAppearance?: Maybe<Scalars['String']>;
@@ -3527,6 +3651,70 @@ export type MutationSetStationAmbianceArgs = {
   stationSetID: Scalars['ID'];
   stationName: Scalars['String'];
   ambiance?: Maybe<Scalars['String']>;
+};
+
+
+export type MutationAddFabricationRecipeArgs = {
+  simulatorId: Scalars['ID'];
+  recipe: FabricationRecipeInput;
+};
+
+
+export type MutationUpdateFabricationRecipeArgs = {
+  id: Scalars['ID'];
+  recipe: FabricationRecipeInput;
+};
+
+
+export type MutationRemoveFabricationRecipeArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationRevealFabricationRecipeArgs = {
+  simulatorId: Scalars['ID'];
+  recipe: Scalars['String'];
+};
+
+
+export type MutationShowFabricationRecipeHintArgs = {
+  simulatorId: Scalars['ID'];
+  recipe: Scalars['String'];
+};
+
+
+export type MutationSetFabricationEnabledArgs = {
+  simulatorId: Scalars['ID'];
+  enabled: Scalars['Boolean'];
+};
+
+
+export type MutationSetFabricationJobLimitArgs = {
+  simulatorId: Scalars['ID'];
+  limit: Scalars['Int'];
+};
+
+
+export type MutationStartFabricationArgs = {
+  simulatorId: Scalars['ID'];
+  roomId?: Maybe<Scalars['ID']>;
+  inputs: Array<FabricationRecipeItemInput>;
+  count?: Maybe<Scalars['Int']>;
+};
+
+
+export type MutationCancelFabricationJobArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationCompleteFabricationJobArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationClearFabricationJobsArgs = {
+  simulatorId: Scalars['ID'];
 };
 
 
@@ -8418,6 +8606,12 @@ export type MutationAdvancedTrainingToggleMediaViewerArgs = {
 };
 
 
+export type MutationAdvancedTrainingToggleTacticalMapViewerArgs = {
+  clientId: Scalars['ID'];
+  open: Scalars['Boolean'];
+};
+
+
 export type MutationAdvancedTrainingToggleChapterListArgs = {
   clientId: Scalars['ID'];
   open: Scalars['Boolean'];
@@ -9196,6 +9390,9 @@ export type Query = {
   _empty?: Maybe<Scalars['String']>;
   actions?: Maybe<Action>;
   aegis?: Maybe<Aegis>;
+  fabricationRecipes: Array<FabricationRecipe>;
+  fabricationJobs: Array<FabricationJob>;
+  fabricationSettings: FabricationSettings;
   asset?: Maybe<Asset>;
   assets?: Maybe<Array<Maybe<Asset>>>;
   assetFolders?: Maybe<Array<Maybe<AssetFolder>>>;
@@ -9343,6 +9540,21 @@ export type QueryActionsArgs = {
 
 
 export type QueryAegisArgs = {
+  simulatorId: Scalars['ID'];
+};
+
+
+export type QueryFabricationRecipesArgs = {
+  simulatorId: Scalars['ID'];
+};
+
+
+export type QueryFabricationJobsArgs = {
+  simulatorId: Scalars['ID'];
+};
+
+
+export type QueryFabricationSettingsArgs = {
   simulatorId: Scalars['ID'];
 };
 
@@ -10096,7 +10308,8 @@ export enum RoomRoles {
   Torpedo = 'torpedo',
   DamageTeam = 'damageTeam',
   SecurityTeam = 'securityTeam',
-  MedicalTeam = 'medicalTeam'
+  MedicalTeam = 'medicalTeam',
+  Fabrication = 'fabrication'
 }
 
 export type Rotation = {
@@ -10725,6 +10938,9 @@ export type Subscription = {
   actionsUpdate?: Maybe<Action>;
   aegisUpdate?: Maybe<Aegis>;
   aegisPing?: Maybe<AegisPing>;
+  fabricationRecipesUpdate: Array<FabricationRecipe>;
+  fabricationJobsUpdate: Array<FabricationJob>;
+  fabricationSettingsUpdate: FabricationSettings;
   assetFolderChange: Array<AssetFolder>;
   clientChanged?: Maybe<Array<Maybe<Client>>>;
   clientPing?: Maybe<Scalars['Boolean']>;
@@ -10858,6 +11074,21 @@ export type SubscriptionAegisUpdateArgs = {
 
 
 export type SubscriptionAegisPingArgs = {
+  simulatorId: Scalars['ID'];
+};
+
+
+export type SubscriptionFabricationRecipesUpdateArgs = {
+  simulatorId: Scalars['ID'];
+};
+
+
+export type SubscriptionFabricationJobsUpdateArgs = {
+  simulatorId: Scalars['ID'];
+};
+
+
+export type SubscriptionFabricationSettingsUpdateArgs = {
   simulatorId: Scalars['ID'];
 };
 
@@ -11567,6 +11798,8 @@ export type TacticalItem = {
   rotationMatch?: Maybe<Scalars['Boolean']>;
   thrusterControls?: Maybe<ThrusterControls>;
   keepOnScreen?: Maybe<Scalars['Boolean']>;
+  trainingGoal?: Maybe<Scalars['Boolean']>;
+  trainingGoalRadius?: Maybe<Scalars['Float']>;
 };
 
 export type TacticalItemInput = {
@@ -11592,6 +11825,8 @@ export type TacticalItemInput = {
   rotationMatch?: Maybe<Scalars['Boolean']>;
   thrusterControls?: Maybe<ThrusterControlsInput>;
   keepOnScreen?: Maybe<Scalars['Boolean']>;
+  trainingGoal?: Maybe<Scalars['Boolean']>;
+  trainingGoalRadius?: Maybe<Scalars['Float']>;
 };
 
 export type TacticalLayer = {
@@ -11641,6 +11876,7 @@ export type TacticalMap = {
   layers?: Maybe<Array<Maybe<TacticalLayer>>>;
   frozen?: Maybe<Scalars['Boolean']>;
   interval?: Maybe<Scalars['Float']>;
+  trainingClientId?: Maybe<Scalars['ID']>;
 };
 
 export type TacticalPath = {
@@ -11976,6 +12212,7 @@ export type TimelineItem = {
   args?: Maybe<Scalars['String']>;
   delay?: Maybe<Scalars['Int']>;
   noCancelOnReset?: Maybe<Scalars['Boolean']>;
+  repeatable?: Maybe<Scalars['Boolean']>;
 };
 
 export type TimelineItemInput = {
@@ -11986,6 +12223,7 @@ export type TimelineItemInput = {
   args?: Maybe<Scalars['String']>;
   delay?: Maybe<Scalars['Int']>;
   noCancelOnReset?: Maybe<Scalars['Boolean']>;
+  repeatable?: Maybe<Scalars['Boolean']>;
 };
 
 export type TimelineStep = {
@@ -12494,48 +12732,16 @@ export type SimulatorDataFragment = (
       & Pick<AdvancedTrainingConfig, 'enabled' | 'sequentialChapters' | 'stripPosition'>
       & { chapters: Array<(
         { __typename?: 'AdvancedTrainingChapter' }
-        & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'autoLogin' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
-        & { subChapters: Array<(
-          { __typename?: 'AdvancedTrainingSubChapter' }
-          & Pick<AdvancedTrainingSubChapter, 'id' | 'name'>
-          & { requiredActions: Array<(
-            { __typename?: 'AdvancedTrainingRequiredAction' }
-            & Pick<AdvancedTrainingRequiredAction, 'id' | 'eventName' | 'args'>
-          )> }
-        )> }
+        & AdvancedTrainingChapterFieldsFragment
       )>, inFlightChapters: Array<(
         { __typename?: 'AdvancedTrainingChapter' }
-        & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'autoLogin' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
-        & { subChapters: Array<(
-          { __typename?: 'AdvancedTrainingSubChapter' }
-          & Pick<AdvancedTrainingSubChapter, 'id' | 'name'>
-          & { requiredActions: Array<(
-            { __typename?: 'AdvancedTrainingRequiredAction' }
-            & Pick<AdvancedTrainingRequiredAction, 'id' | 'eventName' | 'args'>
-          )> }
-        )> }
+        & AdvancedTrainingChapterFieldsFragment
       )>, loginChapter?: Maybe<(
         { __typename?: 'AdvancedTrainingChapter' }
-        & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'autoLogin' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
-        & { subChapters: Array<(
-          { __typename?: 'AdvancedTrainingSubChapter' }
-          & Pick<AdvancedTrainingSubChapter, 'id' | 'name'>
-          & { requiredActions: Array<(
-            { __typename?: 'AdvancedTrainingRequiredAction' }
-            & Pick<AdvancedTrainingRequiredAction, 'id' | 'eventName' | 'args'>
-          )> }
-        )> }
+        & AdvancedTrainingChapterFieldsFragment
       )>, completionChapter?: Maybe<(
         { __typename?: 'AdvancedTrainingChapter' }
-        & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'autoLogin' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
-        & { subChapters: Array<(
-          { __typename?: 'AdvancedTrainingSubChapter' }
-          & Pick<AdvancedTrainingSubChapter, 'id' | 'name'>
-          & { requiredActions: Array<(
-            { __typename?: 'AdvancedTrainingRequiredAction' }
-            & Pick<AdvancedTrainingRequiredAction, 'id' | 'eventName' | 'args'>
-          )> }
-        )> }
+        & AdvancedTrainingChapterFieldsFragment
       )> }
     )> }
   )>> }
@@ -12609,6 +12815,19 @@ export type MissionMacrosQuery = (
     & { timeline: Array<(
       { __typename?: 'TimelineStep' }
       & Pick<TimelineStep, 'id' | 'name'>
+    )> }
+  )> }
+);
+
+export type AdvancedTrainingChapterFieldsFragment = (
+  { __typename?: 'AdvancedTrainingChapter' }
+  & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'autoLogin' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition' | 'tacticalMapId' | 'autoOpenTacticalMap' | 'tacticalMapSize' | 'tacticalMapPosition'>
+  & { subChapters: Array<(
+    { __typename?: 'AdvancedTrainingSubChapter' }
+    & Pick<AdvancedTrainingSubChapter, 'id' | 'name'>
+    & { requiredActions: Array<(
+      { __typename?: 'AdvancedTrainingRequiredAction' }
+      & Pick<AdvancedTrainingRequiredAction, 'id' | 'eventName' | 'args'>
     )> }
   )> }
 );
@@ -13600,6 +13819,268 @@ export type RemoveDocumentMutation = (
   & Pick<Mutation, 'documentRemove'>
 );
 
+export type AddFabricationRecipeMutationVariables = Exact<{
+  simulatorId: Scalars['ID'];
+  recipe: FabricationRecipeInput;
+}>;
+
+
+export type AddFabricationRecipeMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'addFabricationRecipe'>
+);
+
+export type CancelFabricationJobMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type CancelFabricationJobMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'cancelFabricationJob'>
+);
+
+export type ClearFabricationJobsMutationVariables = Exact<{
+  simulatorId: Scalars['ID'];
+}>;
+
+
+export type ClearFabricationJobsMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'clearFabricationJobs'>
+);
+
+export type CompleteFabricationJobMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type CompleteFabricationJobMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'completeFabricationJob'>
+);
+
+export type FabricationAddInventoryMutationVariables = Exact<{
+  simulatorId?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  metadata?: Maybe<InventoryMetadataInput>;
+  roomCount?: Maybe<Array<Maybe<RoomCountInput>> | Maybe<RoomCountInput>>;
+}>;
+
+
+export type FabricationAddInventoryMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'addInventory'>
+);
+
+export type FabricationInventoryQueryVariables = Exact<{
+  simulatorId: Scalars['ID'];
+}>;
+
+
+export type FabricationInventoryQuery = (
+  { __typename?: 'Query' }
+  & { decks?: Maybe<Array<Maybe<(
+    { __typename?: 'Deck' }
+    & Pick<Deck, 'id' | 'number'>
+    & { rooms?: Maybe<Array<Maybe<(
+      { __typename?: 'Room' }
+      & Pick<Room, 'id' | 'name' | 'roles'>
+    )>>> }
+  )>>>, inventory?: Maybe<Array<Maybe<(
+    { __typename?: 'InventoryItem' }
+    & Pick<InventoryItem, 'id' | 'name'>
+    & { metadata?: Maybe<(
+      { __typename?: 'InventoryMetadata' }
+      & Pick<InventoryMetadata, 'type' | 'description' | 'image'>
+    )>, roomCount?: Maybe<Array<Maybe<(
+      { __typename?: 'RoomCount' }
+      & Pick<RoomCount, 'count'>
+      & { room?: Maybe<(
+        { __typename?: 'Room' }
+        & Pick<Room, 'id'>
+      )> }
+    )>>> }
+  )>>> }
+);
+
+export type FabricationInventorySubSubscriptionVariables = Exact<{
+  simulatorId: Scalars['ID'];
+}>;
+
+
+export type FabricationInventorySubSubscription = (
+  { __typename?: 'Subscription' }
+  & { inventoryUpdate?: Maybe<Array<Maybe<(
+    { __typename?: 'InventoryItem' }
+    & Pick<InventoryItem, 'id' | 'name'>
+    & { metadata?: Maybe<(
+      { __typename?: 'InventoryMetadata' }
+      & Pick<InventoryMetadata, 'type' | 'description' | 'image'>
+    )>, roomCount?: Maybe<Array<Maybe<(
+      { __typename?: 'RoomCount' }
+      & Pick<RoomCount, 'count'>
+      & { room?: Maybe<(
+        { __typename?: 'Room' }
+        & Pick<Room, 'id'>
+      )> }
+    )>>> }
+  )>>> }
+);
+
+export type FabricationJobsSubscriptionVariables = Exact<{
+  simulatorId: Scalars['ID'];
+}>;
+
+
+export type FabricationJobsSubscription = (
+  { __typename?: 'Subscription' }
+  & { fabricationJobsUpdate: Array<(
+    { __typename?: 'FabricationJob' }
+    & Pick<FabricationJob, 'id' | 'simulatorId' | 'recipeId' | 'recipeName' | 'roomId' | 'duration' | 'elapsed' | 'progress' | 'status'>
+    & { room?: Maybe<(
+      { __typename?: 'Room' }
+      & Pick<Room, 'id' | 'name'>
+      & { deck?: Maybe<(
+        { __typename?: 'Deck' }
+        & Pick<Deck, 'id' | 'number'>
+      )> }
+    )>, inputs: Array<(
+      { __typename?: 'FabricationRecipeItem' }
+      & Pick<FabricationRecipeItem, 'name' | 'count'>
+    )>, output: (
+      { __typename?: 'FabricationRecipeOutput' }
+      & Pick<FabricationRecipeOutput, 'name' | 'count'>
+    ) }
+  )> }
+);
+
+export type FabricationRecipesSubscriptionVariables = Exact<{
+  simulatorId: Scalars['ID'];
+}>;
+
+
+export type FabricationRecipesSubscription = (
+  { __typename?: 'Subscription' }
+  & { fabricationRecipesUpdate: Array<(
+    { __typename?: 'FabricationRecipe' }
+    & Pick<FabricationRecipe, 'id' | 'simulatorId' | 'name' | 'description' | 'category' | 'duration' | 'secret' | 'discovered' | 'hint' | 'hintVisible' | 'nearMiss' | 'nearMissCount'>
+    & { inputs: Array<(
+      { __typename?: 'FabricationRecipeItem' }
+      & Pick<FabricationRecipeItem, 'name' | 'count' | 'consumed'>
+    )>, output: (
+      { __typename?: 'FabricationRecipeOutput' }
+      & Pick<FabricationRecipeOutput, 'name' | 'count'>
+      & { metadata?: Maybe<(
+        { __typename?: 'InventoryMetadata' }
+        & Pick<InventoryMetadata, 'type' | 'size' | 'description' | 'image' | 'science' | 'defense' | 'warheadType'>
+      )> }
+    ) }
+  )> }
+);
+
+export type FabricationSettingsSubscriptionVariables = Exact<{
+  simulatorId: Scalars['ID'];
+}>;
+
+
+export type FabricationSettingsSubscription = (
+  { __typename?: 'Subscription' }
+  & { fabricationSettingsUpdate: (
+    { __typename?: 'FabricationSettings' }
+    & Pick<FabricationSettings, 'id' | 'enabled' | 'jobLimit'>
+  ) }
+);
+
+export type FabricationUpdateRoomRolesMutationVariables = Exact<{
+  roomId: Scalars['ID'];
+  roles?: Maybe<Array<Maybe<RoomRoles>> | Maybe<RoomRoles>>;
+}>;
+
+
+export type FabricationUpdateRoomRolesMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'updateRoomRoles'>
+);
+
+export type RemoveFabricationRecipeMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type RemoveFabricationRecipeMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'removeFabricationRecipe'>
+);
+
+export type RevealFabricationRecipeMutationVariables = Exact<{
+  simulatorId: Scalars['ID'];
+  recipe: Scalars['String'];
+}>;
+
+
+export type RevealFabricationRecipeMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'revealFabricationRecipe'>
+);
+
+export type SetFabricationEnabledMutationVariables = Exact<{
+  simulatorId: Scalars['ID'];
+  enabled: Scalars['Boolean'];
+}>;
+
+
+export type SetFabricationEnabledMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'setFabricationEnabled'>
+);
+
+export type SetFabricationJobLimitMutationVariables = Exact<{
+  simulatorId: Scalars['ID'];
+  limit: Scalars['Int'];
+}>;
+
+
+export type SetFabricationJobLimitMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'setFabricationJobLimit'>
+);
+
+export type ShowFabricationRecipeHintMutationVariables = Exact<{
+  simulatorId: Scalars['ID'];
+  recipe: Scalars['String'];
+}>;
+
+
+export type ShowFabricationRecipeHintMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'showFabricationRecipeHint'>
+);
+
+export type StartFabricationMutationVariables = Exact<{
+  simulatorId: Scalars['ID'];
+  roomId?: Maybe<Scalars['ID']>;
+  inputs: Array<FabricationRecipeItemInput> | FabricationRecipeItemInput;
+  count?: Maybe<Scalars['Int']>;
+}>;
+
+
+export type StartFabricationMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'startFabrication'>
+);
+
+export type UpdateFabricationRecipeMutationVariables = Exact<{
+  id: Scalars['ID'];
+  recipe: FabricationRecipeInput;
+}>;
+
+
+export type UpdateFabricationRecipeMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'updateFabricationRecipe'>
+);
+
 export type HackingAllowHackingMutationVariables = Exact<{
   id: Scalars['ID'];
   state: Scalars['String'];
@@ -14342,7 +14823,7 @@ export type TacticalMapUpdateSubscription = (
       & Pick<TacticalLayer, 'id' | 'name' | 'type' | 'image' | 'color' | 'labels' | 'gridCols' | 'gridRows' | 'advance' | 'asset' | 'autoplay' | 'loop' | 'playbackSpeed' | 'opacity' | 'mute'>
       & { items?: Maybe<Array<Maybe<(
         { __typename?: 'TacticalItem' }
-        & Pick<TacticalItem, 'id' | 'layerId' | 'font' | 'label' | 'fontSize' | 'fontColor' | 'icon' | 'size' | 'iconWidth' | 'iconHeight' | 'keepOnScreen' | 'speed' | 'rotation' | 'opacity' | 'flash' | 'ijkl' | 'wasd' | 'thrusters' | 'rotationMatch'>
+        & Pick<TacticalItem, 'id' | 'layerId' | 'font' | 'label' | 'fontSize' | 'fontColor' | 'icon' | 'size' | 'iconWidth' | 'iconHeight' | 'keepOnScreen' | 'trainingGoal' | 'trainingGoalRadius' | 'speed' | 'rotation' | 'opacity' | 'flash' | 'ijkl' | 'wasd' | 'thrusters' | 'rotationMatch'>
         & { velocity?: Maybe<(
           { __typename?: 'Coordinates' }
           & Pick<Coordinates, 'x' | 'y'>
@@ -14384,7 +14865,7 @@ export type TacticalMapListSubscription = (
   { __typename?: 'Subscription' }
   & { tacticalMapsUpdate?: Maybe<Array<Maybe<(
     { __typename?: 'TacticalMap' }
-    & Pick<TacticalMap, 'id' | 'name' | 'template'>
+    & Pick<TacticalMap, 'id' | 'name' | 'template' | 'trainingClientId'>
     & { flight?: Maybe<(
       { __typename?: 'Flight' }
       & Pick<Flight, 'id'>
@@ -14590,7 +15071,7 @@ export type TimelineMissionSubscription = (
       & Pick<TimelineStep, 'id' | 'name' | 'order' | 'description'>
       & { timelineItems: Array<(
         { __typename?: 'TimelineItem' }
-        & Pick<TimelineItem, 'id' | 'name' | 'type' | 'args' | 'event' | 'delay'>
+        & Pick<TimelineItem, 'id' | 'name' | 'type' | 'args' | 'event' | 'delay' | 'repeatable'>
       )> }
     )> }
   )> }
@@ -15557,7 +16038,7 @@ export type MissionSubscriptionSubscription = (
       & Pick<TimelineStep, 'id' | 'name' | 'description' | 'order'>
       & { timelineItems: Array<(
         { __typename?: 'TimelineItem' }
-        & Pick<TimelineItem, 'id' | 'name' | 'type' | 'event' | 'args' | 'delay' | 'needsConfig' | 'noCancelOnReset'>
+        & Pick<TimelineItem, 'id' | 'name' | 'type' | 'event' | 'args' | 'delay' | 'needsConfig' | 'noCancelOnReset' | 'repeatable'>
       )> }
     )> }
   )> }
@@ -16180,48 +16661,16 @@ export type StationSetConfigSubscription = (
         & Pick<AdvancedTrainingConfig, 'enabled' | 'sequentialChapters' | 'stripPosition'>
         & { chapters: Array<(
           { __typename?: 'AdvancedTrainingChapter' }
-          & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'autoLogin' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
-          & { subChapters: Array<(
-            { __typename?: 'AdvancedTrainingSubChapter' }
-            & Pick<AdvancedTrainingSubChapter, 'id' | 'name'>
-            & { requiredActions: Array<(
-              { __typename?: 'AdvancedTrainingRequiredAction' }
-              & Pick<AdvancedTrainingRequiredAction, 'id' | 'eventName' | 'args'>
-            )> }
-          )> }
+          & AdvancedTrainingChapterFieldsFragment
         )>, inFlightChapters: Array<(
           { __typename?: 'AdvancedTrainingChapter' }
-          & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'autoLogin' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
-          & { subChapters: Array<(
-            { __typename?: 'AdvancedTrainingSubChapter' }
-            & Pick<AdvancedTrainingSubChapter, 'id' | 'name'>
-            & { requiredActions: Array<(
-              { __typename?: 'AdvancedTrainingRequiredAction' }
-              & Pick<AdvancedTrainingRequiredAction, 'id' | 'eventName' | 'args'>
-            )> }
-          )> }
+          & AdvancedTrainingChapterFieldsFragment
         )>, loginChapter?: Maybe<(
           { __typename?: 'AdvancedTrainingChapter' }
-          & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'autoLogin' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
-          & { subChapters: Array<(
-            { __typename?: 'AdvancedTrainingSubChapter' }
-            & Pick<AdvancedTrainingSubChapter, 'id' | 'name'>
-            & { requiredActions: Array<(
-              { __typename?: 'AdvancedTrainingRequiredAction' }
-              & Pick<AdvancedTrainingRequiredAction, 'id' | 'eventName' | 'args'>
-            )> }
-          )> }
+          & AdvancedTrainingChapterFieldsFragment
         )>, completionChapter?: Maybe<(
           { __typename?: 'AdvancedTrainingChapter' }
-          & Pick<AdvancedTrainingChapter, 'id' | 'name' | 'cardComponent' | 'mediaAsset' | 'autoOpenMedia' | 'autoAdvance' | 'autoLogin' | 'cardSwitchBehavior' | 'mediaSize' | 'mediaPosition'>
-          & { subChapters: Array<(
-            { __typename?: 'AdvancedTrainingSubChapter' }
-            & Pick<AdvancedTrainingSubChapter, 'id' | 'name'>
-            & { requiredActions: Array<(
-              { __typename?: 'AdvancedTrainingRequiredAction' }
-              & Pick<AdvancedTrainingRequiredAction, 'id' | 'eventName' | 'args'>
-            )> }
-          )> }
+          & AdvancedTrainingChapterFieldsFragment
         )> }
       )> }
     )> }
@@ -17017,6 +17466,33 @@ export const ClientDataFragmentDoc = gql`
   soundPlayer
 }
     `;
+export const AdvancedTrainingChapterFieldsFragmentDoc = gql`
+    fragment AdvancedTrainingChapterFields on AdvancedTrainingChapter {
+  id
+  name
+  cardComponent
+  mediaAsset
+  autoOpenMedia
+  autoAdvance
+  autoLogin
+  cardSwitchBehavior
+  mediaSize
+  mediaPosition
+  tacticalMapId
+  autoOpenTacticalMap
+  tacticalMapSize
+  tacticalMapPosition
+  subChapters {
+    id
+    name
+    requiredActions {
+      id
+      eventName
+      args
+    }
+  }
+}
+    `;
 export const SimulatorDataFragmentDoc = gql`
     fragment SimulatorData on Simulator {
   id
@@ -17060,93 +17536,21 @@ export const SimulatorDataFragmentDoc = gql`
       sequentialChapters
       stripPosition
       chapters {
-        id
-        name
-        cardComponent
-        mediaAsset
-        autoOpenMedia
-        autoAdvance
-        autoLogin
-        cardSwitchBehavior
-        mediaSize
-        mediaPosition
-        subChapters {
-          id
-          name
-          requiredActions {
-            id
-            eventName
-            args
-          }
-        }
+        ...AdvancedTrainingChapterFields
       }
       inFlightChapters {
-        id
-        name
-        cardComponent
-        mediaAsset
-        autoOpenMedia
-        autoAdvance
-        autoLogin
-        cardSwitchBehavior
-        mediaSize
-        mediaPosition
-        subChapters {
-          id
-          name
-          requiredActions {
-            id
-            eventName
-            args
-          }
-        }
+        ...AdvancedTrainingChapterFields
       }
       loginChapter {
-        id
-        name
-        cardComponent
-        mediaAsset
-        autoOpenMedia
-        autoAdvance
-        autoLogin
-        cardSwitchBehavior
-        mediaSize
-        mediaPosition
-        subChapters {
-          id
-          name
-          requiredActions {
-            id
-            eventName
-            args
-          }
-        }
+        ...AdvancedTrainingChapterFields
       }
       completionChapter {
-        id
-        name
-        cardComponent
-        mediaAsset
-        autoOpenMedia
-        autoAdvance
-        autoLogin
-        cardSwitchBehavior
-        mediaSize
-        mediaPosition
-        subChapters {
-          id
-          name
-          requiredActions {
-            id
-            eventName
-            args
-          }
-        }
+        ...AdvancedTrainingChapterFields
       }
     }
   }
 }
-    `;
+    ${AdvancedTrainingChapterFieldsFragmentDoc}`;
 export const CountermeasureModuleFragmentDoc = gql`
     fragment CountermeasureModule on CountermeasureModule {
   id
@@ -18511,6 +18915,273 @@ export function useRemoveDocumentMutation(baseOptions?: ApolloReactHooks.Mutatio
         return ApolloReactHooks.useMutation<RemoveDocumentMutation, RemoveDocumentMutationVariables>(RemoveDocumentDocument, baseOptions);
       }
 export type RemoveDocumentMutationHookResult = ReturnType<typeof useRemoveDocumentMutation>;
+export const AddFabricationRecipeDocument = gql`
+    mutation AddFabricationRecipe($simulatorId: ID!, $recipe: FabricationRecipeInput!) {
+  addFabricationRecipe(simulatorId: $simulatorId, recipe: $recipe)
+}
+    `;
+export function useAddFabricationRecipeMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AddFabricationRecipeMutation, AddFabricationRecipeMutationVariables>) {
+        return ApolloReactHooks.useMutation<AddFabricationRecipeMutation, AddFabricationRecipeMutationVariables>(AddFabricationRecipeDocument, baseOptions);
+      }
+export type AddFabricationRecipeMutationHookResult = ReturnType<typeof useAddFabricationRecipeMutation>;
+export const CancelFabricationJobDocument = gql`
+    mutation CancelFabricationJob($id: ID!) {
+  cancelFabricationJob(id: $id)
+}
+    `;
+export function useCancelFabricationJobMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CancelFabricationJobMutation, CancelFabricationJobMutationVariables>) {
+        return ApolloReactHooks.useMutation<CancelFabricationJobMutation, CancelFabricationJobMutationVariables>(CancelFabricationJobDocument, baseOptions);
+      }
+export type CancelFabricationJobMutationHookResult = ReturnType<typeof useCancelFabricationJobMutation>;
+export const ClearFabricationJobsDocument = gql`
+    mutation ClearFabricationJobs($simulatorId: ID!) {
+  clearFabricationJobs(simulatorId: $simulatorId)
+}
+    `;
+export function useClearFabricationJobsMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ClearFabricationJobsMutation, ClearFabricationJobsMutationVariables>) {
+        return ApolloReactHooks.useMutation<ClearFabricationJobsMutation, ClearFabricationJobsMutationVariables>(ClearFabricationJobsDocument, baseOptions);
+      }
+export type ClearFabricationJobsMutationHookResult = ReturnType<typeof useClearFabricationJobsMutation>;
+export const CompleteFabricationJobDocument = gql`
+    mutation CompleteFabricationJob($id: ID!) {
+  completeFabricationJob(id: $id)
+}
+    `;
+export function useCompleteFabricationJobMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CompleteFabricationJobMutation, CompleteFabricationJobMutationVariables>) {
+        return ApolloReactHooks.useMutation<CompleteFabricationJobMutation, CompleteFabricationJobMutationVariables>(CompleteFabricationJobDocument, baseOptions);
+      }
+export type CompleteFabricationJobMutationHookResult = ReturnType<typeof useCompleteFabricationJobMutation>;
+export const FabricationAddInventoryDocument = gql`
+    mutation FabricationAddInventory($simulatorId: ID, $name: String, $metadata: InventoryMetadataInput, $roomCount: [RoomCountInput]) {
+  addInventory(
+    inventory: {simulatorId: $simulatorId, name: $name, metadata: $metadata, roomCount: $roomCount}
+  )
+}
+    `;
+export function useFabricationAddInventoryMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<FabricationAddInventoryMutation, FabricationAddInventoryMutationVariables>) {
+        return ApolloReactHooks.useMutation<FabricationAddInventoryMutation, FabricationAddInventoryMutationVariables>(FabricationAddInventoryDocument, baseOptions);
+      }
+export type FabricationAddInventoryMutationHookResult = ReturnType<typeof useFabricationAddInventoryMutation>;
+export const FabricationInventoryDocument = gql`
+    query FabricationInventory($simulatorId: ID!) {
+  decks(simulatorId: $simulatorId) {
+    id
+    number
+    rooms {
+      id
+      name
+      roles
+    }
+  }
+  inventory(simulatorId: $simulatorId) {
+    id
+    name
+    metadata {
+      type
+      description
+      image
+    }
+    roomCount {
+      room {
+        id
+      }
+      count
+    }
+  }
+}
+    `;
+export function useFabricationInventoryQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<FabricationInventoryQuery, FabricationInventoryQueryVariables>) {
+        return ApolloReactHooks.useQuery<FabricationInventoryQuery, FabricationInventoryQueryVariables>(FabricationInventoryDocument, baseOptions);
+      }
+export type FabricationInventoryQueryHookResult = ReturnType<typeof useFabricationInventoryQuery>;
+export const FabricationInventorySubDocument = gql`
+    subscription FabricationInventorySub($simulatorId: ID!) {
+  inventoryUpdate(simulatorId: $simulatorId) {
+    id
+    name
+    metadata {
+      type
+      description
+      image
+    }
+    roomCount {
+      room {
+        id
+      }
+      count
+    }
+  }
+}
+    `;
+export function useFabricationInventorySubSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<FabricationInventorySubSubscription, FabricationInventorySubSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<FabricationInventorySubSubscription, FabricationInventorySubSubscriptionVariables>(FabricationInventorySubDocument, baseOptions);
+      }
+export type FabricationInventorySubSubscriptionHookResult = ReturnType<typeof useFabricationInventorySubSubscription>;
+export const FabricationJobsDocument = gql`
+    subscription FabricationJobs($simulatorId: ID!) {
+  fabricationJobsUpdate(simulatorId: $simulatorId) {
+    id
+    simulatorId
+    recipeId
+    recipeName
+    roomId
+    room {
+      id
+      name
+      deck {
+        id
+        number
+      }
+    }
+    inputs {
+      name
+      count
+    }
+    output {
+      name
+      count
+    }
+    duration
+    elapsed
+    progress
+    status
+  }
+}
+    `;
+export function useFabricationJobsSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<FabricationJobsSubscription, FabricationJobsSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<FabricationJobsSubscription, FabricationJobsSubscriptionVariables>(FabricationJobsDocument, baseOptions);
+      }
+export type FabricationJobsSubscriptionHookResult = ReturnType<typeof useFabricationJobsSubscription>;
+export const FabricationRecipesDocument = gql`
+    subscription FabricationRecipes($simulatorId: ID!) {
+  fabricationRecipesUpdate(simulatorId: $simulatorId) {
+    id
+    simulatorId
+    name
+    description
+    category
+    inputs {
+      name
+      count
+      consumed
+    }
+    output {
+      name
+      count
+      metadata {
+        type
+        size
+        description
+        image
+        science
+        defense
+        warheadType
+      }
+    }
+    duration
+    secret
+    discovered
+    hint
+    hintVisible
+    nearMiss
+    nearMissCount
+  }
+}
+    `;
+export function useFabricationRecipesSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<FabricationRecipesSubscription, FabricationRecipesSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<FabricationRecipesSubscription, FabricationRecipesSubscriptionVariables>(FabricationRecipesDocument, baseOptions);
+      }
+export type FabricationRecipesSubscriptionHookResult = ReturnType<typeof useFabricationRecipesSubscription>;
+export const FabricationSettingsDocument = gql`
+    subscription FabricationSettings($simulatorId: ID!) {
+  fabricationSettingsUpdate(simulatorId: $simulatorId) {
+    id
+    enabled
+    jobLimit
+  }
+}
+    `;
+export function useFabricationSettingsSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<FabricationSettingsSubscription, FabricationSettingsSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<FabricationSettingsSubscription, FabricationSettingsSubscriptionVariables>(FabricationSettingsDocument, baseOptions);
+      }
+export type FabricationSettingsSubscriptionHookResult = ReturnType<typeof useFabricationSettingsSubscription>;
+export const FabricationUpdateRoomRolesDocument = gql`
+    mutation FabricationUpdateRoomRoles($roomId: ID!, $roles: [RoomRoles]) {
+  updateRoomRoles(roomId: $roomId, roles: $roles)
+}
+    `;
+export function useFabricationUpdateRoomRolesMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<FabricationUpdateRoomRolesMutation, FabricationUpdateRoomRolesMutationVariables>) {
+        return ApolloReactHooks.useMutation<FabricationUpdateRoomRolesMutation, FabricationUpdateRoomRolesMutationVariables>(FabricationUpdateRoomRolesDocument, baseOptions);
+      }
+export type FabricationUpdateRoomRolesMutationHookResult = ReturnType<typeof useFabricationUpdateRoomRolesMutation>;
+export const RemoveFabricationRecipeDocument = gql`
+    mutation RemoveFabricationRecipe($id: ID!) {
+  removeFabricationRecipe(id: $id)
+}
+    `;
+export function useRemoveFabricationRecipeMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<RemoveFabricationRecipeMutation, RemoveFabricationRecipeMutationVariables>) {
+        return ApolloReactHooks.useMutation<RemoveFabricationRecipeMutation, RemoveFabricationRecipeMutationVariables>(RemoveFabricationRecipeDocument, baseOptions);
+      }
+export type RemoveFabricationRecipeMutationHookResult = ReturnType<typeof useRemoveFabricationRecipeMutation>;
+export const RevealFabricationRecipeDocument = gql`
+    mutation RevealFabricationRecipe($simulatorId: ID!, $recipe: String!) {
+  revealFabricationRecipe(simulatorId: $simulatorId, recipe: $recipe)
+}
+    `;
+export function useRevealFabricationRecipeMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<RevealFabricationRecipeMutation, RevealFabricationRecipeMutationVariables>) {
+        return ApolloReactHooks.useMutation<RevealFabricationRecipeMutation, RevealFabricationRecipeMutationVariables>(RevealFabricationRecipeDocument, baseOptions);
+      }
+export type RevealFabricationRecipeMutationHookResult = ReturnType<typeof useRevealFabricationRecipeMutation>;
+export const SetFabricationEnabledDocument = gql`
+    mutation SetFabricationEnabled($simulatorId: ID!, $enabled: Boolean!) {
+  setFabricationEnabled(simulatorId: $simulatorId, enabled: $enabled)
+}
+    `;
+export function useSetFabricationEnabledMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SetFabricationEnabledMutation, SetFabricationEnabledMutationVariables>) {
+        return ApolloReactHooks.useMutation<SetFabricationEnabledMutation, SetFabricationEnabledMutationVariables>(SetFabricationEnabledDocument, baseOptions);
+      }
+export type SetFabricationEnabledMutationHookResult = ReturnType<typeof useSetFabricationEnabledMutation>;
+export const SetFabricationJobLimitDocument = gql`
+    mutation SetFabricationJobLimit($simulatorId: ID!, $limit: Int!) {
+  setFabricationJobLimit(simulatorId: $simulatorId, limit: $limit)
+}
+    `;
+export function useSetFabricationJobLimitMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SetFabricationJobLimitMutation, SetFabricationJobLimitMutationVariables>) {
+        return ApolloReactHooks.useMutation<SetFabricationJobLimitMutation, SetFabricationJobLimitMutationVariables>(SetFabricationJobLimitDocument, baseOptions);
+      }
+export type SetFabricationJobLimitMutationHookResult = ReturnType<typeof useSetFabricationJobLimitMutation>;
+export const ShowFabricationRecipeHintDocument = gql`
+    mutation ShowFabricationRecipeHint($simulatorId: ID!, $recipe: String!) {
+  showFabricationRecipeHint(simulatorId: $simulatorId, recipe: $recipe)
+}
+    `;
+export function useShowFabricationRecipeHintMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ShowFabricationRecipeHintMutation, ShowFabricationRecipeHintMutationVariables>) {
+        return ApolloReactHooks.useMutation<ShowFabricationRecipeHintMutation, ShowFabricationRecipeHintMutationVariables>(ShowFabricationRecipeHintDocument, baseOptions);
+      }
+export type ShowFabricationRecipeHintMutationHookResult = ReturnType<typeof useShowFabricationRecipeHintMutation>;
+export const StartFabricationDocument = gql`
+    mutation StartFabrication($simulatorId: ID!, $roomId: ID, $inputs: [FabricationRecipeItemInput!]!, $count: Int) {
+  startFabrication(
+    simulatorId: $simulatorId
+    roomId: $roomId
+    inputs: $inputs
+    count: $count
+  )
+}
+    `;
+export function useStartFabricationMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<StartFabricationMutation, StartFabricationMutationVariables>) {
+        return ApolloReactHooks.useMutation<StartFabricationMutation, StartFabricationMutationVariables>(StartFabricationDocument, baseOptions);
+      }
+export type StartFabricationMutationHookResult = ReturnType<typeof useStartFabricationMutation>;
+export const UpdateFabricationRecipeDocument = gql`
+    mutation UpdateFabricationRecipe($id: ID!, $recipe: FabricationRecipeInput!) {
+  updateFabricationRecipe(id: $id, recipe: $recipe)
+}
+    `;
+export function useUpdateFabricationRecipeMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateFabricationRecipeMutation, UpdateFabricationRecipeMutationVariables>) {
+        return ApolloReactHooks.useMutation<UpdateFabricationRecipeMutation, UpdateFabricationRecipeMutationVariables>(UpdateFabricationRecipeDocument, baseOptions);
+      }
+export type UpdateFabricationRecipeMutationHookResult = ReturnType<typeof useUpdateFabricationRecipeMutation>;
 export const HackingAllowHackingDocument = gql`
     mutation HackingAllowHacking($id: ID!, $state: String!) {
   computerCoreSetHackingState(id: $id, state: $state)
@@ -19228,6 +19899,8 @@ export const TacticalMapUpdateDocument = gql`
         iconWidth
         iconHeight
         keepOnScreen
+        trainingGoal
+        trainingGoalRadius
         speed
         velocity {
           x
@@ -19312,6 +19985,7 @@ export const TacticalMapListDocument = gql`
       id
     }
     template
+    trainingClientId
   }
 }
     `;
@@ -19514,6 +20188,7 @@ export const TimelineMissionDocument = gql`
         args
         event
         delay
+        repeatable
       }
     }
   }
@@ -20543,6 +21218,7 @@ export const MissionSubscriptionDocument = gql`
         delay
         needsConfig
         noCancelOnReset
+        repeatable
       }
     }
   }
@@ -21268,94 +21944,22 @@ export const StationSetConfigDocument = gql`
         sequentialChapters
         stripPosition
         chapters {
-          id
-          name
-          cardComponent
-          mediaAsset
-          autoOpenMedia
-          autoAdvance
-          autoLogin
-          cardSwitchBehavior
-          mediaSize
-          mediaPosition
-          subChapters {
-            id
-            name
-            requiredActions {
-              id
-              eventName
-              args
-            }
-          }
+          ...AdvancedTrainingChapterFields
         }
         inFlightChapters {
-          id
-          name
-          cardComponent
-          mediaAsset
-          autoOpenMedia
-          autoAdvance
-          autoLogin
-          cardSwitchBehavior
-          mediaSize
-          mediaPosition
-          subChapters {
-            id
-            name
-            requiredActions {
-              id
-              eventName
-              args
-            }
-          }
+          ...AdvancedTrainingChapterFields
         }
         loginChapter {
-          id
-          name
-          cardComponent
-          mediaAsset
-          autoOpenMedia
-          autoAdvance
-          autoLogin
-          cardSwitchBehavior
-          mediaSize
-          mediaPosition
-          subChapters {
-            id
-            name
-            requiredActions {
-              id
-              eventName
-              args
-            }
-          }
+          ...AdvancedTrainingChapterFields
         }
         completionChapter {
-          id
-          name
-          cardComponent
-          mediaAsset
-          autoOpenMedia
-          autoAdvance
-          autoLogin
-          cardSwitchBehavior
-          mediaSize
-          mediaPosition
-          subChapters {
-            id
-            name
-            requiredActions {
-              id
-              eventName
-              args
-            }
-          }
+          ...AdvancedTrainingChapterFields
         }
       }
     }
   }
 }
-    `;
+    ${AdvancedTrainingChapterFieldsFragmentDoc}`;
 export function useStationSetConfigSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<StationSetConfigSubscription, StationSetConfigSubscriptionVariables>) {
         return ApolloReactHooks.useSubscription<StationSetConfigSubscription, StationSetConfigSubscriptionVariables>(StationSetConfigDocument, baseOptions);
       }

@@ -1,0 +1,13 @@
+mutation StartFabrication(
+  $simulatorId: ID!
+  $roomId: ID
+  $inputs: [FabricationRecipeItemInput!]!
+  $count: Int
+) {
+  startFabrication(
+    simulatorId: $simulatorId
+    roomId: $roomId
+    inputs: $inputs
+    count: $count
+  )
+}

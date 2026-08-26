@@ -50,8 +50,11 @@
   }
   .bottom-bar {
     grid-area: bottom;
-    align-self: end;
     height: 100%;
+    // The row above is a fixed track height; clip to it and let the
+    // scrollable panes inside .tactical-bottom-panel handle reachability
+    // for whichever layer type's config outgrows the available space.
+    overflow: hidden;
   }
   .layer-list,
   .saved-list {
@@ -78,6 +81,136 @@
     }
   }
 }
+// Bottom editor panel: a fixed-height strip split into a narrow layer-meta
+// rail and a config pane. Both scroll independently so a layer type with
+// many fields (objects, in particular) never pushes controls off-screen
+// with no way to reach them.
+.tactical-bottom-panel {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+
+  &__meta {
+    flex: 0 0 200px;
+    width: 200px;
+    min-height: 0;
+    padding: 10px 14px;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  &__layer-name {
+    margin: 0 0 10px;
+    font-size: 1.1rem;
+    overflow-wrap: break-word;
+  }
+
+  &__config {
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 0;
+    padding: 10px 14px;
+  }
+}
+
+// A compact "inspector" grid of labeled sections, used for the per-object
+// and per-thruster config panels. Sections wrap to the available width so
+// the panel degrades gracefully instead of forcing four rigid columns.
+.tactical-inspector {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 10px;
+  align-items: start;
+}
+
+.tactical-inspector-section {
+  min-width: 0;
+  padding: 10px 12px 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+
+  h4 {
+    margin: 0 0 8px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .form-group:last-child {
+    margin-bottom: 0;
+  }
+
+  &--actions .btn-group-vertical .btn {
+    width: 100%;
+  }
+}
+
+.tactical-inspector-hint {
+  display: block;
+  margin-top: 2px;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.75rem;
+}
+
+.tactical-inspector-slider-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  input[type="range"] {
+    flex: 1;
+  }
+}
+
+.tactical-inspector-slider-value {
+  flex: 0 0 5ch;
+  width: 5ch;
+  padding: 2px 4px !important;
+  text-align: center;
+}
+
+.tactical-thruster-direction label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+// Font color is shown as a swatch + toggle rather than an always-open
+// ChromePicker, which alone was tall enough to push every other object
+// field off the bottom of the panel.
+.tactical-color-field {
+  position: relative;
+}
+
+.tactical-color-swatch {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 28px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+  cursor: pointer;
+
+  span {
+    padding: 1px 6px;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    font-size: 0.7rem;
+    border-radius: 2px;
+  }
+}
+
+.tactical-color-popover {
+  position: absolute;
+  z-index: 10;
+  top: calc(100% + 4px);
+  left: 0;
+}
+
 .tactical-object-config {
   input[type="range"] {
     padding: 0;
@@ -180,6 +313,21 @@
       height: 100%;
       pointer-events: none;
     }
+  }
+  // Shows the FD exactly how big a `trainingGoalRadius` reads on the canvas
+  // while they configure it, instead of them having to guess from the 0–0.5
+  // slider value. Mirrors .tactical-goal-ring in
+  // AdvancedTrainingTacticalMapViewer.scss, which draws the same thing for
+  // the trainee.
+  .tactical-training-goal-ring {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    border: 2px dashed #ffa726;
+    box-shadow: 0 0 8px rgba(255, 167, 38, 0.5);
+    pointer-events: none;
   }
   .tactical-objects {
     width: 100%;

@@ -31,6 +31,8 @@ export const aspectList = [
   "taskReports",
   "dmxFixtures",
   "taskFlows",
+  "fabricationRecipes",
+  "fabricationJobs",
 ];
 
 export function addAspects(

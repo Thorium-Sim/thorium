@@ -1,3 +1,5 @@
+#import "../../../../components/training/advancedTrainingChapterFields.graphql"
+
 subscription StationSetConfig {
   stationSetUpdate {
     id
@@ -26,88 +28,16 @@ subscription StationSetConfig {
         sequentialChapters
         stripPosition
         chapters {
-          id
-          name
-          cardComponent
-          mediaAsset
-          autoOpenMedia
-          autoAdvance
-          autoLogin
-          cardSwitchBehavior
-          mediaSize
-          mediaPosition
-          subChapters {
-            id
-            name
-            requiredActions {
-              id
-              eventName
-              args
-            }
-          }
+          ...AdvancedTrainingChapterFields
         }
         inFlightChapters {
-          id
-          name
-          cardComponent
-          mediaAsset
-          autoOpenMedia
-          autoAdvance
-          autoLogin
-          cardSwitchBehavior
-          mediaSize
-          mediaPosition
-          subChapters {
-            id
-            name
-            requiredActions {
-              id
-              eventName
-              args
-            }
-          }
+          ...AdvancedTrainingChapterFields
         }
         loginChapter {
-          id
-          name
-          cardComponent
-          mediaAsset
-          autoOpenMedia
-          autoAdvance
-          autoLogin
-          cardSwitchBehavior
-          mediaSize
-          mediaPosition
-          subChapters {
-            id
-            name
-            requiredActions {
-              id
-              eventName
-              args
-            }
-          }
+          ...AdvancedTrainingChapterFields
         }
         completionChapter {
-          id
-          name
-          cardComponent
-          mediaAsset
-          autoOpenMedia
-          autoAdvance
-          autoLogin
-          cardSwitchBehavior
-          mediaSize
-          mediaPosition
-          subChapters {
-            id
-            name
-            requiredActions {
-              id
-              eventName
-              args
-            }
-          }
+          ...AdvancedTrainingChapterFields
         }
       }
     }

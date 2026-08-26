@@ -16,6 +16,10 @@ const schema = gql`
     frozen: Boolean
 
     interval: Float
+    # Set when this instance is a private advanced-training copy owned by one
+    # client (see server/events/advancedTrainingTacticalMap.ts). Null for
+    # ordinary templates and flight-shared instances.
+    trainingClientId: ID
   }
 
   type TacticalLayer {
@@ -122,6 +126,11 @@ const schema = gql`
     thrusterControls: ThrusterControls
     # When true, the object is constrained so its full icon stays on screen.
     keepOnScreen: Boolean
+    # Advanced training: marks this item as an exercise goal target. When a
+    # player-controlled item (one with thrusterControls configured) comes
+    # within trainingGoalRadius, the __tacticalMapGoal__ training action fires.
+    trainingGoal: Boolean
+    trainingGoalRadius: Float
   }
 
   input TacticalItemInput {
@@ -154,6 +163,8 @@ const schema = gql`
     rotationMatch: Boolean
     thrusterControls: ThrusterControlsInput
     keepOnScreen: Boolean
+    trainingGoal: Boolean
+    trainingGoalRadius: Float
   }
 
   type TacticalPath {

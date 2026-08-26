@@ -10,6 +10,7 @@ import {
   SET_ACTIVE_CHAPTER,
   TOGGLE_MEDIA_VIEWER,
   TOGGLE_CHAPTER_LIST,
+  TOGGLE_TACTICAL_MAP_VIEWER,
 } from "./queries";
 
 interface AdvancedTrainingConfig {
@@ -42,6 +43,7 @@ export function useAdvancedTraining({
   const [setActiveChapterMutation] = useMutation(SET_ACTIVE_CHAPTER);
   const [toggleMediaMutation] = useMutation(TOGGLE_MEDIA_VIEWER);
   const [toggleChapterListMutation] = useMutation(TOGGLE_CHAPTER_LIST);
+  const [toggleTacticalMapMutation] = useMutation(TOGGLE_TACTICAL_MAP_VIEWER);
 
   // Query for initial state
   const {data: queryData} = useQuery(ADVANCED_TRAINING_PROGRESS_QUERY, {
@@ -66,6 +68,14 @@ export function useAdvancedTraining({
   const isInAdvancedTraining = !!progress;
 
   isActive.current = isInAdvancedTraining;
+
+  // Per-eventName timestamp of the last mutation-event recorded to the
+  // server, used to throttle the recorder below (see the `mutation-event`
+  // effect). Keyed by eventName rather than a single shared timer so a burst
+  // on one mutation (e.g. dragging the Thrusters direction pad) doesn't
+  // delay an unrelated one (e.g. a click) that happens to land in the same
+  // window.
+  const lastRecordedRef = useRef<Map<string, number>>(new Map());
 
   // Record an action (mutation or click) to the server
   const recordAction = useCallback(
@@ -102,11 +112,22 @@ export function useAdvancedTraining({
       "advancedTrainingSetActiveChapter",
       "advancedTrainingToggleMediaViewer",
       "advancedTrainingToggleChapterList",
+      "advancedTrainingToggleTacticalMapViewer",
       "fdCompleteTrainingSubChapter",
       "fdResetTrainingProgress",
       "clientSetTraining",
       "clientSetCard",
     ]);
+
+    // Some mutations fire far faster than a human "did the thing" signal
+    // needs — the Thrusters card throttles directionUpdate/rotationUpdate to
+    // just 15ms while dragging, which would otherwise mean ~66
+    // clientAdvancedTrainingAction round-trips (and progress broadcasts) per
+    // second for a single drag. Matching is by eventName alone and repeats
+    // are no-ops server-side once a required action is already observed, so
+    // throttling here loses nothing — it just stops resending what the
+    // server would ignore anyway.
+    const RECORD_THROTTLE_MS = 500;
 
     const unsubscribe = subscribe(
       "mutation-event",
@@ -114,6 +135,12 @@ export function useAdvancedTraining({
         if (ignoredMutations.has(event)) {
           return;
         }
+        const now = Date.now();
+        const last = lastRecordedRef.current.get(event) || 0;
+        if (now - last < RECORD_THROTTLE_MS) {
+          return;
+        }
+        lastRecordedRef.current.set(event, now);
         recordAction(event, args);
       },
     );
@@ -151,6 +178,13 @@ export function useAdvancedTraining({
     [clientId, toggleChapterListMutation],
   );
 
+  const toggleTacticalMapViewer = useCallback(
+    (open: boolean) => {
+      toggleTacticalMapMutation({variables: {clientId, open}});
+    },
+    [clientId, toggleTacticalMapMutation],
+  );
+
   return {
     progress,
     config: advancedTrainingConfig,
@@ -161,5 +195,6 @@ export function useAdvancedTraining({
     setActiveChapter,
     toggleMediaViewer,
     toggleChapterList,
+    toggleTacticalMapViewer,
   };
 }

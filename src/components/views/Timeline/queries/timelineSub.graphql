@@ -16,6 +16,7 @@ subscription TimelineMission {
         args
         event
         delay
+        repeatable
       }
     }
   }

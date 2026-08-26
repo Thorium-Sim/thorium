@@ -1,0 +1,3 @@
+mutation ClearFabricationJobs($simulatorId: ID!) {
+  clearFabricationJobs(simulatorId: $simulatorId)
+}

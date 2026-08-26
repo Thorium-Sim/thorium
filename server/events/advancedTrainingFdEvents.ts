@@ -5,6 +5,10 @@ import {
   autoCompleteIfEmpty,
   advanceToNextChapter,
 } from "./advancedTrainingHelpers";
+import {
+  provisionTrainingTacticalMap,
+  teardownTrainingTacticalMap,
+} from "./advancedTrainingTacticalMap";
 
 // Flight-Director intervention and UI-state listeners for advanced training.
 // Split out from ./advancedTraining (which owns the crew-driven session and
@@ -71,6 +75,7 @@ App.on("fdResetTrainingProgress", ({clientId}: any) => {
   }
 
   const config = getClientTrainingConfig(clientId);
+  teardownTrainingTacticalMap(progress);
   progress.reset();
 
   // Re-activate first chapter (login chapter if configured, else first regular)
@@ -78,6 +83,7 @@ App.on("fdResetTrainingProgress", ({clientId}: any) => {
     const startChapter = config.loginChapter || config.chapters[0] || null;
     if (startChapter) {
       progress.setActiveChapter(startChapter.id);
+      provisionTrainingTacticalMap(progress, startChapter, clientId);
       if (!autoCompleteIfEmpty(progress, startChapter)) {
         progress.setActiveSubChapter(startChapter.subChapters[0]?.id || null);
       } else {

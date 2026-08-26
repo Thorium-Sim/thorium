@@ -67,8 +67,10 @@ const TacticalMapList: React.FC<TacticalMapListProps> = ({
   if (loading || !data) return null;
   const tacticalMaps = data.tacticalMapsUpdate;
   const maps = tacticalMaps
-    ? tacticalMaps.filter(t =>
-        flightId ? !t?.flight || t.flight.id === flightId : !t?.flight,
+    ? tacticalMaps.filter(
+        t =>
+          !t?.trainingClientId &&
+          (flightId ? !t?.flight || t.flight.id === flightId : !t?.flight),
       )
     : [];
   return dedicated ? (

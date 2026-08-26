@@ -13,7 +13,10 @@ import {
   getActionLabel,
   VIDEO_COMPLETE_EVENT,
   LOGIN_EVENT,
+  TACTICAL_MAP_GOAL_EVENT,
+  TACTICAL_MAP_COMPLETE_EVENT,
 } from "components/training/actionRegistry";
+import TrainingTacticalMapConfig from "./TrainingTacticalMapConfig";
 
 // 3x3 grid of anchor points for positioning a chapter's media overlay.
 const MEDIA_POSITIONS = [
@@ -41,6 +44,10 @@ export function emptyChapter(id: string, name: string) {
     cardSwitchBehavior: "manual",
     mediaSize: "small",
     mediaPosition: "bottom-right",
+    tacticalMapId: null,
+    autoOpenTacticalMap: false,
+    tacticalMapSize: "medium",
+    tacticalMapPosition: "bottom-right",
     subChapters: [],
   };
 }
@@ -59,6 +66,10 @@ export function serializeChapter(ch: any) {
     cardSwitchBehavior: ch.cardSwitchBehavior || "manual",
     mediaSize: ch.mediaSize || "small",
     mediaPosition: ch.mediaPosition || "bottom-right",
+    tacticalMapId: ch.tacticalMapId || null,
+    autoOpenTacticalMap: ch.autoOpenTacticalMap ?? false,
+    tacticalMapSize: ch.tacticalMapSize || "medium",
+    tacticalMapPosition: ch.tacticalMapPosition || "bottom-right",
     subChapters: (ch.subChapters || []).map((sc: any) => ({
       id: sc.id,
       name: sc.name,
@@ -346,6 +357,8 @@ export const ChapterEditor: React.FC<ChapterEditorProps> = ({
             )}
           </FormGroup>
 
+          <TrainingTacticalMapConfig chapter={chapter} onUpdate={onUpdate} />
+
           {/* Sub-chapters */}
           <div style={{marginTop: "8px"}}>
             <Label style={{fontWeight: 600}}>Sub-Chapters</Label>
@@ -413,6 +426,24 @@ export const ChapterEditor: React.FC<ChapterEditorProps> = ({
                     label="Require login to proceed"
                     onUpdateSubChapter={onUpdateSubChapter}
                   />
+                )}
+                {chapter.tacticalMapId && (
+                  <>
+                    <SyntheticActionToggle
+                      sub={sub}
+                      eventName={TACTICAL_MAP_GOAL_EVENT}
+                      idPrefix="tmg"
+                      label="Require reaching the map goal"
+                      onUpdateSubChapter={onUpdateSubChapter}
+                    />
+                    <SyntheticActionToggle
+                      sub={sub}
+                      eventName={TACTICAL_MAP_COMPLETE_EVENT}
+                      idPrefix="tmc"
+                      label="Require crew to mark map complete"
+                      onUpdateSubChapter={onUpdateSubChapter}
+                    />
+                  </>
                 )}
                 {sub.requiredActions?.length > 0 && (
                   <div

@@ -1,0 +1,25 @@
+fragment AdvancedTrainingChapterFields on AdvancedTrainingChapter {
+  id
+  name
+  cardComponent
+  mediaAsset
+  autoOpenMedia
+  autoAdvance
+  autoLogin
+  cardSwitchBehavior
+  mediaSize
+  mediaPosition
+  tacticalMapId
+  autoOpenTacticalMap
+  tacticalMapSize
+  tacticalMapPosition
+  subChapters {
+    id
+    name
+    requiredActions {
+      id
+      eventName
+      args
+    }
+  }
+}

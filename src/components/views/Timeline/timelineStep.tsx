@@ -72,6 +72,7 @@ const TimelineStep: React.FC<TimelineStepProps> = ({
                 event={i.event}
                 name={i.name || ""}
                 args={i.args || "{}"}
+                repeatable={i.repeatable}
                 steps={timeline}
                 simulatorId={simulatorId}
                 showDescription={showDescription}
