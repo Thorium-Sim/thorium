@@ -4,8 +4,9 @@ import gql from "graphql-tag.macro";
 import {graphql, withApollo} from "react-apollo";
 import Tour from "helpers/tourHelper";
 import SubscriptionHelper from "helpers/subscriptionHelper";
+import {beginPointerHold} from "helpers/hooks/usePointerDrag";
 
-import DamageOverlay from '../helpers/DamageOverlay';
+import DamageOverlay from "../helpers/DamageOverlay";
 import "./style.scss";
 export {default as PhaserFire} from "./phaserFire";
 
@@ -48,7 +49,7 @@ class PhaserCharging extends Component {
       selectedBank: id,
     });
   }
-  chargePhasers(beamId) {
+  chargePhasers(beamId, event) {
     const phasers = this.props.data.phasers[0];
     const mutation = gql`
       mutation ChargePhaserBeam($id: ID!, $beamId: ID!) {
@@ -63,12 +64,28 @@ class PhaserCharging extends Component {
       mutation,
       variables,
     });
-    if (phasers.holdToCharge) {
-      document.addEventListener("mouseup", this.stopCharging, {once:true});
+    if (phasers.holdToCharge && event) {
+      this.holdUntilRelease(event);
     }
   }
+  // Hold-to-charge releases run through `beginPointerHold` so a single
+  // `pointerup`/`pointercancel` ends the charge for mouse and touch alike. The
+  // old `document.addEventListener("mouseup", ...)` could never work on a
+  // touchscreen: Chrome fires the entire compat mouse sequence at the *end* of a
+  // tap, so `mouseup` landed a fraction of a millisecond after `mousedown` and
+  // charging stopped before anything accumulated. See
+  // helpers/hooks/usePointerDrag.
+  releaseHold = null;
+  holdUntilRelease(event) {
+    if (this.releaseHold) this.releaseHold();
+    this.releaseHold = beginPointerHold(event, this.stopCharging);
+  }
+  componentWillUnmount() {
+    if (this.releaseHold) this.releaseHold();
+    this.releaseHold = null;
+  }
   stopCharging = () => {
-    document.removeEventListener("mouseup", this.stopCharging, {once:true});
+    this.releaseHold = null;
     const phasers = this.props.data.phasers[0];
     const mutation = gql`
       mutation ChargePhaserBeam($id: ID!) {
@@ -83,7 +100,7 @@ class PhaserCharging extends Component {
       variables,
     });
   };
-  dischargePhasers(beamId) {
+  dischargePhasers(beamId, event) {
     const phasers = this.props.data.phasers[0];
     const mutation = gql`
       mutation DischargePhaserBeam($id: ID!, $beamId: ID!) {
@@ -98,8 +115,8 @@ class PhaserCharging extends Component {
       mutation,
       variables,
     });
-    if (phasers.holdToCharge) {
-      document.addEventListener("mouseup", this.stopCharging);
+    if (phasers.holdToCharge && event) {
+      this.holdUntilRelease(event);
     }
   }
   chargeAll() {
@@ -194,7 +211,7 @@ class PhaserCharging extends Component {
                   color="primary"
                   disabled={!selectedBank}
                   block
-                  onMouseDown={this.dischargePhasers.bind(this, selectedBank)}
+                  onPointerDown={e => this.dischargePhasers(selectedBank, e)}
                 >
                   Discharge Bank
                 </Button>
@@ -204,7 +221,7 @@ class PhaserCharging extends Component {
                   color="primary"
                   disabled={!selectedBank}
                   block
-                  onMouseDown={this.chargePhasers.bind(this, selectedBank)}
+                  onPointerDown={e => this.chargePhasers(selectedBank, e)}
                 >
                   Charge Bank
                 </Button>
@@ -282,7 +299,7 @@ export const PhaserBeam = ({
               block
               color="danger"
               disabled={disabled}
-              onMouseDown={e => firePhasers(id, e)}
+              onPointerDown={e => firePhasers(id, e)}
             >
               Fire {name}
             </Button>
@@ -300,7 +317,7 @@ export const PhaserBeam = ({
             <Button
               block
               color="primary"
-              onMouseDown={()=>chargePhasers(id)}
+              onPointerDown={e => chargePhasers(id, e)}
             >
               Charge
             </Button>
@@ -309,13 +326,13 @@ export const PhaserBeam = ({
             <Button
               block
               color="warning"
-              onClick={()=>dischargePhasers(id)}
+              onPointerDown={e => dischargePhasers(id, e)}
             >
               Discharge
             </Button>
           </Col>
           <Col lg="4" xl="3">
-            <Button block color="info" onMouseDown={()=>coolPhasers(id)}>
+            <Button block color="info" onPointerDown={e => coolPhasers(id, e)}>
               Coolant
             </Button>
           </Col>
@@ -350,11 +367,16 @@ export class PhaserArc extends Component {
     this.state = {
       arc: props.arc,
     };
-    this.mouseUp = () => {
-      document.removeEventListener("mouseup", this.mouseUp);
-      this.arcTimeout = null;
-    };
+    this.releaseArc = null;
     this.arcTimeout = null;
+    this.mouseUp = () => {
+      this.releaseArc = null;
+      // The old version never cleared this timer -- it only nulled the handle,
+      // so one more tick still fired after release.
+      clearTimeout(this.arcTimeout);
+      this.arcTimeout = null;
+      this.setArc();
+    };
   }
   setArc() {
     const {phaserId} = this.props;
@@ -379,16 +401,22 @@ export class PhaserArc extends Component {
         Math.max(0, direction === "up" ? state.arc + 0.04 : state.arc - 0.04),
       ),
     }));
-    if (this.arcTimeout) {
-      this.arcTimeout = setTimeout(() => this.changeArc(direction), 100);
-    } else {
-      this.setArc();
-    }
-  };
-  updateArc(direction) {
-    document.addEventListener("mouseup", this.mouseUp, {once:true});
-    document.addEventListener("touchend", this.mouseUp, {once:true});
     this.arcTimeout = setTimeout(() => this.changeArc(direction), 100);
+  };
+  // One pointerdown/pointerup pair per press. This previously wired both
+  // `onMouseDown` and `onTouchStart`, so a single tap on a touchscreen started
+  // two repeat loops -- Chrome fires the compat `mousedown` after `touchstart`
+  // -- while `mouseUp` only ever cleared one of them and never removed its
+  // `touchend` listener. Stepping immediately also means a quick tap nudges the
+  // arc right away instead of after 100ms.
+  updateArc(direction, event) {
+    if (this.releaseArc) this.releaseArc();
+    this.releaseArc = beginPointerHold(event, this.mouseUp);
+    this.changeArc(direction);
+  }
+  componentWillUnmount() {
+    if (this.releaseArc) this.releaseArc();
+    clearTimeout(this.arcTimeout);
   }
   componentDidUpdate(oldProps) {
     if (oldProps.arc !== this.props.arc) {
@@ -414,16 +442,14 @@ export class PhaserArc extends Component {
       <Row style={{height: "200px"}} className="phaserArc">
         <Col sm={{size: 4}} style={{marginTop: "50px"}}>
           <Button
-            onMouseDown={() => this.updateArc("up")}
-            onTouchStart={() => this.updateArc("up")}
+            onPointerDown={e => this.updateArc("up", e)}
             block
             color="warning"
           >
             Widen Arc
           </Button>
           <Button
-            onMouseDown={() => this.updateArc("down")}
-            onTouchStart={() => this.updateArc("down")}
+            onPointerDown={e => this.updateArc("down", e)}
             block
             color="warning"
           >

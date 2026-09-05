@@ -12,6 +12,7 @@ import DamageOverlay from "../helpers/DamageOverlay";
 import TargetControls from "./targetControls";
 import Coordinates from "./coordinates";
 import SubscriptionHelper from "helpers/subscriptionHelper";
+import {beginPointerHold} from "helpers/hooks/usePointerDrag";
 
 const trainingSteps = [
   {
@@ -287,7 +288,7 @@ class Targeting extends Component {
       variables,
     });
   };
-  chargePhasers(beamId) {
+  chargePhasers(beamId, event) {
     const phasers = this.props.data.phasers[0];
     const mutation = gql`
       mutation ChargePhaserBeam($id: ID!, $beamId: ID!) {
@@ -302,12 +303,31 @@ class Targeting extends Component {
       mutation,
       variables,
     });
-    if (phasers.holdToCharge) {
-      document.addEventListener("mouseup", this.stopCharging);
+    if (phasers.holdToCharge && event) {
+      this.hold("charge", event, this.stopCharging);
     }
   }
+  // Press-and-hold releases go through `beginPointerHold`: one
+  // `pointerup`/`pointercancel` per press, for mouse and touch alike. The old
+  // `mouseup` listeners could not work on a touchscreen, where Chrome fires the
+  // whole compat mouse sequence at the *end* of a tap -- `mouseup` arrived a
+  // fraction of a millisecond after `mousedown`, so nothing ever accumulated.
+  // See helpers/hooks/usePointerDrag.
+  releaseHolds = {};
+  hold(key, event, onRelease) {
+    if (this.releaseHolds[key]) this.releaseHolds[key]();
+    this.releaseHolds[key] = beginPointerHold(event, () => {
+      this.releaseHolds[key] = null;
+      onRelease();
+    });
+  }
+  componentWillUnmount() {
+    Object.keys(this.releaseHolds).forEach(key => {
+      if (this.releaseHolds[key]) this.releaseHolds[key]();
+    });
+    this.releaseHolds = {};
+  }
   stopCharging = () => {
-    document.removeEventListener("mouseup", this.stopCharging);
     const phasers = this.props.data.phasers[0];
     const mutation = gql`
       mutation ChargePhaserBeam($id: ID!) {
@@ -338,7 +358,7 @@ class Targeting extends Component {
       variables,
     });
   }
-  coolPhasers(beamId) {
+  coolPhasers(beamId, event) {
     const phasers = this.props.data.phasers[0];
     const mutation = gql`
       mutation PhaserCool($id: ID!, $beamId: ID) {
@@ -353,8 +373,7 @@ class Targeting extends Component {
       mutation,
       variables,
     });
-    document.addEventListener("mouseup", this.stopCoolant);
-    document.addEventListener("touchend", this.stopCoolant);
+    if (event) this.hold("coolant", event, this.stopCoolant);
   }
   interactionTime = 0;
   firePhasers = (beamId, e) => {
@@ -388,8 +407,7 @@ class Targeting extends Component {
         }),
       });
     }, 3000);
-    document.addEventListener("mouseup", this.mouseup);
-    document.addEventListener("touchend", this.mouseup);
+    this.hold("fire", e, this.mouseup);
     return false;
   };
   render() {

@@ -1,10 +1,10 @@
 import React, {Fragment, Component} from "react";
 import gql from "graphql-tag.macro";
 import {graphql} from "react-apollo";
-import {DraggableCore} from "react-draggable";
 import {Button, Row, Col} from "helpers/reactstrap";
 import ThrusterThree from "./three-view";
 import distance from "helpers/distance";
+import {beginPointerDrag, getEventCoords} from "helpers/hooks/usePointerDrag";
 import Measure from "react-measure";
 import throttle from "helpers/debounce";
 import SubscriptionHelper from "helpers/subscriptionHelper";
@@ -159,6 +159,7 @@ class Thrusters extends Component {
     }, 200);
   }
   componentWillUnmount() {
+    this.cancelAllDrags();
     const id = this.props.data.thrusters[0].id;
     const rotation = {yaw: 0, pitch: 0, roll: 0};
     const direction = {x: 0, y: 0, z: 0};
@@ -256,6 +257,43 @@ gamepadLoop(){
 		this.setState({control:!this.state.control});
 	}
   */
+  // The four knobs used to be wrapped in react-draggable's DraggableCore, which
+  // cannot survive a multi-touch screen. Its `handleDragStop` bails at
+  // `if (position == null) return` *before* removing its own document
+  // listeners, and a `touchend` only carries the finger that actually lifted.
+  // So with two fingers on two knobs, lifting one leaves the other permanently
+  // latched: `dragging` stays true and its orphaned `touchmove` listener has no
+  // guard, so that knob then follows every touch anywhere on the page. Do it
+  // once per knob and all four move at once. It also never listens for
+  // `touchcancel`, which Windows digitizers fire constantly for palm rejection.
+  //
+  // Pointer events avoid all of that: one stream for mouse and touch, a
+  // `pointerId` we match on, pointer capture so the release is guaranteed, and
+  // `pointercancel` handled. See helpers/hooks/usePointerDrag.
+  dragCancels = {};
+  startDrag = which => e => {
+    if (this.props.data.loading || !this.props.data.thrusters) return;
+    const node = e.currentTarget;
+    if (this.dragCancels[which]) this.dragCancels[which]();
+    const handle = name => this.onDragHandler(name, which);
+    handle("onDragStart")(e, {node});
+    this.dragCancels[which] = beginPointerDrag(e, {
+      onMove: state => handle("onDrag")(state.event, {node}),
+      onEnd: state => {
+        this.dragCancels[which] = null;
+        handle("onDragStop")(state.event, {node});
+      },
+    });
+    // No usable pointer -- don't leave the knob stuck mid-drag.
+    if (!this.dragCancels[which]) handle("onDragStop")(e, {node});
+  };
+  cancelAllDrags() {
+    Object.keys(this.dragCancels).forEach(which => {
+      if (this.dragCancels[which]) this.dragCancels[which]();
+    });
+    this.dragCancels = {};
+    document.body.classList.remove("switcherLocked");
+  }
   onDragHandler(handlerName, which) {
     return (e, {node}) => {
       const newPosition = {top: 0, left: 0};
@@ -266,8 +304,11 @@ gamepadLoop(){
       const rotation = {yaw: 0, pitch: 0, roll: 0};
       const direction = {x: 0, y: 0, z: 0};
       const {width} = node.offsetParent.getBoundingClientRect();
-      const clientX = e.clientX || e.clientX === 0 || e.touches[0].clientX;
-      const clientY = e.clientY || e.clientY === 0 || e.touches[0].clientY;
+      // `touchend` carries an empty `touches` list, so the old
+      // `e.touches[0].clientX` threw a TypeError on every touch release.
+      const coords = getEventCoords(e);
+      const clientX = coords ? coords.clientX : 0;
+      const clientY = coords ? coords.clientY : 0;
 
       switch (handlerName) {
         case "onDragStart":
@@ -276,9 +317,7 @@ gamepadLoop(){
           document.body.classList.add("switcherLocked");
           break;
         case "onDrag":
-          if (!this.state[which]) {
-            throw new Error("onDrag called before onDragStart.");
-          }
+          if (!this.state[which] || !coords) return;
           newPosition.left =
             ((parentRect.left + parentRect.width / 2 - clientX) / width) *
             -1 *
@@ -347,9 +386,7 @@ gamepadLoop(){
           break;
         case "onDragStop":
           document.body.classList.remove("switcherLocked");
-          if (!this.state[which]) {
-            throw new Error("onDragEnd called before onDragStart.");
-          }
+          if (!this.state[which]) return;
           newPosition.left = this.state[which].left;
           newPosition.top = this.state[which].top;
           setTimeout(() => {
@@ -442,45 +479,32 @@ gamepadLoop(){
                   <label>Direction</label>
                   <div className="spacer" />
                   <div className="draggerCircle" ref="dirCirc">
-                    <DraggableCore
-                      onStart={this.onDragHandler("onDragStart", "direction")}
-                      onDrag={this.onDragHandler("onDrag", "direction")}
-                      onStop={this.onDragHandler("onDragStop", "direction")}
-                    >
-                      <div
-                        ref="directionDragger"
-                        className="dragger direction alertBack"
-                        style={{
-                          transform: `translate3d(${
-                            (this.state.direction.left * width) / 2
-                          }px,${
-                            (this.state.direction.top * height) / 2
-                          }px,0px)`,
-                        }}
-                      />
-                    </DraggableCore>
+                    <div
+                      onPointerDown={this.startDrag("direction")}
+                      ref="directionDragger"
+                      className="dragger direction alertBack"
+                      style={{
+                        transform: `translate3d(${
+                          (this.state.direction.left * width) / 2
+                        }px,${(this.state.direction.top * height) / 2}px,0px)`,
+                      }}
+                    />
                     <span className="label up">Forward</span>
                     <span className="label right">Starboard</span>
                     <span className="label down">Reverse</span>
                     <span className="label left">Port</span>
                   </div>
                   <div className="draggerBar">
-                    <DraggableCore
-                      axis="x"
-                      onStart={this.onDragHandler("onDragStart", "directionUp")}
-                      onDrag={this.onDragHandler("onDrag", "directionUp")}
-                      onStop={this.onDragHandler("onDragStop", "directionUp")}
-                    >
-                      <div
-                        ref="foreDragger"
-                        className="dragger fore alertBack"
-                        style={{
-                          transform: `translate3d(${
-                            (this.state.directionUp.left * (width - 40)) / 2
-                          }px,0px,0px)`,
-                        }}
-                      />
-                    </DraggableCore>
+                    <div
+                      onPointerDown={this.startDrag("directionUp")}
+                      ref="foreDragger"
+                      className="dragger fore alertBack"
+                      style={{
+                        transform: `translate3d(${
+                          (this.state.directionUp.left * (width - 40)) / 2
+                        }px,0px,0px)`,
+                      }}
+                    />
                     <span className="label right">Up</span>
                     <span className="label left">Down</span>
                   </div>
@@ -531,43 +555,32 @@ gamepadLoop(){
                   <label>Rotation</label>
                   <div className="spacer" />
                   <div className="draggerCircle">
-                    <DraggableCore
-                      onStart={this.onDragHandler("onDragStart", "rotation")}
-                      onDrag={this.onDragHandler("onDrag", "rotation")}
-                      onStop={this.onDragHandler("onDragStop", "rotation")}
-                    >
-                      <div
-                        ref="rotationDragger"
-                        className="dragger rotation alertBack"
-                        style={{
-                          transform: `translate3d(${
-                            (this.state.rotation.left * width) / 2
-                          }px,${(this.state.rotation.top * height) / 2}px,0px)`,
-                        }}
-                      />
-                    </DraggableCore>
+                    <div
+                      onPointerDown={this.startDrag("rotation")}
+                      ref="rotationDragger"
+                      className="dragger rotation alertBack"
+                      style={{
+                        transform: `translate3d(${
+                          (this.state.rotation.left * width) / 2
+                        }px,${(this.state.rotation.top * height) / 2}px,0px)`,
+                      }}
+                    />
                     <span className="label up">Pitch Up</span>
                     <span className="label right">Roll Right</span>
                     <span className="label down">Pitch Down</span>
                     <span className="label left">Roll Left</span>
                   </div>
                   <div className="draggerBar">
-                    <DraggableCore
-                      axis="x"
-                      onStart={this.onDragHandler("onDragStart", "yaw")}
-                      onDrag={this.onDragHandler("onDrag", "yaw")}
-                      onStop={this.onDragHandler("onDragStop", "yaw")}
-                    >
-                      <div
-                        ref="yaw"
-                        className="dragger yaw alertBack"
-                        style={{
-                          transform: `translate3d(${
-                            (this.state.yaw.left * (width - 40)) / 2
-                          }px,0px,0px)`,
-                        }}
-                      />
-                    </DraggableCore>
+                    <div
+                      onPointerDown={this.startDrag("yaw")}
+                      ref="yaw"
+                      className="dragger yaw alertBack"
+                      style={{
+                        transform: `translate3d(${
+                          (this.state.yaw.left * (width - 40)) / 2
+                        }px,0px,0px)`,
+                      }}
+                    />
                     <span className="label right">Yaw Starboard</span>
                     <span className="label left">Yaw Port</span>
                   </div>

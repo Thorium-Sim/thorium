@@ -30,6 +30,11 @@ body.switcherLocked {
     margin-top: calc(100% + 30px);
   }
   .draggerCircle {
+    // Keep the browser from claiming the gesture as a pan/scroll on a
+    // touchscreen. This is the correct mechanism -- preventDefault() inside a
+    // React onTouchStart is a no-op, since React 16 delegates to `document`
+    // where Chrome forces touchstart listeners passive.
+    touch-action: none;
     margin-top: 30px;
     position: absolute;
     top: 0;
@@ -47,6 +52,7 @@ body.switcherLocked {
       linear-gradient(165deg, #000000 0%, rgba(0, 0, 0, 0) 50%, #000000 100%);
   }
   .draggerBar {
+    touch-action: none;
     bottom: -20%;
     height: 15.5%;
     position: absolute;
@@ -64,6 +70,7 @@ body.switcherLocked {
     margin-top: 50px;
   }
   .dragger {
+    touch-action: none;
     width: 14%;
     height: 14%;
     position: absolute;

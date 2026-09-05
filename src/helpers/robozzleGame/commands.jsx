@@ -1,40 +1,34 @@
 import React, {Fragment} from "react";
 
-const Red = ({onMouseDown}) => {
+const Red = ({onPointerDown}) => {
   return (
     <div
       className="command paint paint-red"
-      onMouseDown={evt =>
-        onMouseDown({x: evt.clientX, y: evt.clientY}, "paint-red")
-      }
+      onPointerDown={evt => onPointerDown(evt, "paint-red")}
     />
   );
 };
-const Green = ({onMouseDown}) => {
+const Green = ({onPointerDown}) => {
   return (
     <div
       className="command paint paint-green"
-      onMouseDown={evt =>
-        onMouseDown({x: evt.clientX, y: evt.clientY}, "paint-green")
-      }
+      onPointerDown={evt => onPointerDown(evt, "paint-green")}
     />
   );
 };
-const Blue = ({onMouseDown}) => {
+const Blue = ({onPointerDown}) => {
   return (
     <div
       className="command paint paint-blue"
-      onMouseDown={evt =>
-        onMouseDown({x: evt.clientX, y: evt.clientY}, "paint-blue")
-      }
+      onPointerDown={evt => onPointerDown(evt, "paint-blue")}
     />
   );
 };
-const ColorCommands = ({colors, onMouseDown}) => {
+const ColorCommands = ({colors, onPointerDown}) => {
   if (colors === 1) {
     return (
       <Fragment>
-        <Red onMouseDown={onMouseDown} />
+        <Red onPointerDown={onPointerDown} />
         <div className="divider" />
       </Fragment>
     );
@@ -42,7 +36,7 @@ const ColorCommands = ({colors, onMouseDown}) => {
   if (colors === 2) {
     return (
       <Fragment>
-        <Green onMouseDown={onMouseDown} />
+        <Green onPointerDown={onPointerDown} />
         <div className="divider" />
       </Fragment>
     );
@@ -50,8 +44,8 @@ const ColorCommands = ({colors, onMouseDown}) => {
   if (colors === 3) {
     return (
       <Fragment>
-        <Red onMouseDown={onMouseDown} />
-        <Green onMouseDown={onMouseDown} />
+        <Red onPointerDown={onPointerDown} />
+        <Green onPointerDown={onPointerDown} />
         <div className="divider" />
       </Fragment>
     );
@@ -59,57 +53,51 @@ const ColorCommands = ({colors, onMouseDown}) => {
   if (colors === 4) {
     return (
       <Fragment>
-        <Blue onMouseDown={onMouseDown} /> <div className="divider" />
+        <Blue onPointerDown={onPointerDown} /> <div className="divider" />
       </Fragment>
     );
   }
   if (colors === 5) {
     return (
       <Fragment>
-        <Red onMouseDown={onMouseDown} />
-        <Blue onMouseDown={onMouseDown} /> <div className="divider" />
+        <Red onPointerDown={onPointerDown} />
+        <Blue onPointerDown={onPointerDown} /> <div className="divider" />
       </Fragment>
     );
   }
   if (colors === 6) {
     return (
       <Fragment>
-        <Green onMouseDown={onMouseDown} />
-        <Blue onMouseDown={onMouseDown} /> <div className="divider" />
+        <Green onPointerDown={onPointerDown} />
+        <Blue onPointerDown={onPointerDown} /> <div className="divider" />
       </Fragment>
     );
   }
   if (colors === 7) {
     return (
       <Fragment>
-        <Red onMouseDown={onMouseDown} />
-        <Green onMouseDown={onMouseDown} />
-        <Blue onMouseDown={onMouseDown} /> <div className="divider" />
+        <Red onPointerDown={onPointerDown} />
+        <Green onPointerDown={onPointerDown} />
+        <Blue onPointerDown={onPointerDown} /> <div className="divider" />
       </Fragment>
     );
   }
   return null;
 };
-const Commands = ({SubLengths, AllowedCommands, dragging, onMouseDown}) => {
+const Commands = ({SubLengths, AllowedCommands, dragging, onPointerDown}) => {
   return (
     <div className={`commands-area ${dragging ? "dragging" : ""}`}>
       <div
         className="command forward"
-        onMouseDown={evt =>
-          onMouseDown({x: evt.clientX, y: evt.clientY}, "forward", "")
-        }
+        onPointerDown={evt => onPointerDown(evt, "forward", "")}
       />
       <div
         className="command left"
-        onMouseDown={evt =>
-          onMouseDown({x: evt.clientX, y: evt.clientY}, "left", "")
-        }
+        onPointerDown={evt => onPointerDown(evt, "left", "")}
       />
       <div
         className="command right"
-        onMouseDown={evt =>
-          onMouseDown({x: evt.clientX, y: evt.clientY}, "right", "")
-        }
+        onPointerDown={evt => onPointerDown(evt, "right", "")}
       />
       <div className="divider" />
       {SubLengths.map(
@@ -118,40 +106,30 @@ const Commands = ({SubLengths, AllowedCommands, dragging, onMouseDown}) => {
             <div
               key={`sublength-${i}`}
               className={`command f${i + 1}`}
-              onMouseDown={evt =>
-                onMouseDown({x: evt.clientX, y: evt.clientY}, `f${i + 1}`)
-              }
+              onPointerDown={evt => onPointerDown(evt, `f${i + 1}`)}
             />
           ),
       )}
       <div className="divider" />
       <ColorCommands
         colors={parseInt(AllowedCommands, 10)}
-        onMouseDown={onMouseDown}
+        onPointerDown={onPointerDown}
       />
       <div
         className="command color clear"
-        onMouseDown={evt =>
-          onMouseDown({x: evt.clientX, y: evt.clientY}, null, "clear")
-        }
+        onPointerDown={evt => onPointerDown(evt, null, "clear")}
       />
       <div
         className="command color red"
-        onMouseDown={evt =>
-          onMouseDown({x: evt.clientX, y: evt.clientY}, null, "red")
-        }
+        onPointerDown={evt => onPointerDown(evt, null, "red")}
       />
       <div
         className="command color green"
-        onMouseDown={evt =>
-          onMouseDown({x: evt.clientX, y: evt.clientY}, null, "green")
-        }
+        onPointerDown={evt => onPointerDown(evt, null, "green")}
       />
       <div
         className="command color blue"
-        onMouseDown={evt =>
-          onMouseDown({x: evt.clientX, y: evt.clientY}, null, "blue")
-        }
+        onPointerDown={evt => onPointerDown(evt, null, "blue")}
       />
     </div>
   );
