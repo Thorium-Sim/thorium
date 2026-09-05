@@ -10,7 +10,6 @@ import EmitterGreen from "./images/EmitterGreen.svg";
 import Checkpoint from "./images/Checkpoint.svg";
 import CheckpointOn from "./images/Checkpoint-On.svg";
 
-
 export function getSprite(name, active) {
   if (!name) return {};
   name = name.replace("-Locked", "");
@@ -49,7 +48,7 @@ export function getSprite(name, active) {
   }
   return {};
 }
-const Sprite = ({name, side, active, onMouseDown}) => {
+const Sprite = ({name, side, active, onPointerDown}) => {
   let {src, className = ""} = getSprite(name, active);
   const locked =
     name.includes("-Locked") ||
@@ -57,7 +56,7 @@ const Sprite = ({name, side, active, onMouseDown}) => {
     name.includes("CheckPoint");
   return (
     <div
-      onMouseDown={locked ? null : onMouseDown}
+      onPointerDown={locked ? null : onPointerDown}
       className={`${locked ? "locked" : ""} sprite ${
         name.includes("Emitter") ? side : ""
       } ${name.replace("-Locked", "")} ${

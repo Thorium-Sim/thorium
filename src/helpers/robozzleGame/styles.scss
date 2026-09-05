@@ -116,7 +116,12 @@
     display: flex;
     flex-direction: column;
   }
+  // Stop the browser claiming these gestures as a pan/scroll on a touchscreen.
+  // This is the correct mechanism -- preventDefault() inside a React
+  // onTouchStart is a no-op, because React 16 delegates to `document` where
+  // Chrome forces touchstart listeners passive.
   .player-controls {
+    touch-action: none;
     display: flex;
     flex-direction: column;
     justify-content: space-around;

@@ -71,13 +71,18 @@ const Cell = React.memo(
     hilite,
     cellSize,
     objects,
-    mouseDown,
+    pointerDown,
+    didJustDrag,
     checkPoints,
     width,
   }) => {
     return (
       <div
-        onClick={() => addMirror(x, y)}
+        onClick={() => {
+          // Ignore the click the browser emits at a drag's origin.
+          if (didJustDrag()) return;
+          addMirror(x, y);
+        }}
         className={`game-cell ${hilite ? "hilite" : ""}`}
         style={{
           width: `${cellSize}px`,
@@ -86,7 +91,7 @@ const Cell = React.memo(
         }}
       >
         <Sprite
-          onMouseDown={e => mouseDown(e, objects[x][y], {x, y})}
+          onPointerDown={e => pointerDown(e, objects[x][y], {x, y})}
           name={objects[x][y]}
           active={checkPoints[`${x},${y}`]}
           side={getSide(x, y, width)}
@@ -160,7 +165,8 @@ const LaserGame = ({height: width, objects: initObjects, onWin = () => {}}) => {
     [laserSegments],
   );
   const {
-    mouseDown,
+    pointerDown,
+    didJustDrag,
     position,
     movingCell,
     positionCell,
@@ -212,7 +218,7 @@ const LaserGame = ({height: width, objects: initObjects, onWin = () => {}}) => {
           return (
             <div
               draggable={false}
-              onMouseDown={e => mouseDown(e, obj, "top")}
+              onPointerDown={e => pointerDown(e, obj, "top")}
               className="game-object"
               style={{
                 height: `${cellSize}px`,
@@ -246,7 +252,8 @@ const LaserGame = ({height: width, objects: initObjects, onWin = () => {}}) => {
               )}
               cellSize={cellSize}
               objects={objects}
-              mouseDown={mouseDown}
+              pointerDown={pointerDown}
+              didJustDrag={didJustDrag}
               checkPoints={checkPoints}
               width={width}
             />
