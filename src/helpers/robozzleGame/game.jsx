@@ -2,6 +2,7 @@ import React, {Component, Fragment} from "react";
 import GameBoard from "./gameboard";
 import Controls from "./controls";
 import Commands from "./commands";
+import {beginPointerDrag, getEventCoords} from "../hooks/usePointerDrag";
 
 function replaceAt(string, index, replace) {
   return string.substring(0, index) + replace + string.substring(index + 1);
@@ -27,87 +28,93 @@ class Game extends Component {
       ...this.props.board,
     }));
   };
-  commandMouseDown = evt => {
+  // Dragging runs on pointer events so mouse and touch take the same path.
+  // The old code was unusable on a touchscreen for two independent reasons:
+  // it moved the piece with `evt.movementX/Y`, which is mouse-only, and it
+  // resolved the drop slot from `evt.target`, which on touch is the element the
+  // gesture *started* on rather than the one under the finger.
+  cancelDrag = null;
+  // Lift an already-placed command back out of its slot.
+  commandPointerDown = evt => {
     const funcnum = evt.target.dataset.funcnum;
     const index = evt.target.dataset.position;
-    const dimensions = this.gameboardRef.current.getBoundingClientRect();
-
-    const position = {
-      x: evt.clientX - dimensions.left - 15,
-      y: evt.clientY - dimensions.top - 15,
-    };
-    this.setState(state => {
-      // Check to see if there is a function there.
-      if (state.functions[funcnum] && state.functions[funcnum][index]) {
-        const {command, color} = state.functions[funcnum][index];
-        this.props.setDragging(true);
-        document.addEventListener("mousemove", this.mouseMove);
-        document.addEventListener("mouseup", this.mouseUp);
-        return {
-          dragging: {
-            position,
-            command,
-            color,
-          },
-          functions: {
-            ...state.functions,
-            [funcnum]: state.functions[funcnum].map((f, i) => {
-              if (i === parseInt(index, 10)) return null;
-              return f;
-            }),
-          },
-        };
-      }
-      return {};
-    });
-  };
-  mouseDown = (position, command, color) => {
-    this.props.setDragging(true);
-    const dimensions = this.gameboardRef.current.getBoundingClientRect();
-    this.setState({
-      dragging: {
-        position: {
-          x: position.x - 20 - dimensions.left,
-          y: position.y - 20 - dimensions.top,
-        },
-        command,
-        color,
-      },
-    });
-    document.addEventListener("mousemove", this.mouseMove);
-    document.addEventListener("mouseup", this.mouseUp);
-  };
-  mouseMove = evt => {
+    const existing =
+      this.state.functions[funcnum] && this.state.functions[funcnum][index];
+    if (!existing) return;
+    const {command, color} = existing;
     this.setState(state => ({
-      dragging: {
-        ...state.dragging,
-        position: {
-          x: state.dragging.position.x + evt.movementX,
-          y: state.dragging.position.y + evt.movementY,
-        },
+      functions: {
+        ...state.functions,
+        [funcnum]: state.functions[funcnum].map((f, i) => {
+          if (i === parseInt(index, 10)) return null;
+          return f;
+        }),
       },
     }));
+    this.startDrag(evt, command, color, 15);
   };
-  mouseUp = evt => {
-    document.removeEventListener("mousemove", this.mouseMove);
-    this.props.setDragging(false);
-    document.removeEventListener("mouseup", this.mouseUp);
-    const funcNum = evt.target.dataset.funcnum;
-    const position = parseInt(evt.target.dataset.position, 10);
-    if (!funcNum) return this.setState({dragging: null});
-    const action = {};
-    this.setState(state => {
-      if (state.dragging.command) action.command = state.dragging.command;
-      if (state.dragging.color) action.color = state.dragging.color;
-      if (state.dragging.color === "clear") action.color = null;
-      const func = state.functions[funcNum] || [];
-      func[position] = {...func[position], ...action};
-      return {
-        dragging: null,
-        functions: {...state.functions, [funcNum]: func},
-      };
+  // Pick a fresh command up off the palette.
+  pointerDown = (evt, command, color) => {
+    this.startDrag(evt, command, color, 20);
+  };
+  startDrag(evt, command, color, grabOffset) {
+    const board = this.gameboardRef.current;
+    const coords = getEventCoords(evt);
+    if (!board || !coords) return;
+    const dimensions = board.getBoundingClientRect();
+    // Absolute position each time rather than an accumulated delta, so there is
+    // no dependence on `movementX`/`movementY`.
+    const toLocal = c => ({
+      x: c.clientX - grabOffset - dimensions.left,
+      y: c.clientY - grabOffset - dimensions.top,
     });
-  };
+
+    this.props.setDragging(true);
+    this.setState({dragging: {position: toLocal(coords), command, color}});
+
+    this.cancelDrag = beginPointerDrag(evt, {
+      onMove: state => {
+        this.setState({dragging: {position: toLocal(state), command, color}});
+      },
+      onEnd: state => {
+        this.cancelDrag = null;
+        this.props.setDragging(false);
+        // Hit-test the release point. Pointer capture retargets `pointerup` to
+        // the element the drag started on, so the event's own target is never
+        // the slot being dropped into.
+        const dropTarget = document.elementFromPoint(
+          state.clientX,
+          state.clientY,
+        );
+        const dataset = (dropTarget && dropTarget.dataset) || {};
+        const funcNum = dataset.funcnum;
+        const position = parseInt(dataset.position, 10);
+        if (!funcNum) return this.setState({dragging: null});
+        const action = {};
+        this.setState(prev => {
+          if (!prev.dragging) return {dragging: null};
+          if (prev.dragging.command) action.command = prev.dragging.command;
+          if (prev.dragging.color) action.color = prev.dragging.color;
+          if (prev.dragging.color === "clear") action.color = null;
+          const func = prev.functions[funcNum] || [];
+          func[position] = {...func[position], ...action};
+          return {
+            dragging: null,
+            functions: {...prev.functions, [funcNum]: func},
+          };
+        });
+      },
+    });
+    if (!this.cancelDrag) {
+      this.props.setDragging(false);
+      this.setState({dragging: null});
+    }
+  }
+  componentWillUnmount() {
+    clearTimeout(this.timeout);
+    if (this.cancelDrag) this.cancelDrag();
+    this.cancelDrag = null;
+  }
   start = () => {
     this.reset();
     clearTimeout(this.timeout);
@@ -263,11 +270,11 @@ class Game extends Component {
                 {...this.state}
                 dragging={dragging}
                 functions={functions}
-                onMouseDown={this.commandMouseDown}
+                onPointerDown={this.commandPointerDown}
               />
               <Commands
                 {...this.state}
-                onMouseDown={this.mouseDown}
+                onPointerDown={this.pointerDown}
                 dragging={dragging}
               />
               <div style={{display: "flex"}}>

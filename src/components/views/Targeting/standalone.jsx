@@ -12,6 +12,7 @@ import DamageOverlay from "../helpers/DamageOverlay";
 import TargetControls from "./targetControls";
 import Coordinates from "./coordinates";
 import SubscriptionHelper from "helpers/subscriptionHelper";
+import {beginPointerHold} from "helpers/hooks/usePointerDrag";
 import {targetingMessage} from ".";
 
 const trainingSteps = [
@@ -306,7 +307,24 @@ class Targeting extends Component {
       variables,
     });
   }
-  coolPhasers(beamId) {
+  // Press-and-hold releases go through `beginPointerHold`: one
+  // `pointerup`/`pointercancel` per press, for mouse and touch alike. See
+  // helpers/hooks/usePointerDrag.
+  releaseHolds = {};
+  hold(key, event, onRelease) {
+    if (this.releaseHolds[key]) this.releaseHolds[key]();
+    this.releaseHolds[key] = beginPointerHold(event, () => {
+      this.releaseHolds[key] = null;
+      onRelease();
+    });
+  }
+  componentWillUnmount() {
+    Object.keys(this.releaseHolds).forEach(key => {
+      if (this.releaseHolds[key]) this.releaseHolds[key]();
+    });
+    this.releaseHolds = {};
+  }
+  coolPhasers(beamId, event) {
     const phasers = this.props.data.phasers[0];
     const mutation = gql`
       mutation PhaserCool($id: ID!, $beamId: ID) {
@@ -321,8 +339,7 @@ class Targeting extends Component {
       mutation,
       variables,
     });
-    document.addEventListener("mouseup", this.stopCoolant);
-    document.addEventListener("touchend", this.stopCoolant);
+    if (event) this.hold("coolant", event, this.stopCoolant);
   }
   interactionTime = 0;
   firePhasers = (beamId, e) => {
@@ -356,8 +373,7 @@ class Targeting extends Component {
         }),
       });
     }, 3000);
-    document.addEventListener("mouseup", this.mouseup);
-    document.addEventListener("touchend", this.mouseup);
+    this.hold("fire", e, this.mouseup);
     return false;
   };
   render() {
