@@ -19,6 +19,11 @@ class Keyboard extends Component {
       if (metaKey) meta.push("command");
       if (altKey) meta.push("option");
       if (ctrlKey) meta.push("control");
+      // Caps Lock acts as a layer, not a character modifier. It never sets
+      // shiftKey, so it has to be read off the lock state directly.
+      if (e.getModifierState("CapsLock")) {
+        meta.push("caps");
+      }
       const mutation = gql`
         mutation TriggerKeyAction(
           $simulatorId: ID!
