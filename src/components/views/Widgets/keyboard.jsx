@@ -100,7 +100,8 @@ export const keys = [
   {keyCode: "Numpad8", char: "8", ex: true},
   {keyCode: "Numpad9", char: "9", ex: true},
   {keyCode: "NumpadSubtract", char: "-", ex: true},
-  {keyCode: "CapsLock", name: "caps", size: "1-75u", modifier: true},
+  // No keyCode: Caps is a layer modifier (meta "caps"), not a bindable key.
+  {name: "caps", size: "1-75u", modifier: true},
   {keyCode: "KeyA", name: "a", char: "a", shift: "A"},
   {keyCode: "KeyS", name: "s", char: "s", shift: "S"},
   {keyCode: "KeyD", name: "d", char: "d", shift: "D"},

@@ -76,7 +76,8 @@ class KeyboardControl extends Component {
       this.handleMeta("command", key) ||
       this.handleMeta("shift", key) ||
       this.handleMeta("option", key) ||
-      this.handleMeta("control", key);
+      this.handleMeta("control", key) ||
+      this.handleMeta("caps", key);
     if (!tf) {
       this.setState({
         selectedKey: selectedKey === key ? null : key,
@@ -174,6 +175,7 @@ class KeyboardControl extends Component {
                   handleClick={this.handleClick}
                   selected={
                     k.keyCode === selectedKeyCode ||
+                    meta.indexOf(k.name) > -1 ||
                     meta.indexOf(k.name?.slice(1, Infinity)) > -1
                   }
                   showEx
