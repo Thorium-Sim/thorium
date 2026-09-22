@@ -1,3 +1,10 @@
+# [4.10.0](https://github.com/Thorium-Sim/thorium/compare/4.9.1...4.10.0) (2026-09-22)
+
+
+### Features
+
+* **3556-caps-lock:** added caps lock as layer for keyboards ([4ae7004](https://github.com/Thorium-Sim/thorium/commit/4ae70040f1887c30b6afb96ed8c8b4ae08795c5a))
+
 ## [4.9.1](https://github.com/Thorium-Sim/thorium/compare/4.9.0...4.9.1) (2026-09-09)
 
 
