@@ -7,17 +7,13 @@ import "./layout.scss";
 class LayoutGlass extends Component {
   state = {};
   render() {
-    let {simulator, station, lite} = this.props;
-    const {name: stationName} = station;
+    let {simulator} = this.props;
     let alertClass = `alertColor${simulator.alertlevel || 5}`;
     return (
       <div className={`layout-glass glass-viewscreen ${alertClass}`}>
-        <Views.Viewscreen {...this.props} />
-        <div className="frame-text">
-          <h1 className="simulator-name">{simulator.name}</h1>
-          <h2 className="station-name">{stationName}</h2>
-        </div>
-        <CardFrame simulator={simulator} viewscreen lite={lite} />
+        <CardFrame {...this.props} viewscreen>
+          <Views.Viewscreen {...this.props} />
+        </CardFrame>
       </div>
     );
   }

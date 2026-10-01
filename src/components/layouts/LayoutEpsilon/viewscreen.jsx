@@ -10,10 +10,11 @@ class LayoutEpsilonViewscreen extends Component {
     let alertClass = `alertColor${simulator.alertlevel || 5}`;
     return (
       <div className={`epsilon-frame viewscreen ${alertClass}`}>
-        <CardFrame {...this.props} />
-        <div className="card-area">
+        <CardFrame {...this.props} viewscreen>
+          <div className="card-area">
           <Views.Viewscreen {...this.props} />
-        </div>
+          </div>
+        </CardFrame>
       </div>
     );
   }
