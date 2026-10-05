@@ -1,4 +1,7 @@
 import React, {Component} from "react";
+import {DndProvider} from "react-dnd";
+import MultiBackend from "react-dnd-multi-backend";
+import HTML5toTouch from "react-dnd-multi-backend/dist/cjs/HTML5toTouch";
 import * as Layouts from "./layouts";
 import Hotkey from "./hotkey";
 
@@ -196,4 +199,11 @@ class CoreComponents extends Component {
   }
 }
 
-export default CoreComponents;
+export default function CoreWithDragDrop(props) {
+  // Keep the backend alive when switching between Dynamic, Next, and other layouts.
+  return (
+    <DndProvider backend={MultiBackend} options={HTML5toTouch}>
+      <CoreComponents {...props} />
+    </DndProvider>
+  );
+}

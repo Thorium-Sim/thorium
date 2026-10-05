@@ -2,7 +2,7 @@ import React from "react";
 import {Cores} from "components/views";
 import {Container, Row, Col, Button} from "helpers/reactstrap";
 import {
-  Mosaic,
+  MosaicWithoutDragDropContext as Mosaic,
   MosaicWindow,
   MosaicWindowContext,
   MosaicContext,
