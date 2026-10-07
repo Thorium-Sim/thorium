@@ -14,8 +14,14 @@ import SideNav from "./FlightDirector/sideNav";
 import {FlightDirector, ClientsLobby, FlightConfig} from "./FlightDirector";
 import {getClientId} from "helpers/getClientId";
 import useInterval from "helpers/hooks/useInterval";
+import {
+  addClockSample,
+  ClockSample,
+  computeClockSample,
+  estimateClock,
+} from "helpers/clockSync";
 
-window.thoriumLocal = {
+window.thoriumLocal = window.thoriumLocal || {
   clockSync: 0,
   roundTrip: 0,
 };
@@ -81,7 +87,9 @@ const CLOCK_SYNC_MUTATION = gql`
 function useClockSync() {
   const client = useApolloClient();
   const [clientId, setClientId] = React.useState("");
+  // 0 means no ping is waiting on a reply
   const sentTime = React.useRef(0);
+  const samples = React.useRef<ClockSample[]>([]);
 
   const [clockSync] = useMutation(CLOCK_SYNC_MUTATION, {variables: {clientId}});
 
@@ -104,10 +112,19 @@ function useClockSync() {
       })
       .subscribe({
         next: ({data: {clockSync}}) => {
-          // This magic number is the round-trip offset. Could be better, but this works for now.
-          window.thoriumLocal.clockSync =
-            parseInt(clockSync, 10) - sentTime.current;
-          window.thoriumLocal.roundTrip = Date.now() - sentTime.current;
+          // Ignore replies we didn't ask for, such as a reply to another
+          // window that shares this client ID.
+          if (!sentTime.current) return;
+          const serverTime = parseInt(clockSync, 10);
+          if (Number.isNaN(serverTime)) return;
+          samples.current = addClockSample(
+            samples.current,
+            computeClockSample(sentTime.current, serverTime, Date.now()),
+          );
+          sentTime.current = 0;
+          const {offset, roundTrip} = estimateClock(samples.current);
+          window.thoriumLocal.clockSync = offset;
+          window.thoriumLocal.roundTrip = roundTrip;
         },
         error(err) {
           console.error("Error resetting cache", err);
