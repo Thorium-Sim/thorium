@@ -13,7 +13,8 @@ function distance3d(coord2, coord1) {
 function compareLocs(loc1, loc2) {
   return loc1.x === loc2.x && loc1.y === loc2.y && loc1.z === loc2.z;
 }
-window.thoriumLocal = {
+// Don't clobber an offset that the clock sync has already measured
+window.thoriumLocal = window.thoriumLocal || {
   clockSync: 0,
   roundTrip: 0,
 };
@@ -111,9 +112,8 @@ class InnerGrid extends Component {
     // Divided by the speed times one second (1000 ms)
     const currentTime = time - c.startTime;
     // Location is a function of the current time and the end time.
-    const endTime = c.endTime
-      ? c.endTime + window.thoriumLocal.clockSync
-      : c.startTime + 1000;
+    // startTime, endTime, and time are all in server time already.
+    const endTime = c.endTime || c.startTime + 1000;
     const newLoc = {
       ...location,
       x:
