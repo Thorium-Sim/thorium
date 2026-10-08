@@ -1,3 +1,11 @@
+## [4.10.1](https://github.com/Thorium-Sim/thorium/compare/4.10.0...4.10.1) (2026-10-08)
+
+
+### Bug Fixes
+
+* **clock-sync:** Fix the clockSync to minimize sensors diffs ([81d22c8](https://github.com/Thorium-Sim/thorium/commit/81d22c8931058113c1bad2675e25b9d7d908061a))
+* Improvements to the Dynamic layout. ([2aacfb3](https://github.com/Thorium-Sim/thorium/commit/2aacfb3d2869431e451936032b433fb1db8d37dc))
+
 # [4.10.0](https://github.com/Thorium-Sim/thorium/compare/4.9.1...4.10.0) (2026-09-22)
 
 
