@@ -11,10 +11,9 @@ class LayoutPhoenixViewscreen extends Component {
     let alertClass = `alertColor${simulator.alertlevel || 5}`;
     return (
       <div className={`phoenix-frame viewscreen ${alertClass}`}>
-        <CardFrame {...this.props} />
-        <div className="card-area">
+        <CardFrame {...this.props} viewscreen>
           <Views.Viewscreen {...this.props} />
-        </div>
+        </CardFrame>
       </div>
     );
   }

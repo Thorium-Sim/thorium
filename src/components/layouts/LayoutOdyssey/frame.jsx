@@ -1,16 +1,16 @@
 import React from "react";
 
-const Frame = ({simulator}) => {
+const Frame = ({simulator, viewscreen, clientObj, station, children}) => {
   const colors = {
-    "1": "#701919",
-    "2": "#704419",
-    "3": "#707019",
-    "4": "#18236f",
-    "5": "#18236f",
+    1: "#701919",
+    2: "#704419",
+    3: "#707019",
+    4: "#18236f",
+    5: "#18236f",
     p: "#441970",
   };
   const color = colors[simulator.alertlevel] || colors["5"];
-  return (
+  const frame = (
     <svg
       preserveAspectRatio="none"
       viewBox="0 0 1024 768"
@@ -20,7 +20,11 @@ const Frame = ({simulator}) => {
       strokeLinejoin="round"
       strokeMiterlimit="1.5"
       pointerEvents="none"
-      style={{width: "100vw", height: "100vh"}}
+      style={{
+        width: "100vw",
+        height: "100vh",
+        position: viewscreen ? "relative" : undefined,
+      }}
     >
       <g id="Station-Frame-ORIG">
         <path
@@ -86,6 +90,25 @@ const Frame = ({simulator}) => {
         </filter>
       </defs>
     </svg>
+  );
+  return (
+    <React.Fragment>
+      {viewscreen && (
+        <React.Fragment>
+          <div
+            className="cardContainer"
+            style={{zIndex: !clientObj?.overlay ? 1000 : 1}}
+          >
+            {children}
+          </div>
+          <div className="frame-text" style={{zIndex: 10}}>
+            <h1 className="simulator-name">{simulator.name}</h1>
+            <h2 className="station-name">{station.name}</h2>
+          </div>
+        </React.Fragment>
+      )}
+      {frame}
+    </React.Fragment>
   );
 };
 
