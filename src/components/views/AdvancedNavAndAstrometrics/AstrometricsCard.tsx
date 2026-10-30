@@ -76,8 +76,7 @@ const AstrometricsCard: React.FC<AstrometricsCardProps> = ({
         !probe.equipment.some(
           equipment => equipment.id === "probe-network-package",
         ),
-    )
-    .filter(probe => !(Number(probe.name) < 9));
+    );
 
   return (
     <Container

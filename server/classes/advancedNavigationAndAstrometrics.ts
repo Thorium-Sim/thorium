@@ -542,8 +542,7 @@ export default class AdvancedNavigationAndAstrometrics extends System {
 
         }
         return this.probes.filter(probe => !usedProbes[probe.id])
-            .filter(probe => !probe.equipment.some(equipment => equipment.id === 'probe-network-package'))
-            .filter((probe) => !(Number(probe.name) < 9));
+            .filter(probe => !probe.equipment.some(equipment => equipment.id === 'probe-network-package'));
     }
 
     handleEngageFlightPath(flightPath: NavigationRoute) {
