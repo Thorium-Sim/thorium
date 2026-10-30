@@ -1355,6 +1355,7 @@ export type FsProbe = {
   id: Scalars['ID'];
   name: Scalars['String'];
   type: Scalars['String'];
+  launched?: Maybe<Scalars['Boolean']>;
   equipment: Array<Equipment>;
 };
 
@@ -13006,7 +13007,7 @@ export type GetAdvancedNavAndAstrometricsQuery = (
       ) }
     )>, probes: Array<(
       { __typename?: 'FSProbe' }
-      & Pick<FsProbe, 'id' | 'name' | 'type'>
+      & Pick<FsProbe, 'id' | 'name' | 'type' | 'launched'>
       & { equipment: Array<(
         { __typename?: 'Equipment' }
         & Pick<Equipment, 'id' | 'count'>
@@ -18171,6 +18172,7 @@ export const GetAdvancedNavAndAstrometricsDocument = gql`
       id
       name
       type
+      launched
       equipment {
         id
         count

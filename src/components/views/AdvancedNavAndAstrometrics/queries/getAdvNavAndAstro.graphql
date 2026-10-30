@@ -262,6 +262,7 @@ query GetAdvancedNavAndAstrometrics($simulatorId: ID!) {
       id
       name
       type
+      launched
       equipment {
         id
         count
