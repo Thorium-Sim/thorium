@@ -1,3 +1,19 @@
+# [4.11.0](https://github.com/Thorium-Sim/thorium/compare/4.10.1...4.11.0) (2026-10-31)
+
+
+### Bug Fixes
+
+* Add startup time when restarting engines in advanced nav ([03b4142](https://github.com/Thorium-Sim/thorium/commit/03b4142e5379e91086ba608781128ccd35d51d3e))
+* **3577:** Advanced nav cooling ([7c94bdc](https://github.com/Thorium-Sim/thorium/commit/7c94bdcaac4190d7f07dc075a35ce40c73929213))
+* **3578:** astrometric probes before launch bug ([841ad9d](https://github.com/Thorium-Sim/thorium/commit/841ad9d337259501017c26a91578a6355e4f1b5e))
+* **3579:** Fix unneeded probe filtering ([ec0cc19](https://github.com/Thorium-Sim/thorium/commit/ec0cc19ec89675ab3cc955ce769f0a6758e7e079))
+* **3580:** update distance and speed measurement to keep things consistant ([e94894e](https://github.com/Thorium-Sim/thorium/commit/e94894e23b4bd1b3043a13c0830feaf475bf20e0))
+
+
+### Features
+
+* **3584, 3582, 3585:** Advanced nav core fixes ([f446ecf](https://github.com/Thorium-Sim/thorium/commit/f446ecffbacbbf0fb75e6e095b0bd503f0db103c))
+
 ## [4.10.1](https://github.com/Thorium-Sim/thorium/compare/4.10.0...4.10.1) (2026-10-08)
 
 
