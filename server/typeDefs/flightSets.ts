@@ -312,6 +312,7 @@ type FSProbe {
   id: ID!
   name: String!
   type: String!
+  launched: Boolean
   equipment: [Equipment!]!
 }
 
