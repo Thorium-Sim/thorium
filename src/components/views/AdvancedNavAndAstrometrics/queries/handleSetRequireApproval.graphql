@@ -1,0 +1,3 @@
+mutation HandleSetRequireApproval($id: ID!, $require: Boolean!) {
+  handleSetRequireApproval(id: $id, require: $require)
+}
