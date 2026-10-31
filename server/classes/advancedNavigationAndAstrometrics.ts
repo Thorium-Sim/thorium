@@ -561,8 +561,7 @@ export default class AdvancedNavigationAndAstrometrics extends System {
         return this.probes.filter(probe => !usedProbes[probe.id])
             // Probes still in a torpedo launcher can't be directed until they're fired
             .filter(probe => probe.launched !== false)
-            .filter(probe => !probe.equipment.some(equipment => equipment.id === 'probe-network-package'))
-            .filter((probe) => !(Number(probe.name) < 9));
+            .filter(probe => !probe.equipment.some(equipment => equipment.id === 'probe-network-package'));
     }
 
     handleEngageFlightPath(flightPath: NavigationRoute) {
