@@ -38,6 +38,7 @@ export default class AdvancedNavigationAndAstrometrics extends System {
     name: string;
     heat: number;
     lastTransitIndex: number;
+    resumingFlight: boolean;
 
     constructor(params: Partial<AdvancedNavigationAndAstrometrics>) {
         super(params);
@@ -75,6 +76,7 @@ export default class AdvancedNavigationAndAstrometrics extends System {
         this.locationMap = {}
         this.resyncProbes();
         this.lastTransitIndex = 0;
+        this.resumingFlight = params.resumingFlight || false;
         this.normalizeCurrentLocation();
     }
 
@@ -196,14 +198,20 @@ export default class AdvancedNavigationAndAstrometrics extends System {
                 const timeElapsed = currentTimestamp - this.startingStartupTime;
                 const startupSeconds = this.currentFlightPath.startOption.secondsForStartup + this.extraStartupDelay;
                 if (timeElapsed >= startupSeconds) {
-                    const flightPathCoords = generateFlightPathCoordinates(this.currentLocation, this.currentFlightPath, this.getLocationIdMap(), this.getBorderIdMap(), this.currentFlightSet.imageMaxX, this.currentFlightSet.imageMaxY);
-                    this.flightPathCoords = flightPathCoords;
-                    const totalFlightTime = calculateTotalTime(
-                        flightPathCoords,
-                        (this.currentFlightSet?.pixelsPerSecond || 1) * (this.currentFlightPath?.speedOption?.speedModifier || 1)
-                    );
-                    this.remainingEta = totalFlightTime;
-                    this.totalEta = totalFlightTime;
+                    // A resumed flight keeps the path, ETA and transit progress it had when it
+                    // was stopped; regenerating would backtrack to stops already passed.
+                    if (!this.resumingFlight) {
+                        const flightPathCoords = generateFlightPathCoordinates(this.currentLocation, this.currentFlightPath, this.getLocationIdMap(), this.getBorderIdMap(), this.currentFlightSet.imageMaxX, this.currentFlightSet.imageMaxY);
+                        this.flightPathCoords = flightPathCoords;
+                        const totalFlightTime = calculateTotalTime(
+                            flightPathCoords,
+                            (this.currentFlightSet?.pixelsPerSecond || 1) * (this.currentFlightPath?.speedOption?.speedModifier || 1)
+                        );
+                        this.remainingEta = totalFlightTime;
+                        this.totalEta = totalFlightTime;
+                    }
+                    this.resumingFlight = false;
+                    this.remainingStartupTime = undefined;
                     if (this.currentFlightPath.speedOption.requiresMaxEngines) {
                         this.engineStatus = EngineStatus.FULL_POWER;
                     }
@@ -261,6 +269,7 @@ export default class AdvancedNavigationAndAstrometrics extends System {
                     this.currentLocationName = this.currentFlightPath.isBorder ? this.getBorderIdMap()[this.currentFlightPath.targetLocationId].name : this.getLocationIdMap()[this.currentFlightPath.targetLocationId].name;
                     this.currentFlightPath = undefined;
                     this.lastTransitIndex = 0;
+                    this.resumingFlight = false;
                     notifyEvent(this.simulatorId, 'info', 'Advanced Navigation', 'Arrival at ' + this.currentLocationName, 'Crew has arrived at ' + this.currentLocationName, 'info');
                     // Emit triggerable arrival event
                     App.handleEvent({ simulatorId: this.simulatorId, destinationName: this.currentLocationName }, 'advancedNavArrival');
@@ -342,6 +351,7 @@ export default class AdvancedNavigationAndAstrometrics extends System {
         this.totalEta = 0;
         this.flightPathCoords = [];
         this.currentFlightPath = undefined;
+        this.resumingFlight = false;
         this.pendingFlightPath = undefined;
         this.engineStatus = EngineStatus.STOPPED;
         this.currentLocationName = undefined;
@@ -381,7 +391,9 @@ export default class AdvancedNavigationAndAstrometrics extends System {
         // Stopping during startup is an abort: the ship never left, and no flight path
         // coordinates or ETA have been generated yet. Leaving the path in place would let
         // the crew "resume" into a flight with an empty path, which corrupts currentLocation.
-        if (this.engineStatus === EngineStatus.STARTUP) {
+        // A stop during a resume's startup is not an abort - the flight is already under
+        // way and must stay resumable.
+        if (this.engineStatus === EngineStatus.STARTUP && !this.resumingFlight) {
             this.currentFlightPath = undefined;
             this.remainingStartupTime = undefined;
             this.flightPathCoords = [];
@@ -389,6 +401,8 @@ export default class AdvancedNavigationAndAstrometrics extends System {
             this.totalEta = 0;
             this.lastTransitIndex = 0;
         }
+        this.remainingStartupTime = undefined;
+        this.resumingFlight = false;
         this.engineStatus = EngineStatus.STOPPED;
     }
     handleResumePath() {
@@ -398,12 +412,11 @@ export default class AdvancedNavigationAndAstrometrics extends System {
             this.engineStatus = EngineStatus.STOPPED;
             return;
         }
-        if (this.currentFlightPath.speedOption?.requiresMaxEngines) {
-            this.engineStatus = EngineStatus.FULL_POWER;
-        }
-        else {
-            this.engineStatus = EngineStatus.ENGAGED;
-        }
+        // Resuming goes through the same activation countdown as the initial engage.
+        this.resumingFlight = true;
+        this.engineStatus = EngineStatus.STARTUP;
+        this.startingStartupTime = generateCurrentUnixTimestamp();
+        this.remainingStartupTime = this.currentFlightPath.startOption?.secondsForStartup;
     }
     handleShowFlightSet(show: boolean) {
         this.showFlightSet = show;
@@ -496,6 +509,7 @@ export default class AdvancedNavigationAndAstrometrics extends System {
         this.pendingFlightPath = undefined;
         this.currentLocationUrl = currentLocationUrl;
         this.currentLocationName = currentLocationName;
+        this.resumingFlight = false;
         this.engineStatus = EngineStatus.STOPPED;
     }
 
@@ -600,6 +614,7 @@ export default class AdvancedNavigationAndAstrometrics extends System {
             }
         }
         this.lastTransitIndex = 0;
+        this.resumingFlight = false;
         this.currentFlightPath = flightPath;
         this.engineStatus = EngineStatus.STARTUP;
         this.startingStartupTime = generateCurrentUnixTimestamp();
