@@ -19,6 +19,9 @@ export type AdvancedNavigationProps = {
     currentLocationName?: string
     currentLocationUrl?: string
     remainingStartupTime?: number
+    extraStartupDelay?: number
+    pendingFlightPath?: NavigationRoute
+    onCancelRequest?: () => void;
     possibleFlightPaths: NamedNavigationRoute[]
     selfIcon: string
     coolantLevel: number
@@ -137,7 +140,9 @@ export class AdvancedNavigation extends React.Component<AdvancedNavigationProps,
                                     currentFlightPath={this.props.currentFlightPath}
                                     engineStatus={this.props.engineStatus}
                                     startupRemaining={this.props.remainingStartupTime}
-                                    totalStartupTime={this.props.currentFlightPath?.startOption.secondsForStartup}
+                                    totalStartupTime={this.props.currentFlightPath && this.props.currentFlightPath.startOption.secondsForStartup + (this.props.extraStartupDelay || 0)}
+                                    awaitingApproval={!!this.props.pendingFlightPath}
+                                    onCancelRequest={this.props.onCancelRequest}
                                     flightData={undefined}
                                     eta={this.props.showEta ? this.props.currentETA : undefined}
 

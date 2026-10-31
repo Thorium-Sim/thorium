@@ -220,14 +220,41 @@ App.on('handleEngageFlightPath', ({ id, path }) => {
             ? fs?.borders?.find(b => b.id === path.targetLocationId)?.name
             : fs?.pointsOfInterest?.find(p => p.id === path.targetLocationId)?.name;
         const speedName = path?.speedOption?.name;
-        const title = destinationName ? `Flight Path Engaged: ${destinationName}` : 'Flight Path Engaged';
+        const awaiting = !!system.pendingFlightPath;
+        const title = `Flight Path ${awaiting ? 'Requested' : 'Engaged'}${destinationName ? `: ${destinationName}` : ''}`;
         const body = destinationName || speedName
             ? `Destination: ${destinationName || 'Unknown'}${speedName ? ` | Speed: ${speedName}` : ''}`
             : 'Flight Path has been engaged';
-        notifyEvent(system.simulatorId, 'Advanced Navigation', 'AdvancedNavigationCore', title, body, 'info');
+        notifyEvent(system.simulatorId, 'Advanced Navigation', 'AdvancedNavigationCore', title, awaiting ? `${body} | Awaiting approval` : body, awaiting ? 'warning' : 'info');
     }
     sendUpdate()
 });
+
+App.on('handleApprovePath', ({ id }) => {
+    const system: AdvancedNavigationAndAstrometrics = App.systems.find(s => s.id === id)
+    system && system.handleApprovePath()
+    system && notifyEvent(system.simulatorId, 'Advanced Navigation', 'AdvancedNavigationCore', 'Flight Path Approved', 'Startup sequence has begun', 'info');
+    sendUpdate()
+})
+
+App.on('handleDenyPath', ({ id }) => {
+    const system: AdvancedNavigationAndAstrometrics = App.systems.find(s => s.id === id)
+    system && system.handleDenyPath()
+    system && notifyEvent(system.simulatorId, 'Advanced Navigation', 'AdvancedNavigationCore', 'Flight Path Denied', 'The requested flight path was not cleared', 'info');
+    sendUpdate()
+})
+
+App.on('handleSetRequireApproval', ({ id, require }) => {
+    const system: AdvancedNavigationAndAstrometrics = App.systems.find(s => s.id === id)
+    system && system.handleSetRequireApproval(require)
+    sendUpdate()
+})
+
+App.on('handleSetExtraStartupDelay', ({ id, seconds }) => {
+    const system: AdvancedNavigationAndAstrometrics = App.systems.find(s => s.id === id)
+    system && system.handleSetExtraStartupDelay(seconds)
+    sendUpdate()
+})
 
 App.on('handleSaveFlightPath', ({ id, path }) => {
     const system: AdvancedNavigationAndAstrometrics = App.systems.find(s => s.id === id)

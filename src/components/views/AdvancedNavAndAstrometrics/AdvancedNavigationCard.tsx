@@ -2,6 +2,7 @@ import React, {useEffect} from "react";
 import {
   AdvancedNavigationAndAstrometrics,
   Simulator,
+  useHandleDenyPathMutation,
   useHandleResumePathMutation,
   useHandleSaveFlightPathMutation,
   useHandleEngageFlightPathMutation,
@@ -61,15 +62,16 @@ const AdvancedNavigationCard: React.FC<AdvancedNavigationCardProps> = ({
   const [EngageFlightPath] = useHandleEngageFlightPathMutation();
   const [SaveFlightPath] = useHandleSaveFlightPathMutation();
   const [ResumePath] = useHandleResumePathMutation();
+  const [DenyPath] = useHandleDenyPathMutation();
   const [UpdateCurrentFlightPath] = useHandleUpdateCurrentFlightPathMutation();
   const {assets} = simulator;
 
-  const parsedData = parseAdvancedNavData(
-    data?.advancedNavAndAstrometrics,
-  ).map(d => ({
-    ...d,
-    probeAssignments: Object.values(d.probeAssignments),
-  }));
+  const parsedData = parseAdvancedNavData(data?.advancedNavAndAstrometrics).map(
+    d => ({
+      ...d,
+      probeAssignments: Object.values(d.probeAssignments),
+    }),
+  );
 
   const advancedNav = parsedData[0];
   if (!data || data.loading || !advancedNav || !assets) {
@@ -112,6 +114,11 @@ const AdvancedNavigationCard: React.FC<AdvancedNavigationCardProps> = ({
         currentLocationName={advancedNav.currentLocationName || undefined}
         currentLocationUrl={advancedNav.currentLocationUrl || undefined}
         remainingStartupTime={advancedNav.remainingStartupTime || undefined}
+        extraStartupDelay={advancedNav.extraStartupDelay}
+        pendingFlightPath={advancedNav.pendingFlightPath || undefined}
+        onCancelRequest={() => {
+          DenyPath({variables: {id: advancedNav.id || ""}});
+        }}
         possibleFlightPaths={advancedNav.flightPaths || []}
         selfIcon={`/assets/${assets.logo}`}
         coolantLevel={advancedNav.coolantLevel}
@@ -156,7 +163,7 @@ const AdvancedNavigationCard: React.FC<AdvancedNavigationCardProps> = ({
             },
           });
         }}
-        onUpdateCurrentFlightPath={(route) => {
+        onUpdateCurrentFlightPath={route => {
           UpdateCurrentFlightPath({
             variables: {
               id: advancedNav.id || "",

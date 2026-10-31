@@ -1,0 +1,3 @@
+mutation HandleSetExtraStartupDelay($id: ID!, $seconds: Float!) {
+  handleSetExtraStartupDelay(id: $id, seconds: $seconds)
+}

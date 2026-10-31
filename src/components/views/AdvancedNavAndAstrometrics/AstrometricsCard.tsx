@@ -71,6 +71,8 @@ const AstrometricsCard: React.FC<AstrometricsCardProps> = ({
   }
   const availableProbes = advancedNav.probes
     .filter(probe => !usedProbes[probe.id])
+    // Probes still in a torpedo launcher can't be directed until they're fired
+    .filter(probe => probe.launched !== false)
     .filter(
       probe =>
         !probe.equipment.some(

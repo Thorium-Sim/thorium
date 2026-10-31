@@ -1,0 +1,171 @@
+// Flight Director core: flight path summary for Advanced Navigation.
+.core-adv-nav {
+  container-type: inline-size;
+
+  .core-adv-nav-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 4px;
+
+    .core-adv-nav-flightset {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      opacity: 0.8;
+    }
+  }
+
+  .core-adv-nav-pill {
+    padding: 1px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+
+    &.status-stopped {
+      background: #6c757d;
+    }
+    &.status-startup {
+      background: #17a2b8;
+      animation: core-adv-nav-pulse 1.2s ease-in-out infinite;
+    }
+    &.status-engaged {
+      background: #28a745;
+    }
+    &.status-full-power {
+      background: #ffc107;
+      color: black;
+    }
+    &.status-awaiting {
+      background: #ffc107;
+      color: black;
+      animation: core-adv-nav-pulse 1s ease-in-out infinite;
+    }
+    &.status-flux {
+      background: #dc3545;
+      animation: core-adv-nav-pulse 0.6s ease-in-out infinite;
+    }
+  }
+
+  .core-adv-nav-approval {
+    margin-bottom: 6px;
+    padding: 4px 6px;
+    border: 1px solid #ffc107;
+    border-radius: 3px;
+  }
+
+  .core-adv-nav-main {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .core-adv-nav-map {
+    flex: 1 1 14rem;
+    min-height: 10rem;
+  }
+
+  .core-adv-nav-summary {
+    flex: 1 1 14rem;
+    min-width: 0;
+    font-size: 12px;
+  }
+
+  .core-adv-nav-heading {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.6;
+    margin: 0 0 2px;
+  }
+
+  .core-adv-nav-route {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 3px;
+    margin-bottom: 6px;
+  }
+
+  .core-adv-nav-stop {
+    padding: 0 6px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 3px;
+
+    &.passed {
+      opacity: 0.4;
+    }
+    &.next {
+      border-color: #ffc107;
+      color: #ffc107;
+    }
+    &.target {
+      font-weight: bold;
+    }
+  }
+
+  .core-adv-nav-option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 2px;
+
+    .core-adv-nav-option-label {
+      width: 3.5rem;
+      font-size: 10px;
+      text-transform: uppercase;
+      opacity: 0.6;
+    }
+    .core-adv-nav-option-name {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    img {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+    }
+  }
+
+  .core-adv-nav-telemetry {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 12px;
+    margin: 6px 0 2px;
+
+    > div {
+      flex: 1 1 8rem;
+      min-width: 0;
+    }
+    .core-adv-nav-value {
+      font-family: monospace;
+      font-size: 14px;
+    }
+  }
+
+  .core-adv-nav-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+    margin-top: 4px;
+
+    .input-field {
+      min-width: 5rem;
+    }
+  }
+}
+
+@keyframes core-adv-nav-pulse {
+  50% {
+    opacity: 0.5;
+  }
+}
