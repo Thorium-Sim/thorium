@@ -53,9 +53,14 @@ export const FlexFlightPathSummary: React.FC<FlexFlightPathSummaryProps> = (prop
             return locationIdMap[props.flightPath.targetLocationId].location as { x: number, y: number }
         }
         else {
-            return generateBorderCoords(props.currentLocation, borderIdMap[props.flightPath.targetLocationId], props.maxImageX, props.maxImageY)
+            // Borders are reached from the last stop, matching the server's path generation
+            const stops = props.flightPath.secondaryRouteOptions;
+            const previousLocation = stops.length
+                ? locationIdMap[stops[stops.length - 1].targetLocationId].location
+                : props.currentLocation;
+            return generateBorderCoords(previousLocation, borderIdMap[props.flightPath.targetLocationId], props.maxImageX, props.maxImageY)
         }
-    }, [props.flightPath.targetLocationId, locationIdMap])
+    }, [props.flightPath.targetLocationId, props.flightPath.isBorder, props.flightPath.secondaryRouteOptions, props.currentLocation, props.maxImageX, props.maxImageY, locationIdMap, borderIdMap])
 
     const locationRiskIndex = React.useMemo(() => {
         if (props.flightPath.isBorder) {

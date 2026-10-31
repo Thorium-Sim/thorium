@@ -7,6 +7,11 @@ import {
   useHandleEmergencyStopMutation,
   useHandleEngineFluxMutation,
   useHandleOverrideLocationMutation,
+  useHandleApprovePathMutation,
+  useHandleDenyPathMutation,
+  useHandleResumePathMutation,
+  useHandleSetExtraStartupDelayMutation,
+  useHandleSetRequireApprovalMutation,
   useHandleSetCoolantLevelMutation,
   useHandleSetHeatLevelMutation,
   useHandleShowEtaMutation,
@@ -28,10 +33,28 @@ import {graphql, withApollo} from "react-apollo";
 import {CoreAdvancedNavigation as CoreAdvancedNavigationModal} from "./components/CoreComponents/advanced-flight";
 import parseAdvancedNavData from "./helpers/parseAdvancedNavData";
 import {EngineStatus} from "./types";
-import {FlightSet} from "containers/FlightDirector/FlightSets/types";
+import {
+  FlightSet,
+  NavigationRoute,
+} from "containers/FlightDirector/FlightSets/types";
 import "./styles.css";
-import {PositionMap} from "containers/FlightDirector/FlightSets/Map";
+import {RouteProgressMap} from "containers/FlightDirector/FlightSets/Map/RouteProgressMap";
+import {FullCoordinate} from "containers/FlightDirector/FlightSets/Map/ImageCanvas";
 import {formatSecondsToTime} from "containers/FlightDirector/FlightSets/Time";
+import {InputField} from "components/generic/core";
+import {StatusStrip} from "./components/CoreComponents/flight-summary/status-strip";
+import {FlightSummaryPanel} from "./components/CoreComponents/flight-summary";
+import {Telemetry} from "./components/CoreComponents/flight-summary/telemetry";
+import {generateBorderIdMap, generateLocationIdMap} from "./components/helpers";
+import {
+  getNearestPoi,
+  getRouteRisk,
+  getRouteSpeed,
+  getRouteStops,
+  getStopsPassed,
+  getTravelProgress,
+  partsToSeconds,
+} from "./helpers/flightSummary";
 
 interface CoreAdvancedNavigationProps {
   children: React.ReactNode;
@@ -56,6 +79,11 @@ const CoreAdvancedNavigation: React.FC<CoreAdvancedNavigationProps> = ({
   const [ShowFlightSet] = useHandleShowFlightSetMutation();
   const [UpdateEta] = useHandleUpdateEtaMutation();
   const [EmergencyStop] = useHandleEmergencyStopMutation();
+  const [ResumePath] = useHandleResumePathMutation();
+  const [ApprovePath] = useHandleApprovePathMutation();
+  const [DenyPath] = useHandleDenyPathMutation();
+  const [SetRequireApproval] = useHandleSetRequireApprovalMutation();
+  const [SetExtraStartupDelay] = useHandleSetExtraStartupDelayMutation();
   const [EngineFlux] = useHandleEngineFluxMutation();
   const [ChangeCoolantLevel] = useHandleSetCoolantLevelMutation();
   const [ChangeHeatLevel] = useHandleSetHeatLevelMutation();
@@ -85,28 +113,16 @@ const CoreAdvancedNavigation: React.FC<CoreAdvancedNavigationProps> = ({
   if (!advancedNav) {
     return <div>No System detected</div>;
   }
+  // Same chained prompts as the Flight Director timer core.
   const handleEtaClick = () => {
-    let hours = prompt("Please enter the hours");
-    if (hours === null || hours === undefined || hours === "") {
-      return;
-    }
-    let minutes = prompt("Please enter the minutes");
-    if (minutes === null || minutes === undefined || minutes === "") {
-      return;
-    }
-    let seconds = prompt("Please enter the seconds");
-    if (seconds === null || seconds === undefined || seconds === "") {
-      return;
-    }
-    if (
-      isNaN(Number(hours)) ||
-      isNaN(Number(minutes)) ||
-      isNaN(Number(seconds))
-    ) {
-      alert("Please enter a valid number");
-      return;
-    }
-    const eta = Number(hours) * 3600 + Number(minutes) * 60 + Number(seconds);
+    const seconds = prompt("Enter the number of seconds:", "0");
+    if (!seconds && seconds !== "0") return;
+    const minutes = prompt("Enter the number of minutes:", "0");
+    if (!minutes && minutes !== "0") return;
+    const hours = prompt("Enter the number of hours:", "0");
+    if (!hours && hours !== "0") return;
+    const eta = partsToSeconds(hours, minutes, seconds);
+    if (eta === null) return;
     UpdateEta({
       variables: {
         id: advancedNav.id || "",
@@ -115,15 +131,67 @@ const CoreAdvancedNavigation: React.FC<CoreAdvancedNavigationProps> = ({
     });
   };
 
-  const locationIdMap = advancedNav.flightSets.reduce((prev, next) => {
-    next.pointsOfInterest.forEach(p => {
-      prev[p.id] = p.name;
-    });
-    return prev;
-  }, {} as Record<string, string>);
+  const flightSet = advancedNav.currentFlightSet as unknown as
+    | FlightSet
+    | null
+    | undefined;
+  const route = advancedNav.currentFlightPath as unknown as
+    | NavigationRoute
+    | null
+    | undefined;
+  const coords = (advancedNav.flightPathCoords || []) as FullCoordinate[];
+  const engineStatus = advancedNav.engineStatus as EngineStatus;
+  const stopped = engineStatus === EngineStatus.STOPPED;
+  const starting = engineStatus === EngineStatus.STARTUP;
+  const moving = !stopped && !starting;
+  const stops =
+    route && flightSet
+      ? getRouteStops(
+          route,
+          generateLocationIdMap(flightSet.pointsOfInterest),
+          generateBorderIdMap(flightSet.borders),
+        )
+      : [];
+  const stopsPassed = getStopsPassed(
+    coords,
+    advancedNav.totalEta || 0,
+    advancedNav.remainingEta || 0,
+  );
+  const pending = advancedNav.pendingFlightPath as unknown as
+    | NavigationRoute
+    | null
+    | undefined;
+  const extraDelay = advancedNav.extraStartupDelay || 0;
+  const pendingStops =
+    pending && flightSet
+      ? getRouteStops(
+          pending,
+          generateLocationIdMap(flightSet.pointsOfInterest),
+          generateBorderIdMap(flightSet.borders),
+        )
+      : [];
+  const risk = route && flightSet ? getRouteRisk(route, flightSet) : 0;
+  const speedRating =
+    route && flightSet
+      ? getRouteSpeed(
+          route,
+          coords[0] || advancedNav.currentLocation,
+          flightSet,
+        )
+      : 1;
+  const nearest = flightSet
+    ? getNearestPoi(
+        advancedNav.currentLocation,
+        flightSet.pointsOfInterest,
+        flightSet.pixelDistanceModifier || 1,
+      )
+    : null;
 
   return (
-    <Container fluid className="flex-column card-advancedNavigation">
+    <Container
+      fluid
+      className="flex-column card-advancedNavigation core-adv-nav"
+    >
       <SubscriptionHelper
         subscribe={() =>
           (data as any).subscribeToMore({
@@ -138,115 +206,198 @@ const CoreAdvancedNavigation: React.FC<CoreAdvancedNavigationProps> = ({
           })
         }
       />
-      <div style={{display: "flex", width: "100%"}}>
-        <div style={{display: "flex", flexDirection: "column", width: "100%"}}>
-          {advancedNav.currentFlightSet && (
-            <div style={{width: "100%", minHeight: "10rem"}}>
-              <PositionMap
-                imageUrl={advancedNav.currentFlightSet?.backgroundImg || ""}
-                primaryLocation={advancedNav.currentLocation}
+      <StatusStrip
+        engineStatus={engineStatus}
+        flightSetName={flightSet?.name}
+        awaitingApproval={!!pending}
+      >
+        <Button size="sm" onClick={() => setShowDetailsModal(true)}>
+          Open Panel
+        </Button>
+        <Button size="sm" onClick={() => setShowAddFlightSetModal(true)}>
+          Sets
+        </Button>
+      </StatusStrip>
+      {flightSet ? (
+        <>
+          {pending && flightSet && (
+            <div className="core-adv-nav-approval">
+              <FlightSummaryPanel
+                route={pending}
+                stops={pendingStops}
+                stopsPassed={0}
+                risk={getRouteRisk(pending, flightSet)}
+                speedRating={getRouteSpeed(
+                  pending,
+                  advancedNav.currentLocation,
+                  flightSet,
+                )}
+                extraStartupDelay={extraDelay}
+                heading="Crew requests this flight path"
               />
+              <div className="core-adv-nav-controls">
+                <Button
+                  size="sm"
+                  color="success"
+                  onClick={() =>
+                    ApprovePath({variables: {id: advancedNav.id || ""}})
+                  }
+                >
+                  Approve
+                </Button>
+                <Button
+                  size="sm"
+                  color="danger"
+                  onClick={() =>
+                    DenyPath({variables: {id: advancedNav.id || ""}})
+                  }
+                >
+                  Deny
+                </Button>
+              </div>
             </div>
           )}
-          {advancedNav.currentFlightSet && (
+          <div className="core-adv-nav-main">
+            <div className="core-adv-nav-map">
+              <RouteProgressMap
+                imageUrl={flightSet.backgroundImg || ""}
+                coordinates={route ? coords : []}
+                shipLocation={advancedNav.currentLocation}
+                passedIndex={stopsPassed}
+              />
+            </div>
+            <FlightSummaryPanel
+              route={route}
+              stops={stops}
+              stopsPassed={stopsPassed}
+              risk={risk}
+              speedRating={speedRating}
+              lastLocationName={advancedNav.currentLocationName}
+              extraStartupDelay={extraDelay}
+            />
+          </div>
+          <Telemetry
+            simulatorId={simulator.id}
+            speedName={route?.speedOption.name}
+            nearest={nearest}
+            progress={getTravelProgress(
+              advancedNav.totalEta || 0,
+              advancedNav.remainingEta || 0,
+            )}
+            starting={starting}
+            startupRemaining={advancedNav.remainingStartupTime}
+            startupTotal={
+              route
+                ? route.startOption.secondsForStartup + extraDelay
+                : undefined
+            }
+            moving={moving}
+          />
+          <div className="core-adv-nav-controls">
+            <Button
+              size="sm"
+              disabled={stopped || starting}
+              onClick={() =>
+                EngineFlux({variables: {id: advancedNav.id || ""}})
+              }
+            >
+              {engineStatus === EngineStatus.FLUX ? "Cancel Flux" : "Flux"}
+            </Button>
+            <Button
+              size="sm"
+              color="danger"
+              disabled={stopped || starting}
+              onClick={() =>
+                EmergencyStop({variables: {id: advancedNav.id || ""}})
+              }
+            >
+              Stop
+            </Button>
+            <Button
+              size="sm"
+              disabled={!stopped || !route}
+              onClick={() =>
+                ResumePath({variables: {id: advancedNav.id || ""}})
+              }
+            >
+              Resume
+            </Button>
+            <span style={{flex: 1}} />
+            <label className="mb-0">ETA</label>
             <div
+              className="input-field"
+              title="Click to set ETA"
+              onClick={handleEtaClick}
               style={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
+                backgroundColor: "#FBFE3D",
+                border: "solid 1px #D2CB43",
+                color: "black",
+                height: "16px",
+                fontSize: "12px",
+                whiteSpace: "pre",
+                textAlign: "center",
               }}
             >
-              <button
-                disabled={
-                  advancedNav.engineStatus === EngineStatus.STOPPED ||
-                  advancedNav.engineStatus === EngineStatus.STARTUP
-                }
-                onClick={() => {
-                  EngineFlux({
-                    variables: {
-                      id: advancedNav.id || "",
-                    },
-                  });
-                }}
-              >
-                {advancedNav.engineStatus === EngineStatus.FLUX
-                  ? "Cancel Flux"
-                  : "Flux"}
-              </button>
-              <button
-                disabled={
-                  advancedNav.engineStatus === EngineStatus.STOPPED ||
-                  advancedNav.engineStatus === EngineStatus.STARTUP
-                }
-                onClick={() => {
-                  EmergencyStop({
-                    variables: {
-                      id: advancedNav.id || "",
-                    },
-                  });
-                }}
-              >
-                Stop
-              </button>
-              <label htmlFor="eta">ETA</label>
-              <div
-                onClick={handleEtaClick}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  cursor: "pointer",
-                  minWidth: "5rem",
-                  backgroundColor: "yellow",
-                  textAlign: "center",
-                  color: "black",
-                }}
-              >
-                {advancedNav.remainingEta
-                  ? formatSecondsToTime(advancedNav.remainingEta)
-                  : "None"}
-              </div>
-              <label htmlFor="show-eta">Show ETA</label>
-              <input
-                disabled={advancedNav.engineStatus === EngineStatus.STOPPED}
-                type="checkbox"
-                id="show-eta"
-                checked={advancedNav.showEta}
-                onChange={event => {
-                  ShowEta({
-                    variables: {
-                      id: advancedNav.id || "",
-                      show: event.target.checked,
-                    },
-                  });
-                }}
-              />
+              {advancedNav.remainingEta
+                ? formatSecondsToTime(advancedNav.remainingEta)
+                : "None"}
             </div>
-          )}
-          <br />
-          Target Location:{" "}
-          {advancedNav.currentFlightPath?.targetLocationId
-            ? locationIdMap[advancedNav.currentFlightPath?.targetLocationId]
-            : "None"}
-          <br />
-          <Button
-            onClick={() => {
-              setShowDetailsModal(true);
-            }}
-          >
-            Open Panel
-          </Button>
-          <Button
-            onClick={() => {
-              setShowAddFlightSetModal(true);
-            }}
-          >
-            Show available flight sets
-          </Button>
-        </div>
-        <div style={{display: "flex", flexDirection: "column"}}></div>
-      </div>
+            <label className="mb-0" htmlFor="show-eta">
+              Show ETA
+            </label>
+            <input
+              disabled={stopped}
+              type="checkbox"
+              id="show-eta"
+              checked={advancedNav.showEta}
+              onChange={event => {
+                ShowEta({
+                  variables: {
+                    id: advancedNav.id || "",
+                    show: event.target.checked,
+                  },
+                });
+              }}
+            />
+          </div>
+          <div className="core-adv-nav-controls">
+            <label className="mb-0" htmlFor="require-approval">
+              Require approval
+            </label>
+            <input
+              type="checkbox"
+              id="require-approval"
+              title="Unchecked: crew flight paths start automatically"
+              checked={advancedNav.requireApproval}
+              onChange={event =>
+                SetRequireApproval({
+                  variables: {
+                    id: advancedNav.id || "",
+                    require: event.target.checked,
+                  },
+                })
+              }
+            />
+            <span style={{flex: 1}} />
+            <label className="mb-0">Extra startup delay</label>
+            <InputField
+              prompt="Extra startup delay (seconds)"
+              promptValue={extraDelay}
+              onClick={value => {
+                const seconds = Number(value);
+                if (!Number.isFinite(seconds) || seconds < 0) return;
+                SetExtraStartupDelay({
+                  variables: {id: advancedNav.id || "", seconds},
+                });
+              }}
+            >
+              {`${extraDelay}s`}
+            </InputField>
+          </div>
+        </>
+      ) : (
+        <p>No flight set selected</p>
+      )}
       <Modal
         size="lg"
         isOpen={showAddFlightSetModal}

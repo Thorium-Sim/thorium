@@ -11,19 +11,22 @@ export function parseGraphqlToUIAstroObject(obj: GraphqlAstro): AdvancedNavigati
 }
 
 export function generateSpeedIndex(currentLocation: { x: number, y: number }, targetLocation: { x: number, y: number }, secondaryRoutes: PointOfInterest[], speedOption: NavigationSpeedOptions) {
-    let basicTime = distanceFormula(currentLocation, targetLocation) * (1 / speedOption.speedModifier);
     if (secondaryRoutes && secondaryRoutes.length) {
+        // Effective speed: the straight-line distance divided by the time the full route takes.
+        // This is on the same scale as the speed option's modifier, so a route with stops can be
+        // compared directly to one without. Leg speeds match generateFlightPathCoordinates: the
+        // first leg is at 1, each later leg uses the speed index of the stop it leaves.
         let currLocation = currentLocation;
         let speedIndex = 1;
         let totalTime = 0;
         secondaryRoutes.forEach((each) => {
-            let time = distanceFormula(currLocation, each.location) * (1 / speedIndex) * (1 / speedOption.speedModifier);
-            totalTime += time;
+            totalTime += distanceFormula(currLocation, each.location) * (1 / speedIndex) * (1 / speedOption.speedModifier);
+            currLocation = each.location;
             speedIndex = each.speedIndex;
         });
-        let finalTime = distanceFormula(secondaryRoutes[secondaryRoutes.length - 1].location, targetLocation) * (1 / speedIndex) * (1 / speedOption.speedModifier);
-        totalTime += finalTime;
-        return basicTime / totalTime;
+        totalTime += distanceFormula(currLocation, targetLocation) * (1 / speedIndex) * (1 / speedOption.speedModifier);
+        if (totalTime === 0) return speedOption.speedModifier;
+        return distanceFormula(currentLocation, targetLocation) / totalTime;
     }
     return speedOption.speedModifier;
 }

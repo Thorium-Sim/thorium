@@ -232,6 +232,8 @@ export type Probe = {
     id: string;
     name: string;
     type: ProbeType;
+    // False while a torpedo-launched probe is still loaded in a launcher
+    launched?: boolean;
     equipment: {
         id: string;
         count: number;

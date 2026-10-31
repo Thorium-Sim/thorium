@@ -23,6 +23,10 @@ extend type Mutation {
     handleCoolantFlush(id: ID!): String
     handleEmergencyStop(id: ID!): String
     handleResumePath(id: ID!): String
+    handleApprovePath(id: ID!): String
+    handleDenyPath(id: ID!): String
+    handleSetRequireApproval(id: ID!, require: Boolean!): String
+    handleSetExtraStartupDelay(id: ID!, seconds: Float!): String
     handleShowFlightSet(id: ID!, show: Boolean!): String
     handleShowEta(id: ID!, show: Boolean!): String
     handleUpdateEta(id: ID!, eta: Float!): String
@@ -92,6 +96,9 @@ type AdvancedNavigationAndAstrometrics implements SystemInterface {
     showFlightSet: Boolean!
     currentFlightSet: FlightSet
     currentFlightPath: NavigationRoute
+    pendingFlightPath: NavigationRoute
+    requireApproval: Boolean!
+    extraStartupDelay: Float!
     currentLocationName: String
     currentLocationUrl: String    
     probes: [FSProbe!]!
@@ -305,6 +312,7 @@ type FSProbe {
   id: ID!
   name: String!
   type: String!
+  launched: Boolean
   equipment: [Equipment!]!
 }
 

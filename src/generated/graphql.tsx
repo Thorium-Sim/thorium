@@ -83,6 +83,9 @@ export type AdvancedNavigationAndAstrometrics = SystemInterface & {
   showFlightSet: Scalars['Boolean'];
   currentFlightSet?: Maybe<FlightSet>;
   currentFlightPath?: Maybe<NavigationRoute>;
+  pendingFlightPath?: Maybe<NavigationRoute>;
+  requireApproval: Scalars['Boolean'];
+  extraStartupDelay: Scalars['Float'];
   currentLocationName?: Maybe<Scalars['String']>;
   currentLocationUrl?: Maybe<Scalars['String']>;
   probes: Array<FsProbe>;
@@ -1355,6 +1358,7 @@ export type FsProbe = {
   id: Scalars['ID'];
   name: Scalars['String'];
   type: Scalars['String'];
+  launched?: Maybe<Scalars['Boolean']>;
   equipment: Array<Equipment>;
 };
 
@@ -2590,6 +2594,10 @@ export type Mutation = {
   handleCoolantFlush?: Maybe<Scalars['String']>;
   handleEmergencyStop?: Maybe<Scalars['String']>;
   handleResumePath?: Maybe<Scalars['String']>;
+  handleApprovePath?: Maybe<Scalars['String']>;
+  handleDenyPath?: Maybe<Scalars['String']>;
+  handleSetRequireApproval?: Maybe<Scalars['String']>;
+  handleSetExtraStartupDelay?: Maybe<Scalars['String']>;
   handleShowFlightSet?: Maybe<Scalars['String']>;
   handleShowEta?: Maybe<Scalars['String']>;
   handleUpdateEta?: Maybe<Scalars['String']>;
@@ -4787,6 +4795,28 @@ export type MutationHandleEmergencyStopArgs = {
 
 export type MutationHandleResumePathArgs = {
   id: Scalars['ID'];
+};
+
+
+export type MutationHandleApprovePathArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationHandleDenyPathArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationHandleSetRequireApprovalArgs = {
+  id: Scalars['ID'];
+  require: Scalars['Boolean'];
+};
+
+
+export type MutationHandleSetExtraStartupDelayArgs = {
+  id: Scalars['ID'];
+  seconds: Scalars['Float'];
 };
 
 
@@ -12863,7 +12893,7 @@ export type GetAdvancedNavAndAstrometricsQuery = (
   { __typename?: 'Query' }
   & { advancedNavAndAstrometrics?: Maybe<Array<Maybe<(
     { __typename?: 'AdvancedNavigationAndAstrometrics' }
-    & Pick<AdvancedNavigationAndAstrometrics, 'id' | 'simulatorId' | 'type' | 'name' | 'displayName' | 'stealthFactor' | 'coolantLevel' | 'heatLevel' | 'engineStatus' | 'hasEmergencyPower' | 'startingStartupTime' | 'remainingEta' | 'totalEta' | 'remainingStartupTime' | 'showEta' | 'showFlightSet' | 'currentLocationName' | 'currentLocationUrl' | 'flightSetPathMap' | 'probeAssignments'>
+    & Pick<AdvancedNavigationAndAstrometrics, 'id' | 'simulatorId' | 'type' | 'name' | 'displayName' | 'stealthFactor' | 'coolantLevel' | 'heatLevel' | 'engineStatus' | 'hasEmergencyPower' | 'startingStartupTime' | 'remainingEta' | 'totalEta' | 'remainingStartupTime' | 'showEta' | 'showFlightSet' | 'requireApproval' | 'extraStartupDelay' | 'currentLocationName' | 'currentLocationUrl' | 'flightSetPathMap' | 'probeAssignments'>
     & { power?: Maybe<(
       { __typename?: 'Power' }
       & Pick<Power, 'power' | 'powerLevels'>
@@ -13004,9 +13034,25 @@ export type GetAdvancedNavAndAstrometricsQuery = (
         { __typename?: 'NavigationExitOptions' }
         & Pick<NavigationExitOptions, 'id' | 'name' | 'riskModifier' | 'imgUrl'>
       ) }
+    )>, pendingFlightPath?: Maybe<(
+      { __typename?: 'NavigationRoute' }
+      & Pick<NavigationRoute, 'targetLocationId' | 'isBorder'>
+      & { secondaryRouteOptions: Array<(
+        { __typename?: 'SecondaryNavigationRouteOption' }
+        & Pick<SecondaryNavigationRouteOption, 'targetLocationId'>
+      )>, startOption: (
+        { __typename?: 'NavigationStartOptions' }
+        & Pick<NavigationStartOptions, 'id' | 'name' | 'riskModifier' | 'imgUrl' | 'secondsForStartup'>
+      ), speedOption: (
+        { __typename?: 'NavigationSpeedOptions' }
+        & Pick<NavigationSpeedOptions, 'id' | 'name' | 'speedModifier' | 'riskModifier' | 'requiresMaxEngines' | 'imgUrl'>
+      ), exitOption: (
+        { __typename?: 'NavigationExitOptions' }
+        & Pick<NavigationExitOptions, 'id' | 'name' | 'riskModifier' | 'imgUrl'>
+      ) }
     )>, probes: Array<(
       { __typename?: 'FSProbe' }
-      & Pick<FsProbe, 'id' | 'name' | 'type'>
+      & Pick<FsProbe, 'id' | 'name' | 'type' | 'launched'>
       & { equipment: Array<(
         { __typename?: 'Equipment' }
         & Pick<Equipment, 'id' | 'count'>
@@ -13049,6 +13095,16 @@ export type HandleUpdateAdvNavFlightSetDataMutation = (
   & Pick<Mutation, 'updateAdvNavFlightSetData'>
 );
 
+export type HandleApprovePathMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type HandleApprovePathMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'handleApprovePath'>
+);
+
 export type HandleAdvancedNavCoolantFlushMutationVariables = Exact<{
   id: Scalars['ID'];
 }>;
@@ -13057,6 +13113,16 @@ export type HandleAdvancedNavCoolantFlushMutationVariables = Exact<{
 export type HandleAdvancedNavCoolantFlushMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'handleCoolantFlush'>
+);
+
+export type HandleDenyPathMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type HandleDenyPathMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'handleDenyPath'>
 );
 
 export type HandleEmergencyStopMutationVariables = Exact<{
@@ -13147,6 +13213,17 @@ export type HandleSetCoolantLevelMutation = (
   & Pick<Mutation, 'handleSetCoolantLevel'>
 );
 
+export type HandleSetExtraStartupDelayMutationVariables = Exact<{
+  id: Scalars['ID'];
+  seconds: Scalars['Float'];
+}>;
+
+
+export type HandleSetExtraStartupDelayMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'handleSetExtraStartupDelay'>
+);
+
 export type HandleSetHeatLevelMutationVariables = Exact<{
   id: Scalars['ID'];
   level: Scalars['Float'];
@@ -13156,6 +13233,17 @@ export type HandleSetHeatLevelMutationVariables = Exact<{
 export type HandleSetHeatLevelMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'handleSetHeatLevel'>
+);
+
+export type HandleSetRequireApprovalMutationVariables = Exact<{
+  id: Scalars['ID'];
+  require: Scalars['Boolean'];
+}>;
+
+
+export type HandleSetRequireApprovalMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'handleSetRequireApproval'>
 );
 
 export type HandleShowEtaMutationVariables = Exact<{
@@ -18165,12 +18253,43 @@ export const GetAdvancedNavAndAstrometricsDocument = gql`
         imgUrl
       }
     }
+    pendingFlightPath {
+      targetLocationId
+      secondaryRouteOptions {
+        targetLocationId
+      }
+      isBorder
+      startOption {
+        id
+        name
+        riskModifier
+        imgUrl
+        secondsForStartup
+      }
+      speedOption {
+        id
+        name
+        speedModifier
+        riskModifier
+        requiresMaxEngines
+        imgUrl
+      }
+      exitOption {
+        id
+        name
+        riskModifier
+        imgUrl
+      }
+    }
+    requireApproval
+    extraStartupDelay
     currentLocationName
     currentLocationUrl
     probes {
       id
       name
       type
+      launched
       equipment {
         id
         count
@@ -18216,6 +18335,15 @@ export function useHandleUpdateAdvNavFlightSetDataMutation(baseOptions?: ApolloR
         return ApolloReactHooks.useMutation<HandleUpdateAdvNavFlightSetDataMutation, HandleUpdateAdvNavFlightSetDataMutationVariables>(HandleUpdateAdvNavFlightSetDataDocument, baseOptions);
       }
 export type HandleUpdateAdvNavFlightSetDataMutationHookResult = ReturnType<typeof useHandleUpdateAdvNavFlightSetDataMutation>;
+export const HandleApprovePathDocument = gql`
+    mutation HandleApprovePath($id: ID!) {
+  handleApprovePath(id: $id)
+}
+    `;
+export function useHandleApprovePathMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HandleApprovePathMutation, HandleApprovePathMutationVariables>) {
+        return ApolloReactHooks.useMutation<HandleApprovePathMutation, HandleApprovePathMutationVariables>(HandleApprovePathDocument, baseOptions);
+      }
+export type HandleApprovePathMutationHookResult = ReturnType<typeof useHandleApprovePathMutation>;
 export const HandleAdvancedNavCoolantFlushDocument = gql`
     mutation HandleAdvancedNavCoolantFlush($id: ID!) {
   handleCoolantFlush(id: $id)
@@ -18225,6 +18353,15 @@ export function useHandleAdvancedNavCoolantFlushMutation(baseOptions?: ApolloRea
         return ApolloReactHooks.useMutation<HandleAdvancedNavCoolantFlushMutation, HandleAdvancedNavCoolantFlushMutationVariables>(HandleAdvancedNavCoolantFlushDocument, baseOptions);
       }
 export type HandleAdvancedNavCoolantFlushMutationHookResult = ReturnType<typeof useHandleAdvancedNavCoolantFlushMutation>;
+export const HandleDenyPathDocument = gql`
+    mutation HandleDenyPath($id: ID!) {
+  handleDenyPath(id: $id)
+}
+    `;
+export function useHandleDenyPathMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HandleDenyPathMutation, HandleDenyPathMutationVariables>) {
+        return ApolloReactHooks.useMutation<HandleDenyPathMutation, HandleDenyPathMutationVariables>(HandleDenyPathDocument, baseOptions);
+      }
+export type HandleDenyPathMutationHookResult = ReturnType<typeof useHandleDenyPathMutation>;
 export const HandleEmergencyStopDocument = gql`
     mutation HandleEmergencyStop($id: ID!) {
   handleEmergencyStop(id: $id)
@@ -18302,6 +18439,15 @@ export function useHandleSetCoolantLevelMutation(baseOptions?: ApolloReactHooks.
         return ApolloReactHooks.useMutation<HandleSetCoolantLevelMutation, HandleSetCoolantLevelMutationVariables>(HandleSetCoolantLevelDocument, baseOptions);
       }
 export type HandleSetCoolantLevelMutationHookResult = ReturnType<typeof useHandleSetCoolantLevelMutation>;
+export const HandleSetExtraStartupDelayDocument = gql`
+    mutation HandleSetExtraStartupDelay($id: ID!, $seconds: Float!) {
+  handleSetExtraStartupDelay(id: $id, seconds: $seconds)
+}
+    `;
+export function useHandleSetExtraStartupDelayMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HandleSetExtraStartupDelayMutation, HandleSetExtraStartupDelayMutationVariables>) {
+        return ApolloReactHooks.useMutation<HandleSetExtraStartupDelayMutation, HandleSetExtraStartupDelayMutationVariables>(HandleSetExtraStartupDelayDocument, baseOptions);
+      }
+export type HandleSetExtraStartupDelayMutationHookResult = ReturnType<typeof useHandleSetExtraStartupDelayMutation>;
 export const HandleSetHeatLevelDocument = gql`
     mutation HandleSetHeatLevel($id: ID!, $level: Float!) {
   handleSetHeatLevel(id: $id, level: $level)
@@ -18311,6 +18457,15 @@ export function useHandleSetHeatLevelMutation(baseOptions?: ApolloReactHooks.Mut
         return ApolloReactHooks.useMutation<HandleSetHeatLevelMutation, HandleSetHeatLevelMutationVariables>(HandleSetHeatLevelDocument, baseOptions);
       }
 export type HandleSetHeatLevelMutationHookResult = ReturnType<typeof useHandleSetHeatLevelMutation>;
+export const HandleSetRequireApprovalDocument = gql`
+    mutation HandleSetRequireApproval($id: ID!, $require: Boolean!) {
+  handleSetRequireApproval(id: $id, require: $require)
+}
+    `;
+export function useHandleSetRequireApprovalMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HandleSetRequireApprovalMutation, HandleSetRequireApprovalMutationVariables>) {
+        return ApolloReactHooks.useMutation<HandleSetRequireApprovalMutation, HandleSetRequireApprovalMutationVariables>(HandleSetRequireApprovalDocument, baseOptions);
+      }
+export type HandleSetRequireApprovalMutationHookResult = ReturnType<typeof useHandleSetRequireApprovalMutation>;
 export const HandleShowEtaDocument = gql`
     mutation HandleShowEta($id: ID!, $show: Boolean!) {
   handleShowEta(id: $id, show: $show)

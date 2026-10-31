@@ -26,9 +26,14 @@ export const PathSummarySidebar: React.FC<PathSummarySidebarProps> = (props) => 
             return locationIdMap[props.flightPath.targetLocationId].location as { x: number, y: number }
         }
         else {
-            return generateBorderCoords(props.currentLocation, locationIdMap[props.flightPath.targetLocationId] as MapBorder, props.flightSet.imageMaxX, props.flightSet.imageMaxY)
+            // Borders are reached from the last stop, matching the server's path generation
+            const stops = props.flightPath.secondaryRouteOptions;
+            const previousLocation = stops.length
+                ? locationIdMap[stops[stops.length - 1].targetLocationId].location as { x: number, y: number }
+                : props.currentLocation;
+            return generateBorderCoords(previousLocation, locationIdMap[props.flightPath.targetLocationId] as MapBorder, props.flightSet.imageMaxX, props.flightSet.imageMaxY)
         }
-    }, [props.flightPath.targetLocationId, locationIdMap])
+    }, [props.flightPath.targetLocationId, props.flightPath.secondaryRouteOptions, props.currentLocation, props.flightSet.imageMaxX, props.flightSet.imageMaxY, locationIdMap])
 
     return (
         <div className='path-sidebar open'>
