@@ -8,14 +8,13 @@ import "./layout.scss";
 
 class LayoutOdyssey extends Component {
   render() {
-    let {simulator, station} = this.props;
-    const {name: stationName} = station;
+    let {simulator} = this.props;
     let alertClass = `alertColor${simulator.alertlevel || 5}`;
     return (
       <div className="viewscreen">
         <div id="layout-odyssey" className={alertClass}>
           <div className={`perspectiveContainer`}>
-            <div className="cardContainer">
+            <CardFrame {...this.props} viewscreen>
               <React.Suspense fallback={null}>
                 <ErrorBoundary
                   render={
@@ -48,12 +47,7 @@ class LayoutOdyssey extends Component {
                   )}
                 </ErrorBoundary>
               </React.Suspense>
-            </div>
-            <div className="frame-text">
-              <h1 className="simulator-name">{simulator.name}</h1>
-              <h2 className="station-name">{stationName}</h2>
-            </div>
-            <CardFrame simulator={simulator} />
+            </CardFrame>
           </div>
         </div>
       </div>
