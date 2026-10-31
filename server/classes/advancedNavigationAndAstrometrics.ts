@@ -124,9 +124,10 @@ export default class AdvancedNavigationAndAstrometrics extends System {
                 heatRate = basicHeatRate * 3;
                 break;
             default:
-                heatRate = 0;
+                // Engines not under load shed heat on their own, at the same pace they heat up when engaged
+                heatRate = -basicHeatRate;
         };
-        this.heatLevel = Math.min(100, this.heatLevel + heatRate);
+        this.heatLevel = Math.min(100, Math.max(0, this.heatLevel + heatRate));
         this.heat = this.heatLevel / 100;
     }
 
