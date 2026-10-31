@@ -1,0 +1,3 @@
+mutation HandleDenyPath($id: ID!) {
+  handleDenyPath(id: $id)
+}

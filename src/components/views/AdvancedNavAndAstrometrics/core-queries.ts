@@ -254,6 +254,37 @@ export const ADVANCED_NAV_AND_ASTROMETRICS_SUB = gql`
         imgUrl
       }
     }
+    pendingFlightPath {
+      targetLocationId
+
+      secondaryRouteOptions {
+        targetLocationId
+      }
+      isBorder
+      startOption {
+        id
+        name
+        riskModifier
+        imgUrl
+        secondsForStartup
+      }
+      speedOption {
+        id
+        name
+        speedModifier
+        riskModifier
+        requiresMaxEngines
+        imgUrl
+      }
+      exitOption {
+        id
+        name
+        riskModifier
+        imgUrl
+      }
+    }
+    requireApproval
+    extraStartupDelay
     currentLocationName
     currentLocationUrl
     probes {
@@ -526,6 +557,36 @@ query GetAdvancedNavAndAstrometrics($simulatorId: ID!) {
         imgUrl
       }
     }
+    pendingFlightPath {
+      targetLocationId
+      secondaryRouteOptions {
+        targetLocationId
+      }
+      isBorder
+      startOption {
+        id
+        name
+        riskModifier
+        imgUrl
+        secondsForStartup
+      }
+      speedOption {
+        id
+        name
+        speedModifier
+        riskModifier
+        requiresMaxEngines
+        imgUrl
+      }
+      exitOption {
+        id
+        name
+        riskModifier
+        imgUrl
+      }
+    }
+    requireApproval
+    extraStartupDelay
     currentLocationName
     currentLocationUrl
     probes {

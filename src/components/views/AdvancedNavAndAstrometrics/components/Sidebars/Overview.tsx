@@ -13,6 +13,9 @@ export type OverviewSidebarProps = {
     onResumeFlightPath: () => void;
     onChangeSpeed?: () => void;
     onCoolantFlush: () => void;
+    // The FD hasn't cleared the crew's requested flight path yet.
+    awaitingApproval?: boolean;
+    onCancelRequest?: () => void;
     coolantLevel: number;
     heatLevel: number;
     currentFlightPath?: NavigationRoute
@@ -42,6 +45,9 @@ export const OverviewSidebar: React.FC<OverviewSidebarProps> = (props) => {
 
     const statusText = useMemo(() => {
 
+        if (props.awaitingApproval) {
+            return <span>Flight path submitted. Awaiting clearance.</span>
+        }
         if (props.engineStatus === EngineStatus.ENGAGED) {
             return <div>
                 <span>{`Estimated Time of Arrival: ${props.eta ? formatSecondsToTime(props.eta) : "Calculating"}`}</span>
@@ -110,6 +116,7 @@ export const OverviewSidebar: React.FC<OverviewSidebarProps> = (props) => {
             <div style={{ padding: '10px', width: '100%' }}>
                 <Button style={{ width: '100%' }} onClick={props.onEngageFlightPath}>{props.currentFlightPath ? "Change flight path" : 'Engage flight path'}</Button>
                 <Button style={{ width: '100%' }} onClick={props.onAddFlightPath}>{"Add flight path"}</Button>
+                {props.awaitingApproval && <Button style={{ width: '100%' }} onClick={props.onCancelRequest}>Cancel request</Button>}
                 {props.engineStatus !== EngineStatus.STOPPED && props.currentFlightPath && <Button style={{ width: '100%' }} onClick={props.onEmergencyStop}>Emergency Stop</Button>}
                 {props.engineStatus === EngineStatus.STOPPED && props.currentFlightPath !== undefined && <Button style={{ width: '100%' }} onClick={props.onResumeFlightPath}>Resume flight path</Button>}
                 {props.engineStatus !== EngineStatus.STOPPED && props.currentFlightPath && <Button style={{ width: '100%' }} onClick={props.onChangeSpeed}>Change Speed</Button>}

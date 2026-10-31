@@ -1,0 +1,3 @@
+mutation HandleApprovePath($id: ID!) {
+  handleApprovePath(id: $id)
+}
