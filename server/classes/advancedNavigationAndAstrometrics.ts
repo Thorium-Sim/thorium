@@ -24,6 +24,11 @@ export default class AdvancedNavigationAndAstrometrics extends System {
     showFlightSet: boolean;
     currentFlightSet?: FlightSet;
     currentFlightPath?: NavigationRoute;
+    // A route the crew asked for that the FD hasn't approved yet.
+    pendingFlightPath?: NavigationRoute;
+    requireApproval: boolean;
+    // Seconds added to the start option's own startup time.
+    extraStartupDelay: number;
     currentLocationName?: string;
     currentLocationUrl?: string;
     flightSetPathMap: { [key: string]: NamedNavigationRoute[] };
@@ -56,6 +61,9 @@ export default class AdvancedNavigationAndAstrometrics extends System {
         this.showFlightSet = params.showFlightSet || false;
         this.currentFlightSet = params.currentFlightSet;
         this.currentFlightPath = params.currentFlightPath;
+        this.pendingFlightPath = params.pendingFlightPath;
+        this.requireApproval = params.requireApproval || false;
+        this.extraStartupDelay = params.extraStartupDelay || 0;
         this.currentLocationName = params.currentLocationName;
         this.currentLocationUrl = params.currentLocationUrl;
         this.flightSetPathMap = params.flightSetPathMap || {};
@@ -118,9 +126,10 @@ export default class AdvancedNavigationAndAstrometrics extends System {
                 heatRate = basicHeatRate * 3;
                 break;
             default:
-                heatRate = 0;
+                // Engines not under load shed heat on their own, at the same pace they heat up when engaged
+                heatRate = -basicHeatRate;
         };
-        this.heatLevel = Math.min(100, this.heatLevel + heatRate);
+        this.heatLevel = Math.min(100, Math.max(0, this.heatLevel + heatRate));
         this.heat = this.heatLevel / 100;
     }
 
@@ -187,7 +196,8 @@ export default class AdvancedNavigationAndAstrometrics extends System {
                     return;
                 }
                 const timeElapsed = currentTimestamp - this.startingStartupTime;
-                if (timeElapsed >= this.currentFlightPath.startOption.secondsForStartup) {
+                const startupSeconds = this.currentFlightPath.startOption.secondsForStartup + this.extraStartupDelay;
+                if (timeElapsed >= startupSeconds) {
                     // A resumed flight keeps the path, ETA and transit progress it had when it
                     // was stopped; regenerating would backtrack to stops already passed.
                     if (!this.resumingFlight) {
@@ -211,7 +221,7 @@ export default class AdvancedNavigationAndAstrometrics extends System {
 
                 }
                 else {
-                    this.remainingStartupTime = this.currentFlightPath.startOption.secondsForStartup - timeElapsed;
+                    this.remainingStartupTime = startupSeconds - timeElapsed;
                 }
             }
             else if (this.engineStatus === EngineStatus.ENGAGED || this.engineStatus === EngineStatus.FULL_POWER || this.engineStatus === EngineStatus.FLUX) {
@@ -342,6 +352,7 @@ export default class AdvancedNavigationAndAstrometrics extends System {
         this.flightPathCoords = [];
         this.currentFlightPath = undefined;
         this.resumingFlight = false;
+        this.pendingFlightPath = undefined;
         this.engineStatus = EngineStatus.STOPPED;
         this.currentLocationName = undefined;
         this.currentLocationUrl = undefined;
@@ -454,6 +465,11 @@ export default class AdvancedNavigationAndAstrometrics extends System {
         this.heat = level;
     }
     handleUpdateCurrentFlightPath(flightPath: NavigationRoute) {
+        if (this.pendingFlightPath) {
+            // The crew is changing a request nobody has cleared yet; there is no flight to recalculate.
+            this.pendingFlightPath = flightPath;
+            return;
+        }
         const previousSpeedId = this.currentFlightPath?.speedOption?.id;
         this.currentFlightPath = flightPath;
         if (this.currentFlightSet) {
@@ -490,6 +506,7 @@ export default class AdvancedNavigationAndAstrometrics extends System {
     handleOverrideLocation(location: BasicCoordinate, currentLocationUrl?: string, currentLocationName?: string) {
         this.currentLocation = location;
         this.currentFlightPath = undefined;
+        this.pendingFlightPath = undefined;
         this.currentLocationUrl = currentLocationUrl;
         this.currentLocationName = currentLocationName;
         this.resumingFlight = false;
@@ -556,11 +573,38 @@ export default class AdvancedNavigationAndAstrometrics extends System {
 
         }
         return this.probes.filter(probe => !usedProbes[probe.id])
+            // Probes still in a torpedo launcher can't be directed until they're fired
+            .filter(probe => probe.launched !== false)
             .filter(probe => !probe.equipment.some(equipment => equipment.id === 'probe-network-package'))
             .filter((probe) => !(Number(probe.name) < 9));
     }
 
     handleEngageFlightPath(flightPath: NavigationRoute) {
+        if (this.requireApproval) {
+            this.pendingFlightPath = flightPath;
+            return;
+        }
+        this.startFlightPath(flightPath);
+    }
+    // Approving starts the same startup sequence an unrestricted engage does.
+    handleApprovePath() {
+        const flightPath = this.pendingFlightPath;
+        if (!flightPath) return;
+        this.pendingFlightPath = undefined;
+        this.startFlightPath(flightPath);
+    }
+    handleDenyPath() {
+        this.pendingFlightPath = undefined;
+    }
+    handleSetRequireApproval(require: boolean) {
+        this.requireApproval = require;
+        // Turning approval off clears whatever was waiting on it.
+        if (!require) this.handleApprovePath();
+    }
+    handleSetExtraStartupDelay(seconds: number) {
+        this.extraStartupDelay = Math.max(0, seconds);
+    }
+    startFlightPath(flightPath: NavigationRoute) {
         // Trigger leave macros if we are currently at a POI with configured leaveMacros
         if (this.currentFlightSet) {
             const here = this.currentLocation;

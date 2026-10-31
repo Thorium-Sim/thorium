@@ -63,10 +63,37 @@ function generateBackgroundImage(al) {
   return BlueImage;
 }
 
-export default function Layoutlass({simulator, lite, viewscreen}) {
+export default function Layoutlass({
+  simulator,
+  lite,
+  viewscreen,
+  clientObj,
+  station,
+  children,
+}) {
   const al = simulator.alertlevel;
   return (
     <div>
+      {viewscreen && (
+        <React.Fragment>
+          <div
+            style={{
+              position: "relative",
+              zIndex: !clientObj?.overlay ? 1000 : 1,
+            }}
+          >
+            {children}
+          </div>
+          <div className="frame-text">
+            <h1 className="simulator-name" style={{zIndex: 11}}>
+              {simulator.name}
+            </h1>
+            <h2 className="station-name" style={{zIndex: 11}}>
+              {station.name}
+            </h2>
+          </div>
+        </React.Fragment>
+      )}
       {!lite && (
         <Fragment>
           <link rel="preload" href={BlueVideo} as="video" />
@@ -77,10 +104,19 @@ export default function Layoutlass({simulator, lite, viewscreen}) {
         </Fragment>
       )}
 
-      <div className="simName-graphic" />
+      <div
+        className="simName-graphic"
+        style={viewscreen ? {zIndex: 10} : undefined}
+      />
       {!viewscreen && <div className="cards-graphic" />}
-      <div className="stationName-graphic" />
-      <div className="widgets-graphic" />
+      <div
+        className="stationName-graphic"
+        style={viewscreen ? {zIndex: 10} : undefined}
+      />
+      <div
+        className="widgets-graphic"
+        style={viewscreen ? {zIndex: 10} : undefined}
+      />
       {!viewscreen && <div className="username-graphic" />}
       <div
         className="color-image"
